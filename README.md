@@ -5,3 +5,7 @@ Levels are procedurally generated.
 Screenshot: 
 
 ![alt text](spacefly.gif "Screenshot")
+
+## Dependencies
+
+LibGDX 1.10.0
