@@ -19,7 +19,7 @@ public class Util
 		
 		while ( angleDiff < -180 ) angleDiff += 360;
 		while ( angleDiff >  180 ) angleDiff -= 360;
-		
+
 		return angleDiff;
 	}
 }

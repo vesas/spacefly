@@ -11,6 +11,9 @@ public abstract class Shake
 	protected Vector2 direction;
 	protected float strength = 0.01f;
 	
+	/*
+		timescale is approx how long the effect lasts as the inverse of time. ie. 25 is 1/25th of a second.
+	*/
 	public void setTimeScale( float timeScale )
 	{
 		this.timeScale = timeScale; 
@@ -25,28 +28,26 @@ public abstract class Shake
 	{
 		this.interpolation = interpolation;
 	}
-	
+
 	public void setStrength( float strength )
 	{
 		this.strength = strength;
 	}
-	
+
 	public boolean isDead()
 	{
 		return t >= 1.0f;
 	}
-	
+
 	public void init()
 	{
 		t = 0.0f;
 	}
-	
-	
+
 	public abstract void performOn( Vector2 pos );
 	
 	public void tick( float delta ) 
 	{ 
 		t += delta * timeScale ;
-		
 	}
 }

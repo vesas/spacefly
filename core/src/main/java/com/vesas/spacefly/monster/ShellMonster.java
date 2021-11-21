@@ -495,9 +495,8 @@ public class ShellMonster extends Monster implements AnimateEntity
 		float angle = body.getAngle();
 		float bodyAngleInDegrees = angle * G.RADIANS_TO_DEGREES - 90.0f;
 
-		sprite.setRotation(angle * G.RADIANS_TO_DEGREES - 90.0f);
+		sprite.setRotation(bodyAngleInDegrees);
 
-		
 		sprite.draw(screen.worldBatch);
 
 //		Sprite gunSprite = G.monsters[5];

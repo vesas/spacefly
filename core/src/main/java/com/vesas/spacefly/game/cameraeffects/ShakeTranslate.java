@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class ShakeTranslate extends Shake
 {
+	@Override
 	public void performOn( Vector2 pos )
 	{
 		pos.x = pos.x + 0.0f;

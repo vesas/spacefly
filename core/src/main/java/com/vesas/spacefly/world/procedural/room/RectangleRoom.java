@@ -23,7 +23,7 @@ public class RectangleRoom extends Room
 		this.blocks.addAll( blocks );
 	}
 
-	public void draw(Screen screen)
+	public void draw(Screen screen)	
 	{
 		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
 		
@@ -43,7 +43,7 @@ public class RectangleRoom extends Room
 	{
 	}
 	
-	private static Color col1 = new Color(0.45f, 0.2f, 0.2f, 1.0f);
+	private static Color col1 = new Color(0.35f, 0.35f, 0.36f, 1.0f);
 	
 	private static Color col2 = new Color(0.30f, 0.30f, 0.30f, 1.0f );
 	private static Color col3 = new Color(0.20f, 0.20f, 0.20f, 1.0f );
