@@ -1,6 +1,8 @@
-# Spacefly - 2D game implemented with Java and LibGDX
+# Spacefly - 2D game
 
-Levels are procedurally generated.
+* Java
+* LibGDX
+* Procedurally generated levels
 
 Screenshot: 
 
