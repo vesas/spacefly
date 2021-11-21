@@ -46,7 +46,6 @@ public class BodyBuilder
 	{
 		shape = new CircleShape();
 		shape.setRadius( radius );
-		
 		return INSTANCE;
 	}
 	
@@ -99,7 +98,6 @@ public class BodyBuilder
 	public BodyBuilder setRestitution( float restitution )
 	{
 		this.restitution = restitution;
-		
 		return INSTANCE;
 	}
 	
@@ -107,7 +105,6 @@ public class BodyBuilder
 	public BodyBuilder setBodyType( BodyType bodyType )
 	{
 		this.bodyType = bodyType;
-		
 		return INSTANCE;
 	}
 	
@@ -115,14 +112,12 @@ public class BodyBuilder
 	{
 		this.xpos = xpos;
 		this.ypos = ypos;
-		
 		return INSTANCE;
 	}
 	
 	public BodyBuilder setLinearDamping( float val )
 	{
 		linearDamping = val;
-		
 		return INSTANCE;
 	}
 	
@@ -243,22 +238,4 @@ public class BodyBuilder
 		xpos = 0.0f;
 		ypos = 0.0f;
 	}
-
-	public void safeDestroyBody( Body body )
-	{
-		final Array<JointEdge> joints = body.getJointList();
-		
-		for( int i = 0, size = joints.size; i < size; i++ )
-		{
-			JointEdge edge = joints.get( i );
-			Box2DWorld.world.destroyJoint(edge.joint);
-		}
-		
-		Box2DWorld.world.destroyBody( body );
-			
-		body.setUserData(null);
-		body = null;
-		
-	}
-	
 }

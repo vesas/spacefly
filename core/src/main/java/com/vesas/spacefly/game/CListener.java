@@ -28,41 +28,40 @@ public class CListener implements ContactListener
 		{
 			AbstractGameWorld.INSTANCE.removeMonster( monster );
 			
-			float str = 0.020f;
+			float explosionStrength = 0.20f;
 			if( monster instanceof SlurgMonster )
 			{
-
+				explosionStrength = 0.15f;
 				G.explo1.play( 0.10f );
-				str = 0.024f;
+				
 			}
 				
 			else if( monster instanceof ZipperMonster )
 			{
-				str = 0.008f;
+				explosionStrength = 0.08f;
 				G.explo1.play( 0.05f );
 			}
 				
 			
 			ShakeExplo shake = new ShakeExplo();
-			shake.setTimeScale( 12.0f );
+			shake.setTimeScale( 10.0f );
 			shake.setDirection( bullet.body.getLinearVelocity() );
-			shake.setInterpolation( Interpolation.elasticOut );
-			shake.setStrength( str ); 
+			shake.setInterpolation( Interpolation.circleIn );
+			shake.setStrength( explosionStrength ); 
 			CameraPositionState.addEffect(shake);
 		}
 		else
 		{
 			// not dead yet
-			
 			AbstractGameWorld.INSTANCE.addLittleExplosion( bullet.body.getPosition(), bullet.body.getLinearVelocity(), 0.5f, 1.0f);
 			
 			G.explo1.play( 0.04f );
 			
 			ShakeExplo shake = new ShakeExplo();
-			shake.setTimeScale( 25.0f );
+			shake.setTimeScale( 20.0f );
 			shake.setDirection( bullet.body.getLinearVelocity() );
-			shake.setInterpolation( Interpolation.elasticOut );
-			shake.setStrength( 0.006f ); 
+			shake.setInterpolation( Interpolation.circleIn );
+			shake.setStrength( 0.06f ); 
 			CameraPositionState.addEffect(shake);
 		}
 		
@@ -156,10 +155,10 @@ public class CListener implements ContactListener
 			G.explo1.play( 0.02f );
 			
 			ShakeExplo shake = new ShakeExplo();
-			shake.setTimeScale( 25.0f );
+			shake.setTimeScale( 25f );
 			shake.setDirection( b.body.getLinearVelocity() );
-			shake.setInterpolation( Interpolation.elasticOut );
-			shake.setStrength( 0.006f ); 
+			shake.setInterpolation( Interpolation.circleIn  );
+			shake.setStrength( 0.06f ); 
 			CameraPositionState.addEffect(shake);
 			
 		}

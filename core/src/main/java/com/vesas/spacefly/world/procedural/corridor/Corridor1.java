@@ -19,8 +19,8 @@ public class Corridor1 implements Feature
 	
 	protected float width;
 	protected float height;
-	
-	private int len = 5; 
+
+	private float len;
 	
 	public float getXpos() { return xpos; }		
 	public float getYpos() { return ypos; }		
@@ -75,7 +75,7 @@ public class Corridor1 implements Feature
 		this.len = len;
 	}
 	
-	private static Color col1 = new Color(0.45f, 0.2f, 0.2f, 1.0f);
+	private static Color col1 = new Color(0.35f, 0.35f, 0.36f, 1.0f);
 	public void init()
 	{
 		int width = 1;

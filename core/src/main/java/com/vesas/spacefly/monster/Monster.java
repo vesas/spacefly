@@ -16,6 +16,7 @@ import com.vesas.spacefly.game.Util;
 
 abstract public class Monster
 {
+	// Box2D body instance
 	protected Body body;
 	protected int health = 3;
 	protected String healthString;
@@ -133,7 +134,7 @@ abstract public class Monster
 
 			if (o2 instanceof Monster)
 			{
-				// ignore monsters
+				// ignore other monsters
 				return -1;
 			}
 
