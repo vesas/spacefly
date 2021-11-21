@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -18,16 +17,14 @@ import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.game.Util;
-import com.vesas.spacefly.monster.BaseMonster.Brain;
 
-public class ShellMonster extends BaseMonster implements AnimateEntity
+public class ShellMonster extends Monster implements AnimateEntity
 {
 	private float cooldown = 0 + random.nextFloat() * 0.1f;
 
 	private static float MAX_VELOCITY = 2.99f;
 	
 	private static Vector2 tmpVector = new Vector2();
-	private static Vector2 tmpVector2 = new Vector2();
 
 	private Vector2 gunDir = new Vector2();
 

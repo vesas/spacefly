@@ -273,7 +273,7 @@ public class Player
 							bulletDirectionVector.x * 9.6f + (randomNoise1 - 0.5f),
 							+ bulletDirectionVector.y * 9.6f + (randomNoise2 - 0.5f));
 		
-		G.shot.play( 0.03f );
+		G.shot.play( 0.02f );
 	}
 
 	

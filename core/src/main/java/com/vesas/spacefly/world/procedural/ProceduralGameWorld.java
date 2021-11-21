@@ -20,7 +20,7 @@ import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.game.Screen;
-import com.vesas.spacefly.monster.BaseMonster;
+import com.vesas.spacefly.monster.Monster;
 import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.particles.ExplosionInterface;
 import com.vesas.spacefly.world.AbstractGameWorld;
@@ -320,7 +320,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		
 		for( int i = 0, size = monsters.size; i < size; i++ )
 		{
-			BaseMonster m = monsters.get(i);
+			Monster m = monsters.get(i);
 			m.draw(screen);
 		}
 		
@@ -404,7 +404,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		G.shapeRenderer.setColor(1.0f, 0.0f, 0.0f, 1.0f);
 		for( int i = 0, size = monsters.size; i < size; i++ )
 		{
-			BaseMonster m = monsters.get(i);
+			Monster m = monsters.get(i);
 			Vector2 pos = m.getBody().getWorldCenter();
 			
 			if( m instanceof ZipperMonster )

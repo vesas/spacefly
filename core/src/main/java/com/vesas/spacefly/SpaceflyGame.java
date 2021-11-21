@@ -109,21 +109,15 @@ public class SpaceflyGame extends Game
 		Gdx.gl.glClearColor(0.08f, 0.08f, 0.08f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.gl.glEnable(GL20.GL_BLEND);
-		
 
 		long time = TimeUtils.nanoTime();
-		
-		long nanoDelta = time - lastFrameStarted;
-		float delta = (float)((float)nanoDelta / (float)NANOS_TO_SECONDS);
 		
 		tick();
 
 		renderFrame();
 		
-		
 		while( (time - lastFrameStarted) < (TARGET_FRAME_NANOTIME - 100000000 ))
 		{
-			
 			Thread.yield();
 		
 			try
@@ -134,12 +128,9 @@ public class SpaceflyGame extends Game
 				Thread.currentThread().interrupt();
 			}
 			time = TimeUtils.nanoTime();
-			
 		}
 		
 		lastFrameStarted = time;
-		
-		
 	}
 
 	public void tick()
@@ -209,7 +200,6 @@ public class SpaceflyGame extends Game
 		
 		AbstractGameWorld.INSTANCE.draw( screen );
 		
-		
 		screen.worldBatch.begin();
 		
 		PlayerBullets.INSTANCE.draw( screen );
@@ -217,15 +207,11 @@ public class SpaceflyGame extends Game
 		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		MonsterBullets.INSTANCE.draw( screen );
 		
-		
 		screen.worldBatch.end();
 		
 		screen.screenBatch.begin();
 		
-		
 		hud.draw( screen );
-		
-		
 		
 		DebugHelper.printGCStats(screen.screenBatch);
 		

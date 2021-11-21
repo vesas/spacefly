@@ -19,7 +19,7 @@ import com.vesas.spacefly.game.RayCastClosestCB;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.game.Util;
 
-public class SlurgMonster extends BaseMonster implements AnimateEntity
+public class SlurgMonster extends Monster implements AnimateEntity
 {
 	private float cooldown = 0 + random.nextFloat();
 	
@@ -245,18 +245,18 @@ public class SlurgMonster extends BaseMonster implements AnimateEntity
 		return closestSpice;
 	}
 
-	private BaseMonster findClosestBigMonster()
+	private Monster findClosestBigMonster()
 	{
-		Array<BaseMonster> monsters = new Array<BaseMonster>();// ProceduralGameWorld.INSTANCE.getMonsterList();
+		Array<Monster> monsters = new Array<Monster>();// ProceduralGameWorld.INSTANCE.getMonsterList();
 
 		float closestDist = 50000.0f;
 
-		BaseMonster closestBigMonster = null;
+		Monster closestBigMonster = null;
 		Vector2 thisPos = body.getWorldCenter();
 
 		for( int i = 0, size = monsters.size; i < size; i++ )
 		{
-			BaseMonster e = monsters.get( i );
+			Monster e = monsters.get( i );
 		
 			if (e instanceof ShellMonster)
 			{

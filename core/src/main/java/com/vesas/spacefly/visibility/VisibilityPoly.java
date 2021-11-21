@@ -15,7 +15,6 @@ public class VisibilityPoly
 		}
 	};
 	
-	
 	private Array<Vector2> triPoints = new Array<Vector2>();
 	
 	public Array<Vector2> getTriEndPoints()
