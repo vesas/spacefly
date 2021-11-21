@@ -8,7 +8,7 @@ import com.vesas.spacefly.game.Floater;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Powerup;
 import com.vesas.spacefly.game.Screen;
-import com.vesas.spacefly.monster.BaseMonster;
+import com.vesas.spacefly.monster.Monster;
 import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.particles.BigExplosion;
 import com.vesas.spacefly.particles.Explosion;
@@ -20,8 +20,8 @@ public abstract class AbstractGameWorld
 {
 	static public AbstractGameWorld INSTANCE = new ProceduralGameWorld();
 	
-	protected Array<BaseMonster> monsters = new Array<BaseMonster>(false, 64);
-	protected Array<BaseMonster> monstersToBeRemoved = new Array<BaseMonster>(false, 8);
+	protected Array<Monster> monsters = new Array<Monster>(false, 64);
+	protected Array<Monster> monstersToBeRemoved = new Array<Monster>(false, 8);
 	
 	protected Array<AnimateEntity> resources = new Array<AnimateEntity>(false, 32);
 	protected Array<AnimateEntity> resourcesToBeRemoved = new Array<AnimateEntity>(false, 8);
@@ -39,12 +39,12 @@ public abstract class AbstractGameWorld
 		removeSpices();
 	}
 	
-	public Array<BaseMonster> getMonsterList()
+	public Array<Monster> getMonsterList()
 	{
 		return monsters;
 	}
 	
-	public void addMonster( BaseMonster m )
+	public void addMonster( Monster m )
 	{
 		monsters.add( m );
 	}
@@ -58,42 +58,23 @@ public abstract class AbstractGameWorld
 	{
 		Explosion explo = new Explosion();
 		explo.setBloomSize( bloomSize );
-		explo.startAt( 
-				pos.x, 
-				pos.y,
-				vel.x * velocityScale,
-				vel.y * velocityScale
-				);
+		explo.startAt(pos.x, pos.y, vel.x * velocityScale, vel.y * velocityScale );
 		systems.add( explo );
-		
-		
 	}
 	
 	public void addBigExplosion(  Vector2 pos, Vector2 vel, float velocityScale, float bloomSize )
 	{
 		BigExplosion explo = new BigExplosion();
 		explo.setBloomSize( bloomSize );
-		explo.startAt( 
-				pos.x, 
-				pos.y,
-				vel.x * velocityScale,
-				vel.y * velocityScale
-				);
+		explo.startAt(pos.x, pos.y, vel.x * velocityScale, vel.y * velocityScale);
 		systems.add( explo );
 		
-		
 		Goo goo = new Goo();
-		
-		goo.startAt( 
-				pos.x, 
-				pos.y,
-				vel.x * velocityScale,
-				vel.y * velocityScale
-				);
+		goo.startAt( pos.x, pos.y, vel.x * velocityScale, vel.y * velocityScale );
 		systems.add( goo );
 	}
 
-	public void removeMonster(BaseMonster m)
+	public void removeMonster(Monster m)
 	{
 		final Vector2 pos = m.getBody().getWorldCenter();
 		final Vector2 vel = m.getBody().getLinearVelocity(); 
@@ -120,7 +101,7 @@ public abstract class AbstractGameWorld
 		
 		for( int i = 0; i < size; i++ )
 		{
-			BaseMonster m = monstersToBeRemoved.get( i );
+			Monster m = monstersToBeRemoved.get( i );
 			
 			m.destroy();
 
@@ -204,7 +185,7 @@ public abstract class AbstractGameWorld
 	{
 		for( int i = 0, size = monsters.size; i < size; i++ )
 		{
-			BaseMonster m = monsters.get(i);
+			Monster m = monsters.get(i);
 			m.tick(delta);
 		}
 	}

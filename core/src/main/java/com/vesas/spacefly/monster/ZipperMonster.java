@@ -14,7 +14,7 @@ import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.game.Util;
 
-public class ZipperMonster extends BaseMonster implements AnimateEntity
+public class ZipperMonster extends Monster implements AnimateEntity
 {
 	enum IMPULSE_STATE
 	{
@@ -94,8 +94,8 @@ public class ZipperMonster extends BaseMonster implements AnimateEntity
 
 		body.setUserData(this);
 
-		targetDir.setAngle(body.getAngle() * G.RADIANS_TO_DEGREES);
-		dir.setAngle(body.getAngle() * G.RADIANS_TO_DEGREES);
+		targetDir.setAngleRad(body.getAngle());
+		dir.setAngleRad(body.getAngle());
 
 		// Remember to dispose of any shapes after you're done with them!
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
@@ -198,7 +198,7 @@ public class ZipperMonster extends BaseMonster implements AnimateEntity
 				
 				targetModifier = ( 1.0f + actionTime ) * 1.4f - 0.25f;
 				
-				dir.setAngle((body.getAngle() * G.RADIANS_TO_DEGREES));
+				dir.setAngleRad(body.getAngle());
 				dir.nor();
 				dir.scl(random.nextFloat() * 0.14f + ( 0.15f + PUSHING_MAX_TIME - actionTime ) );
 

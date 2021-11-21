@@ -80,11 +80,11 @@ public class WorldGen
 		}
 		
 	}
-	
-	
+
 	private void addMonstersPass( Region region, Array<Feature> feats )
 	{
-		for( int i = 0; i < feats.size; i++ )
+		// Skip first two features (ie. the first room, and the first corridor leading from that)
+		for( int i = 2; i < feats.size; i++ )
 		{
 			Feature feat = feats.get(i);
 			

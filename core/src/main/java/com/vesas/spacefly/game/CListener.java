@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.vesas.spacefly.game.cameraeffects.CameraPositionState;
 import com.vesas.spacefly.game.cameraeffects.ShakeExplo;
-import com.vesas.spacefly.monster.BaseMonster;
+import com.vesas.spacefly.monster.Monster;
 import com.vesas.spacefly.monster.MonsterBullet;
 import com.vesas.spacefly.monster.MonsterBullets;
 import com.vesas.spacefly.monster.SlurgMonster;
@@ -20,7 +20,7 @@ import com.vesas.spacefly.world.AbstractGameWorld;
 public class CListener implements ContactListener
 {
 	
-	private void playerBulletHit( Bullet bullet, BaseMonster monster )
+	private void playerBulletHit( Bullet bullet, Monster monster )
 	{
 		monster.getHit( bullet );
 		
@@ -32,14 +32,14 @@ public class CListener implements ContactListener
 			if( monster instanceof SlurgMonster )
 			{
 
-				G.explo1.play( 0.18f );
+				G.explo1.play( 0.10f );
 				str = 0.024f;
 			}
 				
 			else if( monster instanceof ZipperMonster )
 			{
 				str = 0.008f;
-				G.explo1.play( 0.10f );
+				G.explo1.play( 0.05f );
 			}
 				
 			
@@ -56,7 +56,7 @@ public class CListener implements ContactListener
 			
 			AbstractGameWorld.INSTANCE.addLittleExplosion( bullet.body.getPosition(), bullet.body.getLinearVelocity(), 0.5f, 1.0f);
 			
-			G.explo1.play( 0.05f );
+			G.explo1.play( 0.04f );
 			
 			ShakeExplo shake = new ShakeExplo();
 			shake.setTimeScale( 25.0f );
@@ -97,12 +97,12 @@ public class CListener implements ContactListener
 			o2 = b2.getUserData();
 		}
 		
-		if( (o1 != null && o1 instanceof BaseMonster) )
+		if( (o1 != null && o1 instanceof Monster) )
 		{
 			if( o2 != null && o2 instanceof Bullet )
 			{
 				Bullet b = (Bullet)o2;
-				BaseMonster m = (BaseMonster)o1;
+				Monster m = (Monster)o1;
 				playerBulletHit( b, m);
 				
 			}
@@ -112,10 +112,10 @@ public class CListener implements ContactListener
 		
 		if( o1 != null && o1 instanceof Bullet )
 		{
-			if( (o2 != null && o2 instanceof BaseMonster) )
+			if( (o2 != null && o2 instanceof Monster) )
 			{
 				Bullet bullet = (Bullet)o1;
-				BaseMonster m = (BaseMonster)o2;
+				Monster m = (Monster)o2;
 				playerBulletHit(bullet, m );
 			}
 		}
@@ -153,7 +153,7 @@ public class CListener implements ContactListener
 			AbstractGameWorld.INSTANCE.addLittleExplosion( b.body.getPosition(), b.body.getLinearVelocity(), 0.5f, 1.0f);
 			PlayerBullets.INSTANCE.preRemove( b );
 			
-			G.explo1.play( 0.05f );
+			G.explo1.play( 0.02f );
 			
 			ShakeExplo shake = new ShakeExplo();
 			shake.setTimeScale( 25.0f );
