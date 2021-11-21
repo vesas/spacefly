@@ -1,0 +1,3 @@
+rootProject.name = 'spacefly'
+include 'desktop'
+include 'core'

@@ -1,0 +1,145 @@
+
+fly.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+healthBubble1
+  rotate: false
+  xy: 1, 82
+  size: 74, 45
+  orig: 74, 45
+  offset: 0, 0
+  index: -1
+powerup_heal
+  rotate: false
+  xy: 77, 95
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+powerup_health1
+  rotate: false
+  xy: 77, 61
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+powerup_shoot1
+  rotate: false
+  xy: 1, 48
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+ship
+  rotate: false
+  xy: 35, 48
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+isompimonsteri_runko1
+  rotate: false
+  xy: 69, 29
+  size: 30, 30
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
+ork2
+  rotate: false
+  xy: 101, 33
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+ork3
+  rotate: false
+  xy: 101, 5
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+bullet
+  rotate: false
+  xy: 69, 68
+  size: 5, 12
+  orig: 5, 12
+  offset: 0, 0
+  index: -1
+monsterbullet
+  rotate: false
+  xy: 69, 62
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1
+shipgun
+  rotate: false
+  xy: 111, 103
+  size: 15, 24
+  orig: 15, 24
+  offset: 0, 0
+  index: -1
+crosshair1
+  rotate: false
+  xy: 111, 88
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+smallpuff
+  rotate: false
+  xy: 111, 77
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+health1
+  rotate: false
+  xy: 111, 66
+  size: 8, 9
+  orig: 8, 9
+  offset: 0, 0
+  index: -1
+monsterbullet2
+  rotate: false
+  xy: 1, 18
+  size: 8, 28
+  orig: 8, 28
+  offset: 0, 0
+  index: -1
+ork4
+  rotate: false
+  xy: 11, 20
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+spice
+  rotate: false
+  xy: 39, 22
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mikko1
+  rotate: false
+  xy: 65, 2
+  size: 21, 25
+  orig: 21, 25
+  offset: 0, 0
+  index: -1
+puolikasoko
+  rotate: false
+  xy: 11, 2
+  size: 30, 16
+  orig: 30, 16
+  offset: 0, 0
+  index: -1
+tykki1
+  rotate: false
+  xy: 1, 1
+  size: 8, 15
+  orig: 8, 15
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,75 @@
+
+zxc.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+healthBubble1
+  rotate: false
+  xy: 1, 18
+  size: 74, 45
+  orig: 74, 45
+  offset: 0, 0
+  index: -1
+ship
+  rotate: false
+  xy: 77, 31
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+isompimonsteri_runko1
+  rotate: false
+  xy: 111, 33
+  size: 30, 30
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
+mikko1
+  rotate: false
+  xy: 143, 38
+  size: 21, 25
+  orig: 21, 25
+  offset: 0, 0
+  index: -1
+tykki1
+  rotate: false
+  xy: 1, 1
+  size: 8, 15
+  orig: 8, 15
+  offset: 0, 0
+  index: -1
+crosshair1
+  rotate: false
+  xy: 166, 50
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+smallpuff
+  rotate: false
+  xy: 77, 20
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+health1
+  rotate: false
+  xy: 11, 7
+  size: 8, 9
+  orig: 8, 9
+  offset: 0, 0
+  index: -1
+bullet
+  rotate: false
+  xy: 11, 1
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1
+monsterbullet
+  rotate: false
+  xy: 17, 1
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1

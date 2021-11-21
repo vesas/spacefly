@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><map height="30" orientation="orthogonal" tileheight="32" tilewidth="32" version="1.0" width="50"><properties><property name="blended tiles" value="4,8,12,13,14,15,16"/></properties>
+ <tileset firstgid="1" name="desf" tileheight="32" tilewidth="32">
+  <image height="119" source="pelifiilis4.png" trans="ffffff" width="119"/>
+ </tileset>
+ <tileset firstgid="10" name="sadfasd" tileheight="32" tilewidth="32">
+  <image height="128" source="pelifiilis5.png" trans="ffffff" width="128"/>
+ </tileset>
+ <tileset firstgid="26" name="asfe3rg" tileheight="32" tilewidth="32">
+  <image height="128" source="pelifiilis6.png" trans="ffffff" width="128"/>
+ </tileset>
+ <layer height="30" name="Tile Layer 1" width="50">
+  <data compression="gzip" encoding="base64">
+   H4sIAAAAAAAAC+2YbQ6CMAyGdwL5LypRjN7/hrDIYtOso13bORLfpBFC+vGA3QpDCGEwsNnIajUUrk2rPRWxJfLmaKU/x0d7HBqWG7KSxqDnKLHE2BNhpTrxtV449nQEDo5GcJxjaMVxAgbF7Y8RnUtZrJ9HLQclLosHB2SxWrPgcY7Foz8sn0mp/6G8+zzluKx2rYifu/ceHFEcjr31hlKPHMnugthcfou5hOKI9eM+j3VxZ2DJPO7JAXMkvQWxW3NQem0mqR1qzvxStWo5tL2FY9W+7/XAUarzsRk3hqYGja82P46l8ffMzZ0XvTg4MyqXg4p9Dt+9yYMDz3aUHydvq31Q8r9I57l33JI/t44W/QF5rDgsv8NJfalvDpQgR8yVegLXfQQOTh//Yt2VcEjqsNrLerBaLY2rVSZwFwAA
+  </data>
+ </layer>
+ <objectgroup height="30" name="Object Layer 1" width="50">
+  <properties>
+   <property name="wall" value="true"/>
+  </properties>
+  <object x="543" y="640">
+   <polygon points="0,0 -63,0 -63,96 -1,96"/>
+  </object>
+  <object x="384" y="894">
+   <polygon points="0,0 1,-126 193,-126 193,1"/>
+  </object>
+ </objectgroup>
+</map>

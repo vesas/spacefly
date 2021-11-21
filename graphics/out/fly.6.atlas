@@ -1,0 +1,174 @@
+
+fly.png
+size: 254,126
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+block64
+  rotate: false
+  xy: 2, 62
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+bullet
+  rotate: false
+  xy: 178, 34
+  size: 5, 12
+  orig: 5, 12
+  offset: 0, 0
+  index: -1
+crosshair1
+  rotate: false
+  xy: 163, 33
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+health1
+  rotate: false
+  xy: 246, 100
+  size: 8, 9
+  orig: 8, 9
+  offset: 0, 0
+  index: -1
+healthBubble1
+  rotate: false
+  xy: 2, 15
+  size: 74, 45
+  orig: 74, 45
+  offset: 0, 0
+  index: -1
+health_off
+  rotate: false
+  xy: 198, 48
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+health_on
+  rotate: false
+  xy: 222, 76
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+isompimonsteri_runko1
+  rotate: false
+  xy: 134, 62
+  size: 30, 30
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
+mikko1
+  rotate: false
+  xy: 140, 35
+  size: 21, 25
+  orig: 21, 25
+  offset: 0, 0
+  index: -1
+monsterbullet
+  rotate: false
+  xy: 112, 28
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1
+monsterbullet2
+  rotate: false
+  xy: 236, 98
+  size: 8, 28
+  orig: 8, 28
+  offset: 0, 0
+  index: -1
+ork2
+  rotate: false
+  xy: 112, 34
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+ork3
+  rotate: false
+  xy: 166, 66
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+ork4
+  rotate: false
+  xy: 194, 66
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+powerup_heal
+  rotate: false
+  xy: 134, 94
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+powerup_health1
+  rotate: false
+  xy: 78, 28
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+powerup_shoot1
+  rotate: false
+  xy: 168, 94
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+puolikasoko
+  rotate: false
+  xy: 166, 48
+  size: 30, 16
+  orig: 30, 16
+  offset: 0, 0
+  index: -1
+ship
+  rotate: false
+  xy: 202, 94
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+ship2
+  rotate: false
+  xy: 68, 62
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+shipgun
+  rotate: false
+  xy: 104, 2
+  size: 15, 24
+  orig: 15, 24
+  offset: 0, 0
+  index: -1
+smallpuff
+  rotate: false
+  xy: 2, 4
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+spice
+  rotate: false
+  xy: 78, 2
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+tykki1
+  rotate: false
+  xy: 246, 111
+  size: 8, 15
+  orig: 8, 15
+  offset: 0, 0
+  index: -1

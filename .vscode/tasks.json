@@ -1,0 +1,26 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "gradle",
+			"id": "c:\\p\\spaceflybuildEnvironmentspacefly",
+			"script": "buildEnvironment",
+			"description": "Displays all buildscript dependencies declared in root project 'spacefly'.",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"project": "spacefly",
+			"buildFile": "C:\\p\\spacefly\\build.gradle",
+			"rootProject": "spacefly",
+			"projectFolder": "c:\\p\\spacefly",
+			"workspaceFolder": "c:\\p\\spacefly",
+			"args": "",
+			"javaDebug": false,
+			"problemMatcher": [
+				"$gradle"
+			],
+			"label": "gradle: buildEnvironment"
+		}
+	]
+}

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><map height="100" orientation="orthogonal" tileheight="32" tilewidth="32" version="1.0" width="100"><properties><property name="blended tiles" value="4,8,12,13,14,15,16"/></properties>
+ <tileset firstgid="1" name="sqsddsa" tileheight="32" tilewidth="32">
+  <image height="256" source="pelifiilis5.png" trans="ffffff" width="256"/>
+ </tileset>
+ <layer height="100" name="Tile Layer 1" width="100">
+  <data compression="zlib" encoding="base64">
+   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
+  </data>
+ </layer>
+ <objectgroup height="100" name="wall" width="100">
+  <properties>
+   <property name="wall" value="true"/>
+  </properties>
+  <object height="160" width="32" x="512" y="64"/>
+  <object height="32" width="128" x="544" y="64"/>
+  <object height="32" width="96" x="640" y="96"/>
+  <object height="32" width="96" x="704" y="128"/>
+  <object height="32" width="64" x="768" y="160"/>
+  <object height="96" width="32" x="832" y="192"/>
+  <object height="32" width="96" x="864" y="256"/>
+  <object height="32" width="96" x="928" y="288"/>
+  <object height="32" width="96" x="992" y="320"/>
+  <object height="32" width="64" x="1056" y="352"/>
+  <object height="32" width="64" x="544" y="192"/>
+  <object height="32" width="96" x="576" y="224"/>
+  <object height="32" width="96" x="640" y="256"/>
+  <object height="64" width="32" x="704" y="288"/>
+  <object height="32" width="96" x="736" y="320"/>
+  <object height="64" width="32" x="800" y="352"/>
+  <object height="32" width="64" x="832" y="384"/>
+  <object height="32" width="96" x="864" y="416"/>
+  <object height="32" width="96" x="928" y="448"/>
+  <object height="64" width="160" x="992" y="480"/>
+  <object height="96" width="64" x="1088" y="384"/>
+  <object height="128" width="448" x="1216" y="416"/>
+  <object height="416" width="128" x="1536" y="0"/>
+  <object height="576" width="64" x="0" y="0"/>
+  <object height="704" width="32" x="64" y="544"/>
+  <object height="32" width="352" x="96" y="1216"/>
+  <object height="288" width="128" x="448" y="1056"/>
+  <object height="32" width="384" x="64" y="1312"/>
+  <object height="160" width="32" x="64" y="1344"/>
+  <object height="128" width="32" x="96" y="1472"/>
+  <object height="32" width="512" x="64" y="1600"/>
+  <object height="512" width="32" x="32" y="1600"/>
+  <object height="192" width="32" x="64" y="1728"/>
+  <object height="192" width="32" x="64" y="2112"/>
+  <object height="128" width="32" x="96" y="2176"/>
+  <object height="864" width="32" x="64" y="2304"/>
+  <object height="32" width="832" x="96" y="3136"/>
+  <object height="128" width="352" x="352" y="2496"/>
+  <object height="192" width="128" x="448" y="2624"/>
+  <object height="704" width="96" x="928" y="2464"/>
+  <object height="128" width="128" x="896" y="2336"/>
+  <object height="64" width="96" x="896" y="2272"/>
+  <object height="320" width="64" x="928" y="1952"/>
+  <object height="128" width="64" x="992" y="1952"/>
+  <object height="96" width="96" x="832" y="1952"/>
+  <object height="576" width="64" x="1344" y="1536"/>
+  <object height="352" width="64" x="1280" y="1760"/>
+  <object height="64" width="192" x="1216" y="2112"/>
+  <object height="256" width="96" x="1216" y="2176"/>
+  <object height="96" width="224" x="1312" y="2368"/>
+  <object height="32" width="32" x="1280" y="2432"/>
+  <object height="256" width="96" x="1440" y="2464"/>
+  <object height="96" width="96" x="1472" y="2720"/>
+  <object height="160" width="32" x="1536" y="2560"/>
+  <object height="32" width="992" x="1024" y="3136"/>
+  <object height="32" width="992" x="2016" y="3136"/>
+  <object height="32" width="160" x="3008" y="3136"/>
+  <object height="32" width="1088" x="64" y="0"/>
+  <object height="32" width="384" x="1152" y="0"/>
+  <object height="64" width="1056" x="1664" y="0"/>
+  <object height="64" width="448" x="2720" y="32"/>
+  <object height="832" width="32" x="3136" y="96"/>
+  <object height="704" width="32" x="3136" y="928"/>
+  <object height="32" width="1024" x="128" y="1536"/>
+  <object height="32" width="736" x="608" y="1600"/>
+  <object height="32" width="192" x="1152" y="1536"/>
+  <object height="96" width="192" x="1408" y="1536"/>
+  <object height="576" width="128" x="544" y="1632"/>
+  <object height="96" width="320" x="224" y="2112"/>
+  <object height="320" width="128" x="1184" y="1088"/>
+  <object height="128" width="928" x="1312" y="1280"/>
+  <object height="128" width="896" x="2240" y="1280"/>
+  <object height="864" width="32" x="3136" y="1632"/>
+  <object height="640" width="32" x="3136" y="2496"/>
+  <object height="320" width="320" x="800" y="768"/>
+  <object height="288" width="32" x="1120" y="800"/>
+  <object height="256" width="32" x="1152" y="832"/>
+  <object height="32" width="32" x="64" y="2080"/>
+  <object height="544" width="96" x="2432" y="64"/>
+  <object height="96" width="384" x="2528" y="512"/>
+  <object height="128" width="1056" x="2080" y="736"/>
+  <object height="128" width="512" x="1504" y="736"/>
+  <object height="192" width="96" x="1504" y="544"/>
+  <object height="352" width="64" x="2592" y="928"/>
+  <object height="64" width="224" x="2368" y="928"/>
+  <object height="64" width="160" x="2688" y="928"/>
+  <object height="160" width="96" x="2112" y="864"/>
+  <object height="32" width="64" x="1280" y="1728"/>
+ </objectgroup>
+ <objectgroup height="100" name="monsterei" width="100">
+  <properties>
+   <property name="monsters" value="true"/>
+  </properties>
+  <object x="288" y="1920"/>
+  <object name="mikko the monsteri" x="288" y="1920">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="416" y="1792">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="480" y="2080">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="1184" y="1984">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="1248" y="2080">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="1120" y="2144">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="1152" y="2272">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="1472" y="2240">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="3072" y="3072">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="3072" y="3008">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="2976" y="3040">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="2944" y="2976">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="1344" y="320">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="1440" y="320">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="1440" y="192">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="224" y="1376">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="448" y="1472">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="640" y="1408">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="192" y="1152">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="288" y="1184">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="352" y="1152">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="2976" y="1152">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="2880" y="1216">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="3040" y="1184">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="2880" y="1056">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="2816" y="288">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="2944" y="352">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="2720" y="416">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="1792" y="192">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="1824" y="320">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object height="32" name="isompi" width="32" x="1664" y="384">
+   <properties>
+    <property name="monster2" value="true"/>
+   </properties>
+  </object>
+  <object height="32" name="isompi" width="32" x="1376" y="384">
+   <properties>
+    <property name="monster2" value="true"/>
+   </properties>
+  </object>
+  <object height="32" name="isompi" width="32" x="192" y="1504">
+   <properties>
+    <property name="monster2" value="true"/>
+   </properties>
+  </object>
+  <object height="32" name="isompi" width="32" x="352" y="2080">
+   <properties>
+    <property name="monster2" value="true"/>
+   </properties>
+  </object>
+  <object height="32" name="isompi" width="32" x="992" y="2080">
+   <properties>
+    <property name="monster2" value="true"/>
+   </properties>
+  </object>
+  <object height="32" name="isompi" width="32" x="3104" y="2880">
+   <properties>
+    <property name="monster2" value="true"/>
+   </properties>
+  </object>
+  <object height="32" name="isompi" width="32" x="2944" y="3104">
+   <properties>
+    <property name="monster2" value="true"/>
+   </properties>
+  </object>
+  <object height="32" name="isompi" width="32" x="2784" y="1248">
+   <properties>
+    <property name="monster2" value="true"/>
+   </properties>
+  </object>
+  <object height="32" name="isompi" width="32" x="2976" y="96">
+   <properties>
+    <property name="monster2" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="2304" y="1216">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="2336" y="1120">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="96" y="96">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="224" y="128">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="1280" y="160">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object name="mikko the monsteri" x="2592" y="128">
+   <properties>
+    <property name="monster1" value="true"/>
+   </properties>
+  </object>
+  <object height="32" name="isompi" width="32" x="2752" y="480">
+   <properties>
+    <property name="monster2" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

@@ -1,0 +1,1 @@
+C:\dev\libgdx-tools\runnable-texturepacker.jar in out fly

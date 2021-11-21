@@ -1,0 +1,1 @@
+xcopy out\fly.* ../spacefly-android/assets/data
