@@ -110,7 +110,7 @@ public class G
 		wFont = new BitmapFont(Gdx.files.internal("data/font_big.fnt"),
 				Gdx.files.internal("data/font_big.png"), false, false );
 		
-//		worldFont.setScale( 0.05f );
+		// worldFont.getData().scale( 0.05f );
 		
 		shot = Gdx.audio.newSound( Gdx.files.local("data/shot.ogg"));
 		explo1 = Gdx.audio.newSound( Gdx.files.local("data/explo1.ogg"));

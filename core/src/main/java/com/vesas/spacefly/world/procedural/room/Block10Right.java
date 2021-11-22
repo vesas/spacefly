@@ -75,7 +75,6 @@ public class Block10Right implements RoomBlock
 		
 		sprite.setPosition( xpos , ypos);
 		sprite.draw(screen.worldBatch);
-		
 	}
 
 	public void tick(Screen screen, float delta)

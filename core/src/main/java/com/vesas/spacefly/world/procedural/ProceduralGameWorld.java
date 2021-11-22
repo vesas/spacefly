@@ -50,174 +50,6 @@ public class ProceduralGameWorld extends AbstractGameWorld
 	
 	private FrameBuffer fbo;
 
-
-	/*
-	 * 
-	private void createVisibTestCase0()
-	{
-		int size = 10;
-		// outside perimeter
-		
-		visib.initLoad();
-		
-		// bottom
-		visib.addSegment(-size, 0, size, 0);
-		
-		// left
-		visib.addSegment(-size, 0, 0, size);
-		
-		// right
-		visib.addSegment(size, 0, 0, size);
-		
-		//
-		// end top
-		//
-		
-		// small one
-		visib.addSegment( -size * 0.25f, 0 + size * 0.25f, +size * 0.25f,  0 + size * 0.25f );
-
-		
-	}
-
-	private void createVisibTestCase1()
-	{
-
-		int size = 10;
-		// outside perimeter
-		
-		visib.initLoad();
-		
-		// bottom
-		visib.addSegment(-size, -size, size, -size);
-		
-		//
-		// top
-		//
-		visib.addSegment(-size, size, size, size);
-		
-		//
-		// end top
-		//
-		
-		// small one close to right
-		visib.addSegment(size - size * 0.25f, 0 + size * 0.7f,size - size * 0.25f, 0 - size * 0.7f );
-
-		// left
-		visib.addSegment(-size, -size, -size, size);
-		// right
-		visib.addSegment(size, -size, size, size);
-		
-	}
-
-	private void createVisibTestCase2()
-	{
-
-		int size = 10;
-		// outside perimeter
-		
-		visib.initLoad();
-		
-		// bottom
-		visib.addSegment(-size, -size, size, -size);
-		
-		//
-		// top
-		//
-		visib.addSegment(-size, size,-size + size*0.25f, size);
-		visib.addSegment(-size + size*0.25f, size,-size + size*0.25f, size + size*0.5f);
-		visib.addSegment(-size + size*0.25f, size + size*0.5f,size - size*0.25f, size + size*0.5f);
-		visib.addSegment(size - size*0.25f, size + size*0.5f,size - size*0.25f, size);
-		visib.addSegment(size - size*0.25f, size,size, size);
-		
-//		visib.addSegment(-size, size, size, size);
-		
-		//
-		// end top
-		//
-		
-		// small ones close to right
-		visib.addSegment(size - size * 0.35f, 0 + size * 0.7f,size - size * 0.35f, 0 + size * 0.5f );
-		visib.addSegment(size - size * 0.35f, 0 + size * 0.3f,size - size * 0.35f, 0 + size * 0.1f );
-		
-		visib.addSegment(size - size * 0.35f, 0 - size * 0.1f,size - size * 0.35f, 0 - size * 0.3f );
-		visib.addSegment(size - size * 0.35f, 0 - size * 0.5f,size - size * 0.35f, 0 - size * 0.7f );
-		
-		// small ones close to left
-		visib.addSegment(-size + size * 0.35f, 0 + size * 0.7f,-size + size * 0.35f, 0 + size * 0.5f );
-		visib.addSegment(-size + size * 0.35f, 0 + size * 0.3f,-size + size * 0.35f, 0 + size * 0.1f );
-		
-		visib.addSegment(-size + size * 0.35f, 0 - size * 0.1f,-size + size * 0.35f, 0 - size * 0.3f );
-		visib.addSegment(-size + size * 0.35f, 0 - size * 0.5f,-size + size * 0.35f, 0 - size * 0.7f );
-
-		// left
-		visib.addSegment(-size, -size, -size, size);
-		// right
-		visib.addSegment(size, -size, size, size);
-		
-	}
-	
-
-	private void createVisibTestCase3()
-	{
-
-		int size = 10;
-		// outside perimeter
-		
-		visib.initLoad();
-		
-		// bottom
-		visib.addSegment(-size, -size, size, -size);
-		
-		//
-		// top
-		//
-		visib.addSegment(-size, size,-size + size*0.35f, size);
-		visib.addSegment(-size + size*0.35f, size,-size + size*0.35f, size + size*0.5f);
-		
-//		visib.addSegment(-size + size*0.35f, size + size*0.5f,size - size*0.35f, size + size*0.5f);
-		visib.addSegment(-size + size*0.35f, size + size*0.5f,
-						 -size - size*0.55f, size + size*0.5f);
-		visib.addSegment(-size - size*0.55f, size + size*0.5f,
-						 -size - size*0.55f, size + size*1.5f);
-		visib.addSegment(-size - size*0.55f, size + size*1.5f,
-						  size + size*0.55f, size + size*1.5f);
-		visib.addSegment( size + size*0.55f, size + size*1.5f,
-					     size + size*0.55f, size + size*0.5f);
-		visib.addSegment(size + size*0.55f, size + size*0.5f,
-					     size - size*0.35f, size + size*0.5f);
-		
-		
-		visib.addSegment(size - size*0.35f, size + size*0.5f,size - size*0.35f, size);
-		visib.addSegment(size - size*0.35f, size,size, size);
-		
-//		visib.addSegment(-size, size, size, size);
-		
-		//
-		// end top
-		//
-		
-		// small ones close to right
-		visib.addSegment(size - size * 0.45f, 0 + size * 0.7f,size - size * 0.45f, 0 + size * 0.5f );
-		visib.addSegment(size - size * 0.45f, 0 + size * 0.3f,size - size * 0.45f, 0 + size * 0.1f );
-		
-		visib.addSegment(size - size * 0.45f, 0 - size * 0.1f,size - size * 0.45f, 0 - size * 0.3f );
-		visib.addSegment(size - size * 0.45f, 0 - size * 0.5f,size - size * 0.45f, 0 - size * 0.7f );
-		
-		// small ones close to left
-		visib.addSegment(-size + size * 0.45f, 0 + size * 0.7f,-size + size * 0.45f, 0 + size * 0.5f );
-		visib.addSegment(-size + size * 0.45f, 0 + size * 0.3f,-size + size * 0.45f, 0 + size * 0.1f );
-		
-		visib.addSegment(-size + size * 0.45f, 0 - size * 0.1f,-size + size * 0.45f, 0 - size * 0.3f );
-		visib.addSegment(-size + size * 0.45f, 0 - size * 0.5f,-size + size * 0.45f, 0 - size * 0.7f );
-
-		// left
-		visib.addSegment(-size, -size, -size, size);
-		// right
-		visib.addSegment(size, -size, size, size);
-		
-	}
-	*/
-	
 	@Override
 	public void init( Screen screen )
 	{
@@ -230,30 +62,22 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		
 		feats = gen.generate(); 
 		
-//		createVisibTestCase1();	
-//		
 		visib.finishLoad();
-		
 
 		defaultPixelShader = Gdx.files.local("data/defaultPixelShader.glsl").readString();
 		vertexShader = Gdx.files.local("data/vertexShader.glsl").readString();
 		
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
-//		 screen.
-//		fbo = new FrameBuffer(Format.RGBA8888, width, height, false);
 		
 		float screenHeight = screen.viewport.getScreenHeight();
 		float screenWidth = screen.viewport.getScreenWidth();
 		fbo = new FrameBuffer(Format.RGBA8888, (int)width, (int)height, false);
 		
 		defaultShader = new ShaderProgram(vertexShader, defaultPixelShader);
-//		defaultPixelShader = new FileHandle("data/defaultPixelShader.glsl").readString();
 
-		defaultShader.begin();
+		defaultShader.bind();
 		defaultShader.setUniformf("ambientColor", 0.15f, 0.15f, 0.15f, 0.25f);
-		defaultShader.end();
-		
 		
 		Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888 );
 		pixmap.setColor(1.0f, 1.0f,1.0f,1.0f);
@@ -261,7 +85,6 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		
 		textureSolid = new Texture(pixmap);
 		
-		int qwe = 0;
 	}
 	
 	@Override
@@ -273,22 +96,17 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		float screenHeight = screen.viewport.getScreenHeight();
 		float screenWidth = screen.viewport.getScreenWidth();
 		
-		
-		defaultShader.begin();
+		defaultShader.bind();
 		defaultShader.setUniformf("ambientColor", 0.5f, 0.5f, 0.7f, 0.519f);
 		defaultShader.setUniformi("u_lightmap", 1);
 		defaultShader.setUniformf("resolution", screenWidth, screenHeight);
 //		defaultShader.setUniformf("viewcenc", screenWidth*0.5f, screenHeight*0.5f);
-		defaultShader.end();
-		
-		
 		
 		
 //		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
 
-		
 		screen.worldBatch.end();
 		//draw the light to the FBO
 		fbo.begin();
@@ -330,7 +148,6 @@ public class ProceduralGameWorld extends AbstractGameWorld
 			p.draw( screen );
 		}
 
-		
 		for( int i = 0, size = systems.size; i < size ; i++ )
 		{
 			ExplosionInterface explo = systems.get( i );
@@ -339,8 +156,6 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		
 		screen.worldBatch.end();
 		
-
-
 		if( DebugHelper.VISIB_DEBUG ) {
 			renderVisibilityDebug2();
 		}
