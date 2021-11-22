@@ -3,7 +3,7 @@ package com.vesas.spacefly.world.procedural.room;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
-import com.vesas.spacefly.world.procedural.generator.MetaRoom;
+import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.visibility.Visibility;
 
 public class RectangleRoomBuilder
@@ -30,7 +30,7 @@ public class RectangleRoomBuilder
 		return INSTANCE;
 	}
 	
-	public RectangleRoom buildFrom( MetaRoom metaRoom )
+	public RectangleRoom buildFrom( MetaRectangleRoom metaRoom )
 	{
 		this.xpos = metaRoom.getBounds().x;
 		this.ypos = metaRoom.getBounds().y;
@@ -153,7 +153,7 @@ public class RectangleRoomBuilder
 		return room;
 	}
 	
-	private void buildExits(RectangleRoom room, MetaRoom metaRoom )
+	private void buildExits(RectangleRoom room, MetaRectangleRoom metaRoom )
 	{
 		ObjectMap<ExitDir, MetaPortal> portals = metaRoom.getPortals();
 		

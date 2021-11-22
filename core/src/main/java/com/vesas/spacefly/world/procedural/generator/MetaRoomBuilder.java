@@ -16,9 +16,9 @@ public class MetaRoomBuilder
 	
 	private MetaRoomBuilder() { }
 	
-	public MetaRoom build()
+	public MetaRectangleRoom build()
 	{
-		MetaRoom room = new MetaRoom();
+		MetaRectangleRoom room = new MetaRectangleRoom();
 		
 		if( startPortal == null )
 		{

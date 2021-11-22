@@ -2,7 +2,6 @@ package com.vesas.spacefly.world.procedural.generator;
 
 import com.vesas.spacefly.world.procedural.room.ExitDir;
 
-
 // feature exit
 public class MetaPortal
 {

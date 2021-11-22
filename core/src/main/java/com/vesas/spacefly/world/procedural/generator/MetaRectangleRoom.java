@@ -2,12 +2,13 @@ package com.vesas.spacefly.world.procedural.generator;
 
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.world.procedural.room.ExitDir;
 import com.vesas.spacefly.world.procedural.room.Room;
 
-public class MetaRoom implements MetaFeature
+public class MetaRectangleRoom implements MetaFeature
 {
 	private Rectangle rect = new Rectangle();
 	
@@ -46,12 +47,12 @@ public class MetaRoom implements MetaFeature
 	
 	public Room real;
 	
-	public MetaRoom( )
+	public MetaRectangleRoom( )
 	{ 
 		
 	}
 	
-	public MetaRoom( float w, float h )
+	public MetaRectangleRoom( float w, float h )
 	{ 
 		rect.width = w;
 		rect.height = h;
@@ -94,8 +95,7 @@ public class MetaRoom implements MetaFeature
 	{
 		return portals.get( exitDir );
 	}
-	
-	
+
 	public void positionAsSecondRoomToCorridor( ExitDir exit, MetaCorridor corr )
 	{
 		
