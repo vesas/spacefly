@@ -3,11 +3,10 @@ package com.vesas.spacefly.world.procedural.lsystem;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.world.procedural.GenSeed;
 
 public class SimpleWineSystem
 {
-	
 	static class StackElement
 	{
 		public Vector2 start = new Vector2();
@@ -117,7 +116,7 @@ public class SimpleWineSystem
 		
 		tmp.x = elem.dir.x * scaling;
 		tmp.y = elem.dir.y * scaling;
-		tmp.rotateDeg( ( ( G.random.nextFloat() - 0.5f) * dirRandomness ) );
+		tmp.rotateDeg( ( ( GenSeed.random.nextFloat() - 0.5f) * dirRandomness ) );
 		newElem1.dir.x = tmp.x;
 		newElem1.dir.y = tmp.y;
 		newElem1.level = elem.level + 1;
@@ -153,7 +152,7 @@ public class SimpleWineSystem
 		elem.dir.x = startDir.x;
 		elem.dir.y = startDir.y;
 		
-		tmp.rotate( (G.random.nextFloat() - 0.5f) * dirRandomness );
+		tmp.rotateDeg( (GenSeed.random.nextFloat() - 0.5f) * dirRandomness );
 		
 		elem.level = 0;
 		

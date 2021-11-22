@@ -4,6 +4,5 @@ import java.util.Random;
 
 public class GenSeed
 {
-
 	public static Random random = new Random();
 }

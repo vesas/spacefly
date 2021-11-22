@@ -1,14 +1,12 @@
 package com.vesas.spacefly.world.procedural.corridor;
 
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.world.AbstractGameWorld;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.room.Block1;
 import com.vesas.spacefly.world.procedural.room.BlockRight;
 import com.vesas.spacefly.world.procedural.room.BlockUp;
 import com.vesas.spacefly.world.procedural.room.ExitDir;
-import com.vesas.spacefly.world.procedural.room.FeatureConnector;
 import com.vesas.spacefly.world.procedural.room.RoomBlock;
 
 import com.vesas.spacefly.visibility.Visibility;
@@ -22,8 +20,6 @@ public class CorridorBuilder
 	
 	private Array<RoomBlock> blocks = new Array<RoomBlock>();
 	
-	private AbstractGameWorld world;
-	
 	private Visibility visib;
 	
 	private CorridorBuilder() { }
@@ -31,11 +27,6 @@ public class CorridorBuilder
 	public void setVisib( Visibility visib )
 	{
 		this.visib = visib;
-	}
-	
-	public void setWorld( AbstractGameWorld world )
-	{
-		this.world = world;
 	}
 	
 	public Corridor1 buildFrom( MetaCorridor metaCorr )
@@ -159,93 +150,6 @@ public class CorridorBuilder
 	
 	public void init()
 	{
-
-//		float exitStartX = firstRoom.getExitStartX( firstRoomExitDir );
-//		float exitStartY = firstRoom.getExitStartY( firstRoomExitDir );
-		
-		/*
-		Portal portal = firstRoom.getPortalFromDir( firstRoomExitDir );
-		
-		if( portal == null )
-		{
-			((RectangleRoom)firstRoom).addExit( firstRoomExitDir );
-			portal = firstRoom.getPortalFromDir( firstRoomExitDir );
-		}
-		*/
-		
-//		Exit exit = firstRoom.getExit( firstRoomExitDir );
-		
-		FeatureConnector portalStart = new FeatureConnector();
-		FeatureConnector portalEnd = new FeatureConnector();
-		
-		/*
-		portalStart.width = portal.width;
-		portalStart.center.x = portal.center.x;
-		portalStart.center.y = portal.center.y;
-		
-		// currently the end and start portals are same, ie the corridor is the same width
-		portalEnd.width = portal.width;
-		
-		
-		// currently the portal at the other end points always in the same dir as room portal
-		portalEnd.dir.x = portal.dir.x;
-		portalEnd.dir.y = portal.dir.y;
-		
-		portals.insert(0, portalStart);
-		portals.insert(1, portalEnd);
-		
-		if( firstRoomExitDir.equals( ExitDir.N ) )
-		{
-			addBlocksToUp(portal.center.x - portal.width * 0.5f - 0.5f, 	portal.center.y, len);
-			addBlocksToUp(portal.center.x + portal.width * 0.5f, 			portal.center.y, len);
-			
-			portalStart.dir.x = portal.dir.x;
-			portalStart.dir.y = -portal.dir.y;
-			
-			portalEnd.center.x = portal.center.x;
-			portalEnd.center.y = portal.center.y + len * 0.5f;
-			
-		}
-		
-		if( firstRoomExitDir.equals( ExitDir.S ) )
-		{
-			addBlocksToUp(portal.center.x - portal.width * 0.5f - 0.5f, portal.center.y - len * 0.5f, len);
-			addBlocksToUp(portal.center.x + portal.width * 0.5f, portal.center.y - len * 0.5f, len);
-			
-			portalStart.dir.x = portal.dir.x;
-			portalStart.dir.y = -portal.dir.y;
-			
-			portalEnd.center.x = portal.center.x;
-			portalEnd.center.y = portal.center.y - len * 0.5f;
-			
-		}
-		
-		if( firstRoomExitDir.equals( ExitDir.E ) )
-		{
-			addBlocksToRight(portal.center.x, portal.center.y + portal.width * 0.5f, len);
-			addBlocksToRight(portal.center.x, portal.center.y - portal.width * 0.5f - 0.5f, len);
-			
-			portalStart.dir.x = -portal.dir.x;
-			portalStart.dir.y = portal.dir.y;
-			
-			portalEnd.center.x = portal.center.x + len * 0.5f;
-			portalEnd.center.y = portal.center.y;
-			
-		}
-		
-		if( firstRoomExitDir.equals( ExitDir.W ) )
-		{
-			addBlocksToRight(portal.center.x - len * 0.5f, portal.center.y + portal.width * 0.5f, len);
-			addBlocksToRight(portal.center.x - len * 0.5f, portal.center.y - portal.width * 0.5f - 0.5f, len);
-			
-			portalStart.dir.x = -portal.dir.x;
-			portalStart.dir.y = portal.dir.y;
-			
-			portalEnd.center.x = portal.center.x - len * 0.5f;
-			portalEnd.center.y = portal.center.y;
-			
-		}
-		*/
 	}
 
 	private void addBlocksToRight(float xpos, float ypos, float distance )
