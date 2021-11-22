@@ -134,11 +134,11 @@ public class WorldGen
 		}
 	}
 	
-	static public int REGION_MAX_SIZE = 1;
+	static public int REGION_MAX_SIZE = 165;
 
 	private Region generateMeta()
 	{
-		GenSeed.random.setSeed( 7353757 );
+		GenSeed.random.setSeed( 13 );
 		
 		Region region = new Region();
 		
@@ -410,114 +410,5 @@ public class WorldGen
 		
 		return room1;
 	}
-	
-	
-	/*
-	
-	private MetaRoom generateStartRoom()
-	{
-		MetaRoomBuilder roomBuilder = MetaRoomBuilder.INSTANCE;
-		
-		int valx = random.nextInt( 5 );
-		int valy = random.nextInt( 5 );
-		if( valy == 3 )
-			valy++;
-		
-		float w = (float) (7.0f + valx);
-		float h = (float) (7.0f + valy);
-		
-		roomBuilder.setSize( w, h );
-		roomBuilder.setPosition( 0, 0 );
-		roomBuilder.addPortal( Exits.EXIT_NORTH, 2.0f );
-		roomBuilder.addPortal( Exits.EXIT_EAST, 4.0f );
-		
-		MetaRoom room1 = roomBuilder.build();
-		return room1;
-	}
-	
-	private Region generateMeta()
-	{
-		MetaRoomBuilder roomBuilder = MetaRoomBuilder.INSTANCE;
-		
-		Region region = new Region();
-		
-		MetaRoom firstRoom = generateStartRoom();
-		region.add( firstRoom );
-		
-		MetaCorridorBuilder corrBuilder = MetaCorridorBuilder.INSTANCE;
-		
-		corrBuilder.createFromPortal( firstRoom.getPortal( Exits.EXIT_NORTH ) );
-		corrBuilder.setLength( 2 );
-		
-		MetaCorridor corr = corrBuilder.build();
-		
-		if( region.canAdd( corr ))
-			region.add( corr );
-		
-		corrBuilder.createFromPortal( firstRoom.getPortal( Exits.EXIT_EAST ) );
-		corrBuilder.setLength( 8 );
-		
-		MetaCorridor corr2 = corrBuilder.build();
-		
-		if( region.canAdd( corr2 ))
-			region.add( corr2 );
-		
-		roomBuilder.setSize( 6.0f, 6.0f );
-		roomBuilder.createFromPortal( corr2.getPortal( Exits.EXIT_EAST ) );
-		MetaRoom room1a = roomBuilder.build();
-		
-		if( region.canAdd( room1a ) )
-			region.add( room1a );
-		
-		roomBuilder.setSize( 9.0f, 7.0f );
-		roomBuilder.createFromPortal( corr.getPortal( Exits.EXIT_NORTH ) );
-		roomBuilder.addPortal( Exits.EXIT_WEST, 2.0f );
-		
-		MetaRoom room2 = roomBuilder.build();
-	 	
-		if( region.canAdd( room2 ) )
-			region.add( room2 );
-		
-		
-		corrBuilder.createFromPortal( room2.getPortal( Exits.EXIT_WEST ) );
-		corrBuilder.setLength( 12 );
-		
-		MetaCorridor corr3 = corrBuilder.build();
-		
-		if( region.canAdd( corr3 ))
-			region.add( corr3 );
-		
-		
-		
-		roomBuilder.setSize( 9.0f, 27.0f );
-		roomBuilder.createFromPortal( corr3.getPortal( Exits.EXIT_WEST ) );
-		roomBuilder.addPortal( Exits.EXIT_NORTH, 3.0f );
-		
-		MetaRoom room3 = roomBuilder.build();
-	 	
-		if( region.canAdd( room3 ) )
-			region.add( room3 );
-		
-		corrBuilder.createFromPortal( room3.getPortal( Exits.EXIT_NORTH ) );
-		corrBuilder.setLength( 42 );
-		
-		MetaCorridor corr4 = corrBuilder.build();
-		
-		if( region.canAdd( corr4 ))
-			region.add( corr4 );
-
-	
-		roomBuilder.setSize( 15.0f, 17.0f );
-		roomBuilder.createFromPortal( corr4.getPortal( Exits.EXIT_NORTH ) );
-//		roomBuilder.addPortal( Exits.EXIT_NORTH, 3.0f );
-		
-		MetaRoom room4 = roomBuilder.build();
-		if( region.canAdd( room4 ))
-			region.add( room4 );
-		
-		return region;
-	}
-	*/
-
 }
 

@@ -1,8 +1,6 @@
 package com.vesas.spacefly.world.procedural.room;
 
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.EarClippingTriangulator;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
