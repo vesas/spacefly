@@ -16,8 +16,8 @@ public class DesktopLauncher {
 //		cfg.width = 1000;
 //		cfg.height = 700;
 		
-		config.width = 1800;
-		config.height = 1200;
+		config.width = 1200;
+		config.height = 800;
 
 		new LwjglApplication(new SpaceflyGame(), config);
 

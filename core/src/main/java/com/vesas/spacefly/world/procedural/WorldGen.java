@@ -37,7 +37,7 @@ public class WorldGen
 	}
 	public Array<Feature> generate()
 	{
-		Region metaRegion = generateMeta();
+		Region metaRegion = generateMetaRegion();
 		
 		Array<Feature> feats = new Array<Feature>();
 		
@@ -53,9 +53,6 @@ public class WorldGen
 	{
 		RectangleRoomBuilder roomBuilder = RectangleRoomBuilder.INSTANCE;
 		CorridorBuilder corrBuilder = CorridorBuilder.INSTANCE;
-		
-		roomBuilder.setWorld( world );
-		corrBuilder.setWorld( world );
 		
 		Array<MetaFeature> metaFeats = region.getMetaList();
 		
@@ -134,15 +131,14 @@ public class WorldGen
 		}
 	}
 	
-	static public int REGION_MAX_SIZE = 165;
+	static public int REGION_MAX_SIZE = 5;
 
-	private Region generateMeta()
+	/* Generates metaregion. Region is one area of play */
+	private Region generateMetaRegion()
 	{
 		GenSeed.random.setSeed( 13 );
 		
 		Region region = new Region();
-		
-		int size = 0;
 		
 		MetaRoom currentRoom = generateRandomRoom( region, null );
 		
@@ -153,17 +149,12 @@ public class WorldGen
 		return region;
 	}
 	
-	
-	
 	private boolean generateForOneRoom( Region region, MetaRoom currentRoom )
 	{
 		if( region.getSize() >= REGION_MAX_SIZE )
 		{
 			return false;
 		}
-			
-//		if( region.getSize() > 7 )
-			
 		
 		Array<MetaCorridor> cors = createCorridorsFrom( region, currentRoom );
 		

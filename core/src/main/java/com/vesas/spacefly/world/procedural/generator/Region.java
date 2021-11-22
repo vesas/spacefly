@@ -5,10 +5,6 @@ import com.badlogic.gdx.utils.Array;
 
 public class Region
 {
-	private static Rectangle tmpRect = new Rectangle();
-	
-	private MetaRoom firstRoom;
-
 	private Array<MetaFeature> arr = new Array<MetaFeature>();
 	
 	public Array<MetaFeature> getMetaList()
@@ -21,29 +17,12 @@ public class Region
 		return arr.size;
 	}
 	
-	public boolean canAdd( MetaRoom metaRoom )
+	public boolean canAdd( MetaFeature metaFeature )
 	{
-		Rectangle rect = metaRoom.getBounds();
+		final Rectangle rect = metaFeature.getBounds();
 		
-		for( int i = 0; i < arr.size; i++ )
+		for( MetaFeature feat : arr )
 		{
-			MetaFeature feat = arr.get( i );
-			
-			if( feat.overlaps( rect ) )
-				return false;
-		}
-		
-		return true;
-	}	
-	
-	public boolean canAdd( MetaCorridor corr )
-	{
-		Rectangle rect = corr.getBounds();
-		
-		for( int i = 0; i < arr.size; i++ )
-		{
-			MetaFeature feat = arr.get( i );
-			
 			if( feat.overlaps( rect ) )
 				return false;
 		}
@@ -55,15 +34,4 @@ public class Region
 	{
 		arr.add( feat );
 	}
-	
-	public void setFirstRoom( MetaRoom aRoom )
-	{
-		firstRoom = aRoom;
-	}
-	
-	public MetaRoom getFirstRoom()
-	{
-		return firstRoom;
-	}
-	
 }

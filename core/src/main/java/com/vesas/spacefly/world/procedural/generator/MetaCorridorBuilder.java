@@ -1,6 +1,5 @@
 package com.vesas.spacefly.world.procedural.generator;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.world.procedural.room.ExitDir;
 

@@ -7,8 +7,6 @@ import java.io.PrintStream;
 
 public class Log
 {
-
-	
 	public static void debug( Exception e )
 	{
 		File file = null;
@@ -16,7 +14,6 @@ public class Log
 		FileOutputStream fos = null; 
 		PrintStream ps = null;
 		
-
 		try
 		{
 			file = new File("./log.debug");

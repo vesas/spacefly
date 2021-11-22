@@ -46,12 +46,6 @@ public class MetaRoom implements MetaFeature
 	
 	public Room real;
 	
-	
-	public Rectangle getBounds()
-	{
-		return rect;
-	}
-	
 	public MetaRoom( )
 	{ 
 		
@@ -178,7 +172,7 @@ public class MetaRoom implements MetaFeature
 	}
 
 	@Override
-	public Rectangle getRect()
+	public Rectangle getBounds()
 	{
 		return rect;
 	}

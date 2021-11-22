@@ -2,11 +2,9 @@ package com.vesas.spacefly.world.procedural.room;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.vesas.spacefly.world.AbstractGameWorld;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRoom;
 import com.vesas.spacefly.visibility.Visibility;
-
 
 public class RectangleRoomBuilder
 {
@@ -17,14 +15,7 @@ public class RectangleRoomBuilder
 	
 	private Visibility visib;
 	
-	private AbstractGameWorld world;
-	
 	public static RectangleRoomBuilder INSTANCE = new RectangleRoomBuilder();
-	
-	public void setWorld( AbstractGameWorld world )
-	{
-		this.world = world;
-	}
 	
 	public void setVisib( Visibility visib )
 	{
@@ -288,79 +279,6 @@ public class RectangleRoomBuilder
 	//
 	public void init()
 	{
-		/*
-		if( !exitsContain( ExitDir.N ))
-		{
-			// add blocks for the whole length
-			addBlocksToRight( xpos, ypos + ysize * 0.5f - 0.5f, xsize);
-		}
-		else
-		{
-			int xsizeWithoutExit = xsize - exitSize;
-			int sideSize = xsizeWithoutExit / 2;
-			
-			int beginSize = Math.max( 2, sideSize );
-			int endSize = xsize - (beginSize + exitSize);
-			
-			addBlocksToRight( xpos, ypos + ysize * 0.5f - 0.5f, beginSize);
-			addBlocksToRight( xpos + (beginSize + exitSize)*0.5f, ypos + ysize * 0.5f - 0.5f, endSize);
-			
-		}
-		
-		if( !exitsContain( ExitDir.S ))
-		{
-			// add blocks for the whole length
-			addBlocksToRight( xpos, ypos, xsize);
-			
-		}
-		else
-		{
-			int xsizeWithoutExit = xsize - exitSize;
-			int sideSize = xsizeWithoutExit / 2;
-			
-			int beginSize = Math.max( 2, sideSize );
-			int endSize = xsize - (beginSize + exitSize);
-			
-			addBlocksToRight( xpos, ypos, beginSize);
-			addBlocksToRight( xpos + (beginSize + exitSize)*0.5f, ypos, endSize);
-		}
-		
-		if( !exitsContain( ExitDir.W ))
-		{
-			// add blocks for the whole length
-			addBlocksToUp( xpos, ypos + 0.5f,  ysize - 2);
-		
-		}
-		else
-		{
-			int ysizeWithoutExit = ysize - exitSize - 2;
-			int sideSize = ysizeWithoutExit / 2;
-			
-			int beginSize = Math.max( 2, sideSize );
-			int endSize = ysizeWithoutExit - beginSize;
-			
-			addBlocksToUp( xpos, ypos + 0.5f,  beginSize);
-			addBlocksToUp( xpos, ypos + 0.5f + (beginSize + exitSize)*0.5f, endSize);
-		}
-		
-		if( !exitsContain( ExitDir.E ))
-		{
-			// add blocks for the whole length
-			addBlocksToUp( xpos + xsize * 0.5f - 0.5f, ypos + 0.5f,  ysize - 2);
-		}
-		else
-		{
-			int ysizeWithoutExit = ysize - exitSize - 2;
-			int sideSize = ysizeWithoutExit / 2;
-			
-			int beginSize = Math.max( 2, sideSize );
-			int endSize = ysizeWithoutExit - beginSize;
-			
-			addBlocksToUp( xpos + xsize * 0.5f - 0.5f, ypos + 0.5f,  beginSize);
-			addBlocksToUp( xpos + xsize * 0.5f - 0.5f, ypos + 0.5f + (beginSize + exitSize)*0.5f, endSize);
-		}
-		
-		*/
 	}
 	
 	//

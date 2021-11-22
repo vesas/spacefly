@@ -69,12 +69,6 @@ public class MetaCorridor implements MetaFeature
 		rect.height = h;
 	}
 	
-	
-	public Rectangle getBounds()
-	{
-		return rect;
-	}
-	
 	public void setSize( float length, float width )
 	{
 		this.length = length;
@@ -98,7 +92,7 @@ public class MetaCorridor implements MetaFeature
 	}
 
 	@Override
-	public Rectangle getRect()
+	public Rectangle getBounds()
 	{
 		return rect;
 	}

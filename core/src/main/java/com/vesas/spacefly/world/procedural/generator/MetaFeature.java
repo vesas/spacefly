@@ -7,7 +7,6 @@ public interface MetaFeature
 
 	public boolean overlaps( Rectangle rect );
 	
-	
-	public Rectangle getRect();
+	public Rectangle getBounds();
 	
 }

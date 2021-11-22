@@ -3,7 +3,7 @@ package com.vesas.spacefly.world.procedural.lsystem;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.world.procedural.GenSeed;
 
 public class SimpleLSystem
 {
@@ -116,7 +116,7 @@ public class SimpleLSystem
 		
 		tmp.x = elem.dir.x * scaling;
 		tmp.y = elem.dir.y * scaling;
-		tmp.rotateDeg( -46 + ( ( G.random.nextFloat() - 0.5f) * dirRandomness ) );
+		tmp.rotateDeg( -46 + ( ( GenSeed.random.nextFloat() - 0.5f) * dirRandomness ) );
 		newElem1.dir.x = tmp.x;
 		newElem1.dir.y = tmp.y;
 		newElem1.level = elem.level + 1;
@@ -168,7 +168,7 @@ public class SimpleLSystem
 		elem.dir.x = startDir.x;
 		elem.dir.y = startDir.y;
 		
-		tmp.rotateDeg( (G.random.nextFloat() - 0.5f) * dirRandomness );
+		tmp.rotateDeg( (GenSeed.random.nextFloat() - 0.5f) * dirRandomness );
 		
 		elem.level = 0;
 		
