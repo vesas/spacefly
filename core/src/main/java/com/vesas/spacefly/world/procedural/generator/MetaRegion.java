@@ -3,14 +3,14 @@ package com.vesas.spacefly.world.procedural.generator;
 public class MetaRegion
 {
 	
-	private MetaRoom root;
+	private MetaRectangleRoom root;
 
 	public MetaRegion()
 	{
 		
 	}
 
-	public void addRoom( MetaRoom room )
+	public void addRoom( MetaRectangleRoom room )
 	{
 		root = room;
 	}

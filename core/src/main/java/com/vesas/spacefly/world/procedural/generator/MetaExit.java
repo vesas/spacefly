@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Random;
 
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.world.procedural.generator.MetaRoom.Exits;
+import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom.Exits;
 
 public class MetaExit
 {
 	// center of the exit
 	private int x,y;
 	
-	private List<MetaRoom> rooms = new ArrayList<MetaRoom>();
+	private List<MetaRectangleRoom> rooms = new ArrayList<MetaRectangleRoom>();
 	private List<Exits> dirs = new ArrayList<Exits>();
 
 	public MetaExit()
@@ -20,7 +20,7 @@ public class MetaExit
 		
 	}
 	
-	public void addRoom(  MetaRoom mr )
+	public void addRoom(  MetaRectangleRoom mr )
 	{
 		Random rand = G.random;
 		
@@ -134,7 +134,7 @@ public class MetaExit
 		}
 		*/
 		
-		MetaRoom another = rooms.get( 1 );
+		MetaRectangleRoom another = rooms.get( 1 );
 		
 		another.stroke( region );
 	}

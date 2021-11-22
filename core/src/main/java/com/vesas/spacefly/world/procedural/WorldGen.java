@@ -9,6 +9,7 @@ import com.vesas.spacefly.monster.SlurgMonster;
 import com.vesas.spacefly.monster.ZipperCloud;
 import com.vesas.spacefly.monster.ZipperCloudManager;
 import com.vesas.spacefly.monster.ZipperMonster;
+import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.AbstractGameWorld;
 import com.vesas.spacefly.world.procedural.corridor.Corridor1;
 import com.vesas.spacefly.world.procedural.corridor.CorridorBuilder;
@@ -16,13 +17,12 @@ import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridorBuilder;
 import com.vesas.spacefly.world.procedural.generator.MetaFeature;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
-import com.vesas.spacefly.world.procedural.generator.MetaRoom;
+import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaRoomBuilder;
 import com.vesas.spacefly.world.procedural.generator.Region;
 import com.vesas.spacefly.world.procedural.room.ExitDir;
 import com.vesas.spacefly.world.procedural.room.RectangleRoom;
 import com.vesas.spacefly.world.procedural.room.RectangleRoomBuilder;
-import com.vesas.spacefly.visibility.*;
 
 public class WorldGen
 {	
@@ -61,10 +61,9 @@ public class WorldGen
 			
 			MetaFeature metaFeat = metaFeats.get( i );
 			
-			
-			if( metaFeat instanceof MetaRoom )
+			if( metaFeat instanceof MetaRectangleRoom )
 			{
-				RectangleRoom room = roomBuilder.buildFrom( ((MetaRoom)metaFeat));
+				RectangleRoom room = roomBuilder.buildFrom( ((MetaRectangleRoom)metaFeat));
 				
 				feats.add( room );
 			}
@@ -131,16 +130,16 @@ public class WorldGen
 		}
 	}
 	
-	static public int REGION_MAX_SIZE = 5;
+	static public int REGION_MAX_SIZE = 6;
 
 	/* Generates metaregion. Region is one area of play */
 	private Region generateMetaRegion()
 	{
-		GenSeed.random.setSeed( 13 );
+		GenSeed.random.setSeed( 24 );
 		
 		Region region = new Region();
 		
-		MetaRoom currentRoom = generateRandomRoom( region, null );
+		MetaRectangleRoom currentRoom = generateRandomRoom( region, null );
 		
 		region.add( currentRoom );
 		
@@ -149,7 +148,7 @@ public class WorldGen
 		return region;
 	}
 	
-	private boolean generateForOneRoom( Region region, MetaRoom currentRoom )
+	private boolean generateForOneRoom( Region region, MetaRectangleRoom currentRoom )
 	{
 		if( region.getSize() >= REGION_MAX_SIZE )
 		{
@@ -164,7 +163,7 @@ public class WorldGen
 			
 			if( region.getSize() < REGION_MAX_SIZE )
 			{
-				MetaRoom r = generateRandomRoom( region, cor );
+				MetaRectangleRoom r = generateRandomRoom( region, cor );
 				
 				if( region.canAdd( r ))
 				{
@@ -187,61 +186,20 @@ public class WorldGen
 		return true;
 	}
 	
-	private Array<MetaCorridor> createCorridorsFrom( Region region, MetaRoom currentRoom )
+	private Array<MetaCorridor> createCorridorsFrom( Region region, MetaRectangleRoom currentRoom )
 	{
 		Array<MetaCorridor> ret = new Array<MetaCorridor>();
 		
-		MetaPortal nPortal = currentRoom.getPortal( ExitDir.N );
-		MetaPortal ePortal = currentRoom.getPortal( ExitDir.E );
-		MetaPortal wPortal = currentRoom.getPortal( ExitDir.W );
-		MetaPortal sPortal = currentRoom.getPortal( ExitDir.S);
+		Array<MetaPortal> portals = currentRoom.getPortals().values().toArray();
 		
-		int qwe = 0;
-		if( ePortal != null )
+		for(MetaPortal portal : portals ) 
 		{
-			MetaCorridor cor = createCorridorFrom( region, ePortal );
-			
-			if( cor == null )
-				qwe = 0;
-//				currentRoom.shutPortal( ePortal );
-			else
+			MetaCorridor cor = createCorridorFrom( region, portal );
+
+			if( cor != null )
 				ret.add( cor );
 		}
-		
-		if( wPortal != null )
-		{
-			MetaCorridor cor = createCorridorFrom( region, wPortal );
-			
-			
-			if( cor == null )
-				qwe = 0;
-//				currentRoom.shutPortal( wPortal );
-			else
-				ret.add( cor );
-		}
-		
-		if( sPortal != null )
-		{
-			MetaCorridor cor = createCorridorFrom( region, sPortal );
-			
-			if( cor == null )
-				qwe = 0;
-//				currentRoom.shutPortal( sPortal );
-			else
-				ret.add( cor );
-		}
-		
-		if( nPortal != null )
-		{
-			MetaCorridor cor = createCorridorFrom( region, nPortal );
-			
-			if( cor == null )
-				qwe = 0;
-//				currentRoom.shutPortal( nPortal );
-			else
-				ret.add( cor );
-		}
-		
+
 		return ret;
 	}
 	
@@ -249,9 +207,8 @@ public class WorldGen
 	{
 		MetaCorridorBuilder corrBuilder = MetaCorridorBuilder.INSTANCE;
 		
-		int len = 1 + GenSeed.random.nextInt( 10 );
 		corrBuilder.createFromPortal( portal );
-		corrBuilder.setLength( len );
+		corrBuilder.setLength( 1 + GenSeed.random.nextInt( 10 ) );
 		
 		MetaCorridor corr = corrBuilder.build();
 		
@@ -264,7 +221,7 @@ public class WorldGen
 		return null;
 	}
 	
-	private MetaRoom generateRandomRoom( Region region, MetaCorridor fromCorridor )
+	private MetaRectangleRoom generateRandomRoom( Region region, MetaCorridor fromCorridor )
 	{
 		MetaRoomBuilder roomBuilder = MetaRoomBuilder.INSTANCE;
 		
@@ -397,7 +354,7 @@ public class WorldGen
 		}
 		
 		
-		MetaRoom room1 = roomBuilder.build();
+		MetaRectangleRoom room1 = roomBuilder.build();
 		
 		return room1;
 	}
