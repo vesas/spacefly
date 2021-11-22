@@ -73,14 +73,6 @@ public class BlockRight implements RoomBlock
 	
 	public void draw(Screen screen)
 	{
-		if(G.random.nextFloat() < 0.01)
-			DONT_DRAW = 50;
-		
-		if(DONT_DRAW > 0)
-		{
-			DONT_DRAW -= 1;
-			return;
-		}
 		sprite.setPosition( xpos , ypos);
 		sprite.draw(screen.worldBatch);
 	}
