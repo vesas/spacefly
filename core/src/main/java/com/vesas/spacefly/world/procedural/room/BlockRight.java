@@ -1,5 +1,6 @@
 package com.vesas.spacefly.world.procedural.room;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,8 @@ public class BlockRight implements RoomBlock
 {
 	private Body body;
 	private Polygon poly;
+
+	private int DONT_DRAW;
 	
 	private Sprite sprite;
 	
@@ -70,6 +73,14 @@ public class BlockRight implements RoomBlock
 	
 	public void draw(Screen screen)
 	{
+		if(G.random.nextFloat() < 0.01)
+			DONT_DRAW = 50;
+		
+		if(DONT_DRAW > 0)
+		{
+			DONT_DRAW -= 1;
+			return;
+		}
 		sprite.setPosition( xpos , ypos);
 		sprite.draw(screen.worldBatch);
 	}

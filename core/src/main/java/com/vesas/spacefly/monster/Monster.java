@@ -88,14 +88,15 @@ abstract public class Monster
 			playerPos.sub(pos);
 			playerPos.nor();
 
-			float playerAngle = playerPos.angle();
+			float playerAngle = playerPos.angleDeg();
 			float bodyAngle = body.getAngle() * G.RADIANS_TO_DEGREES;
 
 			float absAngle = Util.absAngleDiff(playerAngle, bodyAngle);
 			if (absAngle < 95)
 			{
 				makeSightRayCast();
-			} else
+			} 
+			else
 			{
 				canSeePlayer = false;
 			}

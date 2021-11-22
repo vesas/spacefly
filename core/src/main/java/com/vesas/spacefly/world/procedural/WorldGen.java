@@ -37,14 +37,13 @@ public class WorldGen
 	}
 	public Array<Feature> generate()
 	{
-		Region region = generateMeta();
-//		Region region = new Region();
+		Region metaRegion = generateMeta();
 		
 		Array<Feature> feats = new Array<Feature>();
 		
-		buildRooms(region, feats);
+		buildRooms(metaRegion, feats);
 		
-		addMonstersPass( region, feats );
+		addMonstersPass( metaRegion, feats );
 		
 		
 		return feats;
@@ -135,7 +134,7 @@ public class WorldGen
 		}
 	}
 	
-	static public int REGION_MAX_SIZE = 12;
+	static public int REGION_MAX_SIZE = 1;
 
 	private Region generateMeta()
 	{

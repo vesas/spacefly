@@ -379,7 +379,7 @@ public class Player
 		
 		float desiredAngularVelocity = totalRotation * 40f;
 		
-		float change = 25f * DEGTORAD; //allow 1 degree rotation per time step
+		float change = 135f * DEGTORAD; //allow n degree rotation per time step
 		desiredAngularVelocity = Math.min( change, Math.max(-change, desiredAngularVelocity));
 		
 		float impulse = body.getInertia() * desiredAngularVelocity;
