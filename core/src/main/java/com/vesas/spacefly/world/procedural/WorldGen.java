@@ -20,9 +20,9 @@ import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaRoomBuilder;
 import com.vesas.spacefly.world.procedural.generator.Region;
-import com.vesas.spacefly.world.procedural.room.ExitDir;
-import com.vesas.spacefly.world.procedural.room.RectangleRoom;
-import com.vesas.spacefly.world.procedural.room.RectangleRoomBuilder;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoomBuilder;
 
 public class WorldGen
 {	

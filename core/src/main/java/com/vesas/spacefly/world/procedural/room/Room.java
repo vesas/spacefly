@@ -5,6 +5,8 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Values;
 import com.vesas.spacefly.world.procedural.Feature;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.Exit;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
 public abstract class Room implements Feature
 {

@@ -1,4 +1,4 @@
-package com.vesas.spacefly.world.procedural.room;
+package com.vesas.spacefly.world.procedural.room.rectangleroom;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -9,12 +9,12 @@ import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleLSystem;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleWineSystem;
+import com.vesas.spacefly.world.procedural.room.Room;
+import com.vesas.spacefly.world.procedural.room.RoomBlock;
 
 public class RectangleRoom extends Room
 {
 	private Array<RoomBlock> blocks = new Array<RoomBlock>();
-	
-	private PortalBlock portalBlock;
 	
 	Texture tex;
 	
