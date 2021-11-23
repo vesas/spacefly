@@ -130,7 +130,7 @@ public class WorldGen
 		}
 	}
 	
-	static public int REGION_MAX_SIZE = 6;
+	static public int REGION_MAX_SIZE = 26;
 
 	/* Generates metaregion. Region is one area of play */
 	private Region generateMetaRegion()
@@ -225,9 +225,6 @@ public class WorldGen
 	{
 		MetaRoomBuilder roomBuilder = MetaRoomBuilder.INSTANCE;
 		
-		int valx = GenSeed.random.nextInt( 15 );
-		int valy = GenSeed.random.nextInt( 15 );
-		
 		int minx = 3;
 		int miny = 3;
 		
@@ -246,8 +243,9 @@ public class WorldGen
 			}
 		}
 		
-		float w = (float) (minx + valx);
-		float h = (float) (miny + valy);
+		// have to be at least minx/miny long/wide to accommodate the possible corridor
+		float w = (float) Math.max(minx, GenSeed.random.nextInt( 28 ) );
+		float h = (float) Math.max(miny, GenSeed.random.nextInt( 28 ) );
 		
 		roomBuilder.setSize( w, h );
 		
@@ -268,7 +266,7 @@ public class WorldGen
 		
 		boolean createFirstPortal = ((region.getSize() + 1) < WorldGen.REGION_MAX_SIZE ) &&  (GenSeed.random.nextFloat() > 0.1 || (region.getSize() < 8) );
 		boolean createSecondPortal = ((region.getSize() + 2) < WorldGen.REGION_MAX_SIZE ) && (GenSeed.random.nextFloat() > 0.6 );
-		boolean createThirdPortal = ((region.getSize() + 3) < WorldGen.REGION_MAX_SIZE ) && (GenSeed.random.nextFloat() > 0.9 );
+		boolean createThirdPortal = ((region.getSize() + 3) < WorldGen.REGION_MAX_SIZE ) && (GenSeed.random.nextFloat() > 0.8 );
 		
 		// first room
 		if( fromCorridor == null )
