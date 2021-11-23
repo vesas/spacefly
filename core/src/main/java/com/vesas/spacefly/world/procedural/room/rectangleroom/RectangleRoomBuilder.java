@@ -13,7 +13,10 @@ import com.vesas.spacefly.visibility.Visibility;
 
 public class RectangleRoomBuilder
 {
+	// bottom left position
 	private float xpos, ypos;
+
+	// xsize to the right, ysize to up
 	private float xsize, ysize;
 	
 	private Array<RoomBlock> blocks = new Array<RoomBlock>();
@@ -277,165 +280,6 @@ public class RectangleRoomBuilder
 			blocks.add( a1 );
 			curpos += 0.5f;
 		}
-	}
-	
-	//
-	// BUILDING
-	//
-	public void init()
-	{
-	}
-	
-	//
-	// BUILDING
-	//
-	// at this point we know size and one portal
-	public void determinePosition( FeatureConnector p, ExitDir exitDir )
-	{
-		/*
-		Vector2 portalCenter = p.center;
-		
-		if( exitDir.equals( ExitDir.S ) )
-		{
-			this.xpos = portalCenter.x - this.xsize * 0.5f * 0.5f;
-			this.ypos = portalCenter.y;
-		}
-		if( exitDir.equals( ExitDir.N ) )
-		{
-			this.xpos = portalCenter.x - this.xsize * 0.5f * 0.5f;
-			this.ypos = portalCenter.y - this.xsize * 0.5f;
-		}
-		if( exitDir.equals( ExitDir.E ) )
-		{
-			this.xpos = portalCenter.x - this.xsize * 0.5f;
-			this.ypos = portalCenter.y - this.xsize * 0.5f * 0.5f;
-		}
-		if( exitDir.equals( ExitDir.W ) )
-		{
-			this.xpos = portalCenter.x;
-			this.ypos = portalCenter.y - this.xsize * 0.5f * 0.5f;
-		}
-		*/
-	}
-	
-	//
-	// BUILDING
-	//
-	public void setExitSize( int size )
-	{
-//		exitSize = size;
-	}
-	
-	//
-	// BUILDING
-	//
-	public void addExit( ExitDir dir )
-	{
-		/*
-		Exit ex = new Exit();
-		ex.exitDir = dir;
-		
-		Portal portal = new Portal();
-		ex.portal = portal;
-		
-		if( dir.equals( ExitDir.N ) || 
-			dir.equals( ExitDir.S ) )
-		{
-
-			int xsizeWithoutExit = xsize - exitSize;
-			int sideSize = xsizeWithoutExit / 2;
-			
-			int beginSize = Math.max( 2, sideSize );
-			int endSize = xsize - (beginSize + exitSize);
-			
-			ex.exitStart = beginSize;
-			ex.exitWidth = exitSize;
-			
-			if( dir.equals( ExitDir.S ) )
-            {
-            	ex.exitX = this.xpos + ex.exitStart * 0.5f;
-            	ex.exitY = this.ypos;
-            	
-            	portal.dir.x = 0;
-            	portal.dir.y = -1.0f;
-            	
-            	portal.center.x = ex.exitX + exitSize * 0.5f * 0.5f; 
-            	portal.center.y = this.ypos;
-            	
-            	portal.width = exitSize * 0.5f;
-            	
-            }
-            else
-            {
-            	ex.exitX = this.xpos + ex.exitStart * 0.5f;
-            	ex.exitY = this.ypos + this.ysize * 0.5f - 0.5f;
-            	
-            	portal.dir.x = 0;
-            	portal.dir.y = 1.0f;
-            	
-            	portal.center.x = ex.exitX + exitSize * 0.5f * 0.5f; 
-            	portal.center.y = this.ypos + this.ysize * 0.5f;
-            	
-            	portal.width = exitSize * 0.5f;
-            }
-		}
-		
-		if( dir.equals( ExitDir.W ) || 
-				dir.equals( ExitDir.E ) )
-		{
-
-			int ysizeWithoutExit = ysize - exitSize - 2;
-			int sideSize = ysizeWithoutExit / 2;
-			
-			int beginSize = Math.max( 2, sideSize );
-			int endSize = ysizeWithoutExit - beginSize;
-			
-			ex.exitStart = beginSize;
-			ex.exitWidth = exitSize;
-			
-			if( dir.equals( ExitDir.E ) )
-			{
-				ex.exitX = this.xpos + this.xsize * 0.5f - 0.5f;
-				ex.exitY = this.ypos + ex.exitStart * 0.5f + 0.5f;
-				
-				portal.dir.x = 1.0f;
-            	portal.dir.y = 0.0f;
-            	
-            	portal.center.x = this.xpos + this.xsize * 0.5f; 
-            	portal.center.y = ex.exitY + exitSize * 0.5f * 0.5f; ;
-            	
-            	portal.width = exitSize * 0.5f;
-			}
-			else
-			{
-				ex.exitX = this.xpos;
-				ex.exitY = this.ypos + ex.exitStart * 0.5f;
-				
-				portal.dir.x = -1.0f;
-            	portal.dir.y = 0.0f;
-            	
-            	portal.center.x = this.xpos; 
-            	portal.center.y = ex.exitY + exitSize * 0.5f * 0.5f;
-            	
-            	portal.width = exitSize * 0.5f;
-			}
-			
-		}
-			
-		exits.add( ex );
-		*/
-	}
-	
-	public void setSize( int xsize, int ysize )
-	{
-		this.xsize = xsize;
-		this.ysize = ysize;
-	}
-	
-	public void setSize( float xsize, float ysize )
-	{
-		this.xsize = xsize;
-		this.ysize = ysize;
 	}
 	
 }
