@@ -27,7 +27,8 @@ public class MetaRoomBuilder
 		}
 		else
 		{
-			// automatic placement from portal
+			// The startportal is a portal from another feature. The exit points away from that feature towards this new room.
+			// We do Automatic placement of the room from that portal.
 			ExitDir exit = startPortal.exit;
 			
 			if( exit.equals( ExitDir.N ))

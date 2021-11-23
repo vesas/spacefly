@@ -2,9 +2,6 @@ package com.vesas.spacefly.world.procedural.generator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom.Exits;
 
 public class MetaExit
@@ -22,8 +19,6 @@ public class MetaExit
 	
 	public void addRoom(  MetaRectangleRoom mr )
 	{
-		Random rand = G.random;
-		
 		/*
 		if( rooms.size() == 0 )
 		{
