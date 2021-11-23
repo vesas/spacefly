@@ -1,4 +1,6 @@
-package com.vesas.spacefly.world.procedural.room;
+package com.vesas.spacefly.world.procedural.room.rectangleroom;
+
+import com.vesas.spacefly.world.procedural.room.FeatureConnector;
 
 public class Exit
 {

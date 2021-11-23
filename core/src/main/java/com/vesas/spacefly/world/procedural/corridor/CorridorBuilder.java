@@ -6,9 +6,8 @@ import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.room.Block1;
 import com.vesas.spacefly.world.procedural.room.BlockRight;
 import com.vesas.spacefly.world.procedural.room.BlockUp;
-import com.vesas.spacefly.world.procedural.room.ExitDir;
 import com.vesas.spacefly.world.procedural.room.RoomBlock;
-
+import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 import com.vesas.spacefly.visibility.Visibility;
 
 public class CorridorBuilder

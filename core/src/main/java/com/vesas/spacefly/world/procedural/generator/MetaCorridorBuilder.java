@@ -1,7 +1,7 @@
 package com.vesas.spacefly.world.procedural.generator;
 
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.world.procedural.room.ExitDir;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
 public class MetaCorridorBuilder
 {

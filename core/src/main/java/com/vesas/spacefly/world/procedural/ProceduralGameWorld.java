@@ -25,7 +25,7 @@ import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.particles.ExplosionInterface;
 import com.vesas.spacefly.world.AbstractGameWorld;
 import com.vesas.spacefly.world.procedural.corridor.Corridor1;
-import com.vesas.spacefly.world.procedural.room.RectangleRoom;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
 import com.vesas.spacefly.visibility.Edge;
 import com.vesas.spacefly.visibility.EndPoint;
 import com.vesas.spacefly.visibility.Visibility;

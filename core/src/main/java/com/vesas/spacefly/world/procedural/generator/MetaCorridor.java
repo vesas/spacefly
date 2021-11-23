@@ -2,7 +2,7 @@ package com.vesas.spacefly.world.procedural.generator;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.vesas.spacefly.world.procedural.corridor.Corridor1;
-import com.vesas.spacefly.world.procedural.room.ExitDir;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
 public class MetaCorridor implements MetaFeature
 {
