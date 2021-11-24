@@ -64,7 +64,7 @@ public class Trail
 		sprite.setOriginCenter();
 		
 		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		sprite.setScale( 0.012f );
+		sprite.setScale( 0.032f );
 		
 		
 		for( int i = 0; i < MAXSIZE; i++ )

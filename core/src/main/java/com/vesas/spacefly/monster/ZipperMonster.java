@@ -27,17 +27,10 @@ public class ZipperMonster extends Monster implements AnimateEntity
 	
 	private float cooldown = 0 + random.nextFloat();
 	
-	private static Vector2 tmpVector = new Vector2();
-	private static Vector2 tmpVector2 = new Vector2();
-
-	private float distanceToBlock = 100.0f;
-	static private Vector2 blockNormal = new Vector2();
-
 	private Vector2 targetDir = new Vector2(0.0f, 1.0f);
 	private Vector2 dir = new Vector2(0.0f, 1.0f);
 
 	private boolean turning = false;
-	private boolean pulsing = false;
 	
 	private float actionTime = 0.0f;
 	private static float PREPARING_MAX_TIME = 0.3f;
@@ -173,7 +166,6 @@ public class ZipperMonster extends Monster implements AnimateEntity
 				if( turnamount < 0.05f )
 				{
 					turning = false;
-					pulsing = true;
 					
 					state = IMPULSE_STATE.PREPARING;
 					actionTime = 0.0f;
@@ -216,7 +208,7 @@ public class ZipperMonster extends Monster implements AnimateEntity
 	
 	private void turnToTarget( float delta )
 	{
-		float targetAngle = targetDir.angle();
+		float targetAngle = targetDir.angleDeg();
 		float bodyAngle = body.getAngle() * G.RADIANS_TO_DEGREES;
 
 		float diff = Util.angleDiff(targetAngle, bodyAngle);

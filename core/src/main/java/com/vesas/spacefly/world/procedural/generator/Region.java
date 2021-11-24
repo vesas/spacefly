@@ -34,4 +34,9 @@ public class Region
 	{
 		arr.add( feat );
 	}
+
+	public void addAll( Array<MetaFeature> feats )
+	{
+		arr.addAll(feats);
+	}
 }

@@ -29,7 +29,7 @@ public class MetaRoomBuilder
 		{
 			// The startportal is a portal from another feature. The exit points away from that feature towards this new room.
 			// We do Automatic placement of the room from that portal.
-			ExitDir exit = startPortal.exit;
+			ExitDir exit = startPortal.getExit();
 			
 			if( exit.equals( ExitDir.N ))
 			{
@@ -52,8 +52,8 @@ public class MetaRoomBuilder
 				ypos = startPortal.centerY - height / 2;
 			}
 			
-			startPortal.exit = startPortal.exit.getOpposite();
-			portals.put( startPortal.exit, startPortal );
+			startPortal.setExit(startPortal.getExit().getOpposite());
+			portals.put( startPortal.getExit(), startPortal );
 			
 			room.setSize(xpos, ypos, width, height);
 		}
@@ -67,12 +67,17 @@ public class MetaRoomBuilder
 		{
 			metaPortalN.centerX = xpos + width * 0.5f;
 			metaPortalN.centerY = ypos + height;
+
+			if(metaPortalN.getSource()== null )
+				metaPortalN.setSource(room);
 			room.addPortal( ExitDir.N, metaPortalN );
 		}
 		if( metaPortalS != null )
 		{
 			metaPortalS.centerX = xpos + width * 0.5f;
 			metaPortalS.centerY = ypos;
+			if(metaPortalS.getSource()== null )
+				metaPortalS.setSource(room);
 			room.addPortal( ExitDir.S, metaPortalS );
 		}
 		
@@ -80,6 +85,8 @@ public class MetaRoomBuilder
 		{
 			metaPortalE.centerX = xpos + width;
 			metaPortalE.centerY = ypos + height * 0.5f;
+			if(metaPortalE.getSource()== null )
+				metaPortalE.setSource(room);
 			room.addPortal( ExitDir.E, metaPortalE );
 		}
 		
@@ -87,6 +94,8 @@ public class MetaRoomBuilder
 		{
 			metaPortalW.centerX = xpos;
 			metaPortalW.centerY = ypos + height * 0.5f;
+			if(metaPortalW.getSource()== null )
+				metaPortalW.setSource(room);
 			room.addPortal( ExitDir.W, metaPortalW );
 		}
 		
@@ -108,7 +117,8 @@ public class MetaRoomBuilder
 	public MetaRoomBuilder addPortal( ExitDir dir, float width )
 	{
 		MetaPortal portal = new MetaPortal();
-		portal.exit = dir;
+		portal.START_TYPE = MetaPortal.RECTANGLE_ROOM;
+		portal.setExit( dir );
 		portal.width = width;
 		
 		portals.put( dir, portal );

@@ -27,6 +27,8 @@ import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoomBuild
 public class WorldGen
 {	
 	private AbstractGameWorld world;
+
+	private int itemCount = 0;
 	
 	public WorldGen( AbstractGameWorld world, Visibility visib )
 	{
@@ -58,13 +60,11 @@ public class WorldGen
 		
 		for( int i = 0; i < metaFeats.size; i++ )
 		{
-			
 			MetaFeature metaFeat = metaFeats.get( i );
 			
 			if( metaFeat instanceof MetaRectangleRoom )
 			{
 				RectangleRoom room = roomBuilder.buildFrom( ((MetaRectangleRoom)metaFeat));
-				
 				feats.add( room );
 			}
 			if( metaFeat instanceof MetaCorridor )
@@ -73,7 +73,6 @@ public class WorldGen
 				feats.add( corr );
 			}
 		}
-		
 	}
 
 	private void addMonstersPass( Region region, Array<Feature> feats )
@@ -130,231 +129,203 @@ public class WorldGen
 		}
 	}
 	
-	static public int REGION_MAX_SIZE = 26;
+	static public int REGION_MAX_SIZE = 33;
 
 	/* Generates metaregion. Region is one area of play */
 	private Region generateMetaRegion()
 	{
-		GenSeed.random.setSeed( 24 );
-		
 		Region region = new Region();
+
+		itemCount = 0;
 		
-		MetaRectangleRoom currentRoom = generateRandomRoom( region, null );
+		// Create random first room centered on player
+		MetaFeature firstRoom = generateRandomRoom( region, null );
 		
-		region.add( currentRoom );
+		region.add( firstRoom );
+
+		// Generate further content from the portals of the first room
+		// 
+		// Portal is a transition from one feature to another, it is 1 dimensional (line) with center point and width
+		// 
+		// From first room we want to get all of the portals and generate content from there
+		// 
+		Array<MetaFeature> features = generateFromPortals( region, firstRoom.getPortalArray(null) );
 		
-		generateForOneRoom( region, currentRoom );
-			
 		return region;
 	}
+
 	
-	private boolean generateForOneRoom( Region region, MetaRectangleRoom currentRoom )
+
+	private MetaFeature generateFromPortal( Region region, MetaPortal portal )
 	{
-		if( region.getSize() >= REGION_MAX_SIZE )
+		if( this.itemCount >= REGION_MAX_SIZE )
 		{
-			return false;
+			// itemcount reached, close the portal from the source
+			portal.getSource().closePortal(portal);
+			return null;
 		}
-		
-		Array<MetaCorridor> cors = createCorridorsFrom( region, currentRoom );
-		
-		for( int i = 0; i< cors.size; i++ )
+
+		MetaFeature ret = null;
+
+		if(portal.START_TYPE == MetaPortal.RECTANGLE_ROOM)
 		{
-			MetaCorridor cor = cors.get( i );
-			
-			if( region.getSize() < REGION_MAX_SIZE )
-			{
-				MetaRectangleRoom r = generateRandomRoom( region, cor );
-				
-				if( region.canAdd( r ))
-				{
-					region.add( r );
-					
-					generateForOneRoom( region, r );
-				}
-				else
-				{
-					cor.shutEnd();
-				}
-			}
-			else
-			{
-				cor.shutEnd();
-			}
-			
+			// TODO: add probability
+			ret = createRandomCorridor( region, portal );
 		}
-		
-		return true;
+
+		if(portal.START_TYPE == MetaPortal.CORRIDOR)
+		{
+			ret = generateRandomRoom( region, portal );
+		}
+
+		if( ret == null)
+		{
+			// Cannot build into that direction, close the portal from the source
+			portal.getSource().closePortal(portal);
+		}
+		else
+		{
+			region.add(ret);
+		}
+
+		this.itemCount++;
+		return ret;
 	}
 	
-	private Array<MetaCorridor> createCorridorsFrom( Region region, MetaRectangleRoom currentRoom )
+	private Array<MetaFeature> generateFromPortals( Region region, Array<MetaPortal> portals )
 	{
-		Array<MetaCorridor> ret = new Array<MetaCorridor>();
-		
-		Array<MetaPortal> portals = currentRoom.getPortals().values().toArray();
-		
-		for(MetaPortal portal : portals ) 
-		{
-			MetaCorridor cor = createCorridorFrom( region, portal );
+		Array<MetaFeature> ret = new Array<MetaFeature>();
 
-			if( cor != null )
-				ret.add( cor );
+		Array<MetaPortal> nextRound = new Array<MetaPortal>();
+
+		for( MetaPortal portal : portals )
+		{
+			MetaFeature feat = generateFromPortal(region, portal);
+			
+			if( feat != null ) 
+			{
+				nextRound.addAll(feat.getPortalArray(portal));
+				ret.add(feat);
+			}
+				
 		}
+
+		// and generate further features from the portals in the nextRound array
+		if(nextRound.size > 0) 
+		{
+			Array<MetaFeature> features = generateFromPortals( region, nextRound );
+			ret.addAll(features);
+		}
+		
 
 		return ret;
 	}
 	
-	private MetaCorridor createCorridorFrom( Region region, MetaPortal portal )
+	private MetaCorridor createRandomCorridor( Region region, MetaPortal portal )
 	{
-		MetaCorridorBuilder corrBuilder = MetaCorridorBuilder.INSTANCE;
+		MetaCorridorBuilder metaCorrBuilder = MetaCorridorBuilder.INSTANCE;
 		
-		corrBuilder.createFromPortal( portal );
-		corrBuilder.setLength( 1 + GenSeed.random.nextInt( 10 ) );
+		metaCorrBuilder.createFromPortal( portal );
+		metaCorrBuilder.setLength( 1 + GenSeed.random.nextInt( 10 ) );
 		
-		MetaCorridor corr = corrBuilder.build();
+		MetaCorridor corr = metaCorrBuilder.build();
 		
-		if( region.canAdd( corr ))
+		if( !region.canAdd( corr ))
 		{
-			region.add( corr );
-			return corr;
+			return null;
 		}
 		
-		return null;
+		return corr;
 	}
 	
-	private MetaRectangleRoom generateRandomRoom( Region region, MetaCorridor fromCorridor )
+	private MetaRectangleRoom generateRandomRoom( Region region, MetaPortal fromPortal )
 	{
 		MetaRoomBuilder roomBuilder = MetaRoomBuilder.INSTANCE;
 		
-		int minx = 3;
-		int miny = 3;
+		int minwidth = 3;
+		int minheight = 3;
 		
-		if( fromCorridor != null )
+		if( fromPortal != null )
 		{
-			if( fromCorridor.getEndPortal().exit == ExitDir.N || 
-				fromCorridor.getEndPortal().exit == ExitDir.S )
+			if( fromPortal.getExit() == ExitDir.N || 
+				fromPortal.getExit() == ExitDir.S )
 			{
-				minx = (int) (fromCorridor.getWidth() + 2);
+				minwidth = (int) (fromPortal.getWidth() + 2);
 			}
 			
-			if( fromCorridor.getEndPortal().exit == ExitDir.E || 
-					fromCorridor.getEndPortal().exit == ExitDir.W )
+			if( fromPortal.getExit() == ExitDir.E || 
+				fromPortal.getExit() == ExitDir.W )
 			{
-				miny = (int) (fromCorridor.getWidth() + 2);
+				minheight = (int) (fromPortal.getWidth() + 2);
 			}
 		}
 		
 		// have to be at least minx/miny long/wide to accommodate the possible corridor
-		float w = (float) Math.max(minx, GenSeed.random.nextInt( 28 ) );
-		float h = (float) Math.max(miny, GenSeed.random.nextInt( 28 ) );
+		float w = (float) Math.max(minwidth, GenSeed.random.nextInt( 28 ) );
+		float h = (float) Math.max(minheight, GenSeed.random.nextInt( 28 ) );
 		
 		roomBuilder.setSize( w, h );
 		
 		ExitDir excludeDir = null;
 		
-		if( fromCorridor == null )
+		if( fromPortal == null )
 		{
 			Vector2 playerCenter = Player.INSTANCE.getWorldCenter();
 			roomBuilder.setPosition( playerCenter.x - w * 0.5f, playerCenter.y - h * 0.5f);
-//			roomBuilder.setPosition(-46.5f, -24.096667f);
 		}	
 		else
 		{
-			excludeDir = fromCorridor.getEndPortal().exit.getOpposite();
-			roomBuilder.createFromPortal(fromCorridor.getEndPortal());
+			excludeDir = fromPortal.getExit().getOpposite();
+			roomBuilder.createFromPortal(fromPortal);
 			
 		}
-		
-		boolean createFirstPortal = ((region.getSize() + 1) < WorldGen.REGION_MAX_SIZE ) &&  (GenSeed.random.nextFloat() > 0.1 || (region.getSize() < 8) );
-		boolean createSecondPortal = ((region.getSize() + 2) < WorldGen.REGION_MAX_SIZE ) && (GenSeed.random.nextFloat() > 0.6 );
-		boolean createThirdPortal = ((region.getSize() + 3) < WorldGen.REGION_MAX_SIZE ) && (GenSeed.random.nextFloat() > 0.8 );
-		
-		// first room
-		if( fromCorridor == null )
+
+		boolean []existingExits = new boolean[4];
+		if( excludeDir != null )
+			existingExits[excludeDir.ordinal()] = true;
+
+		// 0-3
+		int howManyAdditionalExits = GenSeed.random.nextInt(4);
+
+		if( fromPortal == null )
 		{
-			createFirstPortal = true;
-			createSecondPortal = false;
-			createThirdPortal = false;
+			// for the first room we create exactly one exit
+			howManyAdditionalExits = 1;
 		}
 		
-		boolean []exits = new boolean[4];
-		if( excludeDir != null )
-			exits[excludeDir.ordinal()] = true;
-		
-		if( createFirstPortal )
+		for(int i = 0; i < howManyAdditionalExits; i++ )
 		{
-			ExitDir ex = ExitDir.getRandomExcluding( excludeDir );
-			exits[ex.ordinal()] = true;
+			ExitDir ex = ExitDir.getRandomExcluding( existingExits );
+
+			if(ex == null)
+				break;
+				
+			existingExits[ex.ordinal()] = true;
 			
 			if( ex.equals(ExitDir.N ) || ex.equals(ExitDir.S ) )
 			{
-				int NSportalWidth = (int) Math.max( 1 , 1 + GenSeed.random.nextInt(6) );
-				NSportalWidth = (int) Math.min( NSportalWidth , w - 2);
+				int portalWidth = (int) Math.max( 1 , 1 + GenSeed.random.nextInt(6) );
+				portalWidth = (int) Math.min( portalWidth , w - 2);
 				
-				roomBuilder.addPortal( ex, NSportalWidth );
+				roomBuilder.addPortal( ex, portalWidth );
 			}
 			else 
 			{
-				int EWportalWidth = (int) Math.max( 1, 1 + GenSeed.random.nextInt(6) );
-				EWportalWidth = (int) Math.min( EWportalWidth , h - 2);
+				int portalWidth = (int) Math.max( 1, 1 + GenSeed.random.nextInt(6) );
+				portalWidth = (int) Math.min( portalWidth , h - 2);
 				
-				roomBuilder.addPortal( ex, EWportalWidth );
+				roomBuilder.addPortal( ex, portalWidth );
 			}
 		}
 		
-		if( createSecondPortal )
+		MetaRectangleRoom room = roomBuilder.build();
+
+		if( !region.canAdd( room ))
 		{
-			ExitDir ex = ExitDir.getRandomExcluding( exits );
-			
-			if( ex != null )
-			{
-				exits[ex.ordinal()] = true;
-				
-				if( ex.equals(ExitDir.N ) || ex.equals(ExitDir.S ) )
-				{
-					int NSportalWidth = (int) Math.max( 1 , 1 + GenSeed.random.nextInt(5) );
-					NSportalWidth = (int) Math.min( NSportalWidth , w - 2);
-					
-					roomBuilder.addPortal( ex, NSportalWidth );
-				}
-				else 
-				{
-					int EWportalWidth = (int) Math.max( 1, 1 + GenSeed.random.nextInt(5) );
-					EWportalWidth = (int) Math.min( EWportalWidth , h - 2);
-					
-					roomBuilder.addPortal( ex, EWportalWidth );
-				}
-			}
+			return null;
 		}
-		
-		if( createThirdPortal )
-		{
-			ExitDir ex = ExitDir.getRandomExcluding( exits );
-			
-			if( ex != null )
-			{
-				exits[ex.ordinal()] = true;
-				
-				if( ex.equals(ExitDir.N ) || ex.equals(ExitDir.S ) )
-				{
-					int NSportalWidth = (int) Math.max( 1 , 1 + GenSeed.random.nextInt(5) );
-					NSportalWidth = (int) Math.min( NSportalWidth , w - 2);
-					
-					roomBuilder.addPortal( ex, NSportalWidth );
-				}
-				else 
-				{
-					int EWportalWidth = (int) Math.max( 1, 1 + GenSeed.random.nextInt(5) );
-					EWportalWidth = (int) Math.min( EWportalWidth , h - 2);
-					
-					roomBuilder.addPortal( ex, EWportalWidth );
-				}
-			}
-		}
-		
-		
-		MetaRectangleRoom room1 = roomBuilder.build();
-		
-		return room1;
+
+		return room;
 	}
 }
 

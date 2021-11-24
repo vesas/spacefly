@@ -7,12 +7,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.world.procedural.Feature;
+import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.room.FeatureConnector;
-import com.vesas.spacefly.world.procedural.room.RoomBlock;
 
 public class Corridor1 implements Feature
 {
-	private Array<RoomBlock> blocks = new Array<RoomBlock>();
+	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
 	
 	protected float xpos;
 	protected float ypos;
@@ -37,7 +37,7 @@ public class Corridor1 implements Feature
 		return connectors.get(1);
 	}
 	
-	public void addBlocks( Array<RoomBlock> blocks )
+	public void addBlocks( Array<FeatureBlock> blocks )
 	{
 		this.blocks.addAll( blocks );
 	}
@@ -49,7 +49,7 @@ public class Corridor1 implements Feature
 		final int size = blocks.size;
 		for( int i = 0; i < size; i++ )
 		{
-			final RoomBlock block = blocks.get( i );
+			final FeatureBlock block = blocks.get( i );
 			block.draw( screen );
 		}
 	}

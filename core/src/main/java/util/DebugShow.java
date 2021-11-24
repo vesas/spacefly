@@ -11,7 +11,6 @@ public class DebugShow
 {
 	static public boolean debug = false; 
 	
-	static private int size = 25;
 	static private Deque<String> strings = new ArrayDeque<String>();
 	int pos = 0;
 

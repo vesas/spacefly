@@ -8,11 +8,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Screen;
+import com.vesas.spacefly.world.procedural.FeatureBlock;
 
-public class Block1 implements RoomBlock
+public class Block1 implements FeatureBlock
 {
 	private Body body;
-	private Polygon poly;
 	
 	private Sprite sprite;
 	
@@ -66,7 +66,6 @@ public class Block1 implements RoomBlock
 		builder.setBodyType(BodyType.StaticBody );
 		
 		body = builder.construct();
-		
 	}
 	
 	public void draw(Screen screen)
