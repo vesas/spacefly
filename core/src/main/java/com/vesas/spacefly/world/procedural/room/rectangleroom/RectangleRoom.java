@@ -7,18 +7,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Screen;
+import com.vesas.spacefly.world.procedural.FeatureBlock;
+import com.vesas.spacefly.world.procedural.GenSeed;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleLSystem;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleWineSystem;
 import com.vesas.spacefly.world.procedural.room.Room;
-import com.vesas.spacefly.world.procedural.room.RoomBlock;
 
 public class RectangleRoom extends Room
 {
-	private Array<RoomBlock> blocks = new Array<RoomBlock>();
+	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
 	
 	Texture tex;
 	
-	public void addBlocks( Array<RoomBlock> blocks )
+	public void addBlocks( Array<FeatureBlock> blocks )
 	{
 		this.blocks.addAll( blocks );
 	}
@@ -31,7 +32,7 @@ public class RectangleRoom extends Room
 		
 		for( int i = 0; i < size; i++ )
 		{
-			final RoomBlock block = blocks.get( i );
+			final FeatureBlock block = blocks.get( i );
 			block.draw( screen );
 		}
 		
@@ -78,17 +79,17 @@ public class RectangleRoom extends Room
 		pixmap.setColor( col4 );
 		for( int i = 0 ; i < 4; i++ )
 		{
-			float xx = pixmap.getWidth() * G.random.nextFloat();
-			float yy = pixmap.getHeight() * G.random.nextFloat();
-			pixmap.drawCircle((int)xx, (int)yy, (int)(G.random.nextFloat() * 9.5f + 0.5f));
+			float xx = pixmap.getWidth() * GenSeed.random.nextFloat();
+			float yy = pixmap.getHeight() * GenSeed.random.nextFloat();
+			pixmap.drawCircle((int)xx, (int)yy, (int)(GenSeed.random.nextFloat() * 9.5f + 0.5f));
 		}
 		
-		if( G.random.nextBoolean() )
+		if(GenSeed.random.nextBoolean() )
 			drawWineProps( pixmap );
-		if( G.random.nextBoolean() )
+		if(GenSeed.random.nextBoolean() )
 			drawWineProps( pixmap );
 		
-		if( G.random.nextBoolean() )
+		if(GenSeed.random.nextBoolean() )
 			drawTreeProps( pixmap );
 		
 		tex = new Texture(pixmap);
@@ -102,7 +103,7 @@ public class RectangleRoom extends Room
 	{
 		pm.setColor( winePropCol );
 		
-		int exitdir = G.random.nextInt(4);
+		int exitdir = GenSeed.random.nextInt(4);
 //		exitdir = 0;
 		ExitDir ex1 = ExitDir.values()[exitdir];
 		
@@ -143,7 +144,7 @@ public class RectangleRoom extends Room
 			if( dir.y < -160 )
 				dir.y = -160;
 			
-			start.x = pm.getWidth() * 0.2f + (float) (G.random.nextFloat() * pm.getWidth() * 0.6f );
+			start.x = pm.getWidth() * 0.2f + (float) (GenSeed.random.nextFloat() * pm.getWidth() * 0.6f );
 			start.y = pm.getHeight();
 		}
 		if( ex1 == ExitDir.N )
@@ -153,7 +154,7 @@ public class RectangleRoom extends Room
 			if( dir.y > 160 )
 				dir.y = 160;
 			
-			start.x = (float) pm.getWidth() * 0.2f + (G.random.nextFloat() * pm.getWidth() * 0.6f );
+			start.x = (float) pm.getWidth() * 0.2f + (GenSeed.random.nextFloat() * pm.getWidth() * 0.6f );
 			start.y = 0;
 			
 		}
@@ -167,7 +168,7 @@ public class RectangleRoom extends Room
 			dir.y = 0.0f;
 
 			start.x = 0.0f;
-			start.y = (float) pm.getHeight() * 0.2f + (G.random.nextFloat() * pm.getHeight() * 0.6f );
+			start.y = (float) pm.getHeight() * 0.2f + (GenSeed.random.nextFloat() * pm.getHeight() * 0.6f );
 			
 		}
 		
@@ -180,7 +181,7 @@ public class RectangleRoom extends Room
 			dir.y = 0.0f;
 			
 			start.x = pm.getWidth();
-			start.y = (float) pm.getHeight() * 0.2f + (G.random.nextFloat() * pm.getHeight() * 0.6f );
+			start.y = (float) pm.getHeight() * 0.2f + (GenSeed.random.nextFloat() * pm.getHeight() * 0.6f );
 		}
 		
 		SimpleWineSystem system = SimpleWineSystem.getInstance();
@@ -188,7 +189,7 @@ public class RectangleRoom extends Room
 		system.setStartPos( start.x , start.y );
 		system.setStartDir( dir.x , dir.y );
 		system.setDirRandomness( 145f );
-		system.setMaxLevel( 2 + G.random.nextInt(6) );
+		system.setMaxLevel( 2 + GenSeed.random.nextInt(6) );
 		system.setWidthScale( 0.25f );
 		
 		system.draw( pm );
@@ -199,7 +200,7 @@ public class RectangleRoom extends Room
 	{
 		pm.setColor( propCol );
 		
-		int exitdir = G.random.nextInt(4);
+		int exitdir = GenSeed.random.nextInt(4);
 //		exitdir = 0;
 		ExitDir ex1 = ExitDir.values()[exitdir];
 		
@@ -240,7 +241,7 @@ public class RectangleRoom extends Room
 			if( dir.y < -260 )
 				dir.y = -260;
 			
-			start.x = pm.getWidth() * 0.2f + (float) (G.random.nextFloat() * pm.getWidth() * 0.6f );
+			start.x = pm.getWidth() * 0.2f + (float) (GenSeed.random.nextFloat() * pm.getWidth() * 0.6f );
 			start.y = pm.getHeight();
 		}
 		if( ex1 == ExitDir.N )
@@ -250,7 +251,7 @@ public class RectangleRoom extends Room
 			if( dir.y > 260 )
 				dir.y = 260;
 			
-			start.x = (float) pm.getWidth() * 0.2f + (G.random.nextFloat() * pm.getWidth() * 0.6f );
+			start.x = (float) pm.getWidth() * 0.2f + (GenSeed.random.nextFloat() * pm.getWidth() * 0.6f );
 			start.y = 0;
 			
 		}
@@ -264,7 +265,7 @@ public class RectangleRoom extends Room
 			dir.y = 0.0f;
 
 			start.x = 0.0f;
-			start.y = (float) pm.getHeight() * 0.2f + (G.random.nextFloat() * pm.getHeight() * 0.6f );
+			start.y = (float) pm.getHeight() * 0.2f + (GenSeed.random.nextFloat() * pm.getHeight() * 0.6f );
 			
 		}
 		
@@ -277,7 +278,7 @@ public class RectangleRoom extends Room
 			dir.y = 0.0f;
 			
 			start.x = pm.getWidth();
-			start.y = (float) pm.getHeight() * 0.2f + (G.random.nextFloat() * pm.getHeight() * 0.6f );
+			start.y = (float) pm.getHeight() * 0.2f + (GenSeed.random.nextFloat() * pm.getHeight() * 0.6f );
 		}
 		
 		SimpleLSystem system = SimpleLSystem.getInstance();
@@ -285,7 +286,7 @@ public class RectangleRoom extends Room
 		system.setStartPos( start.x , start.y );
 		system.setStartDir( dir.x , dir.y );
 		system.setDirRandomness( 45f );
-		system.setMaxLevel( 1 + G.random.nextInt(6) );
+		system.setMaxLevel( 1 + GenSeed.random.nextInt(6) );
 		system.setWidthScale( 0.35f );
 		
 		system.draw( pm );

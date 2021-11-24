@@ -9,8 +9,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Screen;
+import com.vesas.spacefly.world.procedural.FeatureBlock;
 
-public class BlockRight implements RoomBlock
+public class BlockRight implements FeatureBlock
 {
 	private Body body;
 	private Polygon poly;

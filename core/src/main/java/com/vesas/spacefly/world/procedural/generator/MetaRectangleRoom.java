@@ -2,8 +2,9 @@ package com.vesas.spacefly.world.procedural.generator;
 
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.world.procedural.GenSeed;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
 public class MetaRectangleRoom implements MetaFeature
@@ -21,7 +22,7 @@ public class MetaRectangleRoom implements MetaFeature
 		
 		static public Exits getRandom()
 		{
-			return Exits.values()[G.random.nextInt( Exits.values().length )];
+			return Exits.values()[GenSeed.random.nextInt( Exits.values().length )];
 		}
 		
 		public Exits getOpposite()
@@ -68,9 +69,10 @@ public class MetaRectangleRoom implements MetaFeature
 		return portals;
 	}
 	
-	public void shutPortal( MetaPortal port )
+	@Override
+	public void closePortal( MetaPortal port )
 	{
-		portals.remove( port.exit );
+		portals.remove( port.getExit() );
 	}
 	
 	public void setSize( float w, float h )
@@ -82,7 +84,7 @@ public class MetaRectangleRoom implements MetaFeature
 	public void addPortal( ExitDir exitDir, MetaPortal portal )
 	{
 		portal.target  = null;
-		portal.exit = exitDir;
+		portal.setExit(exitDir);
 		
 		portals.put( exitDir, portal );	
 	}
@@ -136,31 +138,6 @@ public class MetaRectangleRoom implements MetaFeature
 		return null;
 	}
 	
-	public void stroke( Region region )
-	{
-		/*
-		if( region.safeGetMap(posx, posy) != 0 )
-			return;
-		
-		region.drawHorizontalLine( posx, posx + this.width, posy );
-		region.drawHorizontalLine( posx, posx + this.width, posy + this.height );
-		
-		region.drawVerticalLine( posy, posy + this.height, posx );
-		region.drawVerticalLine( posy, posy + this.height, posx + this.width );
-	
-	*/
-	}
-	
-	private boolean canFindPosition( Region region )
-	{
-		for( int i = 0 ; i < 10 ; i++ )
-		{
-			
-		}
-		
-		return false;
-	}
-	
 	@Override
 	public boolean overlaps(Rectangle rect)
 	{
@@ -182,5 +159,39 @@ public class MetaRectangleRoom implements MetaFeature
 	public float getPosy() 
 	{
 		return rect.y;
+	}
+
+	@Override
+	public Array<MetaPortal> getPortalArray(MetaPortal exclude) 
+	{
+		Array<MetaPortal> ret = new Array<MetaPortal>();
+
+		Array<MetaPortal> values = portals.values().toArray();
+
+		for(MetaPortal port : values )
+		{
+			if(!port.equals(exclude))
+			{
+				ret.add(port);
+			}
+		}
+		return ret;
+	}
+
+	@Override
+	public String toString()
+	{
+		String ret = "";
+
+		ret += "MetaRectangleRoom(x:";
+		ret += rect.x;
+		ret += ",y:";
+		ret += rect.y;
+		ret += ",w:";
+		ret += rect.width;
+		ret += ",h:";
+		ret += rect.width;
+		ret += ")";
+		return ret;
 	}
 }

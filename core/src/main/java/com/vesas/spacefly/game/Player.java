@@ -400,30 +400,8 @@ public class Player
 	
 	private void drawTracers(Screen screen)
 	{
-//		trail.draw( screen );
-		
+		trail.draw( screen );
 		particles.draw( screen );
-		/*
-		Sprite smokeSprite = G.effects[0];
-		smokeSprite.setOriginCenter();
-		
-		smokeSprite.setScale( 0.02f );
-		smokeSprite.setColor(0.22f, 0.22f, 0.22f, 0.24f );
-		
-		int size = particles.size;
-		for( int i = 0; i < size; i++ )
-		{
-			smokeSprite.setPosition(particles.px[i] - smokeSprite.getWidth()*0.5f, particles.py[i] - smokeSprite.getHeight()*0.5f);
-			smokeSprite.draw(screen.worldBatch);
-		}
-		
-		int trailSize = trail.size;
-		for( int i = 0; i < trailSize; i++ )
-		{
-			smokeSprite.setPosition(trail.px[i] - smokeSprite.getWidth()*0.5f, trail.py[i] - smokeSprite.getHeight()*0.5f);
-			smokeSprite.draw(screen.worldBatch);
-		}
-		*/
 	}
 
 	public void draw(Screen screen)

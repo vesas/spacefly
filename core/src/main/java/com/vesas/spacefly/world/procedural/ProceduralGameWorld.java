@@ -33,16 +33,10 @@ import com.vesas.spacefly.visibility.VisibilityPoly;
 
 public class ProceduralGameWorld extends AbstractGameWorld
 {
-	private RectangleRoom room2 = new RectangleRoom();
-	
-	private Corridor1 cor1 = new Corridor1();
-	
 	private Array<Feature> feats;
 	
 	private Visibility visib;
 
-	private EarClippingTriangulator tri = new EarClippingTriangulator();
-	
 	String vertexShader = "";
 	String defaultPixelShader = "";
 	
@@ -70,8 +64,6 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
 		
-		float screenHeight = screen.viewport.getScreenHeight();
-		float screenWidth = screen.viewport.getScreenWidth();
 		fbo = new FrameBuffer(Format.RGBA8888, (int)width, (int)height, false);
 		
 		defaultShader = new ShaderProgram(vertexShader, defaultPixelShader);
@@ -111,7 +103,6 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		//draw the light to the FBO
 		fbo.begin();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		float lightSize = 5.0f;
 		
 		visib.setLightLocation( playerCenter.x, playerCenter.y);
 		visib.sweep();
@@ -159,8 +150,6 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		if( DebugHelper.VISIB_DEBUG ) {
 			renderVisibilityDebug2();
 		}
-		
-
 	}
 	
 	private void renderVisibilityDebug2() 
@@ -215,7 +204,6 @@ public class ProceduralGameWorld extends AbstractGameWorld
 			G.shapeRenderer.rect(xpos, ypos, width, height);
 		}
 		
-		
 		G.shapeRenderer.setColor(1.0f, 0.0f, 0.0f, 1.0f);
 		for( int i = 0, size = monsters.size; i < size; i++ )
 		{
@@ -235,10 +223,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 				
 		}
 
-		
-		
 		G.shapeRenderer.end();
-		
 	}
 	
 	
@@ -246,17 +231,8 @@ public class ProceduralGameWorld extends AbstractGameWorld
 	private PolygonSpriteBatch polyBatch;
 	private Texture textureSolid;
 	
-	private void drawVisibility2( Screen screen, FrameBuffer fb )
-	{
-		Vector2 playerCenter = Player.INSTANCE.getWorldCenter();
-		VisibilityPoly visiPoly = visib.getVisibPoly();
-		
-//		Array<Vector2> points = visiPoly.getTriEndPoints();
-	}
-	
 	private void drawVisibility( Screen screen, FrameBuffer fb, Vector2 playerCenter )
 	{
-		
 		VisibilityPoly visiPoly = visib.getVisibPoly();
 		
 		// these are the triangle endpoints
@@ -279,8 +255,6 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		}
 		
 		G.shapeRenderer.end();
-		
-		
 	}
 
 	@Override

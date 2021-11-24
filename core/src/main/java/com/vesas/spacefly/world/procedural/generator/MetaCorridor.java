@@ -1,6 +1,7 @@
 package com.vesas.spacefly.world.procedural.generator;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.world.procedural.corridor.Corridor1;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
@@ -11,8 +12,8 @@ public class MetaCorridor implements MetaFeature
 	private float length;
 	private float width;
 	
-	private MetaPortal startPortal = new MetaPortal(); // this will be "out" from corridor 
-	private MetaPortal endPortal = new MetaPortal(); // this will be "out" from corridor
+	private MetaPortal startPortal = new MetaPortal(); 
+	private MetaPortal endPortal = new MetaPortal();
 	
 	public Corridor1 real;
 	
@@ -20,7 +21,7 @@ public class MetaCorridor implements MetaFeature
 	public void addStartPortal( ExitDir exitDir, MetaPortal portal )
 	{	
 		portal.target  = null;
-		portal.exit = exitDir;
+		portal.setExit(exitDir);
 		
 		startPortal = portal;
 	}
@@ -28,7 +29,7 @@ public class MetaCorridor implements MetaFeature
 	public void addEndPortal( ExitDir exitDir, MetaPortal portal )
 	{	
 		portal.target  = null;
-		portal.exit = exitDir;
+		portal.setExit(exitDir);
 		
 		endPortal = portal;
 	}
@@ -47,17 +48,20 @@ public class MetaCorridor implements MetaFeature
 	{
 		endPortal = null;
 	}
-	
-	public MetaPortal getPortal( ExitDir exitDir )
+
+	public void closePortal( MetaPortal port )
 	{
-		if( startPortal.exit.equals( exitDir ))
-			return startPortal;
-		
-		if( endPortal.exit.equals( exitDir ))
-			return endPortal;
-		
-		return null;
-		
+		if(startPortal.equals(port))
+		{
+			startPortal = null;
+			return;
+		}
+
+		if(endPortal.equals(port))
+		{
+			endPortal = null;
+			return;
+		}
 	}
 	
 	public void setSize( float posx, float posy, float w, float h )
@@ -95,6 +99,24 @@ public class MetaCorridor implements MetaFeature
 	public Rectangle getBounds()
 	{
 		return rect;
+	}
+
+	@Override
+	public Array<MetaPortal> getPortalArray(MetaPortal exclude) {
+
+		Array<MetaPortal> ret = new Array<MetaPortal>();
+
+		if(startPortal != null && !startPortal.equals(exclude))
+		{
+			ret.add(startPortal);
+		}
+
+		if(endPortal != null && !endPortal.equals(exclude))
+		{
+			ret.add(endPortal);
+		}
+
+		return ret;
 	}
 	
 }

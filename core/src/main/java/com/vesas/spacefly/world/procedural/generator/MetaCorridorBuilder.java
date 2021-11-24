@@ -18,7 +18,6 @@ public class MetaCorridorBuilder
 	
 	public MetaCorridor build()
 	{
-		
 		MetaCorridor corr = new MetaCorridor();
 		
 		width = startPortal.width;
@@ -26,22 +25,9 @@ public class MetaCorridorBuilder
 		
 		float xpos, ypos, xsize, ysize;
 		
-		ExitDir startExitDir = startPortal.exit;
+		ExitDir startExitDir = startPortal.getExit();
 		
 		if( startExitDir.equals( ExitDir.N ))
-		{
-			xpos = startPortal.centerX - width * 0.5f;
-			ypos = startPortal.centerY - length;
-			
-			xsize = width;
-			ysize = length;
-			
-			corr.setSize(xpos, ypos, xsize, ysize);
-			
-			endPortal.centerX = startPortal.centerX;
-			endPortal.centerY = startPortal.centerY - length;
-		}
-		if( startExitDir.equals( ExitDir.S ))
 		{
 			xpos = startPortal.centerX - width * 0.5f;
 			ypos = startPortal.centerY;
@@ -54,22 +40,21 @@ public class MetaCorridorBuilder
 			endPortal.centerX = startPortal.centerX;
 			endPortal.centerY = startPortal.centerY + length;
 		}
-		
-		if( startExitDir.equals( ExitDir.E ))
+		if( startExitDir.equals( ExitDir.S ))
 		{
-			xpos = startPortal.centerX - length;
-			ypos = startPortal.centerY - width * 0.5f;
+			xpos = startPortal.centerX - width * 0.5f;
+			ypos = startPortal.centerY - length;
 			
-			xsize = length;
-			ysize = width;
+			xsize = width;
+			ysize = length;
 			
 			corr.setSize(xpos, ypos, xsize, ysize);
 			
-			endPortal.centerX = startPortal.centerX - length;
-			endPortal.centerY = startPortal.centerY;
+			endPortal.centerX = startPortal.centerX;
+			endPortal.centerY = startPortal.centerY - length;
 		}
 		
-		if( startExitDir.equals( ExitDir.W ))
+		if( startExitDir.equals( ExitDir.E ))
 		{
 			xpos = startPortal.centerX;
 			ypos = startPortal.centerY - width * 0.5f;
@@ -83,8 +68,23 @@ public class MetaCorridorBuilder
 			endPortal.centerY = startPortal.centerY;
 		}
 		
+		if( startExitDir.equals( ExitDir.W ))
+		{
+			xpos = startPortal.centerX - length;
+			ypos = startPortal.centerY - width * 0.5f;
+			
+			xsize = length;
+			ysize = width;
+			
+			corr.setSize(xpos, ypos, xsize, ysize);
+			
+			endPortal.centerX = startPortal.centerX - length;
+			endPortal.centerY = startPortal.centerY;
+		}
+		
+		endPortal.setSource(corr);
 		corr.addStartPortal(startExitDir, startPortal);
-		corr.addEndPortal(startExitDir.getOpposite(), endPortal);
+		corr.addEndPortal(startExitDir, endPortal);
 		
 		init();
 		return corr;
@@ -102,17 +102,11 @@ public class MetaCorridorBuilder
 	
 	public MetaCorridorBuilder createFromPortal( MetaPortal portal )
 	{
-		MetaPortal newStartPortal = new MetaPortal();
-		newStartPortal.exit = portal.exit.getOpposite();
-		
-		newStartPortal.centerX = portal.centerX;
-		newStartPortal.centerY = portal.centerY;
-		newStartPortal.width = portal.width;
-		
-		this.startPortal = newStartPortal;
+		this.startPortal = portal;
 		
 		MetaPortal newEndPortal = new MetaPortal();
-		newEndPortal.exit = portal.exit;
+		newEndPortal.START_TYPE = MetaPortal.CORRIDOR;
+		newEndPortal.setExit(portal.getExit());
 		
 		newEndPortal.width = portal.width;
 		

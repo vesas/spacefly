@@ -2,13 +2,13 @@ package com.vesas.spacefly.world.procedural.room.rectangleroom;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.room.Block1;
 import com.vesas.spacefly.world.procedural.room.BlockRight;
 import com.vesas.spacefly.world.procedural.room.BlockUp;
 import com.vesas.spacefly.world.procedural.room.FeatureConnector;
-import com.vesas.spacefly.world.procedural.room.RoomBlock;
 import com.vesas.spacefly.visibility.Visibility;
 
 public class RectangleRoomBuilder
@@ -19,7 +19,7 @@ public class RectangleRoomBuilder
 	// xsize to the right, ysize to up
 	private float xsize, ysize;
 	
-	private Array<RoomBlock> blocks = new Array<RoomBlock>();
+	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
 	
 	private Visibility visib;
 	

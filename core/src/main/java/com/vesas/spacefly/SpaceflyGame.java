@@ -33,7 +33,6 @@ public class SpaceflyGame extends Game
 	private static float TARGET_FPS = 60.0f;
 	
 	private static long NANOS_TO_SECONDS = 1000000000;
-	private static long NANOS_TO_MS = 1000000;
 	
 	private static double TARGET_FRAME_TIME = 1.0 / TARGET_FPS;
 	
