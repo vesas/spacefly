@@ -13,12 +13,25 @@ public class MetaRoomBuilder
 	private ObjectMap<ExitDir, MetaPortal> portals = new ObjectMap<ExitDir, MetaPortal>();
 	
 	public static MetaRoomBuilder INSTANCE = new MetaRoomBuilder();
-	
+
+	private MetaRectangleRoom room;
+
 	private MetaRoomBuilder() { }
+
+	public void init()
+	{
+		room = new MetaRectangleRoom();
+		width = 0.0f;
+		height = 0.0f;
+		xpos = 0.0f;
+		ypos = 0.0f;
+		portals.clear();
+		startPortal = null;
+	}
 	
 	public MetaRectangleRoom build()
 	{
-		MetaRectangleRoom room = new MetaRectangleRoom();
+		
 		
 		if( startPortal == null )
 		{
@@ -52,8 +65,7 @@ public class MetaRoomBuilder
 				ypos = startPortal.centerY - height / 2;
 			}
 			
-			startPortal.setExit(startPortal.getExit().getOpposite());
-			portals.put( startPortal.getExit(), startPortal );
+			portals.put( startPortal.getExit().getOpposite(), startPortal );
 			
 			room.setSize(xpos, ypos, width, height);
 		}
@@ -99,19 +111,7 @@ public class MetaRoomBuilder
 			room.addPortal( ExitDir.W, metaPortalW );
 		}
 		
-		init();
 		return room;
-	}
-	
-	public void init()
-	{
-		 width = 0.0f;
-		 height = 0.0f;
-		 xpos = 0.0f;
-		 ypos = 0.0f;
-		 
-		 portals.clear();
-		 startPortal = null;
 	}
 	
 	public MetaRoomBuilder addPortal( ExitDir dir, float width )
@@ -120,6 +120,7 @@ public class MetaRoomBuilder
 		portal.START_TYPE = MetaPortal.RECTANGLE_ROOM;
 		portal.setExit( dir );
 		portal.width = width;
+		portal.setSource(this.room);
 		
 		portals.put( dir, portal );
 
@@ -142,7 +143,7 @@ public class MetaRoomBuilder
 		return this;
 	}
 
-	public MetaRoomBuilder createFromPortal( MetaPortal portal )
+	public MetaRoomBuilder createFromDir( ExitDir dir, MetaPortal portal )
 	{
 		this.startPortal = portal;
 		return this;

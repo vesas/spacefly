@@ -4,5 +4,5 @@ import java.util.Random;
 
 public class GenSeed
 {
-	public static Random random = new Random(24);
+	public static Random random = new Random(224);
 }

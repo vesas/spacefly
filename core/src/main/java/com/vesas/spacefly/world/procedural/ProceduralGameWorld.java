@@ -53,6 +53,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		
 		visib.startLoad();
 		WorldGen gen = new WorldGen( this,visib );
+		gen.setFirstRoomCenter(Player.INSTANCE.getWorldCenter());
 		
 		feats = gen.generate(); 
 		

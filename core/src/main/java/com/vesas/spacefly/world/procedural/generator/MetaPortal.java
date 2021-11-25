@@ -10,16 +10,25 @@ public class MetaPortal
 	
 	public int START_TYPE = 0;
 	
+	private int id;
+	
 	private ExitDir exit;
 
 	// Source so that we can remove this portal if it doesn't fit to the world
 	private MetaFeature source;
 
-	public MetaPortal()
-	{
-		
-	}
+	private MetaFeature target;
 	
+	public float centerX;
+	public float centerY;
+	
+	public float width;
+
+	public MetaPortal() 
+	{  
+		this.id = IDGenerator.getId();
+	}
+
 	public MetaFeature getSource() {
 		return source;
 	}
@@ -28,12 +37,9 @@ public class MetaPortal
 		this.source = source;
 	}
 
-	public MetaFeature target;
-	
-	public float centerX;
-	public float centerY;
-	
-	public float width;
+	public int getId() {
+		return id;
+	}
 
 	public ExitDir getExit() {
 		return exit;
@@ -73,5 +79,31 @@ public class MetaPortal
 
 	public void setWidth(float width) {
 		this.width = width;
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuffer buf = new StringBuffer();
+
+		buf.append("MetaPortal(id:");
+		buf.append(id);
+		buf.append(",exit:");
+		buf.append(this.exit);
+		buf.append(",sourceID:");
+		if(source != null)
+			buf.append(source.getId());
+		else
+			buf.append("null");
+		buf.append(")");
+
+		buf.append(",targetID:");
+		if(target != null)
+			buf.append(target.getId());
+		else
+			buf.append("null");
+		buf.append(")");
+
+		return buf.toString();
 	}
 }
