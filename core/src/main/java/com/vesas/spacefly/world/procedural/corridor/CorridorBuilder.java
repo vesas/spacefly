@@ -44,7 +44,7 @@ public class CorridorBuilder
 		MetaPortal startPortal = metaCorr.getStartPortal();
 		MetaPortal endPortal = metaCorr.getEndPortal();
 		
-		visib.startRoom();
+		visib.startConvexArea();
 
 		// Looking in to the corridor towards NORTH from south. (portals exit is towards north)
 		if( startPortal.getExit().equals( ExitDir.N ))
@@ -57,15 +57,15 @@ public class CorridorBuilder
 			{
 				addBlocksToRight( xpos, ypos + len - WALL_WIDTH, width);
 				
-				visib.addSegment( xpos , ypos - WALL_WIDTH, xpos , ypos + len - WALL_WIDTH );
-				visib.addSegment( xpos + width , ypos - WALL_WIDTH, xpos + width , ypos + len - WALL_WIDTH);
+				visib.addSegment( xpos , ypos, xpos , ypos + len - WALL_WIDTH );
+				visib.addSegment( xpos + width , ypos, xpos + width , ypos + len - WALL_WIDTH);
 				
 				visib.addSegment( xpos , ypos + len - WALL_WIDTH, xpos + width ,  ypos + len - WALL_WIDTH);
 			}
 			else
 			{
-				visib.addSegment( xpos , ypos - WALL_WIDTH, xpos , ypos + len + WALL_WIDTH );
-				visib.addSegment( xpos + width , ypos - WALL_WIDTH , xpos + width , ypos + len + WALL_WIDTH );
+				visib.addSegment( xpos , ypos, xpos , ypos + len );
+				visib.addSegment( xpos + width , ypos, xpos + width , ypos + len );
 			}
 		}
 		
@@ -80,21 +80,18 @@ public class CorridorBuilder
 			if( endPortal == null )
 			{
 				addBlocksToRight( xpos, ypos, width);
-				
-				// left wall, y position begins WALL_WIDTH above the corridor start since the room opening has WALL_WIDTH gap for visibility
-				// IDEA: probably the room should handle that part??
-				visib.addSegment( xpos , ypos + WALL_WIDTH, xpos , ypos + len + WALL_WIDTH );
-				// right wall, y position begins WALL_WIDTH above the corridor start since the room opening has WALL_WIDTH gap for visibility
-				visib.addSegment( xpos + width , ypos + WALL_WIDTH, xpos + width , ypos + len + WALL_WIDTH );
+				// left wall
+				visib.addSegment( xpos , ypos + WALL_WIDTH, xpos , ypos + len );
+				// right wall
+				visib.addSegment( xpos + width , ypos + WALL_WIDTH, xpos + width , ypos + len );
 				
 				// Bottom wall. The y position is (ypos + WALL_WIDTH) because the sprite wall takes that much space at bottom
 				visib.addSegment( xpos , ypos + WALL_WIDTH, xpos + width ,  ypos + WALL_WIDTH);
 			}
 			else
 			{
-				visib.addSegment( xpos , ypos - WALL_WIDTH, xpos , ypos + len + WALL_WIDTH );
-				visib.addSegment( xpos + width , ypos - WALL_WIDTH, xpos + width , ypos + len + WALL_WIDTH );
-				
+				visib.addSegment( xpos , ypos, xpos , ypos + len );
+				visib.addSegment( xpos + width , ypos, xpos + width , ypos + len );
 			}
 		}
 		
@@ -108,15 +105,15 @@ public class CorridorBuilder
 			{
 				addBlocksToUp( xpos + len - WALL_WIDTH, ypos, width);
 				
-				visib.addSegment( xpos - WALL_WIDTH , ypos , xpos + len - WALL_WIDTH , ypos );
-				visib.addSegment( xpos - WALL_WIDTH , ypos + width , xpos + len - WALL_WIDTH, ypos  + width );
+				visib.addSegment( xpos , ypos , xpos + len - WALL_WIDTH , ypos );
+				visib.addSegment( xpos , ypos + width , xpos + len - WALL_WIDTH, ypos  + width );
 				
 				visib.addSegment( xpos + len - WALL_WIDTH, ypos , xpos + len - WALL_WIDTH, ypos  + width );
 			}
 			else
 			{
-				visib.addSegment( xpos -WALL_WIDTH, ypos , xpos + len + WALL_WIDTH , ypos );
-				visib.addSegment( xpos -WALL_WIDTH, ypos  + width , xpos + len + WALL_WIDTH, ypos  + width );
+				visib.addSegment( xpos, ypos , xpos + len , ypos );
+				visib.addSegment( xpos, ypos  + width , xpos + len, ypos  + width );
 				
 			}
 		}
@@ -131,20 +128,20 @@ public class CorridorBuilder
 			{
 				addBlocksToUp( xpos, ypos, width);
 				
-				visib.addSegment( xpos + WALL_WIDTH , ypos , xpos + len + WALL_WIDTH, ypos );
-				visib.addSegment( xpos + WALL_WIDTH , ypos + width , xpos + len + WALL_WIDTH, ypos  + width );
+				visib.addSegment( xpos + WALL_WIDTH , ypos , xpos + len, ypos );
+				visib.addSegment( xpos + WALL_WIDTH , ypos + width , xpos + len, ypos  + width );
 				
 				visib.addSegment( xpos + WALL_WIDTH , ypos , xpos  + WALL_WIDTH, ypos  + width );
 			}
 			else
 			{
-				visib.addSegment( xpos - WALL_WIDTH, ypos , xpos + len + WALL_WIDTH , ypos);
-				visib.addSegment( xpos - WALL_WIDTH, ypos  + width , xpos + len + WALL_WIDTH, ypos  + width );
+				visib.addSegment( xpos, ypos , xpos + len , ypos);
+				visib.addSegment( xpos, ypos  + width , xpos + len, ypos + width );
 			}
 			
 		}
 		
-		visib.finishRoom();
+		visib.finishConvexArea();
 		Corridor1 corr = new Corridor1();
 		
 		corr.setPosition( this.xpos, this.ypos);

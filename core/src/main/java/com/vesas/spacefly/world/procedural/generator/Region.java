@@ -39,4 +39,20 @@ public class Region
 	{
 		arr.addAll(feats);
 	}
+
+	@Override
+	public String toString()
+	{
+		StringBuffer buf = new StringBuffer();
+
+		buf.append("Region size: " + arr.size);
+
+		for( MetaFeature feat : arr )
+		{
+			buf.append("\n");
+			buf.append(feat.toString());
+		}
+
+		return buf.toString();
+	}
 }

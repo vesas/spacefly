@@ -162,7 +162,7 @@ public class ShellMonster extends Monster implements AnimateEntity
 					tmp.y = +1.0f;
 				}
 
-				tmp.scl(1.45f);
+				tmp.scl(2.95f);
 
 				body.applyForceToCenter(tmp, true);
 

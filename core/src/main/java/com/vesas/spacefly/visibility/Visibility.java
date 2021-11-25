@@ -102,12 +102,12 @@ public class Visibility
 		triangulator = new DelaunayTriangulator();
 	}
 	
-	public void startRoom()
+	public void startConvexArea()
 	{
 		roomPoints.clear();
 	}
 	
-	public void finishRoom()
+	public void finishConvexArea()
 	{
 		triangulateRoom();
 	}

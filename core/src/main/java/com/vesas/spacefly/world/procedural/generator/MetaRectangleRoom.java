@@ -12,7 +12,29 @@ public class MetaRectangleRoom implements MetaFeature
 	private Rectangle rect = new Rectangle();
 	
 	private ObjectMap<ExitDir, MetaPortal> portals = new ObjectMap<ExitDir, MetaPortal>();
+
+	private int id;
+
+	public MetaRectangleRoom() 
+	{ 
+		this.id = IDGenerator.getId();
+	}
+
+	public MetaRectangleRoom( float w, float h )
+	{ 
+		this.id = IDGenerator.getId();
+		rect.width = w;
+		rect.height = h;
+	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public enum Exits
 	{
 		EXIT_NORTH,
@@ -41,18 +63,6 @@ public class MetaRectangleRoom implements MetaFeature
 			
 			return EXIT_NORTH;
 		}
-		
-	}
-
-	public MetaRectangleRoom( )
-	{ 
-		
-	}
-	
-	public MetaRectangleRoom( float w, float h )
-	{ 
-		rect.width = w;
-		rect.height = h;
 	}
 	
 	public void setSize( float posx, float posy, float w, float h )
@@ -83,9 +93,7 @@ public class MetaRectangleRoom implements MetaFeature
 	
 	public void addPortal( ExitDir exitDir, MetaPortal portal )
 	{
-		portal.target  = null;
 		portal.setExit(exitDir);
-		
 		portals.put( exitDir, portal );	
 	}
 	
@@ -181,17 +189,28 @@ public class MetaRectangleRoom implements MetaFeature
 	@Override
 	public String toString()
 	{
-		String ret = "";
+		StringBuffer buf = new StringBuffer();
 
-		ret += "MetaRectangleRoom(x:";
-		ret += rect.x;
-		ret += ",y:";
-		ret += rect.y;
-		ret += ",w:";
-		ret += rect.width;
-		ret += ",h:";
-		ret += rect.width;
-		ret += ")";
-		return ret;
+		buf.append("MetaRectangleRoom(id:");
+		buf.append(id);
+		buf.append(",x:");
+		buf.append(rect.x);
+		buf.append(",y:");
+		buf.append(rect.y);
+		buf.append(",w:");
+		buf.append(rect.width);
+		buf.append(",h:");
+		buf.append(rect.width);
+		buf.append(")");
+
+		Array<MetaPortal> portalArray = this.getPortalArray(null);
+
+		for( MetaPortal port : portalArray )
+		{
+			buf.append("\n");
+			buf.append("  " + port.toString());
+		}
+
+		return buf.toString();
 	}
 }

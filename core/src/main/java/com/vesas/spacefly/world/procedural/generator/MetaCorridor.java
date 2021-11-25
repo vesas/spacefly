@@ -16,21 +16,28 @@ public class MetaCorridor implements MetaFeature
 	private MetaPortal endPortal = new MetaPortal();
 	
 	public Corridor1 real;
-	
+	private int id;
+
+	public MetaCorridor()
+	{
+		id = IDGenerator.getId();
+	}
+
+	@Override
+	public int getId()
+	{
+		return id;
+	}
 	
 	public void addStartPortal( ExitDir exitDir, MetaPortal portal )
-	{	
-		portal.target  = null;
+	{
 		portal.setExit(exitDir);
-		
 		startPortal = portal;
 	}
 	
 	public void addEndPortal( ExitDir exitDir, MetaPortal portal )
-	{	
-		portal.target  = null;
+	{
 		portal.setExit(exitDir);
-		
 		endPortal = portal;
 	}
 	

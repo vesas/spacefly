@@ -16,7 +16,7 @@ import com.vesas.spacefly.particles.ExplosionInterface;
 import com.vesas.spacefly.particles.Goo;
 import com.vesas.spacefly.world.procedural.ProceduralGameWorld;
 
-public abstract class AbstractGameWorld
+public abstract class AbstractGameWorld implements AddMonsterCallback
 {
 	static public AbstractGameWorld INSTANCE = new ProceduralGameWorld();
 	
@@ -44,6 +44,7 @@ public abstract class AbstractGameWorld
 		return monsters;
 	}
 	
+	@Override
 	public void addMonster( Monster m )
 	{
 		monsters.add( m );
