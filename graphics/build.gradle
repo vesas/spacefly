@@ -1,0 +1,26 @@
+apply plugin: "base"
+
+defaultTasks("packTextures")
+
+configurations {
+    packageTex
+}
+
+dependencies {
+    packageTex "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+}
+
+task packTextures(type: JavaExec) {
+    classpath = configurations.packageTex
+    main = "com.badlogic.gdx.tools.texturepacker.TexturePacker"
+    args 'in', 'out', 'fly'
+}
+
+task copyResources(type: Copy) {
+    dependsOn = [ packTextures ]
+    from 'out'
+    into '../core/assets/data'
+
+}
+
+assemble.dependsOn(copyResources)

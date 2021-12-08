@@ -7,9 +7,15 @@ import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
 public class MetaRegionBuilder {
     
-    static public int REGION_MAX_SIZE = 5;
+    static public int REGION_MAX_SIZE = 45;
 
 	private int itemCount = 0;
+	private int size;
+
+	public void setSize(int size)
+	{
+		this.size = size;
+	}
 
     private Vector2 firstRoomCenter;
 	
@@ -29,7 +35,7 @@ public class MetaRegionBuilder {
 		
 		// Create random first room centered on player
 		MetaFeature firstRoom = generateRandomRoom( region, null );
-		
+		this.itemCount++;
 		region.add( firstRoom );
 
 		// Generate further content from the portals of the first room
@@ -47,7 +53,7 @@ public class MetaRegionBuilder {
 
 	private MetaFeature generateFromPortal( Region region, MetaPortal portal )
 	{
-		if( this.itemCount >= REGION_MAX_SIZE )
+		if( this.itemCount >= this.size )
 		{
 			// itemcount reached, close the portal from the source
 			portal.getSource().closePortal(portal);
@@ -60,11 +66,19 @@ public class MetaRegionBuilder {
 		{
 			// TODO: add probability
 			ret = createRandomCorridor( region, portal );
+
+			// Just try once more if by random chance can fit
+			if(ret== null)
+				ret = createRandomCorridor( region, portal );
 		}
 
 		if(portal.START_TYPE == MetaPortal.CORRIDOR)
 		{
 			ret = generateRandomRoom( region, portal );
+			
+			// Just try once more if by random chance can fit
+			if(ret== null)
+				ret = generateRandomRoom( region, portal );
 		}
 
 		if( ret == null)
@@ -75,9 +89,9 @@ public class MetaRegionBuilder {
 		else
 		{
 			region.add(ret);
+			this.itemCount++;
 		}
 
-		this.itemCount++;
 		return ret;
 	}
 	
@@ -115,7 +129,7 @@ public class MetaRegionBuilder {
 		MetaCorridorBuilder metaCorrBuilder = MetaCorridorBuilder.INSTANCE;
 		
 		metaCorrBuilder.createFromPortal( portal );
-		metaCorrBuilder.setLength( 1 + GenSeed.random.nextInt( 10 ) );
+		metaCorrBuilder.setLength( 1 + GenSeed.random.nextInt( 18 ) );
 		
 		MetaCorridor corr = metaCorrBuilder.build();
 		portal.setTarget(corr);
@@ -153,8 +167,8 @@ public class MetaRegionBuilder {
 		}
 		
 		// have to be at least minx/miny long/wide to accommodate the possible corridor
-		float w = (float) Math.max(minwidth, GenSeed.random.nextInt( 28 ) );
-		float h = (float) Math.max(minheight, GenSeed.random.nextInt( 28 ) );
+		float w = (float) Math.max(minwidth, GenSeed.random.nextInt( 22 ) );
+		float h = (float) Math.max(minheight, GenSeed.random.nextInt( 22 ) );
 		
 		roomBuilder.setSize( w, h );
 		
@@ -162,7 +176,7 @@ public class MetaRegionBuilder {
 		
 		if( fromPortal == null )
 		{
-			roomBuilder.setPosition( firstRoomCenter.x - w * 0.5f, firstRoomCenter.y - h * 0.5f);
+			roomBuilder.setPosition( firstRoomCenter.x - w * 0.51f, firstRoomCenter.y - h * 0.51f);
 		}	
 		else
 		{
@@ -182,6 +196,12 @@ public class MetaRegionBuilder {
 		{
 			// for the first room we create exactly one exit
 			howManyAdditionalExits = 1;
+		}
+
+		// In the beginning add more exits
+		if( IDGenerator.getCurrentId() < 16 && howManyAdditionalExits == 0 )
+		{
+			howManyAdditionalExits = 2;
 		}
 		
 		for(int i = 0; i < howManyAdditionalExits; i++ )

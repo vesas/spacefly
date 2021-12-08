@@ -1,14 +1,3 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        gradlePluginPortal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        google()
-    }
-    dependencies {
-    }
-}
 
 plugins {
   id "org.sonarqube" version "2.5"
@@ -51,16 +40,18 @@ project(":desktop") {
     }
 }
 
+project(":graphics") {
+    apply plugin: "base"
+
+}
+
 project(":core") {
     apply plugin: "java-library"
 
     dependencies {
+        implementation project(":graphics")
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         
     }
-
-    
-    
-
 }

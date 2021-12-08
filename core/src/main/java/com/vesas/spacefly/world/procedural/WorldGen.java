@@ -11,8 +11,8 @@ import com.vesas.spacefly.monster.ZipperCloudManager;
 import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.AddMonsterCallback;
-import com.vesas.spacefly.world.procedural.corridor.Corridor1;
-import com.vesas.spacefly.world.procedural.corridor.CorridorBuilder;
+import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor;
+import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridorBuilder;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridorBuilder;
 import com.vesas.spacefly.world.procedural.generator.MetaFeature;
@@ -37,17 +37,17 @@ public class WorldGen
 	public void setFirstRoomCenter(Vector2 firstRoomCenter) {
 		this.metaRegionBuilder.setFirstRoomCenter(firstRoomCenter);
 	}
-	
+
 	public WorldGen( AddMonsterCallback world, Visibility visib )
 	{
 		this.world = world;
 		
 		RectangleRoomBuilder.INSTANCE.setVisib( visib );
-		CorridorBuilder.INSTANCE.setVisib( visib );
+		AxisAlignedCorridorBuilder.INSTANCE.setVisib( visib );
 	}
 	public Array<Feature> generate()
 	{
-		
+		metaRegionBuilder.setSize(17);
 		Region metaRegion = metaRegionBuilder.generateMetaRegion();
 		
 		Array<Feature> feats = new Array<Feature>();
@@ -63,7 +63,7 @@ public class WorldGen
 	private void buildRooms( Region region, Array<Feature> feats )
 	{
 		RectangleRoomBuilder roomBuilder = RectangleRoomBuilder.INSTANCE;
-		CorridorBuilder corrBuilder = CorridorBuilder.INSTANCE;
+		AxisAlignedCorridorBuilder corrBuilder = AxisAlignedCorridorBuilder.INSTANCE;
 		
 		Array<MetaFeature> metaFeats = region.getMetaList();
 		
@@ -78,7 +78,7 @@ public class WorldGen
 			}
 			if( metaFeat instanceof MetaCorridor )
 			{
-				Corridor1 corr = corrBuilder.buildFrom( (MetaCorridor)metaFeat );
+				AxisAlignedCorridor corr = corrBuilder.buildFrom( (MetaCorridor)metaFeat );
 				feats.add( corr );
 			}
 		}
@@ -97,22 +97,10 @@ public class WorldGen
 			final float height = feat.getHeight();
 			final float width = feat.getWidth();
 
-			if( G.random.nextInt(100 ) < 25 )
+			for( int j = 0, size = G.random.nextInt(3); j < size; j++)
 			{
-				// SlurgMonster monster = new SlurgMonster(xpos + width * 0.45f, ypos + height * 0.45f );
-				// world.addMonster( monster );	
-			}
-			
-			if( G.random.nextInt(100 ) < 25 )
-			{
-				// SlurgMonster monster = new SlurgMonster(xpos + width * 0.45f, ypos + height * 0.45f );
-				// world.addMonster( monster );	
-			}
-			
-			if( G.random.nextInt(100 ) < 25 )
-			{
-				// SlurgMonster monster = new SlurgMonster(xpos + width * 0.45f, ypos + height * 0.45f );
-				// world.addMonster( monster );	
+				SlurgMonster monster = new SlurgMonster(xpos + width * 0.45f, ypos + height * 0.45f );
+				world.addMonster( monster );	
 			}
 			
 			if( G.random.nextInt(100 ) < 18 )

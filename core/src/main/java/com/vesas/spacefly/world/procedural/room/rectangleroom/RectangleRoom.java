@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.GenSeed;
@@ -81,7 +80,7 @@ public class RectangleRoom extends Room
 		{
 			float xx = pixmap.getWidth() * GenSeed.random.nextFloat();
 			float yy = pixmap.getHeight() * GenSeed.random.nextFloat();
-			pixmap.drawCircle((int)xx, (int)yy, (int)(GenSeed.random.nextFloat() * 9.5f + 0.5f));
+			pixmap.drawCircle((int)xx, (int)yy, (int)(GenSeed.random.nextFloat() * 19.5f + 1.5f));
 		}
 		
 		if(GenSeed.random.nextBoolean() )
@@ -116,25 +115,7 @@ public class RectangleRoom extends Room
 		}
 
 		Vector2 dir = new Vector2();
-		Vector2 dir2 = new Vector2();
 		Vector2 start = new Vector2();
-		Vector2 start2 = new Vector2();
-		/*
-		if( ex1 == ExitDir.N )
-		{
-//			pm.fillRectangle( 32, 0, 4, 64);
-//			pm.fillRectangle( pm.getWidth() - 32 , 0, 4, 64);
-//			pm.fillRectangle( 36, 60,  pm.getWidth() - 68 , 4);
-		}
-		
-		if( ex1 == ExitDir.S )
-		{
-//			pm.fillRectangle( 32, pm.getHeight() - 64, 4, 64);
-//			pm.fillRectangle( pm.getWidth() - 32 ,  pm.getHeight() - 64, 4, 64);
-//			pm.fillRectangle( 36, pm.getHeight() - 64,  pm.getWidth() - 68 , 4);
-		}
-		*/
-		
 		
 		// pixmap has y coord from top down
 		if( ex1 == ExitDir.S )
@@ -213,25 +194,7 @@ public class RectangleRoom extends Room
 		}
 		
 		Vector2 dir = new Vector2();
-		Vector2 dir2 = new Vector2();
 		Vector2 start = new Vector2();
-		Vector2 start2 = new Vector2();
-		/*
-		if( ex1 == ExitDir.N )
-		{
-//			pm.fillRectangle( 32, 0, 4, 64);
-//			pm.fillRectangle( pm.getWidth() - 32 , 0, 4, 64);
-//			pm.fillRectangle( 36, 60,  pm.getWidth() - 68 , 4);
-		}
-		
-		if( ex1 == ExitDir.S )
-		{
-//			pm.fillRectangle( 32, pm.getHeight() - 64, 4, 64);
-//			pm.fillRectangle( pm.getWidth() - 32 ,  pm.getHeight() - 64, 4, 64);
-//			pm.fillRectangle( 36, pm.getHeight() - 64,  pm.getWidth() - 68 , 4);
-		}
-		*/
-		
 		
 		// pixmap has y coord from top down
 		if( ex1 == ExitDir.S )
@@ -291,17 +254,6 @@ public class RectangleRoom extends Room
 		
 		system.draw( pm );
 		
-	}
-	
-	private boolean outsidePixmap( Pixmap pm, int x, int y )
-	{
-		if( x < 0 || x > pm.getWidth() )
-			return true;
-		
-		if( y < 0 || y > pm.getHeight() )
-			return true;
-		
-		return false;
 	}
 
 }
