@@ -2,7 +2,7 @@ package com.vesas.spacefly.world.procedural.generator;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.world.procedural.corridor.Corridor1;
+import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
 public class MetaCorridor implements MetaFeature
@@ -15,12 +15,12 @@ public class MetaCorridor implements MetaFeature
 	private MetaPortal startPortal = new MetaPortal(); 
 	private MetaPortal endPortal = new MetaPortal();
 	
-	public Corridor1 real;
+	public AxisAlignedCorridor real;
 	private int id;
 
 	public MetaCorridor()
 	{
-		id = IDGenerator.getId();
+		id = IDGenerator.getNextId();
 	}
 
 	@Override

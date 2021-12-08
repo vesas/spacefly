@@ -46,8 +46,8 @@ public class BlockUp implements FeatureBlock
 		up.x = 0f;
 		up.y = 0.5f;
 		
-		right = right.rotate( rotate );
-		up = up.rotate( rotate );
+		right = right.rotateDeg( rotate );
+		up = up.rotateDeg( rotate );
 		
 		float[] v = new float[8];
 		
@@ -71,8 +71,6 @@ public class BlockUp implements FeatureBlock
 		
 		body = builder.construct();
 		
-//		EarClippingTriangulator ect = new EarClippingTriangulator();
-//		triIndices = ect.computeTriangles(vertices);
 	}
 	
 	public void draw(Screen screen)

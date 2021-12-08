@@ -26,7 +26,7 @@ public class MetaPortal
 
 	public MetaPortal() 
 	{  
-		this.id = IDGenerator.getId();
+		this.id = IDGenerator.getNextId();
 	}
 
 	public MetaFeature getSource() {

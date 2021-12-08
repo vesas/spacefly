@@ -10,27 +10,27 @@ import com.vesas.spacefly.world.procedural.room.BlockUp;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 import com.vesas.spacefly.visibility.Visibility;
 
-public class CorridorBuilder
+public class AxisAlignedCorridorBuilder
 {
 	private static float WALL_WIDTH = 0.5f;
 
 	private float xpos, ypos;
 	private float xsize, ysize;
 
-	public static CorridorBuilder INSTANCE = new CorridorBuilder();
+	public static AxisAlignedCorridorBuilder INSTANCE = new AxisAlignedCorridorBuilder();
 	
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
 	
 	private Visibility visib;
 	
-	private CorridorBuilder() { }
+	private AxisAlignedCorridorBuilder() { }
 	
 	public void setVisib( Visibility visib )
 	{
 		this.visib = visib;
 	}
 	
-	public Corridor1 buildFrom( MetaCorridor metaCorr )
+	public AxisAlignedCorridor buildFrom( MetaCorridor metaCorr )
 	{
 		this.xpos = metaCorr.getBounds().x;
 		this.ypos = metaCorr.getBounds().y;
@@ -142,7 +142,7 @@ public class CorridorBuilder
 		}
 		
 		visib.finishConvexArea();
-		Corridor1 corr = new Corridor1();
+		AxisAlignedCorridor corr = new AxisAlignedCorridor();
 		
 		corr.setPosition( this.xpos, this.ypos);
 		corr.setDimensions( this.xsize, this.ysize );

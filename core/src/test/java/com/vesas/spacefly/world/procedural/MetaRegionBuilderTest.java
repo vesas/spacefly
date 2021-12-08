@@ -13,6 +13,7 @@ public class MetaRegionBuilderTest {
     {
         MetaRegionBuilder gen = new MetaRegionBuilder();
         gen.setFirstRoomCenter(new Vector2(0,0));
+        gen.setSize(1);
 
         Region region = gen.generateMetaRegion();
         

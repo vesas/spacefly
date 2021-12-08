@@ -105,7 +105,7 @@ public class SpaceflyGame extends Game
 	@Override
 	public void render()
 	{
-		Gdx.gl.glClearColor(0.08f, 0.08f, 0.08f, 1);
+		Gdx.gl.glClearColor(0.03f, 0.03f, 0.03f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 

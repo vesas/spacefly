@@ -17,54 +17,13 @@ public class MetaRectangleRoom implements MetaFeature
 
 	public MetaRectangleRoom() 
 	{ 
-		this.id = IDGenerator.getId();
-	}
-
-	public MetaRectangleRoom( float w, float h )
-	{ 
-		this.id = IDGenerator.getId();
-		rect.width = w;
-		rect.height = h;
+		this.id = IDGenerator.getNextId();
 	}
 	
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public enum Exits
-	{
-		EXIT_NORTH,
-		EXIT_EAST,
-		EXIT_WEST,
-		EXIT_SOUTH;
-		
-		static public Exits getRandom()
-		{
-			return Exits.values()[GenSeed.random.nextInt( Exits.values().length )];
-		}
-		
-		public Exits getOpposite()
-		{
-			if( this == EXIT_NORTH )
-				return EXIT_SOUTH;
-			
-			if( this == EXIT_SOUTH)
-				return EXIT_NORTH;
-			
-			if( this == EXIT_WEST )
-				return EXIT_EAST;
-			
-			if( this == EXIT_EAST )
-				return EXIT_WEST;
-			
-			return EXIT_NORTH;
-		}
-	}
-	
 	public void setSize( float posx, float posy, float w, float h )
 	{
 		rect.x = posx;
@@ -134,22 +93,11 @@ public class MetaRectangleRoom implements MetaFeature
 		}
 		
 	}
-	
-	public void addExit( MetaPortal e, ExitDir exitDir )
-	{
-//		exits.add( e );
-		
-	}
-	
-	public int[] gen()
-	{
-		return null;
-	}
-	
+
 	@Override
 	public boolean overlaps(Rectangle rect)
 	{
-		return this.rect.contains(rect) || this.rect.overlaps( rect );
+		return rect.contains(this.rect) || this.rect.contains(rect) || this.rect.overlaps( rect );
 	}
 
 	@Override

@@ -8,9 +8,8 @@ import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.world.procedural.Feature;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
-import com.vesas.spacefly.world.procedural.room.FeatureConnector;
 
-public class Corridor1 implements Feature
+public class AxisAlignedCorridor implements Feature
 {
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
 	
@@ -30,13 +29,6 @@ public class Corridor1 implements Feature
 	
 	Texture tex;
 	
-	protected Array<FeatureConnector> connectors = new Array<FeatureConnector>(2);
-	
-	public FeatureConnector getSecondRoomConnector()
-	{
-		return connectors.get(1);
-	}
-	
 	public void addBlocks( Array<FeatureBlock> blocks )
 	{
 		this.blocks.addAll( blocks );
@@ -44,8 +36,10 @@ public class Corridor1 implements Feature
 	
 	public void draw(Screen screen)
 	{
+		// draw floor texture
 		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
 		
+		// draw all wall blocks
 		final int size = blocks.size;
 		for( int i = 0; i < size; i++ )
 		{
