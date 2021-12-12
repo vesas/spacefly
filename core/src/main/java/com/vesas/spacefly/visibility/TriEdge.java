@@ -28,9 +28,9 @@ public class TriEdge
 		final Vector2 p1 = e.getEndPoint1().p;
 		final Vector2 p2 = e.getEndPoint2().p;
 		
-		final boolean p2Right = PolyUtils.isClockwise(p1.x-viewPoint.x, p1.y-viewPoint.y, p2.x-viewPoint.x, p2.y-viewPoint.y);
+		final boolean p2Right = PolyUtils.isCounterClockwise(p1.x-viewPoint.x, p1.y-viewPoint.y, p2.x-viewPoint.x, p2.y-viewPoint.y);
 		
-		if( p2Right )
+		if( !p2Right )
 		{
 			rGate.x = p2.x;
 			rGate.y = p2.y;

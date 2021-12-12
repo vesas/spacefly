@@ -10,7 +10,6 @@ public class XDimComparatorTest
 	@Test
 	public void test()
 	{
-		
 		XDimComparator comp = new XDimComparator();
 		
 		EndPoint a = new EndPoint(1,2); 
@@ -18,8 +17,33 @@ public class XDimComparatorTest
 		
 		int res = comp.compare(a, b);
 
-		// assertEquals(5, res);
+		assertEquals(-1, res);
+	}
+
+	@Test
+	public void test2()
+	{
+		XDimComparator comp = new XDimComparator();
 		
+		EndPoint a = new EndPoint(3,3); 
+		EndPoint b = new EndPoint(1,1);
+		
+		int res = comp.compare(a, b);
+
+		assertEquals(1, res);
+	}
+
+	@Test
+	public void test3()
+	{
+		XDimComparator comp = new XDimComparator();
+		
+		EndPoint a = new EndPoint(5,3); 
+		EndPoint b = new EndPoint(5,1);
+		
+		int res = comp.compare(a, b);
+
+		assertEquals(1, res);
 	}
 
 }
