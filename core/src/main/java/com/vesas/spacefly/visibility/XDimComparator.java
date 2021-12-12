@@ -2,6 +2,9 @@ package com.vesas.spacefly.visibility;
 
 import java.util.Comparator;
 
+/**
+ * Compares points first by x-axis, then y-axis.
+ */
 class XDimComparator implements Comparator<EndPoint>
 {
 
