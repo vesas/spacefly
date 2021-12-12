@@ -52,7 +52,6 @@ public class Hud
 		G.shapeRenderer.end();
 		
 		G.shapeRenderer.setProjectionMatrix(screen.minimapCamera.combined);
-//		G.shapeRenderer.setProjectionMatrix(screen.camera.combined);
 		
 		Gdx.gl.glViewport( width - 320, height - 320, 300, 300 );
 		

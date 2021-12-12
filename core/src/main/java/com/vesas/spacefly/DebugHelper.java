@@ -20,6 +20,7 @@ public class DebugHelper
 	static public boolean BOX2D_DEBUG = false;
 	static public boolean GC_DEBUG = false;
 	static public boolean VISIB_DEBUG = false;
+	static public boolean PLAYER_DEBUG = false;
 
 	static public void calcGCStats() 
 	{

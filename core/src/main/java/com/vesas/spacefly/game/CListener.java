@@ -72,11 +72,6 @@ public class CListener implements ContactListener
 	@Override
 	public void beginContact(Contact contact)
 	{
-		// TODO Auto-generated method stub
-		
-		//Object o = contact.getFixtureA().getUserData();
-		//Object o2 = contact.getFixtureB().getUserData();
-		
 		Object o1 = null;
 		Object o2 = null;
 		

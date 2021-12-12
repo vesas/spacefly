@@ -2,19 +2,17 @@ package com.vesas.spacefly.monster;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.vesas.spacefly.box2d.Box2DWorld;
-import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.Bullet;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.game.Util;
 
-public class ZipperMonster extends Monster implements AnimateEntity
+public class ZipperMonster extends Monster
 {
 	enum IMPULSE_STATE
 	{
@@ -107,12 +105,6 @@ public class ZipperMonster extends Monster implements AnimateEntity
 		{
 			cloud.remove( this );
 		}
-	}
-
-	@Override
-	public Body getBody()
-	{
-		return body;
 	}
 
 	@Override
@@ -209,7 +201,7 @@ public class ZipperMonster extends Monster implements AnimateEntity
 	private void turnToTarget( float delta )
 	{
 		float targetAngle = targetDir.angleDeg();
-		float bodyAngle = body.getAngle() * G.RADIANS_TO_DEGREES;
+		float bodyAngle = body.getAngle() * Util.RADTODEG;
 
 		float diff = Util.angleDiff(targetAngle, bodyAngle);
 
@@ -305,7 +297,7 @@ public class ZipperMonster extends Monster implements AnimateEntity
 
 		float angle = body.getAngle();
 
-		sprite.setRotation(angle * G.RADIANS_TO_DEGREES - 90.0f);
+		sprite.setRotation(angle * Util.RADTODEG - 90.0f);
 
 		sprite.draw(screen.worldBatch);
 

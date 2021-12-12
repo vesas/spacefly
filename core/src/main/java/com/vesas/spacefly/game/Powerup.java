@@ -12,7 +12,6 @@ import com.vesas.spacefly.box2d.Box2DWorld;
 
 public class Powerup implements AnimateEntity
 {
-	
 	protected Body body;
 	
 	private int type = 0;
@@ -40,16 +39,11 @@ public class Powerup implements AnimateEntity
 		PolygonShape polyShape = new PolygonShape();
 		polyShape.setAsBox(0.25f , 0.25f );
 		
-		// Create a fixture definition to apply our shape to
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = polyShape;
 		fixtureDef.density = 0.515f; 
 		fixtureDef.friction = 0.0001f;
-		fixtureDef.restitution = 0.65f; // bounce
-		//fixtureDef.filter.groupIndex = Physics.GROUP_MONSTER;
-		
-		//fixtureDef.filter.categoryBits = 16; // 1 wall, 2 player, 4 playerbullet, 8 monsterbullet, 16 monster
-		//fixtureDef.filter.maskBits = 23;
+		fixtureDef.restitution = 0.65f;
 		
 		body.createFixture(fixtureDef);
 		
@@ -58,8 +52,6 @@ public class Powerup implements AnimateEntity
 		
 		body.setLinearDamping(0.2f);
 		body.setAngularDamping(0.2f);
-		
-		//body.setTransform(body.getPosition().x, body.getPosition().y, 90.0f * DEGREES_TO_RADIANS);
 		
 		body.setUserData( this );
 		
@@ -104,14 +96,13 @@ public class Powerup implements AnimateEntity
 	public void draw(Screen screen)
 	{
 		Vector2 pos = body.getPosition();
-//		pos.scl(Physics.BOX_TO_WORLD);
 		
 		Sprite sprite = G.spice[ type ];
 		
 		sprite.setOriginCenter();
 		sprite.setSize(0.55f, 0.55f);
 		
-		float bodyAngleInDegrees = body.getAngle() * G.RADIANS_TO_DEGREES - 90.0f;
+		float bodyAngleInDegrees = body.getAngle() * Util.RADTODEG - 90.0f;
 
 		sprite.setRotation(bodyAngleInDegrees);
 
