@@ -1,0 +1,36 @@
+
+
+@startuml
+
+class SpaceflyGame
+
+class box2d.BodyBuilder
+class box2d.Box2DWorld
+
+interface game.AnimateEntity
+{
+    tick( float delta )
+    draw(Screen screen)
+    destroy()
+    getBody()
+}
+
+abstract class monster.Monster
+{
+    body 
+
+}
+class monster.SlurgMonster
+class monster.ShellMonster
+class monster.ZipperCloud
+class monster.ZipperCloudManager
+class monster.ZipperMonster
+
+monster.Monster <|-- monster.SlurgMonster
+monster.Monster <|-- monster.ShellMonster
+monster.Monster <|-- monster.ZipperMonster
+
+game.AnimateEntity <|.. monster.Monster
+
+
+@enduml

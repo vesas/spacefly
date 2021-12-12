@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.vesas.spacefly.DebugHelper;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.monster.MonsterBullet;
 import com.vesas.spacefly.particles.ImpulseParticleSystem;
@@ -35,9 +36,6 @@ public class Player
 	private static float THRUST_AMOUNT = 2.26f;
 	private static float MAX_VELOCITY = 5.39f;
 	
-	private static float DEGTORAD = (float) (Math.PI / 180.0f);
-	private static float RADTODEG = (float) (180.0f / Math.PI);
-
 	private float PI_PER_180 = (float) (Math.PI / 180.0f);
 
 	public static Player INSTANCE = new Player();
@@ -265,15 +263,20 @@ public class Player
 		float randomNoise1 = G.random.nextFloat();
 		float randomNoise2 = G.random.nextFloat();
 		
-		
 		final Vector2 bodyPos = body.getWorldCenter();
 		
+		/*
 		bullets.fireBullet(bodyPos.x  + bulletDirectionVector.x * 0.4f, 
 				bodyPos.y + bulletDirectionVector.y * 0.4f, 
-							bulletDirectionVector.x * 9.6f + (randomNoise1 - 0.5f),
-							+ bulletDirectionVector.y * 9.6f + (randomNoise2 - 0.5f));
-		
-		G.shot.play( 0.02f );
+							bulletDirectionVector.x * 9.6f + (randomNoise1 - 0.5f)*0.2f,
+							+ bulletDirectionVector.y * 9.6f + (randomNoise2 - 0.5f)*0.2f);
+		*/
+		bullets.fireBullet(bodyPos.x  + bulletDirectionVector.x * 0.4f, 
+				bodyPos.y + bulletDirectionVector.y * 0.4f, 
+							bulletDirectionVector.x * 9.6f,
+							bulletDirectionVector.y * 9.6f);
+
+		G.shot.play( 0.01f );
 	}
 
 	
@@ -291,12 +294,14 @@ public class Player
 		
 		if( apressed )
 			this.moveleft( floatDelta );
+			// this.rotateLeft(floatDelta);
 		
 		if( spressed )
 			this.movedown( floatDelta );
 		
 		if( dpressed )
 			this.moveright( floatDelta );
+			// this.rotateRight(floatDelta);
 		
 		if( firstFingerTouching )
 		{
@@ -312,6 +317,7 @@ public class Player
 			muzzleflash -= floatDelta;
 		
 		Vector2 pos = body.getPosition();
+		float angle = body.getAngle();
 		Vector2 vel = body.getLinearVelocity();
 		trail.setEmitterPos( pos.x, pos.y );
 
@@ -342,7 +348,7 @@ public class Player
 		trail.tick( floatDelta );
 		
 		
-		screen.updatePosition( pos, floatDelta );
+		screen.updatePosition( pos, floatDelta, angle );
 		
 	}
 	
@@ -368,18 +374,18 @@ public class Player
 		tempVector2.y = -directiony;
 		tempVector2.nor();
 	
-		float tempTargetAngle = -tempVector2.angleRad() - 90f * DEGTORAD;
+		float tempTargetAngle = -tempVector2.angleRad() - 90f * Util.DEGTORAD;
 		
-		float bodyAngle = body.getAngle();
+		float bodyAngle = body.getAngle() % 360.0f;
 		float nextAngle = bodyAngle + body.getAngularVelocity() / 5.0f;
 		float totalRotation = tempTargetAngle - nextAngle;
 		
-		while ( totalRotation < -180 * DEGTORAD ) totalRotation += 360 * DEGTORAD;
-		while ( totalRotation >  180 * DEGTORAD ) totalRotation -= 360 * DEGTORAD;
+		while ( totalRotation < -180 * Util.DEGTORAD ) totalRotation += 360 * Util.DEGTORAD;
+		while ( totalRotation >  180 * Util.DEGTORAD ) totalRotation -= 360 * Util.DEGTORAD;
 		
-		float desiredAngularVelocity = totalRotation * 40f;
+		float desiredAngularVelocity = totalRotation * 290f;
 		
-		float change = 135f * DEGTORAD; //allow n degree rotation per time step
+		float change = 25f * Util.DEGTORAD; //allow n degree rotation per time step
 		desiredAngularVelocity = Math.min( change, Math.max(-change, desiredAngularVelocity));
 		
 		float impulse = body.getInertia() * desiredAngularVelocity;
@@ -435,7 +441,7 @@ public class Player
 //		body.setTransform(body.getPosition(), ( gunangle - 90) * DEGTORAD );
 		
 		float bodyAngle = body.getAngle();
-		sprite.setRotation(bodyAngle*RADTODEG);
+		sprite.setRotation(bodyAngle*Util.RADTODEG);
 		
 		sprite.setPosition(pos.x - 0.25f, pos.y - 0.25f);
 		
@@ -461,7 +467,7 @@ public class Player
 			flash.setOriginCenter();
 			flash.setScale( 0.05f );
 			flash.setColor(0.695f, 0.49515f, 0.39511f, 0.9f);
-			sprite.setRotation(bodyAngle*RADTODEG);
+			sprite.setRotation(bodyAngle*Util.RADTODEG);
 			flash.setPosition( pos.x - flash.getWidth() * 0.5f + bulletDirectionVector.x * 0.4f, pos.y - flash.getHeight() * 0.5f + bulletDirectionVector.y * 0.4f );
 			flash.draw( screen.worldBatch);
 			
@@ -493,28 +499,31 @@ public class Player
 		tempVector.y = mousey;
 		screen.viewport.unproject(tempVector);
 		
-		/*
-		G.font.draw( screen.screenBatch, "puremousex: " + mousex, 10.0f, 312.0f);
-		G.font.draw( screen.screenBatch, "puremousey: " + mousey, 10.0f, 342.0f);
+		if(DebugHelper.PLAYER_DEBUG) 
+		{
+			G.font.draw( screen.screenBatch, "puremousex: " + mousex, 10.0f, 312.0f);
+			G.font.draw( screen.screenBatch, "puremousey: " + mousey, 10.0f, 342.0f);
+			
+			G.font.draw( screen.screenBatch, "mx in world: " + tempVector.x, 10.0f, 212.0f);
+			G.font.draw( screen.screenBatch, "my in world: " + tempVector.y, 10.0f, 242.0f);
+			
+			G.font.draw( screen.screenBatch, "playerw.x: " + pos.x, 10.0f, 272.0f);
+			G.font.draw( screen.screenBatch, "playerw.y: " + pos.y, 10.0f, 292.0f);
+			
+			float worldWidth = screen.viewport.getWorldWidth();
+			float worldHeight = screen.viewport.getWorldHeight();
+			
+			G.font.draw( screen.screenBatch, "worldWidth: " + worldWidth, 10.0f, 132.0f);
+			G.font.draw( screen.screenBatch, "worldHeight: " + worldHeight, 10.0f, 152.0f);
+			
+			float screenHeight = screen.viewport.getScreenHeight();
+			float screenWidth = screen.viewport.getScreenWidth();
+			
+			G.font.draw( screen.screenBatch, "screenWidth: " + screenWidth, 10.0f, 80.0f);
+			G.font.draw( screen.screenBatch, "screenHeight: " + screenHeight, 10.0f, 59.0f);
 		
-		G.font.draw( screen.screenBatch, "mx in world: " + tempVector.x, 10.0f, 212.0f);
-		G.font.draw( screen.screenBatch, "my in world: " + tempVector.y, 10.0f, 242.0f);
+		}
 		
-		G.font.draw( screen.screenBatch, "playerw.x: " + pos.x, 10.0f, 272.0f);
-		G.font.draw( screen.screenBatch, "playerw.y: " + pos.y, 10.0f, 292.0f);
-		
-		float worldWidth = screen.viewport.getWorldWidth();
-		float worldHeight = screen.viewport.getWorldHeight();
-		
-		G.font.draw( screen.screenBatch, "worldWidth: " + worldWidth, 10.0f, 132.0f);
-		G.font.draw( screen.screenBatch, "worldHeight: " + worldHeight, 10.0f, 152.0f);
-		
-		float screenHeight = screen.viewport.getScreenHeight();
-		float screenWidth = screen.viewport.getScreenWidth();
-		
-		G.font.draw( screen.screenBatch, "screenWidth: " + screenWidth, 10.0f, 80.0f);
-		G.font.draw( screen.screenBatch, "screenHeight: " + screenHeight, 10.0f, 59.0f);
-		*/
 		
 //		tempVector.x = bodyPos.x;
 //		tempVector.y = bodyPos.y;
@@ -578,6 +587,16 @@ public class Player
 			vel.scl(MAX_VELOCITY);
 			body.setLinearVelocity(vel);
 		}
+	}
+
+	public void rotateLeft(float delta)
+	{
+		body.applyAngularImpulse(delta * 0.1f, true);
+	}
+
+	public void rotateRight(float delta)
+	{
+		body.applyAngularImpulse(-delta * 0.1f, true);
 	}
 
 	public void moveup(float delta)

@@ -11,14 +11,13 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.vesas.spacefly.DebugHelper;
 import com.vesas.spacefly.box2d.Box2DWorld;
-import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.Bullet;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.game.Util;
 
-public class ShellMonster extends Monster implements AnimateEntity
+public class ShellMonster extends Monster
 {
 	private float cooldown = 0 + random.nextFloat() * 0.1f;
 
@@ -172,7 +171,7 @@ public class ShellMonster extends Monster implements AnimateEntity
 				tmp.nor();
 
 				float targetAngle = tmp.angle();
-				float bodyAngle = body.getAngle() * G.RADIANS_TO_DEGREES;
+				float bodyAngle = body.getAngle() * Util.RADTODEG;
 
 				// debug1 = "targetAngle: " + targetAngle;
 				// debug2 = "bodyAngle: " + bodyAngle;
@@ -219,7 +218,7 @@ public class ShellMonster extends Monster implements AnimateEntity
 			playerPos.nor();
 
 			float playerAngle = playerPos.angle();
-			float bodyAngle = body.getAngle() * G.RADIANS_TO_DEGREES;
+			float bodyAngle = body.getAngle() * Util.RADTODEG;
 
 			// debug3 = "playerAngle: " + playerAngle;
 
@@ -398,12 +397,6 @@ public class ShellMonster extends Monster implements AnimateEntity
 	}
 	
 	@Override
-	public Body getBody()
-	{
-		return body;
-	}
-
-	@Override
 	public void tick( float delta )
 	{
 		if (false)
@@ -493,7 +486,7 @@ public class ShellMonster extends Monster implements AnimateEntity
 		// sprite.setPosition(pos.x, pos.y);
 
 		float angle = body.getAngle();
-		float bodyAngleInDegrees = angle * G.RADIANS_TO_DEGREES - 90.0f;
+		float bodyAngleInDegrees = angle * Util.RADTODEG - 90.0f;
 
 		sprite.setRotation(bodyAngleInDegrees);
 

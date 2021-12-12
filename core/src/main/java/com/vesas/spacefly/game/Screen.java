@@ -32,9 +32,6 @@ public class Screen
 	public Viewport viewport;
 	public Viewport minimapViewport;
 	
-	// current shakeDisplacement
-	public Vector2 shakeDisplacement = new Vector2();
-	
 	public void init()
 	{
 		final int width = Gdx.graphics.getWidth();
@@ -67,12 +64,7 @@ public class Screen
 		
 		G.shapeRenderer = new ShapeRenderer();
 		
-		
-//		minimapViewport.update((int)(width * 0.2f) , (int)(height * 0.2f), true);
-
-		
 		viewport.update(width, height, true);
-		
 		
 		screenBatch.setProjectionMatrix(screenCamera.combined);
 		worldBatch.setProjectionMatrix(camera.combined);
@@ -84,22 +76,25 @@ public class Screen
 		Shake shake = new ShakeTranslate();
 		CameraPositionState.addEffect( shake );
 	}
-	
-	public void updatePosition( Vector2 pos, float delta )
+
+	public float getCameraAngle(OrthographicCamera cam) {
+		return ((float) Math.atan2(cam.up.y, cam.up.x) * Util.RADTODEG);
+	}
+
+	public void updatePosition( Vector2 pos, float delta, float angle )
 	{
-//		viewport.getCamera().position.x = pos.x;
-//		viewport.getCamera().position.y = pos.y;
-		
 		minimapCamera.position.x = pos.x;
 		minimapCamera.position.y = pos.y;
 		
-//		float lerp = 1.1f * delta;
-//		Vector3 position = camera.position;
-//		position.x += (pos.x - position.x) * lerp;
-//		position.y += (pos.y - position.y) * lerp;
-		
 		CameraPositionState.tick( delta );
 		CameraPositionState.performEffect( pos, camera.position );
+
+		float playerAngle = ((angle+90) % 360) * Util.RADTODEG;
+		// Vector3 camDir = new Vector3(0.0f, 1.0f, 0.0f);
+		// camDir.rotate(angle, 0.0f, 0.0f, 1.0f);
+		// camera.rotate((this.getCameraAngle(((OrthographicCamera)camera)) - playerAngle), 0.0f, 0.0f, -1.0f);
+
+		// camera. rotate(angle, 0.0f, 0.0f, 1.0f);
 		
 		final int width = Gdx.graphics.getWidth();
 		final int height = Gdx.graphics.getHeight();
@@ -115,16 +110,12 @@ public class Screen
 		
 		G.shapeRenderer.setProjectionMatrix(camera.combined);
 		
-//		Graphics.batch.setProjectionMatrix(Graphics.mainViewport.getCamera().combined);
-//		Graphics.polySpriteBatch.setProjectionMatrix(Graphics.mainViewport.getCamera().combined);
-//		Graphics.shapeRenderer.setProjectionMatrix(Graphics.mainViewport.getCamera().combined);
 	}
 	
 	
 	public boolean outSideScreen( Vector2 pos, int tolerance )
 	{	
 		return false;
-		
 	}
 	
 	public void dispose()

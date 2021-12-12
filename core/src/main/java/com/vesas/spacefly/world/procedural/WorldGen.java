@@ -47,7 +47,7 @@ public class WorldGen
 	}
 	public Array<Feature> generate()
 	{
-		metaRegionBuilder.setSize(17);
+		metaRegionBuilder.setSize(35);
 		Region metaRegion = metaRegionBuilder.generateMetaRegion();
 		
 		Array<Feature> feats = new Array<Feature>();

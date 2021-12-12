@@ -50,15 +50,13 @@ public class SpaceflyGame extends Game
 	@Override
 	public void create() {		
 		
-		//Gdx.input.setCursorCatched(true);
-		
 		G.loadTextures();
 		
 		Player.INSTANCE.init();
 		
 		screen = new Screen();
 		screen.init();
-		screen.updatePosition( Player.INSTANCE.getWorldCenter(), 0.5f );
+		screen.updatePosition( Player.INSTANCE.getWorldCenter(), 0.5f,0.0f );
 		
 		playerInput = new PlayerInput( screen );
 		Gdx.input.setInputProcessor( playerInput );
@@ -66,10 +64,6 @@ public class SpaceflyGame extends Game
 		AbstractGameWorld.INSTANCE.init(screen);
 		
 		hud = new Hud();
-		
-//		TileBasedMap map = AbstractGameWorld.INSTANCE.getPathFindingGrid();
-//		FindPath.init(map);
-		
 		
 		clistener = new CListener(); 
 		Box2DWorld.world.setContactListener( clistener );
@@ -79,18 +73,7 @@ public class SpaceflyGame extends Game
 		Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
 		
 		DebugShow.debug = true;
-		/*
-		try {
-            final org.lwjgl.input.Cursor emptyCursor = new org.lwjgl.input.Cursor( 1 , 1 , 0 , 0 , 1 , BufferUtils.createIntBuffer( 1 ) , null );
-            org.lwjgl.input.Mouse.setNativeCursor( emptyCursor );
-        } catch ( final Exception e ) {
-            Gdx.app.log( "MouseCursor" , "init()  Exception e= " + e );
-        }
-        */
 		
-		//Gdx.graphics.setVSync(true);
-		
-//		GLProfiler.enable();
 	}
 
 	@Override
@@ -146,6 +129,7 @@ public class SpaceflyGame extends Game
 		final boolean f5 =  Gdx.input.isKeyPressed(Keys.F5);
 		final boolean f6 =  Gdx.input.isKeyPressed(Keys.F6);
 		final boolean f7 =  Gdx.input.isKeyPressed(Keys.F7);
+		final boolean f8 =  Gdx.input.isKeyPressed(Keys.F8);
 		
 		debugKeyCooldown -= floatDelta;
 		if( debugKeyCooldown <= 0 )
@@ -167,6 +151,12 @@ public class SpaceflyGame extends Game
 		{	
 			debugKeyCooldown = 1;
 			DebugHelper.VISIB_DEBUG = !DebugHelper.VISIB_DEBUG;
+		}
+
+		if( f8 && debugKeyCooldown <= 0 )
+		{	
+			debugKeyCooldown = 1;
+			DebugHelper.PLAYER_DEBUG  = !DebugHelper.PLAYER_DEBUG;
 		}
 		
 		pauseKeyCooldown -= floatDelta;

@@ -75,7 +75,7 @@ public class Spice implements AnimateEntity
 		
 		Sprite sprite = G.spice[0];
 		
-		float bodyAngleInDegrees = body.getAngle() * G.RADIANS_TO_DEGREES - 90.0f;
+		float bodyAngleInDegrees = body.getAngle() * Util.RADTODEG - 90.0f;
 
 		sprite.setRotation(bodyAngleInDegrees);
 

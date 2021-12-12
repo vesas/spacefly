@@ -2,6 +2,9 @@ package com.vesas.spacefly.game;
 
 public class Util
 {
+	public static float DEGTORAD = (float) (Math.PI / 180.0f);
+	public static float RADTODEG = (float) (180.0f / Math.PI);
+
 	/**
 	 * returns the absolute closest difference between two angles in degrees
 	 * @param a1 angle in degrees

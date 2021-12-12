@@ -19,7 +19,7 @@ import com.vesas.spacefly.game.RayCastClosestCB;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.game.Util;
 
-public class SlurgMonster extends Monster implements AnimateEntity
+public class SlurgMonster extends Monster
 {
 	private float cooldown = 0 + random.nextFloat();
 	
@@ -86,8 +86,8 @@ public class SlurgMonster extends Monster implements AnimateEntity
 
 		body.setUserData(this);
 
-		targetDir.setAngle(body.getAngle() * G.RADIANS_TO_DEGREES);
-		dir.setAngle(body.getAngle() * G.RADIANS_TO_DEGREES);
+		targetDir.setAngleDeg(body.getAngle() * Util.RADTODEG);
+		dir.setAngleDeg(body.getAngle() * Util.RADTODEG);
 
 		// Remember to dispose of any shapes after you're done with them!
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
@@ -95,12 +95,6 @@ public class SlurgMonster extends Monster implements AnimateEntity
 
 		setHealth(4);
 
-	}
-
-	@Override
-	public Body getBody()
-	{
-		return body;
 	}
 
 	@Override
@@ -150,7 +144,7 @@ public class SlurgMonster extends Monster implements AnimateEntity
 
 			if (random.nextInt(100) < 50)
 			{
-				dir.setAngle((body.getAngle() * G.RADIANS_TO_DEGREES));
+				dir.setAngleDeg((body.getAngle() * Util.RADTODEG));
 				dir.nor();
 				dir.scl(random.nextFloat() * 358.45f * delta );
 
@@ -348,7 +342,7 @@ public class SlurgMonster extends Monster implements AnimateEntity
 
 	private void turnToTarget( float delta )
 	{
-		float bodyAngle = body.getAngle() * G.RADIANS_TO_DEGREES;
+		float bodyAngle = body.getAngle() * Util.RADTODEG;
 		float nextAngle = (float) (bodyAngle + body.getAngularVelocity() / 60.0f);
 		float targetAngle = targetDir.angle();
 		
@@ -410,7 +404,7 @@ public class SlurgMonster extends Monster implements AnimateEntity
 		float angle = body.getAngle();
 		Vector2 temp = SlurgMonster.tmpVector;
 		temp.nor();
-		temp.setAngle(angle * G.RADIANS_TO_DEGREES );
+		temp.setAngleDeg(angle * Util.RADTODEG );
 		
 		Vector2 temp2 = SlurgMonster.tmpVector2;
 		temp2.x = temp.x;
@@ -464,9 +458,9 @@ public class SlurgMonster extends Monster implements AnimateEntity
 			haloSprite.setColor( 0.0f + val * 0.6f, 0.1f + val * 0.6f, 0.5f + val * 0.5f,0.2f + val * 0.8f );
 		haloSprite.setSize(0.95f + val * 0.13f, 0.95f + val * 0.13f);
 		haloSprite.setPosition(pos.x - haloSprite.getWidth()*0.5f, pos.y - haloSprite.getHeight()*0.5f);
-		haloSprite.setRotation(angle * G.RADIANS_TO_DEGREES - 90.0f);
+		haloSprite.setRotation(angle * Util.RADTODEG - 90.0f);
 
-		sprite.setRotation(angle * G.RADIANS_TO_DEGREES - 90.0f);
+		sprite.setRotation(angle * Util.RADTODEG - 90.0f);
 
 		sprite.draw(screen.worldBatch);
 		

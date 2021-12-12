@@ -8,13 +8,13 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.box2d.Box2DWorld;
+import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.Bullet;
-import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.game.Util;
 
-abstract public class Monster
+abstract public class Monster implements AnimateEntity
 {
 	// Box2D body instance
 	protected Body body;
@@ -89,7 +89,7 @@ abstract public class Monster
 			playerPos.nor();
 
 			float playerAngle = playerPos.angleDeg();
-			float bodyAngle = body.getAngle() * G.RADIANS_TO_DEGREES;
+			float bodyAngle = body.getAngle() * Util.RADTODEG;
 
 			float absAngle = Util.absAngleDiff(playerAngle, bodyAngle);
 			if (absAngle < 95)

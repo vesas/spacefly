@@ -12,7 +12,7 @@ dependencies {
 
 task packTextures(type: JavaExec) {
     classpath = configurations.packageTex
-    main = "com.badlogic.gdx.tools.texturepacker.TexturePacker"
+    mainClass = "com.badlogic.gdx.tools.texturepacker.TexturePacker"
     args 'in', 'out', 'fly'
 }
 
