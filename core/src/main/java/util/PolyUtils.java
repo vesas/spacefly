@@ -9,11 +9,27 @@ public class PolyUtils
 
 	}
 	
+	/**
+	 * Two vectors, 1 and 2, is 2 on the right(clockwise) of 1?
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @return
+	 */
 	static public boolean isClockwise( float x1, float y1, float x2, float y2 )
 	{
 		return x2 * -y1 + y2 * x1 < 0.0f;
 	}
 	
+	/**
+	 * * Two vectors, 1 and 2, is 2 on the left(counterclockwise) of 1?
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @return
+	 */
 	static public boolean isCounterClockwise( float x1, float y1, float x2, float y2 )
 	{
 		return x2 * -y1 + y2 * x1 > 0.0f;
