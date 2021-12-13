@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class VisibilityTest {
     
@@ -51,6 +51,7 @@ public class VisibilityTest {
 
     /**
      * Calculate triangle area from it's vertices
+     * TODO: This could be done with the perp-dot as well (A = perpDot(a,b)/2)
      */
     private float triArea(float x1, float y1, float x2, float y2, float x3, float y3)
     {
