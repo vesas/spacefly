@@ -33,12 +33,16 @@ public class AxisAlignedCorridor implements Feature
 	{
 		this.blocks.addAll( blocks );
 	}
+
+	@Override
+	public void drawWithVisibility(Screen screen) {
+		
+		// draw floor texture
+		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
+	}
 	
 	public void draw(Screen screen)
 	{
-		// draw floor texture
-		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
-		
 		// draw all wall blocks
 		final int size = blocks.size;
 		for( int i = 0; i < size; i++ )
@@ -82,5 +86,5 @@ public class AxisAlignedCorridor implements Feature
 		
 		tex = new Texture(pixmap);
 	}
-
+	
 }

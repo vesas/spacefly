@@ -142,9 +142,9 @@ public class MetaRegionBuilder {
 		return corr;
 	}
 	
-	private MetaRectangleRoom generateRandomRoom( Region region, MetaPortal fromPortal )
+	private MetaFeature generateRandomRoom( Region region, MetaPortal fromPortal )
 	{
-		MetaRoomBuilder roomBuilder = MetaRoomBuilder.INSTANCE;
+		MetaRectangleRoomBuilder roomBuilder = MetaRectangleRoomBuilder.INSTANCE;
 		roomBuilder.init();
 		
 		int minwidth = 3;
@@ -229,7 +229,7 @@ public class MetaRegionBuilder {
 			}
 		}
 		
-		MetaRectangleRoom room = roomBuilder.build();
+		MetaFeature room = roomBuilder.build();
 
 		if(fromPortal != null)
 		{
