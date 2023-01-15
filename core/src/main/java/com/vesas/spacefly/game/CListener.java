@@ -32,14 +32,14 @@ public class CListener implements ContactListener
 			if( monster instanceof SlurgMonster )
 			{
 				explosionStrength = 0.15f;
-				G.explo1.play( 0.10f );
+				G.explo1.play( 0.05f );
 				
 			}
 				
 			else if( monster instanceof ZipperMonster )
 			{
 				explosionStrength = 0.08f;
-				G.explo1.play( 0.05f );
+				G.explo1.play( 0.03f );
 			}
 				
 			
@@ -55,7 +55,7 @@ public class CListener implements ContactListener
 			// not dead yet
 			AbstractGameWorld.INSTANCE.addLittleExplosion( bullet.body.getPosition(), bullet.body.getLinearVelocity(), 0.5f, 1.0f);
 			
-			G.explo1.play( 0.04f );
+			G.explo1.play( 0.02f );
 			
 			ShakeExplo shake = new ShakeExplo();
 			shake.setTimeScale( 20.0f );

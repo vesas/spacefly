@@ -18,8 +18,6 @@ public class RectangleRoomBuilder
 
 	// xsize to the right, ysize to up
 	private float xsize, ysize;
-
-	private static float WALL_WIDTH = 0.5f;
 	
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
 	
@@ -53,35 +51,40 @@ public class RectangleRoomBuilder
 		MetaPortal sPortal = metaRoom.getPortal( ExitDir.S );
 		MetaPortal wPortal = metaRoom.getPortal( ExitDir.W );
 
-		// In RectangleRoom the floor goes all the way to the outside of the wall.
-		
+		RectangleRoom room = new RectangleRoom(); 
+
 		visib.startConvexArea();
 		if( nPortal == null )
 		{
 			// add blocks for the whole length
-			addBlocksToRight( xpos, ypos + ysize - WALL_WIDTH, xsize);
+			addBlocksToRight( xpos, ypos + ysize - RectangleRoom.WALL_WIDTH, xsize);
 			
-			// xpos + WALL_WIDTH because: The floor starts at xpos, wall goes from xpos up to xpos + WALL_WIDTH
-			visib.addSegment( xpos + WALL_WIDTH, ypos + ysize - WALL_WIDTH, xpos + xsize - WALL_WIDTH, ypos + ysize - WALL_WIDTH);
+			// xpos + RectangleRoom.WALL_WIDTH because: The floor starts at xpos, wall goes from xpos up to xpos + RectangleRoom.WALL_WIDTH
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
 		else
 		{
+			// calculate side size in units, without the exit
 			float xsizeWithoutExit = xsize - nPortal.width;
+			// then divide by two to get width of either side of the portal
 			float sideSize = xsizeWithoutExit / 2;
 			
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = xsize - (beginSize + nPortal.width);
-			
+
+			// y points down
+			room.addRoomEntrance(new RoomEntrance(beginSize, 0, nPortal.width, RectangleRoom.WALL_WIDTH));
+
 			// left side
-			addBlocksToRight( xpos, ypos + ysize - WALL_WIDTH, beginSize);
+			addBlocksToRight( xpos, ypos + ysize - RectangleRoom.WALL_WIDTH, beginSize);
 			// right side
-			addBlocksToRight( xpos + (beginSize + nPortal.width), ypos + ysize- WALL_WIDTH, endSize);
+			addBlocksToRight( xpos + (beginSize + nPortal.width), ypos + ysize- RectangleRoom.WALL_WIDTH, endSize);
 			
 			// left side
-			visib.addSegment( xpos + WALL_WIDTH, ypos + ysize - WALL_WIDTH, xpos + beginSize, ypos + ysize - WALL_WIDTH);
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH);
 
 			// right side
-			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - WALL_WIDTH, xpos + xsize - WALL_WIDTH, ypos + ysize - WALL_WIDTH);
+			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 			
 		}
 		
@@ -90,7 +93,7 @@ public class RectangleRoomBuilder
 			// add blocks for the whole length
 			addBlocksToRight( xpos, ypos, xsize);
 			
-			visib.addSegment( xpos + WALL_WIDTH, ypos + WALL_WIDTH, xpos + xsize - WALL_WIDTH, ypos + WALL_WIDTH);
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
 			
 		}
 		else
@@ -100,45 +103,51 @@ public class RectangleRoomBuilder
 			
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = xsize - (beginSize + sPortal.width);
+
+			// y points down
+			room.addRoomEntrance(new RoomEntrance(beginSize, ysize-RectangleRoom.WALL_WIDTH, sPortal.width, RectangleRoom.WALL_WIDTH));
 			
 			addBlocksToRight( xpos, ypos, beginSize);
 			addBlocksToRight( xpos + (beginSize + sPortal.width), ypos, endSize);
 			
-			visib.addSegment( xpos + WALL_WIDTH, ypos + WALL_WIDTH, xpos + beginSize, ypos + WALL_WIDTH);
-			visib.addSegment( xpos + (beginSize + sPortal.width), ypos + WALL_WIDTH, xpos + xsize - WALL_WIDTH, ypos + WALL_WIDTH);
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
+			visib.addSegment( xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
 		}
 		
 		if( wPortal == null )
 		{
 			// add blocks for the whole length
-			addBlocksToUp( xpos, ypos + WALL_WIDTH,  ysize - 2 * WALL_WIDTH);
+			addBlocksToUp( xpos, ypos + RectangleRoom.WALL_WIDTH,  ysize - 2 * RectangleRoom.WALL_WIDTH);
 			
-			visib.addSegment( xpos + WALL_WIDTH, ypos + WALL_WIDTH, xpos + WALL_WIDTH, ypos + ysize - WALL_WIDTH);
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
 		else
 		{
 			float ysizeWithoutExit = ysize - wPortal.width;
 			float sideSize = ysizeWithoutExit / 2;
 //			if( sideSize % 2 != 0 )
-//				sideSize += WALL_WIDTH;
+//				sideSize += RectangleRoom.WALL_WIDTH;
 			
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = ysizeWithoutExit - beginSize;
+
+			// y points down
+			room.addRoomEntrance(new RoomEntrance(0, 0 + beginSize, RectangleRoom.WALL_WIDTH, wPortal.width));
 			
 			addBlocksToUp( xpos, ypos,  beginSize);
 			addBlocksToUp( xpos, ypos + (beginSize + wPortal.width), endSize);
 			
-			visib.addSegment( xpos + WALL_WIDTH, ypos + WALL_WIDTH, xpos + WALL_WIDTH, ypos + beginSize);
-			visib.addSegment( xpos + WALL_WIDTH, ypos + (beginSize + wPortal.width), xpos + WALL_WIDTH, ypos + ysize - WALL_WIDTH);
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize);
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 			
 		}
 		
 		if( ePortal == null )
 		{
 			// add blocks for the whole length
-			addBlocksToUp( xpos + xsize - WALL_WIDTH, ypos + WALL_WIDTH,  ysize - 2 * WALL_WIDTH);
+			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH,  ysize - 2 * RectangleRoom.WALL_WIDTH);
 			
-			visib.addSegment( xpos + xsize - WALL_WIDTH, ypos + WALL_WIDTH, xpos + xsize - WALL_WIDTH, ypos + ysize - WALL_WIDTH);
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
 		else
 		{
@@ -147,12 +156,15 @@ public class RectangleRoomBuilder
 			
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = ysize - (beginSize + ePortal.width);
+
+			// y points down
+			room.addRoomEntrance(new RoomEntrance(xsize - RectangleRoom.WALL_WIDTH, 0 + beginSize, RectangleRoom.WALL_WIDTH, ePortal.width));
 			
-			addBlocksToUp( xpos + xsize - WALL_WIDTH, ypos,  beginSize);
-			addBlocksToUp( xpos + xsize - WALL_WIDTH, ypos+ (beginSize + ePortal.width), endSize);
+			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos,  beginSize);
+			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos+ (beginSize + ePortal.width), endSize);
 			
-			visib.addSegment( xpos + xsize - WALL_WIDTH, ypos + WALL_WIDTH, xpos + xsize - WALL_WIDTH, ypos + beginSize );
-			visib.addSegment( xpos + xsize - WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize - WALL_WIDTH, ypos + ysize - WALL_WIDTH );
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize );
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
 		
 		}
 		
@@ -171,10 +183,10 @@ public class RectangleRoomBuilder
 			float endSize = xsize - (beginSize + nPortal.width);
 
 			// left side up
-			visib.addSegment( xpos + beginSize, ypos + ysize - WALL_WIDTH, xpos + beginSize, ypos + ysize);
+			visib.addSegment( xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + ysize);
 
 			// right side up
-			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - WALL_WIDTH, xpos + beginSize + nPortal.width, ypos + ysize);
+			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize + nPortal.width, ypos + ysize);
 
 			visib.finishConvexArea();
 		}
@@ -187,13 +199,13 @@ public class RectangleRoomBuilder
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = xsize - (beginSize + sPortal.width);
 			
-			// visib.addSegment( xpos + WALL_WIDTH, ypos + WALL_WIDTH, xpos + beginSize, ypos + WALL_WIDTH);
-			// visib.addSegment( xpos + (beginSize + sPortal.width), ypos + WALL_WIDTH, xpos + xsize - WALL_WIDTH, ypos + WALL_WIDTH);
+			// visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
+			// visib.addSegment( xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
 
 			// left side up
-			visib.addSegment( xpos + beginSize, ypos, xpos + beginSize, ypos + WALL_WIDTH);
+			visib.addSegment( xpos + beginSize, ypos, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
 			// right side up
-			visib.addSegment( xpos + (beginSize + sPortal.width), ypos, xpos + beginSize + sPortal.width, ypos + WALL_WIDTH);
+			visib.addSegment( xpos + (beginSize + sPortal.width), ypos, xpos + beginSize + sPortal.width, ypos + RectangleRoom.WALL_WIDTH);
 			visib.finishConvexArea();
 		}
 		if( wPortal != null )
@@ -206,9 +218,9 @@ public class RectangleRoomBuilder
 			float endSize = ysizeWithoutExit - beginSize;
 			
 			// top side right
-			visib.addSegment( xpos , ypos + (beginSize + wPortal.width), xpos + WALL_WIDTH, ypos + (beginSize + wPortal.width));
+			visib.addSegment( xpos , ypos + (beginSize + wPortal.width), xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width));
 			// bottom side right
-			visib.addSegment( xpos , ypos + beginSize , xpos + WALL_WIDTH, ypos + beginSize);
+			visib.addSegment( xpos , ypos + beginSize , xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize);
 			visib.finishConvexArea();
 		}
 		if( ePortal != null )
@@ -221,17 +233,13 @@ public class RectangleRoomBuilder
 			float endSize = ysize - (beginSize + ePortal.width);
 			
 			// top side right
-			visib.addSegment( xpos + xsize - WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize, ypos + (beginSize + ePortal.width) );
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize, ypos + (beginSize + ePortal.width) );
 			// bottom side right
-			visib.addSegment( xpos + xsize - WALL_WIDTH, ypos + beginSize, xpos + xsize, ypos + beginSize );
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + xsize, ypos + beginSize );
 
 			visib.finishConvexArea();
 		}
 
-		
-		
-		RectangleRoom room = new RectangleRoom(); 
-		
 		room.setPosition( metaRoom.getBounds().x, metaRoom.getBounds().y);
 		room.setDimensions( metaRoom.getBounds().width, metaRoom.getBounds().height );
 		room.addBlocks( blocks );
@@ -360,7 +368,7 @@ public class RectangleRoomBuilder
 			a1.init( xpos, ypos + curpos , 0);
 			
 			blocks.add( a1 );
-			curpos += WALL_WIDTH;
+			curpos += RectangleRoom.WALL_WIDTH;
 		}
 	}
 	

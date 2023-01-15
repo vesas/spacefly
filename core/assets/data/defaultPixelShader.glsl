@@ -26,7 +26,7 @@ void main() {
 	
 	vec2 center = vec2(resolution.x/2., resolution.y/2.);
 	
-	float bug = 0.0f;
+	float bug = 0.0;
 	vec2 aux=(gl_FragCoord.xy-center);
     float dist=length(aux);
     
@@ -35,16 +35,16 @@ void main() {
     	
     float adjust = 1.0;
     
-    if( dist > 1.9f )
+    if( dist > 1.9 )
     {
-    	adjust = adjust - ( dist * 0.003f - 1.9f );
+    	adjust = adjust - ( dist * 0.003 - 1.9 );
     }
     
-    if( adjust > 1.0f )
-    	adjust = 1.0f;
+    if( adjust > 1.0 )
+    	adjust = 1.0;
     	
-    if( adjust < 0.0f )
-    	adjust = 0.0f;
+    if( adjust < 0.0 )
+    	adjust = 0.0;
     
 	vec3 intensity = ambient + light.rgb * adjust;
 	

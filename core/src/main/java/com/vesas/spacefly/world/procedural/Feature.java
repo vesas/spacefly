@@ -8,6 +8,7 @@ public interface Feature
 	public void init();
 	
 	public void draw(Screen screen);
+	public void drawWithVisibility(Screen screen);
 	
 	
 	public float getXpos();

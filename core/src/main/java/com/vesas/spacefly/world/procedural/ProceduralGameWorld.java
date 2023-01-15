@@ -96,9 +96,10 @@ public class ProceduralGameWorld extends AbstractGameWorld
 //		defaultShader.setUniformf("viewcenc", screenWidth*0.5f, screenHeight*0.5f);
 		
 		
-//		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
+		// screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+		// Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+		// Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_DST_ALPHA);
+		// Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
 
 		screen.worldBatch.end();
 		//draw the light to the FBO
@@ -107,7 +108,13 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		
 		visib.setLightLocation( playerCenter.x, playerCenter.y);
 		visib.sweep();
+
+		Gdx.gl.glEnable(GL20.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA );
+
 		drawVisibility( screen, fbo, playerCenter );
+
+		Gdx.gl.glDisable(GL20.GL_BLEND);
 		//screen.worldBatch.draw(light, playerCenter.x - lightSize*0.5f , playerCenter.y - lightSize*0.5f, lightSize, lightSize);
 		
 		fbo.end();
@@ -116,16 +123,25 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		fbo.getColorBufferTexture().bind(1);
 		textureSolid.bind(0);
 		
-		screen.worldBatch.setShader(defaultShader);
 		screen.worldBatch.begin();
 //		fbo.getColorBufferTexture().bind(1); //this is important! bind the FBO to the 2nd texture unit
 
+		screen.worldBatch.setShader(null);
 		
 		for( int i = 0; i < feats.size; i++ )
 		{
 			Feature feat = feats.get( i );
 			feat.draw(screen);
 		}
+
+		screen.worldBatch.setShader(defaultShader);
+
+		for( int i = 0; i < feats.size; i++ )
+		{
+			Feature feat = feats.get( i );
+			feat.drawWithVisibility(screen);
+		}
+
 //		drawVisibility( screen, fbo, playerCenter );
 		
 		for( int i = 0, size = monsters.size; i < size; i++ )
@@ -238,16 +254,14 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		
 		// these are the triangle endpoints
 		Array<Vector2> points = visiPoly.getTriEndPoints();
-
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		
 		G.shapeRenderer.begin(ShapeType.Filled);
 
 //		Matrix4 mat = new Matrix4();
 //		mat.setToTranslation(0.0f, 1.5f, 0.0f);
 //		G.shapeRenderer.setTransformMatrix(mat);
-		G.shapeRenderer.setColor(0.99975f, 0.99975f, 0.99975f, 0.9999f);
-		
+		G.shapeRenderer.setColor(0.999f, 0.999f, 0.999f, 1.0f);
+
 		for( int i = 0; i < points.size; i = i + 2 )
 		{
 			final Vector2 p1 = points.get( i );

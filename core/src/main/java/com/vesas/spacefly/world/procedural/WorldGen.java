@@ -3,7 +3,6 @@ package com.vesas.spacefly.world.procedural;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.monster.ShellMonster;
 import com.vesas.spacefly.monster.SlurgMonster;
 import com.vesas.spacefly.monster.ZipperCloud;
@@ -14,14 +13,13 @@ import com.vesas.spacefly.world.AddMonsterCallback;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridorBuilder;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
-import com.vesas.spacefly.world.procedural.generator.MetaCorridorBuilder;
 import com.vesas.spacefly.world.procedural.generator.MetaFeature;
-import com.vesas.spacefly.world.procedural.generator.MetaPortal;
+import com.vesas.spacefly.world.procedural.generator.MetaHexaRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaRegionBuilder;
-import com.vesas.spacefly.world.procedural.generator.MetaRoomBuilder;
 import com.vesas.spacefly.world.procedural.generator.Region;
-import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
+import com.vesas.spacefly.world.procedural.room.hexaroom.HexaRoom;
+import com.vesas.spacefly.world.procedural.room.hexaroom.HexaRoomBuilder;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoomBuilder;
 
@@ -44,10 +42,11 @@ public class WorldGen
 		
 		RectangleRoomBuilder.INSTANCE.setVisib( visib );
 		AxisAlignedCorridorBuilder.INSTANCE.setVisib( visib );
+		HexaRoomBuilder.INSTANCE.setVisib(visib);
 	}
 	public Array<Feature> generate()
 	{
-		metaRegionBuilder.setSize(35);
+		metaRegionBuilder.setSize(32);
 		Region metaRegion = metaRegionBuilder.generateMetaRegion();
 		
 		Array<Feature> feats = new Array<Feature>();
@@ -64,6 +63,7 @@ public class WorldGen
 	{
 		RectangleRoomBuilder roomBuilder = RectangleRoomBuilder.INSTANCE;
 		AxisAlignedCorridorBuilder corrBuilder = AxisAlignedCorridorBuilder.INSTANCE;
+		HexaRoomBuilder hexaBuilder = HexaRoomBuilder.INSTANCE;
 		
 		Array<MetaFeature> metaFeats = region.getMetaList();
 		
@@ -81,6 +81,11 @@ public class WorldGen
 				AxisAlignedCorridor corr = corrBuilder.buildFrom( (MetaCorridor)metaFeat );
 				feats.add( corr );
 			}
+			if( metaFeat instanceof MetaHexaRoom )
+			{
+				HexaRoom room = hexaBuilder.buildFrom( ((MetaHexaRoom)metaFeat));
+				feats.add( room );
+			}
 		}
 	}
 
@@ -97,19 +102,19 @@ public class WorldGen
 			final float height = feat.getHeight();
 			final float width = feat.getWidth();
 
-			for( int j = 0, size = G.random.nextInt(3); j < size; j++)
+			for( int j = 0, size = G.random.nextInt(1); j < size; j++)
 			{
 				SlurgMonster monster = new SlurgMonster(xpos + width * 0.45f, ypos + height * 0.45f );
 				world.addMonster( monster );	
 			}
 			
-			if( G.random.nextInt(100 ) < 18 )
+			if( G.random.nextInt(100 ) < 2 )
 			{
 				ShellMonster monster = new ShellMonster(xpos + width * 0.45f, ypos + height * 0.45f );
 				world.addMonster( monster );	
 			}
 			
-			if( G.random.nextInt(100 ) < 30 )
+			if( G.random.nextInt(100 ) < 10 )
 			{
 				ZipperCloud cloud = new ZipperCloud();
 				ZipperCloudManager.add(cloud);

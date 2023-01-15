@@ -3,7 +3,7 @@ package com.vesas.spacefly.world.procedural.generator;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
-public class MetaRoomBuilder
+public class MetaRectangleRoomBuilder
 {
 	private MetaPortal startPortal;
 	
@@ -12,11 +12,11 @@ public class MetaRoomBuilder
 	
 	private ObjectMap<ExitDir, MetaPortal> portals = new ObjectMap<ExitDir, MetaPortal>();
 	
-	public static MetaRoomBuilder INSTANCE = new MetaRoomBuilder();
+	public static MetaRectangleRoomBuilder INSTANCE = new MetaRectangleRoomBuilder();
 
 	private MetaRectangleRoom room;
 
-	private MetaRoomBuilder() { }
+	private MetaRectangleRoomBuilder() { }
 
 	public void init()
 	{
@@ -114,7 +114,7 @@ public class MetaRoomBuilder
 		return room;
 	}
 	
-	public MetaRoomBuilder addPortal( ExitDir dir, float width )
+	public MetaRectangleRoomBuilder addPortal( ExitDir dir, float width )
 	{
 		MetaPortal portal = new MetaPortal();
 		portal.START_TYPE = MetaPortal.RECTANGLE_ROOM;
@@ -127,7 +127,7 @@ public class MetaRoomBuilder
 		return this;
 	}
 	
-	public MetaRoomBuilder setSize( float width, float height )
+	public MetaRectangleRoomBuilder setSize( float width, float height )
 	{
 		this.width = width;
 		this.height = height;
@@ -135,7 +135,7 @@ public class MetaRoomBuilder
 		return this;
 	}
 	
-	public MetaRoomBuilder setPosition( float xpos, float ypos )
+	public MetaRectangleRoomBuilder setPosition( float xpos, float ypos )
 	{
 		this.xpos = xpos;
 		this.ypos= ypos;
@@ -143,7 +143,7 @@ public class MetaRoomBuilder
 		return this;
 	}
 
-	public MetaRoomBuilder createFromDir( ExitDir dir, MetaPortal portal )
+	public MetaRectangleRoomBuilder createFromDir( ExitDir dir, MetaPortal portal )
 	{
 		this.startPortal = portal;
 		return this;

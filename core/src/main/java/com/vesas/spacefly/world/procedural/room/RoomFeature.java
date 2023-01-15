@@ -8,7 +8,7 @@ import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.Exit;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
-public abstract class Room implements Feature
+public abstract class RoomFeature implements Feature
 {
 	protected float xpos;
 	protected float ypos;

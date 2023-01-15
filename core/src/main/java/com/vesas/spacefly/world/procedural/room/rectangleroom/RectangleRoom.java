@@ -1,6 +1,8 @@
 package com.vesas.spacefly.world.procedural.room.rectangleroom;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -10,23 +12,36 @@ import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.GenSeed;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleLSystem;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleWineSystem;
-import com.vesas.spacefly.world.procedural.room.Room;
+import com.vesas.spacefly.world.procedural.room.RoomFeature;
 
-public class RectangleRoom extends Room
+public class RectangleRoom extends RoomFeature
 {
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
-	
+
+	private Array<RoomEntrance> roomEntrances = new Array<RoomEntrance>();
+
 	Texture tex;
+
+	// wall width in WORLD units
+	public static float WALL_WIDTH = 0.5f;
+
+	public void addRoomEntrance(RoomEntrance entrance) {
+		roomEntrances.add(entrance);
+	}
 	
 	public void addBlocks( Array<FeatureBlock> blocks )
 	{
 		this.blocks.addAll( blocks );
 	}
 
+	public void drawWithVisibility(Screen screen) {
+
+		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
+	}
+
 	public void draw(Screen screen)	
 	{
-		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
-		
+
 		final int size = blocks.size;
 		
 		for( int i = 0; i < size; i++ )
@@ -46,7 +61,7 @@ public class RectangleRoom extends Room
 	private static Color col1 = new Color(0.35f, 0.35f, 0.36f, 1.0f);
 	
 	private static Color col2 = new Color(0.30f, 0.30f, 0.30f, 1.0f );
-	private static Color col3 = new Color(0.20f, 0.20f, 0.20f, 1.0f );
+	private static Color col3 = new Color(0.90f, 0.20f, 0.20f, 1.0f );
 	private static Color col4 = new Color(0.23f, 0.23f, 0.23f, 0.3f );
 
 	@Override
@@ -54,13 +69,23 @@ public class RectangleRoom extends Room
 	{
 		// this width is in "units". (eg 5-13)
 		float ratio = this.width / this.height;
+		
 		int mapwidth = (int) (this.width*64f);
 		int mapheight = (int) (this.height*64f);
 				
 		Pixmap pixmap = new Pixmap(mapwidth, mapheight, Pixmap.Format.RGBA8888 );
 //		pixmap.setFilter(Filter.BiLinear);
-		pixmap.setColor( col1 );
+		pixmap.setColor( Color.CLEAR );
 		pixmap.fill();
+
+		pixmap.setColor( col1 );
+		pixmap.fillRectangle((int)(WALL_WIDTH*64f), (int)(WALL_WIDTH*64f), (int)((this.width-WALL_WIDTH*2)*64),(int)((this.height-WALL_WIDTH*2)*64));
+
+		for(RoomEntrance entrance : this.roomEntrances) {
+			pixmap.setColor( col3 );
+			pixmap.fillRectangle((int)(entrance.rect.x*64f), (int)((entrance.rect.y)*64f), (int)(entrance.rect.width*64f),(int)(entrance.rect.height*64f));
+		}
+		pixmap.setColor( col1 );
 		
 		int halfW = (int) (pixmap.getWidth() * 0.5f);
 		int halfH = (int) (pixmap.getHeight() * 0.5f);
@@ -75,6 +100,7 @@ public class RectangleRoom extends Room
 //		pixmap.drawPixel(1,1, Color.rgba8888(col3.r, col3.g, col3.b, 1.0f));
 		
 //		pixmap.setBlending(Blending.SourceOver);
+	/*
 		pixmap.setColor( col4 );
 		for( int i = 0 ; i < 4; i++ )
 		{
@@ -91,6 +117,7 @@ public class RectangleRoom extends Room
 		if(GenSeed.random.nextBoolean() )
 			drawTreeProps( pixmap );
 		
+			 */
 		tex = new Texture(pixmap);
 		
 	}
