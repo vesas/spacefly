@@ -39,7 +39,7 @@ public class Screen
 		
 		camera = new OrthographicCamera();
 	    ((OrthographicCamera)camera).setToOrtho(false, width, height);
-	    ((OrthographicCamera)camera).zoom = 0.6f;
+	    ((OrthographicCamera)camera).zoom = 0.8f;
 	    
 	    minimapCamera = new OrthographicCamera();
 	    ((OrthographicCamera)minimapCamera).setToOrtho(false, width * 0.1f , height * 0.15f);

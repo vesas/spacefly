@@ -1,0 +1,1 @@
+C:\util\apitrace-latest-win64\bin\apitrace trace --api gl java -cp desktop\build\libs\desktop-1.0.jar com.vesas.spacefly.desktop.DesktopLauncher

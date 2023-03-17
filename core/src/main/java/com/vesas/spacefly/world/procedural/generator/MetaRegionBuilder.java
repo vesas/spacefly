@@ -129,7 +129,7 @@ public class MetaRegionBuilder {
 		MetaCorridorBuilder metaCorrBuilder = MetaCorridorBuilder.INSTANCE;
 		
 		metaCorrBuilder.createFromPortal( portal );
-		metaCorrBuilder.setLength( 1 + GenSeed.random.nextInt( 18 ) );
+		metaCorrBuilder.setLength( 1 + GenSeed.random.nextInt( 14 ) );
 		
 		MetaCorridor corr = metaCorrBuilder.build();
 		portal.setTarget(corr);
@@ -149,6 +149,14 @@ public class MetaRegionBuilder {
 		
 		int minwidth = 3;
 		int minheight = 3;
+
+		float w = minwidth;
+		float h = minheight;
+
+		ExitDir excludeDir = null;
+
+		int howManyAdditionalExits = 0;
+		boolean []existingExits = new boolean[4];
 		
 		if( fromPortal != null )
 		{
@@ -164,46 +172,44 @@ public class MetaRegionBuilder {
 				minheight = (int) (fromPortal.getWidth() + 2);
 			}
 
-		}
-		
-		// have to be at least minx/miny long/wide to accommodate the possible corridor
-		float w = (float) Math.max(minwidth, GenSeed.random.nextInt( 22 ) );
-		float h = (float) Math.max(minheight, GenSeed.random.nextInt( 22 ) );
-		
-		roomBuilder.setSize( w, h );
-		
-		ExitDir excludeDir = null;
-		
-		if( fromPortal == null )
-		{
-			roomBuilder.setPosition( firstRoomCenter.x - w * 0.51f, firstRoomCenter.y - h * 0.51f);
-		}	
-		else
-		{
+			// have to be at least minx/miny long/wide to accommodate the possible corridor
+			w = (float) Math.max(minwidth, GenSeed.random.nextInt( 18 ) );
+			h = (float) Math.max(minheight, GenSeed.random.nextInt( 18 ) );
+
+			roomBuilder.setSize( w, h );
+
 			excludeDir = fromPortal.getExit().getOpposite();
 			roomBuilder.createFromDir(fromPortal.getExit().getOpposite(),fromPortal);
-			
+
+			// 0-3
+			howManyAdditionalExits = GenSeed.random.nextInt(4);
+
+			// In the beginning add more exits
+			if( IDGenerator.getCurrentId() < 16 && howManyAdditionalExits == 0 )
+			{
+				howManyAdditionalExits = 2;
+			}
+
+			if( excludeDir != null )
+				existingExits[excludeDir.ordinal()] = true;
 		}
+		else {
+			// lets set first room explicitly
+			w = 5;
+			h = 5;
+			roomBuilder.setSize( w, h);
+			roomBuilder.setPosition( firstRoomCenter.x - w * 0.51f, firstRoomCenter.y - h * 0.51f);
 
-		boolean []existingExits = new boolean[4];
-		if( excludeDir != null )
-			existingExits[excludeDir.ordinal()] = true;
-
-		// 0-3
-		int howManyAdditionalExits = GenSeed.random.nextInt(4);
-
-		if( fromPortal == null )
-		{
 			// for the first room we create exactly one exit
 			howManyAdditionalExits = 1;
+
+			// Lets just define so that we have "existing" exists in all directions except north,
+			// This forces first direction north
+			existingExits[ExitDir.S.ordinal()] = true;
+			existingExits[ExitDir.W.ordinal()] = true;
+			existingExits[ExitDir.E.ordinal()] = true;
 		}
 
-		// In the beginning add more exits
-		if( IDGenerator.getCurrentId() < 16 && howManyAdditionalExits == 0 )
-		{
-			howManyAdditionalExits = 2;
-		}
-		
 		for(int i = 0; i < howManyAdditionalExits; i++ )
 		{
 			ExitDir ex = ExitDir.getRandomExcluding( existingExits );

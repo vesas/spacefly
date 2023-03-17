@@ -1,8 +1,7 @@
 package com.vesas.spacefly.world;
 
-import com.badlogic.gdx.utils.Array;
-
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.Floater;
 import com.vesas.spacefly.game.G;
@@ -14,6 +13,7 @@ import com.vesas.spacefly.particles.BigExplosion;
 import com.vesas.spacefly.particles.Explosion;
 import com.vesas.spacefly.particles.ExplosionInterface;
 import com.vesas.spacefly.particles.Goo;
+import com.vesas.spacefly.world.procedural.GenSeed;
 import com.vesas.spacefly.world.procedural.ProceduralGameWorld;
 
 public abstract class AbstractGameWorld implements AddMonsterCallback
@@ -57,6 +57,8 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 	
 	public void addLittleExplosion(  Vector2 pos, Vector2 vel, float velocityScale, float bloomSize )
 	{
+		// System.out.println("Adding small explosion");
+
 		Explosion explo = new Explosion();
 		explo.setBloomSize( bloomSize );
 		explo.startAt(pos.x, pos.y, vel.x * velocityScale, vel.y * velocityScale );
@@ -65,6 +67,7 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 	
 	public void addBigExplosion(  Vector2 pos, Vector2 vel, float velocityScale, float bloomSize )
 	{
+	
 		BigExplosion explo = new BigExplosion();
 		explo.setBloomSize( bloomSize );
 		explo.startAt(pos.x, pos.y, vel.x * velocityScale, vel.y * velocityScale);
@@ -86,7 +89,7 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 		}
 		else
 		{
-			addBigExplosion(pos,vel, 0.25f, 1.5f );	
+			addBigExplosion(pos,vel, 0.25f, 1.5f );
 		}
 		
 		if (!monstersToBeRemoved.contains(m, true))
@@ -119,7 +122,7 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 	
 	public void dropPowerup( Vector2 boxPos )
 	{
-		if( G.random.nextFloat() > 0.7 )
+		if( GenSeed.random.nextFloat() > 0.4 )
 			return;
 //		
 		float worldX = boxPos.x;
@@ -127,7 +130,7 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 		
 		int type = Powerup.AMMO1;
 
-		if( G.random.nextFloat() > 0.7 )
+		if( GenSeed.random.nextFloat() > 0.7 )
 		{
 			type = Powerup.HEAL;
 		}

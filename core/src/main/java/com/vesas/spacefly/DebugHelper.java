@@ -22,13 +22,16 @@ public class DebugHelper
 	static public boolean VISIB_DEBUG = false;
 	static public boolean PLAYER_DEBUG = false;
 
+	public static long totalGarbageCollections = 0;
+	public static long garbageCollectionTime = 0;
+
 	static public void calcGCStats() 
 	{
-		if( !DebugHelper.GC_DEBUG )
-			return;
+		// if( !DebugHelper.GC_DEBUG )
+			// return;
 
-		long totalGarbageCollections = 0;
-		long garbageCollectionTime = 0;
+		totalGarbageCollections = 0;
+		garbageCollectionTime = 0;
 
 		for(GarbageCollectorMXBean gc :
 			ManagementFactory.getGarbageCollectorMXBeans()) {
@@ -62,7 +65,7 @@ public class DebugHelper
 			
 			DebugHelper.calcGCStats();
 
-			counter = 30;
+			counter = 60;
 		}
 		
 		G.wFont.getData().setScale(0.45f, 0.45f);

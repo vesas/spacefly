@@ -1,8 +1,5 @@
 package com.vesas.spacefly.game;
 
-import quadtree.AABB;
-import quadtree.XY;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,6 +18,10 @@ import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.monster.MonsterBullet;
 import com.vesas.spacefly.particles.ImpulseParticleSystem;
 import com.vesas.spacefly.particles.Trail;
+import com.vesas.spacefly.world.procedural.GenSeed;
+
+import quadtree.AABB;
+import quadtree.XY;
 
 public class Player
 {
@@ -99,7 +100,7 @@ public class Player
 	{
 		int amount = 30;
 		
-		if( G.random.nextBoolean() )
+		if( GenSeed.random.nextBoolean() )
 			amount += 10;
 		
 		if( (ammo+amount) < maxAmmo )
@@ -129,8 +130,8 @@ public class Player
 		body.setAwake(true);
 		body.setActive(true);
 
-		body.setLinearDamping(0.4f);
-		body.setAngularDamping(0.45f);
+		body.setLinearDamping(0.6f);
+		body.setAngularDamping(4.95f);
 		body.setFixedRotation(false);
 
 		//CircleShape circle = new CircleShape();o
@@ -141,13 +142,13 @@ public class Player
 		float []v = new float[6];
 		
 		v[0] = 0;
-		v[1] = 0.21f;
+		v[1] = 0.28f;
 		
-		v[2] = -0.19f;
-		v[3] = -0.25f;
+		v[2] = -0.20f;
+		v[3] = -0.23f;
 		
-		v[4] = 0.19f;
-		v[5] = -0.25f;
+		v[4] = 0.20f;
+		v[5] = -0.23f;
 		
 		polyShape.set(v);
 
@@ -197,7 +198,7 @@ public class Player
 	
 	public void healUp()
 	{
-		int healUp = 1 + G.random.nextInt( 4 ); 
+		int healUp = 1 + GenSeed.random.nextInt( 4 ); 
 		
 		if( (health + healUp) < maxHealth )
 			health = health + healUp;
@@ -212,7 +213,7 @@ public class Player
 		
 		health--;
 		
-		if( G.random.nextBoolean() )
+		if( GenSeed.random.nextBoolean() )
 			health--;
 		
 		healthString = "" + (int)health;
@@ -260,8 +261,8 @@ public class Player
 		// update shotTime
 		shotTime = TimeUtils.millis();
 		
-		float randomNoise1 = G.random.nextFloat();
-		float randomNoise2 = G.random.nextFloat();
+		float randomNoise1 = GenSeed.random.nextFloat();
+		float randomNoise2 = GenSeed.random.nextFloat();
 		
 		final Vector2 bodyPos = body.getWorldCenter();
 		
@@ -282,26 +283,37 @@ public class Player
 	
 	public void tick( Screen screen, float floatDelta )
 	{
+		// body.applyForceToCenter(0.0f, -0.2f, true);
+
 		final boolean firstFingerTouching = Gdx.input.isTouched(0);
 		
-		final boolean wpressed =  Gdx.input.isKeyPressed(Keys.W);
-		final boolean apressed =  Gdx.input.isKeyPressed(Keys.A);
-		final boolean spressed =  Gdx.input.isKeyPressed(Keys.S);
-		final boolean dpressed =  Gdx.input.isKeyPressed(Keys.D);
+		final boolean wpressed =  Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP);
+		final boolean apressed =  Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT);
+		final boolean spressed =  Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN);
+		final boolean dpressed =  Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT);
 		
-		if( wpressed )
+		if( wpressed ) {
 			this.moveup( floatDelta );
+			// this.thrust(floatDelta);
+		}
+			
 		
-		if( apressed )
+		if( apressed ) {
 			this.moveleft( floatDelta );
 			// this.rotateLeft(floatDelta);
+		}
+			
 		
-		if( spressed )
+		if( spressed ) {
 			this.movedown( floatDelta );
+		}
+			
 		
-		if( dpressed )
+		if( dpressed ) {
 			this.moveright( floatDelta );
 			// this.rotateRight(floatDelta);
+		}
+			
 		
 		if( firstFingerTouching )
 		{
@@ -354,6 +366,9 @@ public class Player
 	
 	private void updateGunAngle( Screen screen )
 	{
+		// if(true)
+			// return;
+
 		int mousex = Gdx.input.getX();
 		int mousey = Gdx.input.getY();
 		
@@ -385,7 +400,7 @@ public class Player
 		
 		float desiredAngularVelocity = totalRotation * 290f;
 		
-		float change = 25f * Util.DEGTORAD; //allow n degree rotation per time step
+		float change = 35f * Util.DEGTORAD; //allow n degree rotation per time step
 		desiredAngularVelocity = Math.min( change, Math.max(-change, desiredAngularVelocity));
 		
 		float impulse = body.getInertia() * desiredAngularVelocity;
@@ -587,6 +602,17 @@ public class Player
 			vel.scl(MAX_VELOCITY);
 			body.setLinearVelocity(vel);
 		}
+	}
+
+	public void thrust(float delta)
+	{
+		bulletDirectionVector.x = 1.0f;
+		bulletDirectionVector.y = 0.0f;
+		bulletDirectionVector.setAngleRad( body.getAngle() );
+		bulletDirectionVector.rotate90(0); // rotate 90 cw
+
+		body.applyForceToCenter(bulletDirectionVector.x*THRUST_AMOUNT,bulletDirectionVector.y*THRUST_AMOUNT, true);
+		limitSpeed();
 	}
 
 	public void rotateLeft(float delta)
