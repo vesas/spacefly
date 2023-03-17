@@ -1,14 +1,15 @@
 package com.vesas.spacefly.world.procedural.corridor;
 
 import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
+import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor.Dir;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.room.Block1;
 import com.vesas.spacefly.world.procedural.room.BlockRight;
 import com.vesas.spacefly.world.procedural.room.BlockUp;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
-import com.vesas.spacefly.visibility.Visibility;
 
 public class AxisAlignedCorridorBuilder
 {
@@ -44,11 +45,15 @@ public class AxisAlignedCorridorBuilder
 		MetaPortal startPortal = metaCorr.getStartPortal();
 		MetaPortal endPortal = metaCorr.getEndPortal();
 		
+		AxisAlignedCorridor corr = new AxisAlignedCorridor();
+
 		visib.startConvexArea();
 
 		// Looking in to the corridor towards NORTH from south. (portals exit is towards north)
 		if( startPortal.getExit().equals( ExitDir.N ))
 		{
+			corr.dir = Dir.SN;
+			
 			addBlocksToUp( xpos - WALL_WIDTH, ypos, len);
 			addBlocksToUp( xpos + width, ypos, len);
 			
@@ -59,8 +64,8 @@ public class AxisAlignedCorridorBuilder
 				
 				visib.addSegment( xpos , ypos, xpos , ypos + len - WALL_WIDTH );
 				visib.addSegment( xpos + width , ypos, xpos + width , ypos + len - WALL_WIDTH);
-				
 				visib.addSegment( xpos , ypos + len - WALL_WIDTH, xpos + width ,  ypos + len - WALL_WIDTH);
+				this.ysize -= WALL_WIDTH;
 			}
 			else
 			{
@@ -72,6 +77,8 @@ public class AxisAlignedCorridorBuilder
 		// Looking in to the corridor towards SOUTH from north. (portals exit is towards south)
 		if( startPortal.getExit().equals( ExitDir.S ))
 		{
+			corr.dir = Dir.SN;
+
 			// xpos-WALL_WIDTH because the whole wall is outside the corridor floor area
 			addBlocksToUp( xpos - WALL_WIDTH, ypos, len);
 			addBlocksToUp( xpos + width, ypos, len);
@@ -87,6 +94,9 @@ public class AxisAlignedCorridorBuilder
 				
 				// Bottom wall. The y position is (ypos + WALL_WIDTH) because the sprite wall takes that much space at bottom
 				visib.addSegment( xpos , ypos + WALL_WIDTH, xpos + width ,  ypos + WALL_WIDTH);
+
+				this.ysize -= WALL_WIDTH;
+				this.ypos += WALL_WIDTH;
 			}
 			else
 			{
@@ -97,18 +107,23 @@ public class AxisAlignedCorridorBuilder
 		
 		if( startPortal.getExit().equals( ExitDir.E ))
 		{
+			corr.dir = Dir.WE;
+
 			addBlocksToRight( xpos, ypos - WALL_WIDTH, len);
 			addBlocksToRight( xpos, ypos + width, len);
 			
 			// seal off the end 
 			if( endPortal == null )
 			{
+				
 				addBlocksToUp( xpos + len - WALL_WIDTH, ypos, width);
 				
 				visib.addSegment( xpos , ypos , xpos + len - WALL_WIDTH , ypos );
 				visib.addSegment( xpos , ypos + width , xpos + len - WALL_WIDTH, ypos  + width );
 				
 				visib.addSegment( xpos + len - WALL_WIDTH, ypos , xpos + len - WALL_WIDTH, ypos  + width );
+
+				this.xsize -= WALL_WIDTH;
 			}
 			else
 			{
@@ -120,6 +135,8 @@ public class AxisAlignedCorridorBuilder
 		
 		if( startPortal.getExit().equals( ExitDir.W ))
 		{
+			corr.dir = Dir.WE;
+			
 			addBlocksToRight( xpos, ypos - WALL_WIDTH, len);
 			addBlocksToRight( xpos, ypos + width, len);
 			
@@ -132,6 +149,9 @@ public class AxisAlignedCorridorBuilder
 				visib.addSegment( xpos + WALL_WIDTH , ypos + width , xpos + len, ypos  + width );
 				
 				visib.addSegment( xpos + WALL_WIDTH , ypos , xpos  + WALL_WIDTH, ypos  + width );
+
+				this.xsize -= WALL_WIDTH;
+				this.xpos += WALL_WIDTH;
 			}
 			else
 			{
@@ -142,7 +162,7 @@ public class AxisAlignedCorridorBuilder
 		}
 		
 		visib.finishConvexArea();
-		AxisAlignedCorridor corr = new AxisAlignedCorridor();
+		
 		
 		corr.setPosition( this.xpos, this.ypos);
 		corr.setDimensions( this.xsize, this.ysize );

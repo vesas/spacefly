@@ -3,9 +3,11 @@ package com.vesas.spacefly.game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 
-final public class Floater
+public final class Floater
 {
-	private float x,y; //position
+	//position
+	private float x;
+	private float y; 
 	
 	private float lifetime;
 	private float maxLifetime;
@@ -19,7 +21,7 @@ final public class Floater
 	{
 	}
 	
-	static public Floater newInstance()
+	public static Floater newInstance()
 	{
 		Floater f = new Floater();
 		f.init();

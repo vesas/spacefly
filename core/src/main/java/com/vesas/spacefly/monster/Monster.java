@@ -189,7 +189,11 @@ abstract public class Monster implements AnimateEntity
 		Box2DWorld.safeDestroyBody(this.body);
 	}
 
-	protected void fireBulletAtDir(Vector2 dir, float scatter, float speed, int type)
+	protected void fireBulletAtDir(Vector2 dir, float scatter, float speed, int type) {
+		fireBulletAtDir(dir, scatter, speed, type, 0.0f);
+	}
+
+	protected void fireBulletAtDir(Vector2 dir, float scatter, float speed, int type, float posAdvance)
 	{
 		Vector2 pos = body.getPosition();
 
@@ -198,7 +202,9 @@ abstract public class Monster implements AnimateEntity
 
 		dir.nor();
 
-		MonsterBullets.INSTANCE.fireBullet(pos.x, pos.y, dir.x * speed, dir.y
+
+
+		MonsterBullets.INSTANCE.fireBullet(pos.x + dir.x * posAdvance, pos.y + dir.y * posAdvance, dir.x * speed, dir.y
 				* speed, type);
 	}
 

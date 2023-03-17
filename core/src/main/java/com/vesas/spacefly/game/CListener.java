@@ -144,7 +144,7 @@ public class CListener implements ContactListener
 		{
 			Bullet b = (Bullet)o2;
 			
-			AbstractGameWorld.INSTANCE.addLittleExplosion( b.body.getPosition(), b.body.getLinearVelocity(), 0.5f, 1.0f);
+			AbstractGameWorld.INSTANCE.addLittleExplosion( b.body.getPosition(), b.body.getLinearVelocity(), 0.5f, 2.2f);
 			PlayerBullets.INSTANCE.preRemove( b );
 			
 			G.explo1.play( 0.02f );

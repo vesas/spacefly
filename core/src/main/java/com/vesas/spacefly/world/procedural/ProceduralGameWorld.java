@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.EarClippingTriangulator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.DebugHelper;
@@ -23,13 +22,13 @@ import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.monster.Monster;
 import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.particles.ExplosionInterface;
-import com.vesas.spacefly.world.AbstractGameWorld;
-import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor;
-import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
 import com.vesas.spacefly.visibility.Edge;
 import com.vesas.spacefly.visibility.EndPoint;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.visibility.VisibilityPoly;
+import com.vesas.spacefly.world.AbstractGameWorld;
+
+import util.FrameTime;
 
 public class ProceduralGameWorld extends AbstractGameWorld
 {
@@ -93,7 +92,8 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		defaultShader.setUniformf("ambientColor", 0.5f, 0.5f, 0.7f, 0.519f);
 		defaultShader.setUniformi("u_lightmap", 1);
 		defaultShader.setUniformf("resolution", screenWidth, screenHeight);
-//		defaultShader.setUniformf("viewcenc", screenWidth*0.5f, screenHeight*0.5f);
+		
+		// defaultShader.setUniformf("viewcenc", screenWidth*0.5f, screenHeight*0.5f);
 		
 		
 		// screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
@@ -102,6 +102,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		// Gdx.gl.glBlendEquation(GL20.GL_FUNC_ADD);
 
 		screen.worldBatch.end();
+		
 		//draw the light to the FBO
 		fbo.begin();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -115,34 +116,41 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		drawVisibility( screen, fbo, playerCenter );
 
 		Gdx.gl.glDisable(GL20.GL_BLEND);
-		//screen.worldBatch.draw(light, playerCenter.x - lightSize*0.5f , playerCenter.y - lightSize*0.5f, lightSize, lightSize);
+		// screen.worldBatch.draw(light, playerCenter.x - lightSize*0.5f , playerCenter.y - lightSize*0.5f, lightSize, lightSize);
 		
 		fbo.end();
-		
 		
 		fbo.getColorBufferTexture().bind(1);
 		textureSolid.bind(0);
 		
 		screen.worldBatch.begin();
+		
 //		fbo.getColorBufferTexture().bind(1); //this is important! bind the FBO to the 2nd texture unit
 
 		screen.worldBatch.setShader(null);
+		
+		long startNano = System.nanoTime();
 		
 		for( int i = 0; i < feats.size; i++ )
 		{
 			Feature feat = feats.get( i );
 			feat.draw(screen);
 		}
+		long endNano = System.nanoTime();
+		FrameTime.features = endNano - startNano;
 
 		screen.worldBatch.setShader(defaultShader);
 
+		startNano = System.nanoTime();
 		for( int i = 0; i < feats.size; i++ )
 		{
 			Feature feat = feats.get( i );
 			feat.drawWithVisibility(screen);
 		}
-
-//		drawVisibility( screen, fbo, playerCenter );
+		endNano = System.nanoTime();
+		FrameTime.featvisib = endNano - startNano;
+	
+		// drawVisibility( screen, fbo, playerCenter );
 		
 		for( int i = 0, size = monsters.size; i < size; i++ )
 		{
@@ -161,47 +169,61 @@ public class ProceduralGameWorld extends AbstractGameWorld
 			ExplosionInterface explo = systems.get( i );
 			explo.draw( screen );
 		}
-		
 		screen.worldBatch.end();
 		
 		if( DebugHelper.VISIB_DEBUG ) {
-			renderVisibilityDebug2();
+			renderVisibilityDebug2(screen);
 		}
+		
 	}
 	
-	private void renderVisibilityDebug2() 
+	private void renderVisibilityDebug2(Screen screen) 
 	{
+		
 		G.shapeRenderer.begin(ShapeType.Line);
 		
 		G.shapeRenderer.setColor(0.999f, 0.999f, 0.999f, 0.499f);
 		
-		List<Edge> triangles = visib.edges;
-		final int size = triangles.size();
+		List<Edge> edges = visib.edges;
+		final int size = edges.size();
 		for( int i = 0; i < size; i++ )
 		{
-			final Edge t = triangles.get( i );
+			final Edge edge = edges.get( i );
 			
-			if( t.isBoundary() ) 
+			if( edge.isBoundary() ) 
 			{
 				G.shapeRenderer.setColor(0.999f, 0.999f, 0.999f, 0.899f);
 			}
 			else 
 			{
-				G.shapeRenderer.setColor(0.399f, 0.399f, 0.999f, 0.899f);
+				float val = edge.procRank;
+				val = val * 0.5f;
+				if(val > 1.0f) {
+					val = 1.0f;
+				}
+
+				G.shapeRenderer.setColor(0.0f + val, 0.299f, 0.299f, 0.899f);
 			}
 
-			final EndPoint e0 = t.getEndPoint1();
+			final EndPoint e0 = edge.getEndPoint1();
 			final float ax = e0.p.x;
 			final float ay = e0.p.y;
 			
-			final EndPoint e1 = t.getEndPoint2();
+			final EndPoint e1 = edge.getEndPoint2();
 			final float bx = e1.p.x;
 			final float by = e1.p.y;
 						
 			G.shapeRenderer.line(ax, ay, bx, by);
+
 		}
 
 		G.shapeRenderer.end();
+
+		/*
+		screen.worldBatch.begin();
+		G.font.draw(screen.worldBatch, "S", 123 - 16, 123 + 15);
+		screen.worldBatch.end();
+		*/
 	}
 	
 	

@@ -1,12 +1,13 @@
 package com.vesas.spacefly.world.procedural.room.rectangleroom;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.GenSeed;
@@ -14,11 +15,16 @@ import com.vesas.spacefly.world.procedural.lsystem.SimpleLSystem;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleWineSystem;
 import com.vesas.spacefly.world.procedural.room.RoomFeature;
 
+import util.FrameTime;
+import util.GfxUtil;
+
 public class RectangleRoom extends RoomFeature
 {
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
 
 	private Array<RoomEntrance> roomEntrances = new Array<RoomEntrance>();
+
+	private Sprite heart = null;
 
 	Texture tex;
 
@@ -35,13 +41,12 @@ public class RectangleRoom extends RoomFeature
 	}
 
 	public void drawWithVisibility(Screen screen) {
-
 		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
 	}
 
 	public void draw(Screen screen)	
 	{
-
+		long startNano = System.nanoTime();
 		final int size = blocks.size;
 		
 		for( int i = 0; i < size; i++ )
@@ -49,6 +54,16 @@ public class RectangleRoom extends RoomFeature
 			final FeatureBlock block = blocks.get( i );
 			block.draw( screen );
 		}
+
+		/*
+		if(heart != null) {
+			heart.setPosition( xpos - 2f , ypos);
+			heart.draw(screen.worldBatch);
+		}
+		 */
+
+		long endNano = System.nanoTime();
+		FrameTime.roomfeatures += (endNano - startNano);
 		
 //		G.wFont.setScale(0.007f, 0.007f);
 //		G.wFont.draw( screen.worldBatch, "w:" + this.width + " h:" + this.height, this.xpos  + 1, this.ypos  + 1.5f);
@@ -58,7 +73,7 @@ public class RectangleRoom extends RoomFeature
 	{
 	}
 	
-	private static Color col1 = new Color(0.35f, 0.35f, 0.36f, 1.0f);
+	private static Color col1 = new Color(0.24f, 0.25f, 0.33f, 1.0f);
 	
 	private static Color col2 = new Color(0.30f, 0.30f, 0.30f, 1.0f );
 	private static Color col3 = new Color(0.90f, 0.20f, 0.20f, 1.0f );
@@ -67,28 +82,62 @@ public class RectangleRoom extends RoomFeature
 	@Override
 	public void init()
 	{
+		
+
 		// this width is in "units". (eg 5-13)
 		float ratio = this.width / this.height;
 		
 		int mapwidth = (int) (this.width*64f);
 		int mapheight = (int) (this.height*64f);
+
+		Array<AtlasRegion> regions = G.getAtlas().findRegions("tile64");
+		Pixmap testPixmap = GfxUtil.extractPixmapFromTextureRegion(regions.get(0));
+
+		Array<AtlasRegion> regions2 = G.getAtlas().findRegions("tile642");
+		Pixmap testPixmap2 = GfxUtil.extractPixmapFromTextureRegion(regions2.get(0));
 				
 		Pixmap pixmap = new Pixmap(mapwidth, mapheight, Pixmap.Format.RGBA8888 );
 //		pixmap.setFilter(Filter.BiLinear);
 		pixmap.setColor( Color.CLEAR );
 		pixmap.fill();
 
+		if(GenSeed.random.nextBoolean()) {
+			heart = G.getAtlas().createSprite("heart");
+			heart.setSize(0.5f,0.5f);
+			heart.setOrigin( 0, 0);
+		}
+
 		pixmap.setColor( col1 );
 		pixmap.fillRectangle((int)(WALL_WIDTH*64f), (int)(WALL_WIDTH*64f), (int)((this.width-WALL_WIDTH*2)*64),(int)((this.height-WALL_WIDTH*2)*64));
 
+		// 0,0 coordinate in the pixmap is TOP LEFT
+		for(int h = 0; h < this.height -1; h++) {
+			for(int w = 0; w < this.width -1; w++) {
+				if(GenSeed.random.nextFloat() < 0.1f) {
+					pixmap.drawPixmap(testPixmap, (int)(WALL_WIDTH*64f + w * 64f ), (int)(WALL_WIDTH*64f + h * 64f));	
+				}
+				else if(GenSeed.random.nextFloat() < 0.1f) {
+					pixmap.drawPixmap(testPixmap2, (int)(WALL_WIDTH*64f + w * 64f ), (int)(WALL_WIDTH*64f + h * 64f));	
+				}
+				
+			}
+		}
+
+		testPixmap.dispose();
+		testPixmap2.dispose();
+		
+		// pixmap.
+		// G.props[2]
+
 		for(RoomEntrance entrance : this.roomEntrances) {
-			pixmap.setColor( col3 );
+			pixmap.setColor( col1 );
 			pixmap.fillRectangle((int)(entrance.rect.x*64f), (int)((entrance.rect.y)*64f), (int)(entrance.rect.width*64f),(int)(entrance.rect.height*64f));
 		}
-		pixmap.setColor( col1 );
+		// pixmap.setColor( col1 );
 		
 		int halfW = (int) (pixmap.getWidth() * 0.5f);
 		int halfH = (int) (pixmap.getHeight() * 0.5f);
+		
 		
 //		pixmap.setColor( col2 );
 //		pixmap.fillRectangle(0, 0,  halfW, halfH);
@@ -119,7 +168,7 @@ public class RectangleRoom extends RoomFeature
 		
 			 */
 		tex = new Texture(pixmap);
-		
+		pixmap.dispose();
 	}
 	
 	private static Color winePropCol = new Color(0.211f, 0.241f, 0.231f, 1.0f );

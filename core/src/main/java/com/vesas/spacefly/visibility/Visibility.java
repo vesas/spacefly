@@ -6,14 +6,16 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
-import util.PolyUtils;
-
 import com.badlogic.gdx.math.DelaunayTriangulator;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ShortArray;
+
+import util.FrameTime;
+import util.Log;
+import util.PolyUtils;
 
 public class Visibility
 {
@@ -251,15 +253,23 @@ public class Visibility
 	
 	public void sweep()
 	{
+		
 		visibPoly.clear();
 		toProcess.clear();
 		
 		final Triangle start = findStartTriangle();
-		
+
+		long startNano = System.nanoTime();
+
 		if( start == null )
 		{
 			// went outside 
 			return;
+		}
+
+		for(int i = 0; i < edges.size(); i++) {
+			Edge edge = edges.get(i);
+			edge.procRank = 0;
 		}
 		
 		Edge e1 = start.getEdge( 0 );
@@ -309,8 +319,11 @@ public class Visibility
 			visibPoly.addHit( e3.getEndPoint1().p, e3.getEndPoint2().p );
 		}
 		
+		long count = 0;
+		
 		while( !toProcess.isEmpty() )
 		{
+			count++;
 			final TriEdge current = toProcess.removeFirst();
 			
 			final Triangle targetTri = current.e.getOtherTriangle( current.tri );
@@ -321,7 +334,19 @@ public class Visibility
 			}
 			
 			triEdgePool.free(current);
+
+			// if(count > 100) {
+				// Log.debug("processed over 100 TriEdges");
+			// }
+			if(count > 1000) {
+				Log.debug("processed over 1000 TriEdges");
+			}
+			else if(count > 10000) {
+				Log.debug("processed over 10000 TriEdges");
+			}
 		}
+		long endNano = System.nanoTime();
+		FrameTime.visib = endNano - startNano;
 	}
 	
 	private void addBoundarySlices( Vector2 center, TriEdge current, Triangle tri )
@@ -519,6 +544,7 @@ public class Visibility
 			{
 				if( tempEdge.canSeeFromGate( center, current.lGate, current.rGate ) )
 				{
+					tempEdge.procRank++;
 					// triedge is the edge out from a triangle
 					TriEdge triEdge = triEdgePool.obtain();
 					triEdge.e = tempEdge;
@@ -548,7 +574,8 @@ public class Visibility
 	
 	private static Vector2 intersection3 = new Vector2();
 	
-	static final private float EPS = 0.000000000000001f;
+	// static final private float EPS = 0.000000000000001f;
+	static final private float EPS = 0.000000000001f;
 	
 	
 	// find triangle which contains center

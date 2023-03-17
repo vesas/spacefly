@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Edge
 {
+	public int procRank = 0;
+	
 	private Triangle t1;
 	private Triangle t2;
 	

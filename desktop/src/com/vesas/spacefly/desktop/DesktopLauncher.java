@@ -10,10 +10,12 @@ public class DesktopLauncher {
 		
 		config.title = "spacefly";
 		config.fullscreen = false;
-		config.vSyncEnabled = true;
+		config.vSyncEnabled = false;
 		config.foregroundFPS = 60;
-		config.width = 1600;
-		config.height = 1000;
+		// config.width = 1100;
+		// config.height = 650;
+		config.width = 640*2;
+		config.height = 480*2;
 
 		new LwjglApplication(new SpaceflyGame(), config);
 

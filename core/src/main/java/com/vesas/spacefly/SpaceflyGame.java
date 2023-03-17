@@ -1,23 +1,26 @@
 package com.vesas.spacefly;
 
-import util.DebugShow;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.vesas.spacefly.box2d.Box2DWorld;
-import com.vesas.spacefly.game.Hud;
-import com.vesas.spacefly.game.InventoryScreen;
-import com.vesas.spacefly.game.PlayerBullets;
 import com.vesas.spacefly.game.CListener;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.game.Hud;
+import com.vesas.spacefly.game.InventoryScreen;
 import com.vesas.spacefly.game.Player;
+import com.vesas.spacefly.game.PlayerBullets;
 import com.vesas.spacefly.game.PlayerInput;
 import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.monster.MonsterBullets;
 import com.vesas.spacefly.world.AbstractGameWorld;
+
+import util.DebugShow;
+import util.FrameTime;
+import util.Log;
 
 public class SpaceflyGame extends Game 
 {
@@ -47,10 +50,18 @@ public class SpaceflyGame extends Game
 	
 	private Hud hud;
 	
+	private GLProfiler glProfiler;
+
+	private int frameNumber = 0;
+	
 	@Override
 	public void create() {		
 		
 		G.loadTextures();
+
+		glProfiler = new GLProfiler(Gdx.graphics);
+		glProfiler.enable();
+		// Lwjgl3Window.getGraphics();
 		
 		Player.INSTANCE.init();
 		
@@ -73,7 +84,7 @@ public class SpaceflyGame extends Game
 		Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
 		
 		DebugShow.debug = true;
-		
+		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
 	}
 
 	@Override
@@ -88,14 +99,25 @@ public class SpaceflyGame extends Game
 	@Override
 	public void render()
 	{
-		Gdx.gl.glClearColor(0.03f, 0.03f, 0.03f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		Gdx.gl.glEnable(GL20.GL_BLEND);
-
+		FrameTime.initFrame();
 		long time = TimeUtils.nanoTime();
-		
-		tick();
 
+		long clearstart = TimeUtils.nanoTime();
+		
+		long glclearstart = TimeUtils.nanoTime();
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		long glclearend = TimeUtils.nanoTime();
+		long glenablestart = TimeUtils.nanoTime();
+		Gdx.gl.glEnable(GL20.GL_BLEND);
+		long glenableend = TimeUtils.nanoTime();
+		long clearend = TimeUtils.nanoTime();
+
+		FrameTime.glenable = (glenableend-glenablestart);
+		FrameTime.glclear = (glclearend-glclearstart);
+		FrameTime.cleartime = (clearend-clearstart);
+
+		glProfiler.reset();
+		tick();
 		renderFrame();
 		
 		while( (time - lastFrameStarted) < (TARGET_FRAME_NANOTIME - 100000000 ))
@@ -111,8 +133,23 @@ public class SpaceflyGame extends Game
 			}
 			time = TimeUtils.nanoTime();
 		}
+
+		long end = TimeUtils.nanoTime();
+		FrameTime.frametime = (end - time);
+
+		String str = String.format("Frame: %-5s Vrtx count: %-5s" + 
+		" shader switches: %-5s" + 
+		" draw calls: %-5s", 
+		this.frameNumber,
+		(int)glProfiler.getVertexCount().average,
+		glProfiler.getShaderSwitches(),
+		glProfiler.getDrawCalls());
+
+		Log.debug(str + " |" + FrameTime.asString());
 		
 		lastFrameStarted = time;
+
+		frameNumber++;
 	}
 
 	public void tick()
@@ -177,7 +214,7 @@ public class SpaceflyGame extends Game
 		PlayerBullets.INSTANCE.tick( floatDelta );
 		MonsterBullets.INSTANCE.tick( floatDelta );
 		
-		Box2DWorld.world.step(floatDelta, 6, 3);
+		Box2DWorld.world.step(floatDelta, 3, 2);
 		
 		PlayerBullets.INSTANCE.removeBullets();
 		MonsterBullets.INSTANCE.removeBullets();
@@ -197,7 +234,7 @@ public class SpaceflyGame extends Game
 		MonsterBullets.INSTANCE.draw( screen );
 		
 		screen.worldBatch.end();
-		
+	
 		screen.screenBatch.begin();
 		
 		hud.draw( screen );
@@ -217,6 +254,8 @@ public class SpaceflyGame extends Game
 		DebugHelper.render( screen );
 		DebugShow.draw( screen );
 		screen.screenBatch.end();
+
+		Gdx.gl.glFlush();
 
 	}
 	

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Screen;
+import com.vesas.spacefly.world.procedural.GenSeed;
 
 public class BigExplosion implements ExplosionInterface
 {
@@ -60,7 +61,7 @@ public class BigExplosion implements ExplosionInterface
 	{
 		ringSize = 0.1f;
 		
-		randomBool = G.random.nextBoolean();
+		randomBool = GenSeed.random.nextBoolean();
 		
 		startx = x;
 		starty = y;
@@ -104,6 +105,7 @@ public class BigExplosion implements ExplosionInterface
 		if( trans > 1.0f )
 			trans = 1.0f;
 		
+			
 		if( trans > 0.0f )
 		{
 			Sprite whiteDisc = G.effects[2];
@@ -119,8 +121,6 @@ public class BigExplosion implements ExplosionInterface
 			whiteDisc.draw( screen.worldBatch );
 		}
 		
-		
-
 		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 		
 		

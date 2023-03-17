@@ -9,13 +9,23 @@ import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.world.procedural.Feature;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 
+import util.FrameTime;
+
 public class AxisAlignedCorridor implements Feature
 {
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
+
+	public enum Dir {
+		WE, SN; // west-east or south-north
+	}
+
+	public Dir dir = Dir.WE;
 	
+	// these are floor coordinates
 	protected float xpos;
 	protected float ypos;
 	
+	// these are floor width and height
 	protected float width;
 	protected float height;
 
@@ -43,13 +53,17 @@ public class AxisAlignedCorridor implements Feature
 	
 	public void draw(Screen screen)
 	{
+		long startNano = System.nanoTime();
 		// draw all wall blocks
 		final int size = blocks.size;
+		
 		for( int i = 0; i < size; i++ )
 		{
 			final FeatureBlock block = blocks.get( i );
 			block.draw( screen );
 		}
+		long endNano = System.nanoTime();
+		FrameTime.corridorfeatures += (endNano - startNano);
 	}
 	
 	public void setPosition( float x, float y )
@@ -73,7 +87,8 @@ public class AxisAlignedCorridor implements Feature
 		this.len = len;
 	}
 	
-	private static Color col1 = new Color(0.35f, 0.35f, 0.36f, 1.0f);
+	private static Color col1 = new Color(0.24f, 0.25f, 0.33f, 1.0f);
+	
 	public void init()
 	{
 		int width = 1;
@@ -85,6 +100,7 @@ public class AxisAlignedCorridor implements Feature
 		pixmap.fill();
 		
 		tex = new Texture(pixmap);
+		pixmap.dispose();
 	}
 	
 }

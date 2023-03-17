@@ -6,308 +6,336 @@ filter: Nearest, Nearest
 repeat: none
 block64
   rotate: false
-  xy: 324, 380
+  xy: 132, 68
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 block64a
   rotate: false
-  xy: 842, 446
+  xy: 601, 377
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 bullet
   rotate: false
-  xy: 1008, 498
+  xy: 966, 443
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
   index: -1
 bullet.1
   rotate: false
-  xy: 786, 398
+  xy: 973, 443
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
   index: -1
 bullet.2
   rotate: false
-  xy: 820, 432
+  xy: 980, 443
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
   index: -1
 bullet.3
   rotate: false
-  xy: 296, 288
+  xy: 1000, 483
   size: 10, 24
   orig: 10, 24
   offset: 0, 0
   index: -1
 dollar
   rotate: false
-  xy: 132, 112
+  xy: 495, 305
   size: 104, 136
   orig: 104, 136
   offset: 0, 0
   index: -1
 edge64a
   rotate: false
-  xy: 644, 446
+  xy: 2, 134
   size: 196, 64
   orig: 196, 64
   offset: 0, 0
   index: -1
 edgeA1
   rotate: false
-  xy: 262, 314
+  xy: 365, 247
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 edgeA10
   rotate: false
-  xy: 2, 446
+  xy: 2, 443
   size: 640, 64
   orig: 640, 64
   offset: 0, 0
   index: -1
 edgeA2
   rotate: false
-  xy: 2, 54
+  xy: 235, 247
   size: 128, 64
   orig: 128, 64
   offset: 0, 0
   index: -1
 edgeA5
   rotate: false
-  xy: 2, 380
+  xy: 644, 443
   size: 320, 64
   orig: 320, 64
   offset: 0, 0
   index: -1
 exploring1
   rotate: false
-  xy: 2, 250
+  xy: 235, 313
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 health1
   rotate: false
-  xy: 724, 335
+  xy: 300, 159
   size: 8, 9
   orig: 8, 9
   offset: 0, 0
   index: -1
 healthBubble1
   rotate: false
-  xy: 2, 7
+  xy: 235, 200
   size: 74, 45
   orig: 74, 45
   offset: 0, 0
   index: -1
 health_off
   rotate: false
-  xy: 110, 2
+  xy: 965, 359
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 health_on
   rotate: false
-  xy: 132, 60
+  xy: 965, 341
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
+heart
+  rotate: false
+  xy: 2, 200
+  size: 231, 241
+  orig: 231, 241
+  offset: 0, 0
+  index: -1
 monster1
   rotate: false
-  xy: 390, 380
+  xy: 601, 311
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 monster1.1
   rotate: false
-  xy: 908, 446
+  xy: 667, 377
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 monster1.2
   rotate: false
-  xy: 328, 314
+  xy: 667, 311
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 monster1_halo
   rotate: false
-  xy: 456, 380
+  xy: 733, 377
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 monsterbullet
   rotate: false
-  xy: 758, 374
+  xy: 431, 247
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
 monsterbullet2
   rotate: false
-  xy: 262, 250
+  xy: 300, 170
   size: 8, 28
   orig: 8, 28
   offset: 0, 0
   index: -1
 monter1
   rotate: false
-  xy: 394, 314
+  xy: 733, 311
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 pipe_bend_nw
   rotate: false
-  xy: 132, 78
+  xy: 266, 166
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 pipe_ew
   rotate: false
-  xy: 262, 280
+  xy: 431, 279
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 portal1
   rotate: false
-  xy: 2, 120
+  xy: 2, 4
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 powerup_ammo1
   rotate: false
-  xy: 522, 380
+  xy: 799, 377
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 powerup_heal
   rotate: false
-  xy: 974, 478
+  xy: 966, 475
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 powerup_heal.1
   rotate: false
-  xy: 460, 314
+  xy: 799, 311
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 puolikasoko
   rotate: false
-  xy: 78, 2
+  xy: 966, 457
   size: 30, 16
   orig: 30, 16
   offset: 0, 0
   index: -1
 shellmonster
   rotate: false
-  xy: 588, 380
+  xy: 865, 377
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 shellmonster.1
   rotate: false
-  xy: 526, 314
+  xy: 865, 311
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 ship
   rotate: false
-  xy: 786, 412
+  xy: 931, 343
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ship.1
   rotate: false
-  xy: 724, 346
+  xy: 266, 132
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ship2
   rotate: false
-  xy: 654, 380
+  xy: 132, 2
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 shipgun
   rotate: false
-  xy: 238, 224
+  xy: 465, 287
   size: 15, 24
   orig: 15, 24
   offset: 0, 0
   index: -1
+shoot_stick
+  rotate: false
+  xy: 200, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 smallpuff
   rotate: false
-  xy: 974, 467
+  xy: 482, 302
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
   index: -1
 smallpuff.1
   rotate: false
-  xy: 78, 20
+  xy: 931, 309
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 spice
   rotate: false
-  xy: 166, 86
+  xy: 431, 253
   size: 24, 24
   orig: 24, 24
   offset: 0, 0
   index: -1
 star
   rotate: false
-  xy: 592, 314
+  xy: 198, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+tile64
+  rotate: false
+  xy: 198, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+tile642
+  rotate: false
+  xy: 311, 181
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 whitedisc
   rotate: false
-  xy: 132, 250
+  xy: 365, 313
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 zippermonster
   rotate: false
-  xy: 720, 380
+  xy: 377, 181
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 zippermonster.1
   rotate: false
-  xy: 658, 314
+  xy: 931, 377
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
