@@ -19,8 +19,6 @@ public class G
 	
 	public static BitmapFont wFont;
 	
-	public static Random random = new Random();
-	
 	public static float GRID_W = 3*32f;
 	public static float GRID_H = 2*32f;
 	
@@ -63,12 +61,13 @@ public class G
 	{
 		atlas = new TextureAtlas(Gdx.files.local("data/fly.atlas"));
 		
-		monsters = new Sprite[4];
+		monsters = new Sprite[5];
 		
 		monsters[0] = G.getAtlas().createSprite("monster1");
 		monsters[1] = G.getAtlas().createSprite("zippermonster");
 		monsters[2] = G.getAtlas().createSprite("shellmonster.1");
 		monsters[3] = G.getAtlas().createSprite("monster1");
+		monsters[4] = G.getAtlas().createSprite("shoot_stick");
 		
 		spice = new Sprite[5];
 		
@@ -100,9 +99,10 @@ public class G
 		cursors = new Sprite[1];
 		cursors[0] = G.getAtlas().createSprite("crosshair1");
 		
-		props = new Sprite[2];
+		props = new Sprite[3];
 		props[0] = G.getAtlas().createSprite("pipe_ew");
 		props[1] = G.getAtlas().createSprite("pipe_bend_nw");
+		props[2] = G.getAtlas().createSprite("tile64");
 		
 		wFont = new BitmapFont(Gdx.files.internal("data/font_big.fnt"),
 				Gdx.files.internal("data/font_big.png"), false, false );
