@@ -11,6 +11,8 @@ Screenshot:
 
 ![alt text](spacefly.gif "Screenshot")
 
+![alt text](spacefly2.gif "Screenshot 2")
+
 ## Dependencies
 
 LibGDX 1.10.0
