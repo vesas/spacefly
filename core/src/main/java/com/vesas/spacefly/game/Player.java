@@ -456,7 +456,7 @@ public class Player
 //		body.setTransform(body.getPosition(), ( gunangle - 90) * DEGTORAD );
 		
 		float bodyAngle = body.getAngle();
-		sprite.setRotation(bodyAngle*Util.RADTODEG);
+		sprite.setRotation(bodyAngle*Util.RADTODEG + 90);
 		
 		sprite.setPosition(pos.x - 0.25f, pos.y - 0.25f);
 		
