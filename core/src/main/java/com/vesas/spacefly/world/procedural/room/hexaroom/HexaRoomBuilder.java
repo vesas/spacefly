@@ -1,10 +1,7 @@
 package com.vesas.spacefly.world.procedural.room.hexaroom;
 
-import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.procedural.generator.MetaHexaRoom;
-import com.vesas.spacefly.world.procedural.generator.MetaPortal;
-import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 
 public class HexaRoomBuilder
 {

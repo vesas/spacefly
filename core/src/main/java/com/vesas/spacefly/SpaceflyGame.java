@@ -137,15 +137,17 @@ public class SpaceflyGame extends Game
 		long end = TimeUtils.nanoTime();
 		FrameTime.frametime = (end - time);
 
-		String str = String.format("Frame: %-5s Vrtx count: %-5s" + 
-		" shader switches: %-5s" + 
-		" draw calls: %-5s", 
-		this.frameNumber,
-		(int)glProfiler.getVertexCount().average,
-		glProfiler.getShaderSwitches(),
-		glProfiler.getDrawCalls());
-
-		Log.debug(str + " |" + FrameTime.asString());
+		if(DebugHelper.FRAMETIME_DEBUG) {
+			String str = String.format("Frame: %-5s Vrtx count: %-5s" + 
+			" shader switches: %-5s" + 
+			" draw calls: %-5s", 
+			this.frameNumber,
+			(int)glProfiler.getVertexCount().average,
+			glProfiler.getShaderSwitches(),
+			glProfiler.getDrawCalls());
+	
+			Log.debug(str + " |" + FrameTime.asString());
+		}
 		
 		lastFrameStarted = time;
 
@@ -163,37 +165,37 @@ public class SpaceflyGame extends Game
 		
 		final boolean spacePressed =  Gdx.input.isKeyPressed(Keys.SPACE);
 		
-		final boolean f5 =  Gdx.input.isKeyPressed(Keys.F5);
-		final boolean f6 =  Gdx.input.isKeyPressed(Keys.F6);
-		final boolean f7 =  Gdx.input.isKeyPressed(Keys.F7);
-		final boolean f8 =  Gdx.input.isKeyPressed(Keys.F8);
-		
 		debugKeyCooldown -= floatDelta;
 		if( debugKeyCooldown <= 0 )
 			debugKeyCooldown = 0;
 		
-		if( f5 && debugKeyCooldown <= 0 )
+		if( Gdx.input.isKeyPressed(Keys.F5) && debugKeyCooldown <= 0 )
 		{	
 			debugKeyCooldown = 1;
 			DebugHelper.BOX2D_DEBUG = !DebugHelper.BOX2D_DEBUG;
 		}
 
-		if( f6 && debugKeyCooldown <= 0 )
+		if( Gdx.input.isKeyPressed(Keys.F6) && debugKeyCooldown <= 0 )
 		{	
 			debugKeyCooldown = 1;
 			DebugHelper.GC_DEBUG = !DebugHelper.GC_DEBUG;
 		}
 		
-		if( f7 && debugKeyCooldown <= 0 )
+		if( Gdx.input.isKeyPressed(Keys.F7) && debugKeyCooldown <= 0 )
 		{	
 			debugKeyCooldown = 1;
 			DebugHelper.VISIB_DEBUG = !DebugHelper.VISIB_DEBUG;
 		}
 
-		if( f8 && debugKeyCooldown <= 0 )
+		if( Gdx.input.isKeyPressed(Keys.F8) && debugKeyCooldown <= 0 )
 		{	
 			debugKeyCooldown = 1;
-			DebugHelper.PLAYER_DEBUG  = !DebugHelper.PLAYER_DEBUG;
+			DebugHelper.PLAYER_DEBUG = !DebugHelper.PLAYER_DEBUG;
+		}
+
+		if( Gdx.input.isKeyPressed(Keys.F9) && debugKeyCooldown <= 0) {
+			debugKeyCooldown = 1;
+			DebugHelper.FRAMETIME_DEBUG = !DebugHelper.FRAMETIME_DEBUG;
 		}
 		
 		pauseKeyCooldown -= floatDelta;

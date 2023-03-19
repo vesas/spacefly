@@ -24,12 +24,12 @@ public enum ExitDir
 			
 	}
 	
-	static public ExitDir getRandom()
+	public static ExitDir getRandom()
 	{
 		return ExitDir.values()[GenSeed.random.nextInt( ExitDir.values().length )];
 	}
 	
-	static public ExitDir getRandomExcluding( ExitDir exclude )
+	public static ExitDir getRandomExcluding( ExitDir exclude )
 	{
 		ExitDir ex = ExitDir.values()[GenSeed.random.nextInt( ExitDir.values().length )];
 		
@@ -47,7 +47,7 @@ public enum ExitDir
 		return ex;
 	}
 	
-	static public ExitDir getRandomExcluding( boolean [] exitDirs )
+	public static ExitDir getRandomExcluding( boolean [] exitDirs )
 	{
 		ExitDir ex = ExitDir.values()[GenSeed.random.nextInt( ExitDir.values().length )];
 		

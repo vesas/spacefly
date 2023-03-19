@@ -21,6 +21,7 @@ public class DebugHelper
 	static public boolean GC_DEBUG = false;
 	static public boolean VISIB_DEBUG = false;
 	static public boolean PLAYER_DEBUG = false;
+	static public boolean FRAMETIME_DEBUG = false;
 
 	public static long totalGarbageCollections = 0;
 	public static long garbageCollectionTime = 0;

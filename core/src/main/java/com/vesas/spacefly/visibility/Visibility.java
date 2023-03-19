@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ShortArray;
+import com.vesas.spacefly.DebugHelper;
 
 import util.FrameTime;
 import util.Log;
@@ -335,14 +336,13 @@ public class Visibility
 			
 			triEdgePool.free(current);
 
-			// if(count > 100) {
-				// Log.debug("processed over 100 TriEdges");
-			// }
-			if(count > 1000) {
-				Log.debug("processed over 1000 TriEdges");
-			}
-			else if(count > 10000) {
-				Log.debug("processed over 10000 TriEdges");
+			if(DebugHelper.FRAMETIME_DEBUG) {
+				if(count > 1000) {
+					Log.debug("processed over 1000 TriEdges");
+				}
+				else if(count > 10000) {
+					Log.debug("processed over 10000 TriEdges");
+				}
 			}
 		}
 		long endNano = System.nanoTime();
