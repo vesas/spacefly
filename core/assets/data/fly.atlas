@@ -27,14 +27,14 @@ bullet
   index: -1
 bullet.1
   rotate: false
-  xy: 973, 443
-  size: 5, 12
-  orig: 5, 12
+  xy: 465, 280
+  size: 12, 5
+  orig: 12, 5
   offset: 0, 0
   index: -1
 bullet.2
   rotate: false
-  xy: 980, 443
+  xy: 973, 443
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
