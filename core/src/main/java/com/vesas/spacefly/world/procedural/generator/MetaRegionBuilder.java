@@ -7,7 +7,7 @@ import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
 public class MetaRegionBuilder {
     
-    static public int REGION_MAX_SIZE = 45;
+    public static final int REGION_MAX_SIZE = 45;
 
 	private int itemCount = 0;
 	private int size;
@@ -173,8 +173,8 @@ public class MetaRegionBuilder {
 			}
 
 			// have to be at least minx/miny long/wide to accommodate the possible corridor
-			w = (float) Math.max(minwidth, GenSeed.random.nextInt( 18 ) );
-			h = (float) Math.max(minheight, GenSeed.random.nextInt( 18 ) );
+			w = Math.max(minwidth, GenSeed.random.nextInt( 18 ) );
+			h = Math.max(minheight, GenSeed.random.nextInt( 18 ) );
 
 			roomBuilder.setSize( w, h );
 
@@ -221,14 +221,14 @@ public class MetaRegionBuilder {
 			
 			if( ex.equals(ExitDir.N ) || ex.equals(ExitDir.S ) )
 			{
-				int portalWidth = (int) Math.max( 1 , 1 + GenSeed.random.nextInt(6) );
+				int portalWidth = Math.max( 1 , 1 + GenSeed.random.nextInt(6) );
 				portalWidth = (int) Math.min( portalWidth , w - 2);
 				
 				roomBuilder.addPortal( ex, portalWidth );
 			}
 			else 
 			{
-				int portalWidth = (int) Math.max( 1, 1 + GenSeed.random.nextInt(6) );
+				int portalWidth = Math.max( 1, 1 + GenSeed.random.nextInt(6) );
 				portalWidth = (int) Math.min( portalWidth , h - 2);
 				
 				roomBuilder.addPortal( ex, portalWidth );
