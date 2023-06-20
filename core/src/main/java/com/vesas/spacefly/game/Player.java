@@ -34,7 +34,7 @@ public class Player
 
 	private AABB aabb;
 
-	private static float THRUST_AMOUNT = 2.26f;
+	private static float THRUST_AMOUNT = 4.86f;
 	private static float MAX_VELOCITY = 5.39f;
 	
 	private float PI_PER_180 = (float) (Math.PI / 180.0f);
@@ -391,6 +391,9 @@ public class Player
 	
 		float tempTargetAngle = -tempVector2.angleRad() - 90f * Util.DEGTORAD;
 		
+		body.setTransform(body.getPosition(), tempTargetAngle);
+		/*
+		 
 		float bodyAngle = body.getAngle() % 360.0f;
 		float nextAngle = bodyAngle + body.getAngularVelocity() / 5.0f;
 		float totalRotation = tempTargetAngle - nextAngle;
@@ -405,7 +408,8 @@ public class Player
 		
 		float impulse = body.getInertia() * desiredAngularVelocity;
 		body.applyAngularImpulse( impulse, true );
-			
+		
+		 */	
 	}
 	
 	public void drawMiniMap( Screen screen )
