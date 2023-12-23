@@ -2,8 +2,8 @@ package com.vesas.spacefly.particles;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.world.procedural.GenSeed;
 
 public class BigExplosion implements ExplosionInterface
@@ -57,7 +57,7 @@ public class BigExplosion implements ExplosionInterface
 		return particles.isFinished() && smoke.isFinished();
 	}
 	
-	public void startAt( float x, float y, float _dx, float _dy )
+	public void startAt( float x, float y, float dx, float dy )
 	{
 		ringSize = 0.1f;
 		
@@ -65,13 +65,13 @@ public class BigExplosion implements ExplosionInterface
 		
 		startx = x;
 		starty = y;
-		particles.startAt( x, y, _dx, _dy, 0.1f, 0.64f );
-		smoke.startAt( x, y, _dx * 0.5f, _dy * 0.5f, 0.05f, 1.45f );
-		bits.startAt( x, y, _dx * 0.5f, _dy * 0.5f, 0.1f, 2.45f );
+		particles.startAt( x, y, dx, dy, 0.1f, 0.64f );
+		smoke.startAt( x, y, dx * 0.5f, dy * 0.5f, 0.05f, 1.45f );
+		bits.startAt( x, y, dx * 0.5f, dy * 0.5f, 0.1f, 2.45f );
 	}
 	
 	
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 		if( isFinished() )
 		{

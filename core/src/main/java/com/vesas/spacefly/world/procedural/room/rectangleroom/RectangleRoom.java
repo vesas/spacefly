@@ -3,12 +3,11 @@ package com.vesas.spacefly.world.procedural.room.rectangleroom;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.GenSeed;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleLSystem;
@@ -24,8 +23,6 @@ public class RectangleRoom extends RoomFeature
 
 	private Array<RoomEntrance> roomEntrances = new Array<RoomEntrance>();
 
-	private Sprite heart = null;
-
 	Texture tex;
 
 	// wall width in WORLD units
@@ -40,11 +37,11 @@ public class RectangleRoom extends RoomFeature
 		this.blocks.addAll( blocks );
 	}
 
-	public void drawWithVisibility(Screen screen) {
+	public void drawWithVisibility(GameScreen screen) {
 		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
 	}
 
-	public void draw(Screen screen)	
+	public void draw(GameScreen screen)	
 	{
 		long startNano = System.nanoTime();
 		final int size = blocks.size;
@@ -69,7 +66,7 @@ public class RectangleRoom extends RoomFeature
 //		G.wFont.draw( screen.worldBatch, "w:" + this.width + " h:" + this.height, this.xpos  + 1, this.ypos  + 1.5f);
 	}
 
-	public void tick(Screen screen, float delta)
+	public void tick(GameScreen screen, float delta)
 	{
 	}
 	
@@ -100,12 +97,6 @@ public class RectangleRoom extends RoomFeature
 //		pixmap.setFilter(Filter.BiLinear);
 		pixmap.setColor( Color.CLEAR );
 		pixmap.fill();
-
-		if(GenSeed.random.nextBoolean()) {
-			heart = G.getAtlas().createSprite("heart");
-			heart.setSize(0.5f,0.5f);
-			heart.setOrigin( 0, 0);
-		}
 
 		pixmap.setColor( col1 );
 		pixmap.fillRectangle((int)(WALL_WIDTH*64f), (int)(WALL_WIDTH*64f), (int)((this.width-WALL_WIDTH*2)*64),(int)((this.height-WALL_WIDTH*2)*64));

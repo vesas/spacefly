@@ -2,11 +2,10 @@ package com.vesas.spacefly.world;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.Floater;
-import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Powerup;
-import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.monster.Monster;
 import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.particles.BigExplosion;
@@ -225,12 +224,12 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 		}
 	}
 	
-	public abstract void init( Screen screen );
+	public abstract void init( GameScreen screen );
 	
-	public abstract void draw( Screen screen );
+	public abstract void draw( GameScreen screen );
 	
-	public abstract void drawMiniMap( Screen screen );
+	public abstract void drawMiniMap( GameScreen screen );
 	
-	public abstract void tick( Screen screen, float delta );
+	public abstract void tick( GameScreen screen, float delta );
 	
 }

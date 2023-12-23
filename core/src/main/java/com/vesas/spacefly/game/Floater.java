@@ -2,6 +2,7 @@ package com.vesas.spacefly.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.vesas.spacefly.GameScreen;
 
 public final class Floater
 {
@@ -80,7 +81,7 @@ public final class Floater
 	
 	private static Color tmpColor = new Color();
 	
-	public void render( Screen screen )
+	public void render( GameScreen screen )
 	{
 		if (!active)
 			return;

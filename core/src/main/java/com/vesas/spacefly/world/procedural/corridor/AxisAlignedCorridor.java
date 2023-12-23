@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Filter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.game.Screen;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.world.procedural.Feature;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 
@@ -45,13 +45,13 @@ public class AxisAlignedCorridor implements Feature
 	}
 
 	@Override
-	public void drawWithVisibility(Screen screen) {
+	public void drawWithVisibility(GameScreen screen) {
 		
 		// draw floor texture
 		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
 	}
 	
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 		long startNano = System.nanoTime();
 		// draw all wall blocks
@@ -78,7 +78,7 @@ public class AxisAlignedCorridor implements Feature
 		this.height = height;
 	}
 
-	public void tick(Screen screen, float delta)
+	public void tick(GameScreen screen, float delta)
 	{
 	}
 	

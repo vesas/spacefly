@@ -2,14 +2,15 @@ package com.vesas.spacefly.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.vesas.spacefly.GameScreen;
 
 public class PlayerInput implements InputProcessor
 {
-	private Screen screen;
+	private GameScreen screen;
 
 	private int zoom = 250;
 	
-	public PlayerInput( Screen screen )
+	public PlayerInput( GameScreen screen )
 	{
 		this.screen = screen;
 	}

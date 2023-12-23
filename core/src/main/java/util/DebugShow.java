@@ -4,8 +4,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
 
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.game.Screen;
 
 public class DebugShow
 {
@@ -14,7 +14,7 @@ public class DebugShow
 	static private Deque<String> strings = new ArrayDeque<String>();
 	int pos = 0;
 
-	public static void draw(Screen screen)
+	public static void draw(GameScreen screen)
 	{
 		if( !debug )
 			return;

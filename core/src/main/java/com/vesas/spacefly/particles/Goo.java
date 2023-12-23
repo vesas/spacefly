@@ -3,8 +3,8 @@ package com.vesas.spacefly.particles;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.game.Screen;
 
 public class Goo implements ExplosionInterface
 {
@@ -21,16 +21,16 @@ public class Goo implements ExplosionInterface
 		t = 0.0f;
 	}
 	
-	public void startAt( float x, float y, float _dx, float _dy )
+	public void startAt( float x, float y, float dx, float dy )
 	{
 		t = 0.0f;
 		startx = x;
 		starty = y;
-		smoke.startAt( x, y, _dx, _dy, 0.1f, 0.64f );
+		smoke.startAt( x, y, dx, dy, 0.1f, 0.64f );
 	}
 
 	@Override
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 		if( isFinished() )
 		{

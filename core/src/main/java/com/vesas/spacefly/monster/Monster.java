@@ -7,11 +7,11 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.Bullet;
 import com.vesas.spacefly.game.Player;
-import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.game.Util;
 
 abstract public class Monster implements AnimateEntity
@@ -240,7 +240,7 @@ abstract public class Monster implements AnimateEntity
 		return false;
 	}
 
-	abstract public void draw(Screen screen);
+	abstract public void draw(GameScreen screen);
 
 	abstract public void tick( float delta );
 }

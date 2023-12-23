@@ -1,6 +1,7 @@
-package com.vesas.spacefly.game;
+package com.vesas.spacefly;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,13 +11,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.game.Hud;
+import com.vesas.spacefly.game.Player;
+import com.vesas.spacefly.game.PlayerBullets;
+import com.vesas.spacefly.game.Util;
 import com.vesas.spacefly.game.cameraeffects.CameraPositionState;
 import com.vesas.spacefly.game.cameraeffects.Shake;
 import com.vesas.spacefly.game.cameraeffects.ShakeTranslate;
+import com.vesas.spacefly.monster.MonsterBullets;
+import com.vesas.spacefly.world.AbstractGameWorld;
 
-public class Screen
+import util.DebugShow;
+
+public class GameScreen implements Screen
 {
-
 	public SpriteBatch screenBatch;
 	public SpriteBatch worldBatch;
 	public SpriteBatch minimapBatch;
@@ -26,12 +35,21 @@ public class Screen
 	public Camera boxCamera;
 	public Camera minimapCamera;
 	
-	static public float GAMEWORLD_VIEWPORT_WIDTH = 16.0f * 3.7f;
-	static public float GAMEWORLD_VIEWPORT_HEIGHT = 9.0f * 3.7f;
+	public static final float GAMEWORLD_VIEWPORT_WIDTH = 16.0f * 3.7f;
+	public static final float GAMEWORLD_VIEWPORT_HEIGHT = 9.0f * 3.7f;
 	
 	public Viewport viewport;
 	public Viewport minimapViewport;
-	
+
+	private Hud hud;
+
+	private SpaceflyGame game;
+
+	public GameScreen(SpaceflyGame game) {
+		super();
+		this.game = game;
+	}
+
 	public void init()
 	{
 		final int width = Gdx.graphics.getWidth();
@@ -73,6 +91,8 @@ public class Screen
 		
 		worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 		
+		hud = new Hud();
+
 		Shake shake = new ShakeTranslate();
 		CameraPositionState.addEffect( shake );
 	}
@@ -121,5 +141,73 @@ public class Screen
 	public void dispose()
 	{
 		
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'show'");
+	}
+
+	@Override
+	public void render(float delta) {
+		worldBatch.begin();
+		
+		AbstractGameWorld.INSTANCE.draw( this );
+		
+		worldBatch.begin();
+		
+		PlayerBullets.INSTANCE.draw( this );
+		Player.INSTANCE.draw( this );
+		worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		MonsterBullets.INSTANCE.draw( this );
+		
+		worldBatch.end();
+	
+		screenBatch.begin();
+		
+		hud.draw( this );
+		
+		DebugHelper.printGCStats(this.screenBatch);
+		
+		if( game.isPaused() )
+		{
+			G.font.draw( this.screenBatch, "PAUSED", (float)(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() * 0.5 - 100f), 
+						(float)(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() * 0.9f ) );
+
+			 //G.shapeRenderer.setProjectionMatrix(screenCamera.combined);
+			//screenBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+			// inventory.draw(screen.batch );
+		}
+
+		DebugHelper.render( this );
+		DebugShow.draw( this );
+		this.screenBatch.end();
+
+		Gdx.gl.glFlush();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'resize'");
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'pause'");
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'resume'");
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'hide'");
 	}
 }
