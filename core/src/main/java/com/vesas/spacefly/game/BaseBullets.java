@@ -1,10 +1,10 @@
 package com.vesas.spacefly.game;
 
-import com.badlogic.gdx.utils.Array;
-
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.PooledLinkedList;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.vesas.spacefly.GameScreen;
 
 public class BaseBullets
 {
@@ -77,7 +77,7 @@ public class BaseBullets
 		}
 	}
 
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA , GL20.GL_ONE_MINUS_SRC_ALPHA);
 		

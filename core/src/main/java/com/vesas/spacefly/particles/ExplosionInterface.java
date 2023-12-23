@@ -1,11 +1,11 @@
 package com.vesas.spacefly.particles;
 
-import com.vesas.spacefly.game.Screen;
+import com.vesas.spacefly.GameScreen;
 
 public interface ExplosionInterface
 {
 
-	public void draw(Screen screen);
+	public void draw(GameScreen screen);
 	
 	public void tick( float delta );
 	

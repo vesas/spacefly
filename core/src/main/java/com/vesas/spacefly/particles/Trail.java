@@ -1,11 +1,9 @@
 package com.vesas.spacefly.particles;
 
-import java.util.Random;
-
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.game.Screen;
 
 public class Trail
 {
@@ -58,7 +56,7 @@ public class Trail
 		}
 	}
 	
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 		Sprite sprite = G.effects[0];
 		sprite.setOriginCenter();

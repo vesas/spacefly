@@ -15,10 +15,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.DebugHelper;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Player;
-import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.monster.Monster;
 import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.particles.ExplosionInterface;
@@ -44,7 +44,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 	private FrameBuffer fbo;
 
 	@Override
-	public void init( Screen screen )
+	public void init( GameScreen screen )
 	{
 		feats = new Array<Feature>();
 		
@@ -80,7 +80,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 	}
 	
 	@Override
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 
 		Vector2 playerCenter = Player.INSTANCE.getWorldCenter();
@@ -177,7 +177,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		
 	}
 	
-	private void renderVisibilityDebug2(Screen screen) 
+	private void renderVisibilityDebug2(GameScreen screen) 
 	{
 		
 		G.shapeRenderer.begin(ShapeType.Line);
@@ -227,7 +227,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 	}
 	
 	
-	public void drawMiniMap( Screen screen )
+	public void drawMiniMap( GameScreen screen )
 	{
 		G.shapeRenderer.begin(ShapeType.Filled);
 		G.shapeRenderer.setColor(0.6f, 0.6f, 0.6f, 0.5f);
@@ -270,7 +270,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 	private PolygonSpriteBatch polyBatch;
 	private Texture textureSolid;
 	
-	private void drawVisibility( Screen screen, FrameBuffer fb, Vector2 playerCenter )
+	private void drawVisibility( GameScreen screen, FrameBuffer fb, Vector2 playerCenter )
 	{
 		VisibilityPoly visiPoly = visib.getVisibPoly();
 		
@@ -295,7 +295,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 	}
 
 	@Override
-	public void tick(Screen screen, float delta)
+	public void tick(GameScreen screen, float delta)
 	{
 		for( int i = 0; i < feats.size; i++ )
 		{

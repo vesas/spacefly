@@ -1,14 +1,14 @@
 package com.vesas.spacefly.world.procedural;
 
-import com.vesas.spacefly.game.Screen;
+import com.vesas.spacefly.GameScreen;
 
 // feature on the live map
 public interface Feature
 {
 	public void init();
 	
-	public void draw(Screen screen);
-	public void drawWithVisibility(Screen screen);
+	public void draw(GameScreen screen);
+	public void drawWithVisibility(GameScreen screen);
 	
 	
 	public float getXpos();
@@ -17,6 +17,6 @@ public interface Feature
 	public float getWidth();
 	public float getHeight();
 	
-	public void tick(Screen screen, float delta);
+	public void tick(GameScreen screen, float delta);
 	
 }

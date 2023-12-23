@@ -3,12 +3,13 @@ package com.vesas.spacefly.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.world.AbstractGameWorld;
 
 public class Hud
 {
 	
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
@@ -33,7 +34,7 @@ public class Hud
 		screen.viewport.apply(false);
 	}
 	
-	private void drawMinimap(Screen screen)
+	private void drawMinimap(GameScreen screen)
 	{
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();

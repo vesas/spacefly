@@ -49,7 +49,7 @@ public class WorldGen
 	public Array<Feature> generate()
 	{
 		GenSeed.random.setSeed(16464);
-		metaRegionBuilder.setSize(9);
+		metaRegionBuilder.setSize(16);
 		Region metaRegion = metaRegionBuilder.generateMetaRegion();
 		
 		Array<Feature> feats = new Array<Feature>();

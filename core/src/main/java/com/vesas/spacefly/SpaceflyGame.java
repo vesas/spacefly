@@ -3,18 +3,19 @@ package com.vesas.spacefly;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.VisUI.SkinScale;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.CListener;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.game.Hud;
 import com.vesas.spacefly.game.InventoryScreen;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.game.PlayerBullets;
 import com.vesas.spacefly.game.PlayerInput;
-import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.monster.MonsterBullets;
 import com.vesas.spacefly.world.AbstractGameWorld;
 
@@ -33,6 +34,14 @@ public class SpaceflyGame extends Game
 	
 	boolean paused = false;
 	
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+	}
+
 	private static float TARGET_FPS = 60.0f;
 	
 	private static long NANOS_TO_SECONDS = 1000000000;
@@ -45,10 +54,9 @@ public class SpaceflyGame extends Game
 	
 	private CListener clistener;
 	
-	private Screen screen;
+	private Screen currentScreen;
+	private GameScreen gameScreen;
 	private PlayerInput playerInput;
-	
-	private Hud hud;
 	
 	private GLProfiler glProfiler;
 
@@ -65,23 +73,35 @@ public class SpaceflyGame extends Game
 		
 		Player.INSTANCE.init();
 		
-		screen = new Screen();
-		screen.init();
-		screen.updatePosition( Player.INSTANCE.getWorldCenter(), 0.5f,0.0f );
+		G.loadTextures();
+
+		VisUI.load(SkinScale.X2);
+
+
+		glProfiler = new GLProfiler(Gdx.graphics);
+		glProfiler.enable();
+		// Lwjgl3Window.getGraphics();
 		
-		playerInput = new PlayerInput( screen );
+		Player.INSTANCE.init();
+		
+		gameScreen = new GameScreen(this);
+		gameScreen.init();
+		gameScreen.updatePosition( Player.INSTANCE.getWorldCenter(), 0.5f,0.0f );
+		
+		playerInput = new PlayerInput( gameScreen );
 		Gdx.input.setInputProcessor( playerInput );
 		
-		AbstractGameWorld.INSTANCE.init(screen);
-		
-		hud = new Hud();
+		AbstractGameWorld.INSTANCE.init(gameScreen);
 		
 		clistener = new CListener(); 
 		Box2DWorld.world.setContactListener( clistener );
 		
 		inventory.init();
+
+		currentScreen = new MainMenuScreen(this);
 		
 		Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
+
 		
 		DebugShow.debug = true;
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
@@ -90,8 +110,9 @@ public class SpaceflyGame extends Game
 	@Override
 	public void dispose() {
 		
-		screen.dispose();
+		gameScreen.dispose();
 		
+		VisUI.dispose();
 		G.disposeTextures();
 		
 	}
@@ -119,6 +140,9 @@ public class SpaceflyGame extends Game
 		glProfiler.reset();
 		tick();
 		renderFrame();
+		
+		float delta = Gdx.graphics.getDeltaTime();
+		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		while( (time - lastFrameStarted) < (TARGET_FRAME_NANOTIME - 100000000 ))
 		{
@@ -209,9 +233,9 @@ public class SpaceflyGame extends Game
 		if( paused )
 			return;
 			
-		AbstractGameWorld.INSTANCE.tick( screen, floatDelta );
+		AbstractGameWorld.INSTANCE.tick( gameScreen, floatDelta );
 		
-		Player.INSTANCE.tick( screen, floatDelta );
+		Player.INSTANCE.tick( gameScreen, floatDelta );
 		
 		PlayerBullets.INSTANCE.tick( floatDelta );
 		MonsterBullets.INSTANCE.tick( floatDelta );
@@ -224,40 +248,11 @@ public class SpaceflyGame extends Game
 	
 	public void renderFrame()
 	{
-		screen.worldBatch.begin();
-		
-		AbstractGameWorld.INSTANCE.draw( screen );
-		
-		screen.worldBatch.begin();
-		
-		PlayerBullets.INSTANCE.draw( screen );
-		Player.INSTANCE.draw( screen );
-		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		MonsterBullets.INSTANCE.draw( screen );
-		
-		screen.worldBatch.end();
-	
-		screen.screenBatch.begin();
-		
-		hud.draw( screen );
-		
-		DebugHelper.printGCStats(screen.screenBatch);
-		
-		if( paused )
-		{
-			G.font.draw( screen.screenBatch, "PAUSED", (float)(Gdx.graphics.getWidth() - Gdx.graphics.getWidth() * 0.5 - 100f), 
-						(float)(Gdx.graphics.getHeight() - Gdx.graphics.getHeight() * 0.9f ) );
 
-			 //G.shapeRenderer.setProjectionMatrix(screenCamera.combined);
-			//screenBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
-			// inventory.draw(screen.batch );
-		}
+		currentScreen.render(Gdx.graphics.getDeltaTime());
+		// gameScreen.render(Gdx.graphics.getDeltaTime());
 
-		DebugHelper.render( screen );
-		DebugShow.draw( screen );
-		screen.screenBatch.end();
-
-		Gdx.gl.glFlush();
+		
 
 	}
 	
@@ -265,7 +260,8 @@ public class SpaceflyGame extends Game
 	@Override
 	public void resize(int width, int height) 
 	{
-		screen.init();
+		
+		gameScreen.init();
 	}
 
 	@Override

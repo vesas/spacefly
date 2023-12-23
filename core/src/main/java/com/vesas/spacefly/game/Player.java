@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.vesas.spacefly.DebugHelper;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.monster.MonsterBullet;
 import com.vesas.spacefly.particles.ImpulseParticleSystem;
@@ -23,7 +24,7 @@ import com.vesas.spacefly.world.procedural.GenSeed;
 import quadtree.AABB;
 import quadtree.XY;
 
-public class Player
+public final class Player
 {
 	private Sprite sprite;
 	private Sprite gunSprite;
@@ -233,7 +234,7 @@ public class Player
 	}
 	
 
-	public void fireBullet(Screen screen, float floatDelta,PlayerBullets bullets)
+	public void fireBullet(GameScreen screen, float floatDelta,PlayerBullets bullets)
 	{
 		if( bulletFireCooldown > 0 )
 		{
@@ -274,14 +275,14 @@ public class Player
 		*/
 		bullets.fireBullet(bodyPos.x  + bulletDirectionVector.x * 0.4f, 
 				bodyPos.y + bulletDirectionVector.y * 0.4f, 
-							bulletDirectionVector.x * 9.6f,
-							bulletDirectionVector.y * 9.6f);
+							bulletDirectionVector.x * 11.6f,
+							bulletDirectionVector.y * 11.6f);
 
 		G.shot.play( 0.01f );
 	}
 
 	
-	public void tick( Screen screen, float floatDelta )
+	public void tick( GameScreen screen, float floatDelta )
 	{
 		// body.applyForceToCenter(0.0f, -0.2f, true);
 
@@ -364,7 +365,7 @@ public class Player
 		
 	}
 	
-	private void updateGunAngle( Screen screen )
+	private void updateGunAngle( GameScreen screen )
 	{
 		// if(true)
 			// return;
@@ -412,7 +413,7 @@ public class Player
 		 */	
 	}
 	
-	public void drawMiniMap( Screen screen )
+	public void drawMiniMap( GameScreen screen )
 	{
 		Vector2 pos = body.getPosition();
 		
@@ -423,13 +424,13 @@ public class Player
 		
 	}
 	
-	private void drawTracers(Screen screen)
+	private void drawTracers(GameScreen screen)
 	{
 		trail.draw( screen );
 		particles.draw( screen );
 	}
 
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 		
 		drawTracers( screen );

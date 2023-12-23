@@ -1,22 +1,21 @@
 package com.vesas.spacefly.monster;
 
-import com.badlogic.gdx.utils.Array;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.game.RayCastClosestCB;
-import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.game.Util;
 
 public class SlurgMonster extends Monster
@@ -419,7 +418,7 @@ public class SlurgMonster extends Monster
 	}
 
 	@Override
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 		// TODO Auto-generated method stub
 

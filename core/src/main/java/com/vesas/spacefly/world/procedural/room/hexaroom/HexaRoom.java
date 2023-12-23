@@ -1,15 +1,9 @@
 package com.vesas.spacefly.world.procedural.room.hexaroom;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.game.Screen;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
-import com.vesas.spacefly.world.procedural.GenSeed;
-import com.vesas.spacefly.world.procedural.lsystem.SimpleLSystem;
-import com.vesas.spacefly.world.procedural.lsystem.SimpleWineSystem;
 import com.vesas.spacefly.world.procedural.room.RoomFeature;
 
 public class HexaRoom extends RoomFeature
@@ -22,12 +16,12 @@ public class HexaRoom extends RoomFeature
 	{
 	}
 
-	public void draw(Screen screen)	
+	public void draw(GameScreen screen)	
 	{
 		
 	}
 
-	public void tick(Screen screen, float delta)
+	public void tick(GameScreen screen, float delta)
 	{
 	}
 	
@@ -39,7 +33,7 @@ public class HexaRoom extends RoomFeature
 	}
 
 	@Override
-	public void drawWithVisibility(Screen screen) {
+	public void drawWithVisibility(GameScreen screen) {
 		// TODO Auto-generated method stub
 		
 	}

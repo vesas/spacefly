@@ -3,8 +3,8 @@ package com.vesas.spacefly.monster;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.game.Screen;
 
 public class ZipperCloud
 {
@@ -47,7 +47,7 @@ public class ZipperCloud
 		return center;
 	}
 	
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 		Vector2 cent = getCenter();
 		

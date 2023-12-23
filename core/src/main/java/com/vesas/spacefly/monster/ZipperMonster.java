@@ -3,25 +3,25 @@ package com.vesas.spacefly.monster;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.Bullet;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.game.Util;
 
 public class ZipperMonster extends Monster
 {
-	enum IMPULSE_STATE
+	enum IMPULSESTATE
 	{
 		RESTING,
 		PREPARING,
 		PUSHING;
 	}
 	
-	private IMPULSE_STATE state = IMPULSE_STATE.RESTING;
+	private IMPULSESTATE state = IMPULSESTATE.RESTING;
 	
 	private float cooldown = 0 + random.nextFloat();
 	
@@ -130,7 +130,7 @@ public class ZipperMonster extends Monster
 			 */
 			
 			
-			if( state == IMPULSE_STATE.RESTING && random.nextInt(100) < 50)
+			if( state == IMPULSESTATE.RESTING && random.nextInt(100) < 50)
 			{
 				Vector2 tmp = cloud.getCenter();
 				
@@ -151,7 +151,7 @@ public class ZipperMonster extends Monster
 				turning = true;
 			}
 			
-			if( turning && state == IMPULSE_STATE.RESTING )
+			if( turning && state == IMPULSESTATE.RESTING )
 			{
 				float turnamount = this.getBody().getAngularVelocity();
 				
@@ -159,12 +159,12 @@ public class ZipperMonster extends Monster
 				{
 					turning = false;
 					
-					state = IMPULSE_STATE.PREPARING;
+					state = IMPULSESTATE.PREPARING;
 					actionTime = 0.0f;
 				}
 			}
 			
-			if( state == IMPULSE_STATE.PREPARING )
+			if( state == IMPULSESTATE.PREPARING )
 			{
 				actionTime += delta;
 				
@@ -172,11 +172,11 @@ public class ZipperMonster extends Monster
 				
 				if( actionTime > PREPARING_MAX_TIME )
 				{
-					state = IMPULSE_STATE.PUSHING;
+					state = IMPULSESTATE.PUSHING;
 					actionTime = 0.0f;
 				}
 			}
-			if( state == IMPULSE_STATE.PUSHING )
+			if( state == IMPULSESTATE.PUSHING )
 			{
 				actionTime += delta;
 				
@@ -190,7 +190,7 @@ public class ZipperMonster extends Monster
 				
 				if( actionTime > PUSHING_MAX_TIME )
 				{
-					state = IMPULSE_STATE.RESTING;
+					state = IMPULSESTATE.RESTING;
 					actionTime = 0.0f;
 				}
 			}
@@ -250,7 +250,7 @@ public class ZipperMonster extends Monster
 	
 
 	@Override
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 		if (body == null)
 			return;
@@ -266,7 +266,7 @@ public class ZipperMonster extends Monster
 		
 		
 		
-		if( state == IMPULSE_STATE.PUSHING )
+		if( state == IMPULSESTATE.PUSHING )
 		{
 			if( actionTime < PUSHING_MAX_TIME * 0.5f ) 
 			{
@@ -280,7 +280,7 @@ public class ZipperMonster extends Monster
 			
 			sprite.setSize(0.25f * (1.3f - currentModifier * 0.5f ), 0.25f * currentModifier );
 		}
-		else if( state == IMPULSE_STATE.PREPARING )
+		else if( state == IMPULSESTATE.PREPARING )
 		{
 			currentModifier = currentModifier + (targetModifier - currentModifier) * 0.03f;	
 			

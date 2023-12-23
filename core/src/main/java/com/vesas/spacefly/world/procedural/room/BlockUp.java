@@ -1,15 +1,13 @@
 package com.vesas.spacefly.world.procedural.room;
 
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.EarClippingTriangulator;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.game.Screen;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 
 public class BlockUp implements FeatureBlock
@@ -73,13 +71,13 @@ public class BlockUp implements FeatureBlock
 		
 	}
 	
-	public void draw(Screen screen)
+	public void draw(GameScreen screen)
 	{
 		sprite.setPosition( xpos + 0.5f , ypos);
 		sprite.draw(screen.worldBatch);
 	}
 
-	public void tick(Screen screen, float delta)
+	public void tick(GameScreen screen, float delta)
 	{
 	}
 }

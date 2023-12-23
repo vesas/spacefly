@@ -7,7 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.game.Screen;
 
 public class DebugHelper
 {
@@ -55,7 +54,7 @@ public class DebugHelper
 
 	}
 	
-	static public void render( Screen screen )
+	static public void render( GameScreen screen )
 	{
 		if( DebugHelper.BOX2D_DEBUG )
 			Box2DWorld.renderDebug( screen.camera.combined );
