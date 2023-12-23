@@ -9,9 +9,7 @@
 
 Screenshot: 
 
-![alt text](spacefly.gif "Screenshot")
-
-![alt text](spacefly2.gif "Screenshot 2")
+![alt text](readme_img/spacefly.gif "Screenshot")
 
 ## Dependencies
 
