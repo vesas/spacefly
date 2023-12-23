@@ -78,4 +78,9 @@ public class PlayerInput implements InputProcessor
 		return true;
 	}
 
+	@Override
+	public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
 }
