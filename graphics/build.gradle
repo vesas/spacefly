@@ -16,11 +16,16 @@ task packTextures(type: JavaExec) {
     args 'in', 'out', 'fly'
 }
 
-task copyResources(type: Copy) {
-    dependsOn = [ packTextures ]
-    from 'out'
-    into '../core/assets/data'
+task packSkinTextures(type: JavaExec) {
+    classpath = configurations.packageTex
+    mainClass = "com.badlogic.gdx.tools.texturepacker.TexturePacker"
+    args 'skin_in', 'skin_out', 'skin'
+}
 
+task copyResources(type: Copy) {
+    dependsOn = [ packTextures, packSkinTextures ]
+    from 'out' into '../core/assets/data'
+    from 'skin_out' into '../core/assets/data'
 }
 
 assemble.dependsOn(copyResources)
