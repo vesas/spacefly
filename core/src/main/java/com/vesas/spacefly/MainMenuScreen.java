@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -22,6 +24,12 @@ public class MainMenuScreen implements Screen {
 
     private SpaceflyGame game;
 
+    private MainMenuLabel menu0;
+    private MainMenuLabel menu1;
+    private MainMenuLabel menu2;
+
+    private int currentSelectedMenu = 0;
+
     public MainMenuScreen(SpaceflyGame game) {
 		super();
 		this.game = game;
@@ -34,10 +42,68 @@ public class MainMenuScreen implements Screen {
         stage = new Stage(new ScreenViewport()) {
             @Override
             public boolean keyDown(int keyCode) {
+                if (keyCode == Keys.DOWN) {
+                    currentSelectedMenu++;
+                    if(currentSelectedMenu > 2) {
+                        currentSelectedMenu = 0;
+                    }
+
+                    System.out.println("currentSelectedMenu: " + currentSelectedMenu);
+                }
+                if (keyCode == Keys.UP) {
+                    currentSelectedMenu--;
+                    if(currentSelectedMenu < 0) {
+                        currentSelectedMenu = 2;
+                    }
+                    System.out.println("currentSelectedMenu: " + currentSelectedMenu);
+                }
                 if (keyCode == Keys.SPACE) {
                     Gdx.app.exit();
                 }
+
+                if(currentSelectedMenu == 0) {
+                    menu0.setActive(true);
+                    menu1.setActive(false);
+                    menu2.setActive(false);
+                }
+                else if(currentSelectedMenu == 1) {
+                    menu0.setActive(false);
+                    menu1.setActive(true);
+                    menu2.setActive(false);
+                }
+                else if(currentSelectedMenu == 2) {
+                    menu0.setActive(false);
+                    menu1.setActive(false);
+                    menu2.setActive(true);
+                }
+
                 return super.keyDown(keyCode);
+            }
+
+            @Override public boolean mouseMoved (int screenX, int screenY) {
+                // we can also handle mouse movement without anything pressed
+                Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+                
+                Vector2 mouseLocalPosition = stage.screenToStageCoordinates(mouseScreenPosition);
+
+                Actor hitActor = stage.hit(mouseLocalPosition.x, mouseLocalPosition.y, false);
+                if(hitActor == menu0) {
+                    menu0.setActive(true);
+                    menu1.setActive(false);
+                    menu2.setActive(false);
+                }
+                if(hitActor == menu1) {
+                    menu0.setActive(false);
+                    menu1.setActive(true);
+                    menu2.setActive(false);
+                }
+                if(hitActor == menu2) {
+                    menu0.setActive(false);
+                    menu1.setActive(false);
+                    menu2.setActive(true);
+                }
+                
+                return false;
             }
         };
 
@@ -66,23 +132,24 @@ public class MainMenuScreen implements Screen {
 		table.add(testLabel).align(Align.center).expandY().fill().center();
 
         table.row();
-        Label testLabel2 = new Label("New game", skin);
-        
-        testLabel2.setAlignment(Align.center);
-        testLabel2.setFontScale(scale);
-		table.add(testLabel2).align(Align.center).expandY().fill().center();
+        menu0 = new MainMenuLabel("New game", skin);
+        menu0.setActive(true);
+        menu0.setAlignment(Align.center);
+        menu0.setFontScale(scale);
+		table.add(menu0).align(Align.center).expandY().fill().center();
 
         table.row();
-        Label testLabel3 = new Label("Settings", skin);
-        testLabel3.setAlignment(Align.center);
-        testLabel3.setFontScale(scale);
-		table.add(testLabel3).align(Align.center).expandY().fill().center();
+        menu1 = new MainMenuLabel("Settings", skin);
+        menu1.setAlignment(Align.center);
+        menu1.setFontScale(scale);
+		table.add(menu1).align(Align.center).expandY().fill().center();
 
         table.row();
-        Label testLabel4 = new Label("Exit", skin);
-        testLabel4.setAlignment(Align.center);
-        testLabel4.setFontScale(scale);
-		table.add(testLabel4).align(Align.center).expandY().fill().center();
+        menu2 = new MainMenuLabel("Exit", skin);
+        menu2.setAlignment(Align.center);
+        menu2.setFontScale(scale);
+        // menu2.setDebug(true);
+		table.add(menu2).align(Align.center).expandY().fill().center();
     }
 
     @Override
