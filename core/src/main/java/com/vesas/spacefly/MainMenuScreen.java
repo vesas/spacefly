@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -151,6 +152,7 @@ public class MainMenuScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 
         table = new Table(skin);
+        table.pad(110);
 		table.setFillParent(true);
 		// table.setDebug(true);
 		stage.addActor(table);
@@ -160,29 +162,32 @@ public class MainMenuScreen implements Screen {
 
 		Label testLabel = new Label("Spacefly", skin);
         testLabel.setAlignment(Align.center);
-        testLabel.setFontScale(1.5f * scale);
+        testLabel.setFontScale(1.4f * scale);
         table.row();
 		table.add(testLabel).align(Align.center).expandY().fill().center();
 
         table.row();
-        menu0 = new MainMenuLabel("New game", skin);
+        menu0 = new MainMenuLabel("New game", skin, new Color(0,0,0,0) );
         menu0.setActive(true);
         menu0.setAlignment(Align.center);
         menu0.setFontScale(scale);
 		table.add(menu0).align(Align.center).expandY().fill().center();
 
         table.row();
-        menu1 = new MainMenuLabel("Settings", skin);
+        menu1 = new MainMenuLabel("Settings", skin, new Color(0,0,0,0) );
         menu1.setAlignment(Align.center);
         menu1.setFontScale(scale);
 		table.add(menu1).align(Align.center).expandY().fill().center();
 
         table.row();
-        menu2 = new MainMenuLabel("Exit", skin);
+        menu2 = new MainMenuLabel("Exit", skin, new Color(0,0,0,0) );
         menu2.setAlignment(Align.center);
         menu2.setFontScale(scale);
         // menu2.setDebug(true);
 		table.add(menu2).align(Align.center).expandY().fill().center();
+
+        table.row();
+        table.add().align(Align.center).expandY().fill().center();
     }
 
     @Override
@@ -192,6 +197,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(delta);
 		stage.draw();

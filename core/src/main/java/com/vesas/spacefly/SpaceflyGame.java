@@ -48,6 +48,11 @@ public class SpaceflyGame extends Game
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
 	}
 
+	public void restoreGameScreen() {
+		this.setScreen(gameScreen);
+		gameScreen.setPaused(false);
+	}
+
 	public void setGameScreen() {
 
 		this.getScreen().dispose();
@@ -63,7 +68,8 @@ public class SpaceflyGame extends Game
 	@Override
 	public void dispose() {
 		
-		gameScreen.dispose();
+		if(gameScreen != null)
+			gameScreen.dispose();
 		
 		G.disposeTextures();
 		

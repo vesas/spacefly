@@ -36,7 +36,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 	
 	private Visibility visib;
 
-	private ShaderProgram defaultShader;
+	private ShaderProgram visibShader;
 	
 	private FrameBuffer fbo;
 
@@ -55,18 +55,17 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		
 		visib.finishLoad();
 
-		String vertexShader = Gdx.files.local("data/vertexShader.glsl").readString();
-		
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
 		
 		fbo = new FrameBuffer(Format.RGBA8888, (int)width, (int)height, false);
 		
-		String defaultPixelShader = Gdx.files.local("data/defaultPixelShader.glsl").readString();
-		defaultShader = new ShaderProgram(vertexShader, defaultPixelShader);
+		final String vertexShaderString = Gdx.files.local("data/vertexShader.glsl").readString();
+		final String visibPixelShaderString = Gdx.files.local("data/visibShader.glsl").readString();
+		visibShader = new ShaderProgram(vertexShaderString, visibPixelShaderString);
 
-		defaultShader.bind();
-		defaultShader.setUniformf("ambientColor", 0.15f, 0.15f, 0.15f, 0.25f);
+		visibShader.bind();
+		visibShader.setUniformf("ambientColor", 0.15f, 0.15f, 0.15f, 0.25f);
 		
 		Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888 );
 		pixmap.setColor(1.0f, 1.0f,1.0f,1.0f);
@@ -85,10 +84,10 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		float screenHeight = screen.viewport.getScreenHeight();
 		float screenWidth = screen.viewport.getScreenWidth();
 		
-		defaultShader.bind();
-		defaultShader.setUniformf("ambientColor", 0.5f, 0.5f, 0.7f, 0.519f);
-		defaultShader.setUniformi("u_lightmap", 1);
-		defaultShader.setUniformf("resolution", screenWidth, screenHeight);
+		visibShader.bind();
+		visibShader.setUniformf("ambientColor", 0.5f, 0.5f, 0.7f, 0.519f);
+		visibShader.setUniformi("u_lightmap", 1);
+		visibShader.setUniformf("resolution", screenWidth, screenHeight);
 		
 		// defaultShader.setUniformf("viewcenc", screenWidth*0.5f, screenHeight*0.5f);
 		
@@ -136,7 +135,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		long endNano = System.nanoTime();
 		FrameTime.features = endNano - startNano;
 
-		screen.worldBatch.setShader(defaultShader);
+		screen.worldBatch.setShader(visibShader);
 
 		startNano = System.nanoTime();
 		for( int i = 0; i < feats.size; i++ )
@@ -272,7 +271,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		VisibilityPoly visiPoly = visib.getVisibPoly();
 		
 		// these are the triangle endpoints
-		Array<Vector2> points = visiPoly.getTriEndPoints();
+		final Array<Vector2> points = visiPoly.getTriEndPoints();
 		
 		G.shapeRenderer.begin(ShapeType.Filled);
 

@@ -2,6 +2,7 @@ package com.vesas.spacefly;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Filter;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,11 +15,17 @@ public class MainMenuLabel extends Label {
     
     private boolean active = false;
 
-    private ShaderProgram glowShader;
+    private static ShaderProgram glowShader;
+
+    static {
+        String glowShaderString = Gdx.files.local("data/glowShader.glsl").readString();
+        String vertexShaderString = Gdx.files.local("data/vertexShader.glsl").readString();
+		glowShader = new ShaderProgram(vertexShaderString, glowShaderString);
+    }
 
     private Texture tex;
 
-    public MainMenuLabel(CharSequence text, Skin skin) {
+    public MainMenuLabel(CharSequence text, Skin skin, Color bgcolor) {
         super(text, skin);
 
         // background
@@ -27,19 +34,13 @@ public class MainMenuLabel extends Label {
 		
 		Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888 );
 		pixmap.setFilter(Filter.BiLinear);
-		pixmap.setColor( new Color(0,0,0,0) );
+		pixmap.setColor( bgcolor);
 		pixmap.fill();
 		
 		tex = new Texture(pixmap);
 		pixmap.dispose();
         // background
 
-
-        String glowShaderString = Gdx.files.local("data/glowShader.glsl").readString();
-        String vertexShaderString = Gdx.files.local("data/vertexShader.glsl").readString();
-		glowShader = new ShaderProgram(vertexShaderString, glowShaderString);
-
-		
     }
 
     @Override
@@ -50,7 +51,7 @@ public class MainMenuLabel extends Label {
         
         glowShader.bind();
         if(active)
-            glowShader.setUniformf("glow_amount", 2.0f);
+            glowShader.setUniformf("glow_amount", 1.5f);
         else
             glowShader.setUniformf("glow_amount", 1.0f);
 
