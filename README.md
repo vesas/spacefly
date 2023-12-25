@@ -13,4 +13,4 @@ Screenshot:
 
 ## Dependencies
 
-LibGDX 1.10.0
+LibGDX 1.12.1
