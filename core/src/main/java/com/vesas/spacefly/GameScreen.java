@@ -60,6 +60,7 @@ public class GameScreen implements Screen
 	float accum = 0;
 	float debugKeyCooldown = 0;
 	float pauseKeyCooldown = 0;
+	float escKeyCooldown = 0;
 
 	public SpriteBatch screenBatch;
 	public SpriteBatch worldBatch;
@@ -83,9 +84,12 @@ public class GameScreen implements Screen
 
 	private SpaceflyGame game;
 
+	private EscScreen escScreen;
+
 	public GameScreen(SpaceflyGame game) {
 		super();
 		this.game = game;
+		escScreen = new EscScreen(game);
 	}
 
 	public void init()
@@ -218,7 +222,7 @@ public class GameScreen implements Screen
 		
 		tick();
 		renderFrame();
-		
+
 		// float delta = Gdx.graphics.getDeltaTime();
 		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -308,6 +312,7 @@ public class GameScreen implements Screen
 		float floatDelta = Gdx.graphics.getDeltaTime();
 		
 		final boolean spacePressed =  Gdx.input.isKeyPressed(Keys.SPACE);
+		final boolean escPressed =  Gdx.input.isKeyPressed(Keys.ESCAPE);
 		
 		debugKeyCooldown -= floatDelta;
 		if( debugKeyCooldown <= 0 )
@@ -349,8 +354,15 @@ public class GameScreen implements Screen
 			pauseKeyCooldown = 0.2f;
 			paused = !paused;
 		}
+
+		if( escPressed && escKeyCooldown <= 0 )
+		{
+			escKeyCooldown = 0.2f;
+			paused = true;
+			game.setScreen(new EscScreen(game));
+		}
 		
-		if( paused )
+		if( paused)
 			return;
 			
 		AbstractGameWorld.INSTANCE.tick( this, floatDelta );

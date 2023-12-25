@@ -1,27 +1,29 @@
 package com.vesas.spacefly;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class MainMenuScreen implements Screen {
+public class EscScreen implements Screen {
 
     private Stage stage;
     private Table table;
+    private InputProcessor oldInputProcessor;
 
     private SpaceflyGame game;
 
@@ -31,7 +33,7 @@ public class MainMenuScreen implements Screen {
 
     private int currentSelectedMenu = 0;
 
-    public MainMenuScreen(SpaceflyGame game) {
+    public EscScreen(SpaceflyGame game) {
 		super();
 		this.game = game;
 
@@ -45,7 +47,7 @@ public class MainMenuScreen implements Screen {
             public boolean keyDown(int keyCode) {
                 if (keyCode == Keys.ENTER) {
                     if(currentSelectedMenu == 0) {
-                        game.setGameScreen();
+                        game.restoreGameScreen();
                     }
                     else if(currentSelectedMenu == 1) {
                         // game.setScreen(new SettingsScreen(game));
@@ -144,43 +146,46 @@ public class MainMenuScreen implements Screen {
         Skin skin = new Skin(Gdx.files.internal("data/menuskin.json"));
 
         Pixmap bgPixmap = new Pixmap(1,1, Pixmap.Format.RGB565);
-        bgPixmap.setColor(Color.RED);
+        bgPixmap.setColor(0.6f, 0.1f, 0.1f, 0.1f);
         bgPixmap.fill();
 
         TextureRegionDrawable inactiveBg = new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap)));
 
+        oldInputProcessor = Gdx.input.getInputProcessor();
 		Gdx.input.setInputProcessor(stage);
 
         table = new Table(skin);
         table.pad(110);
+
 		table.setFillParent(true);
 		// table.setDebug(true);
 		stage.addActor(table);
 
         int screenWidth = stage.getViewport().getScreenWidth();
-        float scale = 0.35f * screenWidth / 640.0f;
+        float scale = 0.31f * screenWidth / 640.0f;
 
-		Label testLabel = new Label("Spacefly", skin);
+		MainMenuLabel testLabel = new MainMenuLabel("Game paused", skin, new Color(0.9f,0.9f,0.9f,0.9f));
         testLabel.setAlignment(Align.center);
-        testLabel.setFontScale(1.4f * scale);
+        
+        testLabel.setFontScale(1.0f * scale);
         table.row();
 		table.add(testLabel).align(Align.center).expandY().fill().center();
 
         table.row();
-        menu0 = new MainMenuLabel("New game", skin, new Color(0,0,0,0) );
+        menu0 = new MainMenuLabel("Resume game", skin, new Color(0.9f,0.9f,0.9f,0.9f));
         menu0.setActive(true);
         menu0.setAlignment(Align.center);
         menu0.setFontScale(scale);
 		table.add(menu0).align(Align.center).expandY().fill().center();
 
         table.row();
-        menu1 = new MainMenuLabel("Settings", skin, new Color(0,0,0,0) );
+        menu1 = new MainMenuLabel("Settings", skin, new Color(0.9f,0.9f,0.9f,0.9f));
         menu1.setAlignment(Align.center);
         menu1.setFontScale(scale);
 		table.add(menu1).align(Align.center).expandY().fill().center();
 
         table.row();
-        menu2 = new MainMenuLabel("Exit", skin, new Color(0,0,0,0) );
+        menu2 = new MainMenuLabel("Exit", skin, new Color(0.9f,0.9f,0.9f,0.9f));
         menu2.setAlignment(Align.center);
         menu2.setFontScale(scale);
         // menu2.setDebug(true);
@@ -197,8 +202,6 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(delta);
 		stage.draw();
