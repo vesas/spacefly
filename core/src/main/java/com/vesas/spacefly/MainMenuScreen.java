@@ -57,7 +57,7 @@ public class MainMenuScreen implements Screen {
 		stage.addActor(table);
 
         int screenWidth = stage.getViewport().getScreenWidth();
-        float scale = 0.5f * screenWidth / 640.0f;
+        float scale = 0.35f * screenWidth / 640.0f;
 
 		Label testLabel = new Label("Spacefly", skin);
         testLabel.setAlignment(Align.center);
