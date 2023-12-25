@@ -42,20 +42,29 @@ public class MainMenuScreen implements Screen {
         stage = new Stage(new ScreenViewport()) {
             @Override
             public boolean keyDown(int keyCode) {
+                if (keyCode == Keys.ENTER) {
+                    if(currentSelectedMenu == 0) {
+                        game.setGameScreen();
+                    }
+                    else if(currentSelectedMenu == 1) {
+                        // game.setScreen(new SettingsScreen(game));
+                    }
+                    else if(currentSelectedMenu == 2) {
+                        Gdx.app.exit();
+                    }
+                }
                 if (keyCode == Keys.DOWN) {
                     currentSelectedMenu++;
                     if(currentSelectedMenu > 2) {
                         currentSelectedMenu = 0;
                     }
 
-                    System.out.println("currentSelectedMenu: " + currentSelectedMenu);
                 }
                 if (keyCode == Keys.UP) {
                     currentSelectedMenu--;
                     if(currentSelectedMenu < 0) {
                         currentSelectedMenu = 2;
                     }
-                    System.out.println("currentSelectedMenu: " + currentSelectedMenu);
                 }
                 if (keyCode == Keys.SPACE) {
                     Gdx.app.exit();
@@ -80,27 +89,51 @@ public class MainMenuScreen implements Screen {
                 return super.keyDown(keyCode);
             }
 
-            @Override public boolean mouseMoved (int screenX, int screenY) {
-                // we can also handle mouse movement without anything pressed
-                Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-                
-                Vector2 mouseLocalPosition = stage.screenToStageCoordinates(mouseScreenPosition);
+            @Override public boolean touchDown (int screenX, int screenY, int pointer, int button) {
 
+                Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+                Vector2 mouseLocalPosition = stage.screenToStageCoordinates(mouseScreenPosition);
+                Actor hitActor = stage.hit(mouseLocalPosition.x, mouseLocalPosition.y, false);
+
+                if(hitActor == menu0) {
+                    game.setGameScreen();
+                    return true;
+                }
+                if(hitActor == menu1) {
+                    // game.setScreen(new SettingsScreen(game));
+                    return true;
+                }
+                if(hitActor == menu2) {
+                    Gdx.app.exit();
+                    return true;
+                }
+                return false;
+            }
+
+            @Override public boolean mouseMoved (int screenX, int screenY) {
+                Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+                Vector2 mouseLocalPosition = stage.screenToStageCoordinates(mouseScreenPosition);
                 Actor hitActor = stage.hit(mouseLocalPosition.x, mouseLocalPosition.y, false);
                 if(hitActor == menu0) {
+                    currentSelectedMenu = 0;
                     menu0.setActive(true);
                     menu1.setActive(false);
                     menu2.setActive(false);
+                    return true;
                 }
                 if(hitActor == menu1) {
+                    currentSelectedMenu = 1;
                     menu0.setActive(false);
                     menu1.setActive(true);
                     menu2.setActive(false);
+                    return true;
                 }
                 if(hitActor == menu2) {
+                    currentSelectedMenu = 2;
                     menu0.setActive(false);
                     menu1.setActive(false);
                     menu2.setActive(true);
+                    return true;
                 }
                 
                 return false;
