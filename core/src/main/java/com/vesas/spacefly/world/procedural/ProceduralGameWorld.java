@@ -36,9 +36,6 @@ public class ProceduralGameWorld extends AbstractGameWorld
 	
 	private Visibility visib;
 
-	String vertexShader = "";
-	String defaultPixelShader = "";
-	
 	private ShaderProgram defaultShader;
 	
 	private FrameBuffer fbo;
@@ -58,14 +55,14 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		
 		visib.finishLoad();
 
-		defaultPixelShader = Gdx.files.local("data/defaultPixelShader.glsl").readString();
-		vertexShader = Gdx.files.local("data/vertexShader.glsl").readString();
+		String vertexShader = Gdx.files.local("data/vertexShader.glsl").readString();
 		
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
 		
 		fbo = new FrameBuffer(Format.RGBA8888, (int)width, (int)height, false);
 		
+		String defaultPixelShader = Gdx.files.local("data/defaultPixelShader.glsl").readString();
 		defaultShader = new ShaderProgram(vertexShader, defaultPixelShader);
 
 		defaultShader.bind();
