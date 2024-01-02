@@ -3,9 +3,12 @@ package com.vesas.spacefly.world.procedural.room.rectangleroom;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.DebugHelper;
 import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
@@ -41,7 +44,7 @@ public class RectangleRoom extends RoomFeature
 		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
 	}
 
-	public void draw(GameScreen screen)	
+	public void draw(SpriteBatch batch)	
 	{
 		long startNano = System.nanoTime();
 		final int size = blocks.size;
@@ -49,7 +52,7 @@ public class RectangleRoom extends RoomFeature
 		for( int i = 0; i < size; i++ )
 		{
 			final FeatureBlock block = blocks.get( i );
-			block.draw( screen );
+			block.draw( batch );
 		}
 
 		/*
@@ -64,6 +67,26 @@ public class RectangleRoom extends RoomFeature
 		
 //		G.wFont.setScale(0.007f, 0.007f);
 //		G.wFont.draw( screen.worldBatch, "w:" + this.width + " h:" + this.height, this.xpos  + 1, this.ypos  + 1.5f);
+
+		if(DebugHelper.PROC_GEN_DEBUG1) {
+			G.shapeRenderer.begin(ShapeType.Line);
+			G.shapeRenderer.setColor(0.4f, 0.4f, 0.9f, 0.1f);
+			
+			// botton leftt to right
+			G.shapeRenderer.line(this.xpos, this.ypos, this.xpos + this.width, this.ypos);
+			// top left to right
+			G.shapeRenderer.line(this.xpos, this.ypos + this.height, this.xpos + this.width, this.ypos + height);
+
+			// left bottom to top
+			G.shapeRenderer.line(this.xpos, this.ypos, this.xpos, this.ypos + this.height);
+
+			// right bottom to top
+			G.shapeRenderer.line(this.xpos + this.width, this.ypos, this.xpos + this.width, this.ypos + this.height);
+
+			G.shapeRenderer.end();
+		}
+		
+
 	}
 
 	public void tick(GameScreen screen, float delta)

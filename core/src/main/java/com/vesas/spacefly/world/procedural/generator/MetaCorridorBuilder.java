@@ -21,7 +21,7 @@ public class MetaCorridorBuilder
 		MetaCorridor corr = new MetaCorridor();
 		
 		width = startPortal.width;
-		corr.setSize( length, width );
+		corr.setLengthWidth( length, width );
 		
 		float xpos, ypos, xsize, ysize;
 		
@@ -29,10 +29,11 @@ public class MetaCorridorBuilder
 		
 		if( startExitDir.equals( ExitDir.N ))
 		{
-			xpos = startPortal.centerX - width * 0.5f;
+			// portal center, minus half portal, minus wall size (0.5f)
+			xpos = startPortal.centerX - width * 0.5f - 0.5f;
 			ypos = startPortal.centerY;
 			
-			xsize = width;
+			xsize = width + 1.0f; // width + 2 * wall size
 			ysize = length;
 			
 			corr.setSize(xpos, ypos, xsize, ysize);
@@ -42,10 +43,10 @@ public class MetaCorridorBuilder
 		}
 		if( startExitDir.equals( ExitDir.S ))
 		{
-			xpos = startPortal.centerX - width * 0.5f;
+			xpos = startPortal.centerX - width * 0.5f - 0.5f;
 			ypos = startPortal.centerY - length;
 			
-			xsize = width;
+			xsize = width + 1.0f; // 2 * wall size
 			ysize = length;
 			
 			corr.setSize(xpos, ypos, xsize, ysize);
@@ -57,10 +58,10 @@ public class MetaCorridorBuilder
 		if( startExitDir.equals( ExitDir.E ))
 		{
 			xpos = startPortal.centerX;
-			ypos = startPortal.centerY - width * 0.5f;
+			ypos = startPortal.centerY - width * 0.5f - 0.5f;
 			
 			xsize = length;
-			ysize = width;
+			ysize = width + 1.0f;
 			
 			corr.setSize(xpos, ypos, xsize, ysize);
 			
@@ -71,10 +72,10 @@ public class MetaCorridorBuilder
 		if( startExitDir.equals( ExitDir.W ))
 		{
 			xpos = startPortal.centerX - length;
-			ypos = startPortal.centerY - width * 0.5f;
+			ypos = startPortal.centerY - width * 0.5f - 0.5f;
 			
 			xsize = length;
-			ysize = width;
+			ysize = width + 1.0f;
 			
 			corr.setSize(xpos, ypos, xsize, ysize);
 			

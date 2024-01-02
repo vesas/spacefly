@@ -16,12 +16,12 @@ import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor.Dir;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridorBuilder;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
 import com.vesas.spacefly.world.procedural.generator.MetaFeature;
-import com.vesas.spacefly.world.procedural.generator.MetaHexaRoom;
+import com.vesas.spacefly.world.procedural.generator.MetaOctaRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaRegionBuilder;
 import com.vesas.spacefly.world.procedural.generator.Region;
-import com.vesas.spacefly.world.procedural.room.hexaroom.HexaRoom;
-import com.vesas.spacefly.world.procedural.room.hexaroom.HexaRoomBuilder;
+import com.vesas.spacefly.world.procedural.room.octaroom.OctaRoom;
+import com.vesas.spacefly.world.procedural.room.octaroom.OctaRoomBuilder;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoomBuilder;
 
@@ -44,12 +44,12 @@ public class WorldGen
 		
 		RectangleRoomBuilder.INSTANCE.setVisib( visib );
 		AxisAlignedCorridorBuilder.INSTANCE.setVisib( visib );
-		HexaRoomBuilder.INSTANCE.setVisib(visib);
+		OctaRoomBuilder.INSTANCE.setVisib(visib);
 	}
 	public Array<Feature> generate()
 	{
-		GenSeed.random.setSeed(16464);
-		metaRegionBuilder.setSize(16);
+		GenSeed.random.setSeed(567);
+		metaRegionBuilder.setSize(32);
 		Region metaRegion = metaRegionBuilder.generateMetaRegion();
 		
 		Array<Feature> feats = new Array<Feature>();
@@ -65,7 +65,7 @@ public class WorldGen
 	{
 		RectangleRoomBuilder roomBuilder = RectangleRoomBuilder.INSTANCE;
 		AxisAlignedCorridorBuilder corrBuilder = AxisAlignedCorridorBuilder.INSTANCE;
-		HexaRoomBuilder hexaBuilder = HexaRoomBuilder.INSTANCE;
+		OctaRoomBuilder hexaBuilder = OctaRoomBuilder.INSTANCE;
 		
 		Array<MetaFeature> metaFeats = region.getMetaList();
 		
@@ -83,13 +83,15 @@ public class WorldGen
 				AxisAlignedCorridor corr = corrBuilder.buildFrom( (MetaCorridor)metaFeat );
 				feats.add( corr );
 			}
-			if( metaFeat instanceof MetaHexaRoom )
+			if( metaFeat instanceof MetaOctaRoom )
 			{
-				HexaRoom room = hexaBuilder.buildFrom( ((MetaHexaRoom)metaFeat));
+				OctaRoom room = hexaBuilder.buildFrom( ((MetaOctaRoom)metaFeat));
 				feats.add( room );
 			}
 		}
 	}
+
+	private static final float WALL_WIDTH = 0.5f;
 
 	private void addMonstersPass( Region region, Array<Feature> feats )
 	{
@@ -139,7 +141,6 @@ public class WorldGen
 						y_pos = ypos + height * 0.5f;
 					}
 					
-
 					world.addMonster( new ShootStickMonster(x_pos, y_pos, faceDir ) );	
 
 					if(height > 3) {

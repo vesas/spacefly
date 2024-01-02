@@ -224,7 +224,7 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 		}
 	}
 	
-	public abstract void init( GameScreen screen );
+	public abstract void init();
 	
 	public abstract void draw( GameScreen screen );
 	

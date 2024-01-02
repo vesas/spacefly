@@ -41,7 +41,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 	private FrameBuffer fbo;
 
 	@Override
-	public void init( GameScreen screen )
+	public void init()
 	{
 		feats = new Array<Feature>();
 		
@@ -130,7 +130,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		for( int i = 0; i < feats.size; i++ )
 		{
 			Feature feat = feats.get( i );
-			feat.draw(screen);
+			feat.draw(screen.worldBatch);
 		}
 		long endNano = System.nanoTime();
 		FrameTime.features = endNano - startNano;

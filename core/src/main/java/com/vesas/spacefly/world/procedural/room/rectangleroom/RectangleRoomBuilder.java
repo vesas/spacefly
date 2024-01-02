@@ -13,9 +13,11 @@ import com.vesas.spacefly.visibility.Visibility;
 
 public class RectangleRoomBuilder
 {
+	// these are in world units
 	// bottom left position
 	private float xpos, ypos;
 
+	// These are in tile units
 	// xsize to the right, ysize to up
 	private float xsize, ysize;
 	
@@ -37,23 +39,9 @@ public class RectangleRoomBuilder
 		
 		return INSTANCE;
 	}
-	
-	public RectangleRoom buildFrom( MetaRectangleRoom metaRoom )
-	{
-		this.xpos = metaRoom.getBounds().x;
-		this.ypos = metaRoom.getBounds().y;
-		
-		this.xsize = metaRoom.getBounds().width;
-		this.ysize = metaRoom.getBounds().height;
-		
-		MetaPortal nPortal = metaRoom.getPortal( ExitDir.N );
-		MetaPortal ePortal = metaRoom.getPortal( ExitDir.E );
-		MetaPortal sPortal = metaRoom.getPortal( ExitDir.S );
-		MetaPortal wPortal = metaRoom.getPortal( ExitDir.W );
 
-		RectangleRoom room = new RectangleRoom(); 
+	private void buildNorthWall(RectangleRoom room, MetaPortal nPortal) {
 
-		visib.startConvexArea();
 		if( nPortal == null )
 		{
 			// add blocks for the whole length
@@ -87,7 +75,9 @@ public class RectangleRoomBuilder
 			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 			
 		}
-		
+	}
+
+	private void buildSouthWall(RectangleRoom room, MetaPortal sPortal) {
 		if( sPortal == null )
 		{
 			// add blocks for the whole length
@@ -113,7 +103,9 @@ public class RectangleRoomBuilder
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
 			visib.addSegment( xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
 		}
-		
+	}
+
+	private void buildWestWall(RectangleRoom room, MetaPortal wPortal) {
 		if( wPortal == null )
 		{
 			// add blocks for the whole length
@@ -141,7 +133,9 @@ public class RectangleRoomBuilder
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 			
 		}
-		
+	}
+
+	private void buildEastWall(RectangleRoom room, MetaPortal ePortal) {
 		if( ePortal == null )
 		{
 			// add blocks for the whole length
@@ -167,11 +161,33 @@ public class RectangleRoomBuilder
 			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
 		
 		}
+	}
+	
+	public RectangleRoom buildFrom( MetaRectangleRoom metaRoom )
+	{
+		this.xpos = metaRoom.getBounds().x;
+		this.ypos = metaRoom.getBounds().y;
+		
+		this.xsize = metaRoom.getBounds().width;
+		this.ysize = metaRoom.getBounds().height;
+		
+		final MetaPortal nPortal = metaRoom.getPortal( ExitDir.N );
+		final MetaPortal ePortal = metaRoom.getPortal( ExitDir.E );
+		final MetaPortal sPortal = metaRoom.getPortal( ExitDir.S );
+		final MetaPortal wPortal = metaRoom.getPortal( ExitDir.W );
+
+		RectangleRoom room = new RectangleRoom(); 
+
+		visib.startConvexArea();
+		
+		buildNorthWall(room, nPortal);
+		buildSouthWall(room, sPortal);
+		buildWestWall(room, wPortal);
+		buildEastWall(room, ePortal);
 		
 		visib.finishConvexArea();
 
 		// Do the small entrance areas
-
 		if( nPortal != null )
 		{
 			visib.startConvexArea();

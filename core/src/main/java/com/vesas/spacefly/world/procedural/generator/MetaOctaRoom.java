@@ -5,22 +5,21 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
-public class MetaHexaRoom implements MetaFeature {
+public class MetaOctaRoom implements MetaFeature {
 
     private Rectangle rect = new Rectangle();
 
-    private int id;
-    private float radius;
+    private ObjectMap<ExitDir, MetaPortal> portals = new ObjectMap<ExitDir, MetaPortal>();
 
-	public MetaHexaRoom() 
+    private int id;
+
+	public MetaOctaRoom() 
 	{ 
 		this.id = IDGenerator.getNextId();
 	}
 
-    public void setSize( float radius, float posx, float posy, float w, float h )
+    public void setSize( float posx, float posy, float w, float h )
 	{
-        this.radius = radius;
-
 		rect.x = posx;
 		rect.y = posy;
 		
@@ -40,26 +39,34 @@ public class MetaHexaRoom implements MetaFeature {
 
     @Override
     public Rectangle getBounds() {
-        // TODO Auto-generated method stub
         return rect;
     }
 
     @Override
     public Array<MetaPortal> getPortalArray(MetaPortal exclude) {
-        // TODO Auto-generated method stub
+        Array<MetaPortal> ret = new Array<MetaPortal>();
 
-        return new Array<MetaPortal>();
+		Array<MetaPortal> values = portals.values().toArray();
+
+		for(MetaPortal port : values )
+		{
+			if(!port.equals(exclude))
+			{
+				ret.add(port);
+			}
+		}
+		return ret;
     }
 
     @Override
     public void closePortal(MetaPortal portal) {
-        // TODO Auto-generated method stub
+        portals.remove( portal.getExit() );
         
     }
 
     public ObjectMap<ExitDir, MetaPortal> getPortals()
 	{
-		return null;
+		return portals;
 	}
 	
 	public void setSize( float w, float h )
@@ -70,12 +77,13 @@ public class MetaHexaRoom implements MetaFeature {
 	
 	public void addPortal( ExitDir exitDir, MetaPortal portal )
 	{
-        return;
+        portal.setExit(exitDir);
+		portals.put( exitDir, portal );	
 	}
 	
 	public MetaPortal getPortal( ExitDir exitDir )
 	{
-        return null;
+        return portals.get( exitDir );
 	}
     
 }
