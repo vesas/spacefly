@@ -74,7 +74,10 @@ public class MetaRegionBuilder {
 
 		if(portal.START_TYPE == MetaPortal.CORRIDOR)
 		{
-			ret = generateRandomRoom( region, portal );
+			if(GenSeed.random.nextDouble() < 0.000999 )
+				ret = generateRandomOctaRoom(region, portal);
+			else
+				ret = generateRandomRoom( region, portal );
 			
 			// Just try once more if by random chance can fit
 			if(ret== null)
@@ -126,12 +129,11 @@ public class MetaRegionBuilder {
 	
 	private MetaCorridor createRandomCorridor( Region region, MetaPortal portal )
 	{
-		MetaCorridorBuilder metaCorrBuilder = MetaCorridorBuilder.INSTANCE;
+		MetaCorridor corr = MetaCorridorBuilder.INSTANCE
+			.createFromPortal( portal )
+			.setLength( 1 + GenSeed.random.nextInt( 14 ) )
+			.build();
 		
-		metaCorrBuilder.createFromPortal( portal );
-		metaCorrBuilder.setLength( 1 + GenSeed.random.nextInt( 14 ) );
-		
-		MetaCorridor corr = metaCorrBuilder.build();
 		portal.setTarget(corr);
 		
 		if( !region.canAdd( corr ))
@@ -219,16 +221,123 @@ public class MetaRegionBuilder {
 				
 			existingExits[ex.ordinal()] = true;
 			
+			int portalWidth = 1 + GenSeed.random.nextInt(6);
+			
+			if( ex.equals(ExitDir.N ) || ex.equals(ExitDir.S ) ) {
+				portalWidth = (int) Math.min( portalWidth , w - 2);	
+			}
+			else {
+				portalWidth = (int) Math.min( portalWidth , h - 2);	
+			}
+			roomBuilder.addPortal( ex, portalWidth );
+		}
+		
+		MetaFeature room = roomBuilder.build();
+
+		if(fromPortal != null)
+		{
+			fromPortal.setTarget(room);
+		}
+
+		if( !region.canAdd( room ))
+		{
+			return null;
+		}
+
+		return room;
+	}
+
+	private MetaFeature generateRandomOctaRoom(Region region, MetaPortal fromPortal) {
+		MetaOctaRoomBuilder roomBuilder = MetaOctaRoomBuilder.INSTANCE;
+		roomBuilder.init();
+
+		int minwidth = 3;
+		int minheight = 3;
+
+		float w = minwidth;
+		float h = minheight;
+
+		ExitDir excludeDir = null;
+
+		int howManyAdditionalExits = 0;
+		boolean []existingExits = new boolean[4];
+		
+		if( fromPortal != null )
+		{
+			if( fromPortal.getExit() == ExitDir.N || 
+				fromPortal.getExit() == ExitDir.S )
+			{
+				minwidth = (int) (fromPortal.getWidth() + 2);
+			}
+			
+			if( fromPortal.getExit() == ExitDir.E || 
+				fromPortal.getExit() == ExitDir.W )
+			{
+				minheight = (int) (fromPortal.getWidth() + 2);
+			}
+
+			// have to be at least minx/miny long/wide to accommodate the possible corridor
+			w = Math.max(minwidth, GenSeed.random.nextInt( 16 ) );
+			// for now make it square
+			h = w;
+
+			roomBuilder.setSize( w, h );
+
+			excludeDir = fromPortal.getExit().getOpposite();
+			roomBuilder.createFromDir(fromPortal.getExit().getOpposite(),fromPortal);
+
+			// 0-3
+			howManyAdditionalExits = GenSeed.random.nextInt(4);
+
+			// In the beginning add more exits
+			if( IDGenerator.getCurrentId() < 16 && howManyAdditionalExits == 0 )
+			{
+				howManyAdditionalExits = 2;
+			}
+
+			if( excludeDir != null )
+				existingExits[excludeDir.ordinal()] = true;
+		}
+		else {
+			// lets set first room explicitly
+			w = 5;
+			h = 5;
+			roomBuilder.setSize( w, h);
+			roomBuilder.setPosition( firstRoomCenter.x - w * 0.51f, firstRoomCenter.y - h * 0.51f);
+
+			// for the first room we create exactly one exit
+			howManyAdditionalExits = 1;
+
+			// Lets just define so that we have "existing" exists in all directions except north,
+			// This forces first direction north
+			existingExits[ExitDir.S.ordinal()] = true;
+			existingExits[ExitDir.W.ordinal()] = true;
+			existingExits[ExitDir.E.ordinal()] = true;
+		}
+
+		// https://en.wikipedia.org/wiki/Octagon
+		// This is the length one side of the octagon (one of the 8 sides)
+		int maxPortalSize = (int)(h / (1 + Math.sqrt(2)));
+
+		for(int i = 0; i < howManyAdditionalExits; i++ )
+		{
+			ExitDir ex = ExitDir.getRandomExcluding( existingExits );
+
+			if(ex == null)
+				break;
+				
+			existingExits[ex.ordinal()] = true;
+			
 			if( ex.equals(ExitDir.N ) || ex.equals(ExitDir.S ) )
 			{
-				int portalWidth = Math.max( 1 , 1 + GenSeed.random.nextInt(6) );
+				int portalWidth = Math.max( 1 , 1 + GenSeed.random.nextInt(maxPortalSize) );
 				portalWidth = (int) Math.min( portalWidth , w - 2);
 				
 				roomBuilder.addPortal( ex, portalWidth );
 			}
 			else 
 			{
-				int portalWidth = Math.max( 1, 1 + GenSeed.random.nextInt(6) );
+				int portalWidth = Math.max( 1, 1 + GenSeed.random.nextInt(maxPortalSize) );
 				portalWidth = (int) Math.min( portalWidth , h - 2);
 				
 				roomBuilder.addPortal( ex, portalWidth );

@@ -80,7 +80,7 @@ public class MetaCorridor implements MetaFeature
 		rect.height = h;
 	}
 	
-	public void setSize( float length, float width )
+	public void setLengthWidth( float length, float width )
 	{
 		this.length = length;
 		this.width = width;
@@ -96,10 +96,19 @@ public class MetaCorridor implements MetaFeature
 		return width;
 	}
 	
+	private static Rectangle testRect = new Rectangle();
+	private static float H = 0.00001f;
+	private static float H2 = 0.000025f;
 	@Override
 	public boolean overlaps(Rectangle rect)
 	{
-		return this.rect.contains(rect) || this.rect.overlaps( rect );
+		// adjust the test rect to just smaller, so that the corridor does not collide with exact same coordinates of the adjacent room
+		testRect.set(this.rect);
+		testRect.x += H;
+		testRect.y += H;
+		testRect.width -= H2;
+		testRect.height -= H2;
+		return testRect.contains(rect) || testRect.overlaps( rect );
 	}
 
 	@Override

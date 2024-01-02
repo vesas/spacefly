@@ -1,11 +1,11 @@
 package com.vesas.spacefly.world.procedural;
 
-import com.vesas.spacefly.GameScreen;
+import com.badlogic.gdx.graphics.g2d.Batch;
 
 // Construction blocks of the rooms and corridors
 public interface FeatureBlock
 {
 
-	public void draw(GameScreen screen);
+	public void draw(Batch batch);
 	
 }

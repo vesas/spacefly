@@ -2,25 +2,17 @@ package com.vesas.spacefly;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.CListener;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Player;
-import com.vesas.spacefly.game.PlayerInput;
 import com.vesas.spacefly.world.AbstractGameWorld;
 
 import util.DebugShow;
 
 public class SpaceflyGame extends Game 
 {
-	
-	
-	
-	private CListener clistener;
-	
 	private GameScreen gameScreen;
-	
 	
 	@Override
 	public void create() {		
@@ -33,10 +25,9 @@ public class SpaceflyGame extends Game
 		
 		
 		
-		AbstractGameWorld.INSTANCE.init(gameScreen);
+		AbstractGameWorld.INSTANCE.init();
 		
-		clistener = new CListener(); 
-		Box2DWorld.world.setContactListener( clistener );
+		Box2DWorld.world.setContactListener( new CListener() );
 		
 		this.setScreen(new MainMenuScreen(this));
 		// currentScreen = new MainMenuScreen(this);

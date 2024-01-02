@@ -3,7 +3,7 @@ package com.vesas.spacefly.world.procedural.generator;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
-public class MetaHexaRoomBuilder
+public class MetaOctaRoomBuilder
 {
 	private MetaPortal startPortal;
 	
@@ -13,32 +13,31 @@ public class MetaHexaRoomBuilder
 	
 	private ObjectMap<ExitDir, MetaPortal> portals = new ObjectMap<ExitDir, MetaPortal>();
 	
-	public static MetaHexaRoomBuilder INSTANCE = new MetaHexaRoomBuilder();
+	public static MetaOctaRoomBuilder INSTANCE = new MetaOctaRoomBuilder();
 
-	private MetaHexaRoom room;
+	private MetaOctaRoom room;
 
-	private MetaHexaRoomBuilder() { }
+	private MetaOctaRoomBuilder() { }
 
 	public void init()
 	{
-		room = new MetaHexaRoom();
+		room = new MetaOctaRoom();
 		width = 0.0f;
 		height = 0.0f;
 		xpos = 0.0f;
 		ypos = 0.0f;
-		radius = 0.0f;
 		portals.clear();
 		startPortal = null;
 	}
 	
-	public MetaHexaRoom build()
+	public MetaOctaRoom build()
 	{
 		
 		
 		if( startPortal == null )
 		{
 			// Explicit placement
-			room.setSize(radius, xpos, ypos, width, height);	
+			room.setSize(xpos, ypos, width, height);	
 		}
 		else
 		{
@@ -46,6 +45,9 @@ public class MetaHexaRoomBuilder
 			// We do Automatic placement of the room from that portal.
 			ExitDir exit = startPortal.getExit();
 			
+			// https://en.wikipedia.org/wiki/Octagon
+			// space for portal is a
+			// rest of the side is 2 * (a / sqrt(2)), so one side is a / sqrt(2)
 			if( exit.equals( ExitDir.N ))
 			{
 				xpos = startPortal.centerX - width / 2;
@@ -69,7 +71,7 @@ public class MetaHexaRoomBuilder
 			
 			portals.put( startPortal.getExit().getOpposite(), startPortal );
 			
-			room.setSize(radius, xpos, ypos, width, height);
+			room.setSize(xpos, ypos, width, height);
 		}
 		
 		MetaPortal metaPortalE = portals.get( ExitDir.E );
@@ -116,7 +118,7 @@ public class MetaHexaRoomBuilder
 		return room;
 	}
 	
-	public MetaHexaRoomBuilder addPortal( ExitDir dir, float width )
+	public MetaOctaRoomBuilder addPortal( ExitDir dir, float width )
 	{
 		MetaPortal portal = new MetaPortal();
 		portal.START_TYPE = MetaPortal.RECTANGLE_ROOM;
@@ -129,7 +131,7 @@ public class MetaHexaRoomBuilder
 		return this;
 	}
 	
-	public MetaHexaRoomBuilder setSize( float width, float height )
+	public MetaOctaRoomBuilder setSize( float width, float height )
 	{
 		this.width = width;
 		this.height = height;
@@ -137,7 +139,7 @@ public class MetaHexaRoomBuilder
 		return this;
 	}
 	
-	public MetaHexaRoomBuilder setPosition( float xpos, float ypos )
+	public MetaOctaRoomBuilder setPosition( float xpos, float ypos )
 	{
 		this.xpos = xpos;
 		this.ypos= ypos;
@@ -145,7 +147,7 @@ public class MetaHexaRoomBuilder
 		return this;
 	}
 
-	public MetaHexaRoomBuilder createFromDir( ExitDir dir, MetaPortal portal )
+	public MetaOctaRoomBuilder createFromDir( ExitDir dir, MetaPortal portal )
 	{
 		this.startPortal = portal;
 		return this;

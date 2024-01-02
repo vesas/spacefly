@@ -314,7 +314,7 @@ public class GameScreen implements Screen
 		final boolean spacePressed =  Gdx.input.isKeyPressed(Keys.SPACE);
 		final boolean escPressed =  Gdx.input.isKeyPressed(Keys.ESCAPE);
 		
-		debugKeyCooldown -= floatDelta;
+		debugKeyCooldown -= floatDelta*2.0;
 		if( debugKeyCooldown <= 0 )
 			debugKeyCooldown = 0;
 		
@@ -346,7 +346,12 @@ public class GameScreen implements Screen
 			debugKeyCooldown = 1;
 			DebugHelper.FRAMETIME_DEBUG = !DebugHelper.FRAMETIME_DEBUG;
 		}
-		
+
+		if( Gdx.input.isKeyPressed(Keys.F10) && debugKeyCooldown <= 0) {
+			debugKeyCooldown = 1;
+			DebugHelper.PROC_GEN_DEBUG1 = !DebugHelper.PROC_GEN_DEBUG1;
+		}
+
 		pauseKeyCooldown -= floatDelta;
 	
 		if( spacePressed && pauseKeyCooldown <= 0 )

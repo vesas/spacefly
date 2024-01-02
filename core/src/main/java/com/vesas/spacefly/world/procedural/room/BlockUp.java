@@ -1,6 +1,8 @@
 package com.vesas.spacefly.world.procedural.room;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -12,6 +14,7 @@ import com.vesas.spacefly.world.procedural.FeatureBlock;
 
 public class BlockUp implements FeatureBlock
 {
+	private static float WORLD_TILE_SIZE = 0.5f;
 	private Body body;
 	private Polygon poly;
 	
@@ -29,7 +32,7 @@ public class BlockUp implements FeatureBlock
 	public void init( float xpos, float ypos, float rotate)
 	{
 		sprite = G.getAtlas().createSprite("edgeA" + blocks );
-		sprite.setSize(blocks * 0.5f,0.5f);
+		sprite.setSize(blocks * WORLD_TILE_SIZE, WORLD_TILE_SIZE);
 		sprite.setOrigin( 0, 0);
 		sprite.rotate(rotate+90);
 		
@@ -37,12 +40,12 @@ public class BlockUp implements FeatureBlock
 		this.ypos = ypos;
 		
 		Vector2 right = new Vector2();
-		right.x = 0.5f;
+		right.x = WORLD_TILE_SIZE;
 		right.y = 0f;
 	
 		Vector2 up = new Vector2();
 		up.x = 0f;
-		up.y = 0.5f;
+		up.y = WORLD_TILE_SIZE;
 		
 		right = right.rotateDeg( rotate );
 		up = up.rotateDeg( rotate );
@@ -71,10 +74,10 @@ public class BlockUp implements FeatureBlock
 		
 	}
 	
-	public void draw(GameScreen screen)
+	public void draw(Batch batch)
 	{
 		sprite.setPosition( xpos + 0.5f , ypos);
-		sprite.draw(screen.worldBatch);
+		sprite.draw(batch);
 	}
 
 	public void tick(GameScreen screen, float delta)

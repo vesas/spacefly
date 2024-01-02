@@ -41,6 +41,12 @@ public class AxisAlignedCorridorBuilder
 		
 		float len = metaCorr.getLength();
 		float width = metaCorr.getWidth();
+
+		float floorxpos = xpos;
+		float floorypos = ypos;
+
+		float floorwidth = 0;
+		float floorheight = 0;
 		
 		MetaPortal startPortal = metaCorr.getStartPortal();
 		MetaPortal endPortal = metaCorr.getEndPortal();
@@ -52,120 +58,158 @@ public class AxisAlignedCorridorBuilder
 		// Looking in to the corridor towards NORTH from south. (portals exit is towards north)
 		if( startPortal.getExit().equals( ExitDir.N ))
 		{
+			floorxpos = xpos + WALL_WIDTH;
+			floorypos = ypos;
+			floorwidth = width;
+			floorheight = len;
+
 			corr.dir = Dir.SN;
 			
-			addBlocksToUp( xpos - WALL_WIDTH, ypos, len);
-			addBlocksToUp( xpos + width, ypos, len);
+			// west wall
+			addBlocksToUp( xpos, ypos, len);
+			// east wall
+			addBlocksToUp( xpos + width + WALL_WIDTH, ypos, len);
 			
 			// seal off the end 
 			if( endPortal == null )
 			{
-				addBlocksToRight( xpos, ypos + len - WALL_WIDTH, width);
+				floorheight -= WALL_WIDTH;
+
+				// north wall
+				addBlocksToRight( xpos + WALL_WIDTH, ypos + len - WALL_WIDTH, width);
 				
-				visib.addSegment( xpos , ypos, xpos , ypos + len - WALL_WIDTH );
-				visib.addSegment( xpos + width , ypos, xpos + width , ypos + len - WALL_WIDTH);
-				visib.addSegment( xpos , ypos + len - WALL_WIDTH, xpos + width ,  ypos + len - WALL_WIDTH);
+				// west visib segment
+				visib.addSegment( xpos + WALL_WIDTH, ypos, xpos + WALL_WIDTH, ypos + len - WALL_WIDTH );
+				// east visib segment
+				visib.addSegment( xpos + WALL_WIDTH + width , ypos, xpos + WALL_WIDTH + width , ypos + len - WALL_WIDTH);
+				// north visib segment
+				visib.addSegment( xpos + WALL_WIDTH, ypos + len - WALL_WIDTH, xpos + WALL_WIDTH + width ,  ypos + len - WALL_WIDTH);
 				this.ysize -= WALL_WIDTH;
 			}
 			else
 			{
-				visib.addSegment( xpos , ypos, xpos , ypos + len );
-				visib.addSegment( xpos + width , ypos, xpos + width , ypos + len );
+				// west visib segment
+				visib.addSegment( xpos + WALL_WIDTH, ypos, xpos + WALL_WIDTH, ypos + len );
+				// east visib segment
+				visib.addSegment( xpos + WALL_WIDTH + width , ypos, xpos + WALL_WIDTH + width , ypos + len );
 			}
 		}
 		
 		// Looking in to the corridor towards SOUTH from north. (portals exit is towards south)
 		if( startPortal.getExit().equals( ExitDir.S ))
 		{
+			floorxpos = xpos + WALL_WIDTH;
+			floorypos = ypos;
+			floorwidth = width;
+			floorheight = len;
+
 			corr.dir = Dir.SN;
 
-			// xpos-WALL_WIDTH because the whole wall is outside the corridor floor area
-			addBlocksToUp( xpos - WALL_WIDTH, ypos, len);
-			addBlocksToUp( xpos + width, ypos, len);
+			// west wall
+			addBlocksToUp( xpos, ypos, len);
+
+			// east wall
+			addBlocksToUp( xpos + width + WALL_WIDTH, ypos, len);
 			
 			// seal off the end 
 			if( endPortal == null )
 			{
-				addBlocksToRight( xpos, ypos, width);
-				// left wall
-				visib.addSegment( xpos , ypos + WALL_WIDTH, xpos , ypos + len );
-				// right wall
-				visib.addSegment( xpos + width , ypos + WALL_WIDTH, xpos + width , ypos + len );
+				floorheight -= WALL_WIDTH;
+				floorypos += WALL_WIDTH;
+
+				// south wall
+				addBlocksToRight( xpos + WALL_WIDTH, ypos, width);
+
+				// west visib segment
+				visib.addSegment( xpos + WALL_WIDTH, ypos + WALL_WIDTH, xpos + WALL_WIDTH, ypos + len );
+				// east visib segment
+				visib.addSegment( xpos + WALL_WIDTH + width , ypos + WALL_WIDTH, xpos + WALL_WIDTH + width , ypos + len );
 				
-				// Bottom wall. The y position is (ypos + WALL_WIDTH) because the sprite wall takes that much space at bottom
-				visib.addSegment( xpos , ypos + WALL_WIDTH, xpos + width ,  ypos + WALL_WIDTH);
+				// Bottom wall. 
+				visib.addSegment( xpos + WALL_WIDTH, ypos + WALL_WIDTH, xpos + WALL_WIDTH + width ,  ypos + WALL_WIDTH);
 
 				this.ysize -= WALL_WIDTH;
 				this.ypos += WALL_WIDTH;
 			}
 			else
 			{
-				visib.addSegment( xpos , ypos, xpos , ypos + len );
-				visib.addSegment( xpos + width , ypos, xpos + width , ypos + len );
+				visib.addSegment( xpos + WALL_WIDTH, ypos, xpos + WALL_WIDTH , ypos + len );
+				visib.addSegment( xpos + WALL_WIDTH + width , ypos, xpos + WALL_WIDTH + width , ypos + len );
 			}
 		}
 		
 		if( startPortal.getExit().equals( ExitDir.E ))
 		{
+			floorxpos = xpos;
+			floorypos = ypos + WALL_WIDTH;
+			floorwidth = len;
+			floorheight = width;
+
 			corr.dir = Dir.WE;
 
-			addBlocksToRight( xpos, ypos - WALL_WIDTH, len);
-			addBlocksToRight( xpos, ypos + width, len);
+			addBlocksToRight( xpos, ypos, len);
+			addBlocksToRight( xpos, ypos + WALL_WIDTH + width, len);
 			
 			// seal off the end 
 			if( endPortal == null )
 			{
+				floorwidth -= WALL_WIDTH;
 				
-				addBlocksToUp( xpos + len - WALL_WIDTH, ypos, width);
+				addBlocksToUp( xpos + len - WALL_WIDTH, ypos + WALL_WIDTH, width);
 				
-				visib.addSegment( xpos , ypos , xpos + len - WALL_WIDTH , ypos );
-				visib.addSegment( xpos , ypos + width , xpos + len - WALL_WIDTH, ypos  + width );
+				visib.addSegment( xpos , ypos + WALL_WIDTH				, xpos + len - WALL_WIDTH , ypos + WALL_WIDTH );
+				visib.addSegment( xpos , ypos + WALL_WIDTH + width 		, xpos + len - WALL_WIDTH, ypos + WALL_WIDTH + width );
 				
-				visib.addSegment( xpos + len - WALL_WIDTH, ypos , xpos + len - WALL_WIDTH, ypos  + width );
+				visib.addSegment( xpos + len - WALL_WIDTH, ypos + WALL_WIDTH 		, xpos + len - WALL_WIDTH, ypos + WALL_WIDTH + width );
 
 				this.xsize -= WALL_WIDTH;
 			}
 			else
 			{
-				visib.addSegment( xpos, ypos , xpos + len , ypos );
-				visib.addSegment( xpos, ypos  + width , xpos + len, ypos  + width );
+				visib.addSegment( xpos, ypos + WALL_WIDTH, xpos + len , ypos + WALL_WIDTH);
+				visib.addSegment( xpos, ypos + WALL_WIDTH + width , xpos + len, ypos + WALL_WIDTH + width );
 				
 			}
 		}
 		
 		if( startPortal.getExit().equals( ExitDir.W ))
 		{
+			floorxpos = xpos;
+			floorypos = ypos + WALL_WIDTH;
+			floorwidth = len;
+			floorheight = width;
+
 			corr.dir = Dir.WE;
 			
-			addBlocksToRight( xpos, ypos - WALL_WIDTH, len);
-			addBlocksToRight( xpos, ypos + width, len);
+			addBlocksToRight( xpos, ypos, len);
+			addBlocksToRight( xpos, ypos + WALL_WIDTH + width, len);
 			
 			// seal off the end 
 			if( endPortal == null )
 			{
-				addBlocksToUp( xpos, ypos, width);
-				
-				visib.addSegment( xpos + WALL_WIDTH , ypos , xpos + len, ypos );
-				visib.addSegment( xpos + WALL_WIDTH , ypos + width , xpos + len, ypos  + width );
-				
-				visib.addSegment( xpos + WALL_WIDTH , ypos , xpos  + WALL_WIDTH, ypos  + width );
+				floorwidth -= WALL_WIDTH;
+				floorxpos += WALL_WIDTH;
 
-				this.xsize -= WALL_WIDTH;
-				this.xpos += WALL_WIDTH;
+				addBlocksToUp( xpos, ypos + WALL_WIDTH, width);
+				
+				visib.addSegment( xpos + WALL_WIDTH , ypos + WALL_WIDTH , xpos + len, ypos + WALL_WIDTH );
+				visib.addSegment( xpos + WALL_WIDTH , ypos + WALL_WIDTH + width , xpos + len, ypos + WALL_WIDTH + width );
+				
+				visib.addSegment( xpos + WALL_WIDTH , ypos + WALL_WIDTH, xpos  + WALL_WIDTH, ypos + WALL_WIDTH + width );
+
 			}
 			else
 			{
-				visib.addSegment( xpos, ypos , xpos + len , ypos);
-				visib.addSegment( xpos, ypos  + width , xpos + len, ypos + width );
+				visib.addSegment( xpos, ypos + WALL_WIDTH , xpos + len , ypos + WALL_WIDTH );
+				visib.addSegment( xpos, ypos + WALL_WIDTH + width , xpos + len, ypos + WALL_WIDTH + width );
 			}
 			
 		}
 		
 		visib.finishConvexArea();
 		
-		
-		corr.setPosition( this.xpos, this.ypos);
-		corr.setDimensions( this.xsize, this.ysize );
+		corr.setPosition( floorxpos, floorypos);
+		corr.setDimensions( floorwidth, floorheight );
 		
 		corr.addBlocks( blocks );
 		

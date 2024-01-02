@@ -12,15 +12,15 @@ public class PolyUtilsTest {
     public void test1()
     {
         // unit vector point up
-        float x1 = 0.0f;
-        float y1 = 1.0f;
+        float up_x = 0.0f;
+        float up_y = 1.0f;
 
         // unit vector pointing to right
-        float x2 = 1.0f;
-        float y2 = 0.0f;
+        float right_x = 1.0f;
+        float right_y = 0.0f;
 
-        boolean cw = PolyUtils.isClockwise(x1,y1,x2,y2);
-        boolean ccw = PolyUtils.isCounterClockwise(x1,y1,x2,y2);
+        boolean cw = PolyUtils.isClockwise(up_x,up_y,right_x,right_y);
+        boolean ccw = PolyUtils.isCounterClockwise(up_x,up_y,right_x,right_y);
 
         assertEquals( true, cw);
         assertEquals( false, ccw);

@@ -1,5 +1,6 @@
 package com.vesas.spacefly.world.procedural.room;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
@@ -71,10 +72,10 @@ public class BlockRight implements FeatureBlock
 		body = builder.construct();
 	}
 	
-	public void draw(GameScreen screen)
+	public void draw(Batch batch)
 	{
 		sprite.setPosition( xpos , ypos);
-		sprite.draw(screen.worldBatch);
+		sprite.draw(batch);
 	}
 
 	public void tick(GameScreen screen, float delta)

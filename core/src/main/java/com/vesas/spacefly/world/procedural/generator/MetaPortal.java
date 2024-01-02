@@ -22,6 +22,7 @@ public class MetaPortal
 	public float centerX;
 	public float centerY;
 	
+	// the inner width ("walkable" width) of the portal
 	public float width;
 
 	public MetaPortal() 

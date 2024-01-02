@@ -39,9 +39,9 @@ public class MetaRectangleRoom implements MetaFeature
 	}
 	
 	@Override
-	public void closePortal( MetaPortal port )
+	public void closePortal( MetaPortal portal )
 	{
-		portals.remove( port.getExit() );
+		portals.remove( portal.getExit() );
 	}
 	
 	public void setSize( float w, float h )

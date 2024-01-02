@@ -1,5 +1,6 @@
 package com.vesas.spacefly.world.procedural.room;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -25,9 +26,10 @@ public class Block1 implements FeatureBlock
 	public void init( float xpos, float ypos, float rotate)
 	{
 		sprite = G.getAtlas().createSprite("edgeA1");
+		// this sets the absolute size, not scale
+		// we use game world units
 		sprite.setSize(0.5f,0.5f);
 		sprite.setOrigin( 0, 0);
-
 		sprite.rotate(rotate+90);
 		
 		this.xpos = xpos;
@@ -67,10 +69,10 @@ public class Block1 implements FeatureBlock
 		body = builder.construct();
 	}
 	
-	public void draw(GameScreen screen)
+	public void draw(Batch batch)
 	{	
 		sprite.setPosition( xpos + 0.5f , ypos);
-		sprite.draw(screen.worldBatch);
+		sprite.draw(batch);
 		
 	}
 
