@@ -1,4 +1,4 @@
-package com.vesas.spacefly.game;
+package com.vesas.spacefly.game.floater;
 
 import com.badlogic.gdx.utils.Array;
 
@@ -15,7 +15,9 @@ public class FloaterFactory
 			return f;
 		}
 		
-		return Floater.newInstance();
+		Floater f = new Floater();
+		f.init();
+		return f;
 	}
 	
 	static public void returnFloater( Floater f )

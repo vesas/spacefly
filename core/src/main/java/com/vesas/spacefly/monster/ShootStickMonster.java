@@ -80,7 +80,7 @@ public class ShootStickMonster extends Monster
 
 		body.setUserData(this);
 
-		setHealth( 8 );
+		setHealth( 4 );
 	}
 	
 	@Override

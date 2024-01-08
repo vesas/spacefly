@@ -76,7 +76,7 @@ public final class Player
 	private Player()
 	{
 	}
-	
+
 	public int getHealth()
 	{
 		return health;
@@ -360,7 +360,7 @@ public final class Player
 		particles.tick( floatDelta );
 		trail.tick( floatDelta );
 		
-		
+
 		screen.updatePosition( pos, floatDelta, angle );
 		
 	}
@@ -620,6 +620,7 @@ public final class Player
 		limitSpeed();
 	}
 
+	
 	public void rotateLeft(float delta)
 	{
 		body.applyAngularImpulse(delta * 0.1f, true);

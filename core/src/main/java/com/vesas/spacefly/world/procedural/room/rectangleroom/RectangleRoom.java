@@ -24,6 +24,7 @@ public class RectangleRoom extends RoomFeature
 {
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
 
+	// TODO: used only in the init method. remove it from here after init
 	private Array<RoomEntrance> roomEntrances = new Array<RoomEntrance>();
 
 	Texture tex;
@@ -147,6 +148,8 @@ public class RectangleRoom extends RoomFeature
 			pixmap.setColor( col1 );
 			pixmap.fillRectangle((int)(entrance.rect.x*64f), (int)((entrance.rect.y)*64f), (int)(entrance.rect.width*64f),(int)(entrance.rect.height*64f));
 		}
+		roomEntrances.clear();
+		roomEntrances = null;
 		// pixmap.setColor( col1 );
 		
 		int halfW = (int) (pixmap.getWidth() * 0.5f);

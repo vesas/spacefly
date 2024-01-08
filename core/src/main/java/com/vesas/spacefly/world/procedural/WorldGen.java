@@ -2,13 +2,9 @@ package com.vesas.spacefly.world.procedural;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.monster.ShellMonster;
 import com.vesas.spacefly.monster.ShootStickMonster;
 import com.vesas.spacefly.monster.SlurgMonster;
-import com.vesas.spacefly.monster.ZipperCloud;
-import com.vesas.spacefly.monster.ZipperCloudManager;
-import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.AddMonsterCallback;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor;
@@ -112,16 +108,16 @@ public class WorldGen
 
 				AxisAlignedCorridor corr = (AxisAlignedCorridor)feat;
 
-				float x_pos = 0.0f;
-				float y_pos = 0.0f;
+				float tempXPos = 0.0f;
+				float tempYPos = 0.0f;
 				Vector2 faceDir = new Vector2();
 				if(corr.dir == Dir.WE) {
 					// south side
 					faceDir.x = 0.0f;
 					faceDir.y = 1.0f;	
 
-					x_pos = xpos + width * 0.5f;
-					y_pos = ypos;
+					tempXPos = xpos + width * 0.5f;
+					tempYPos = ypos;
 				}
 				if(corr.dir == Dir.SN && GenSeed.random.nextFloat() > 0.2f) {
 					// west side
@@ -130,24 +126,24 @@ public class WorldGen
 						faceDir.x = 1.0f;
 						faceDir.y = 0.0f;	
 
-						x_pos = xpos + 0.38f; // 0.15f is the length of the shooty tube
-						y_pos = ypos + height * 0.5f;
+						tempXPos = xpos + 0.38f; // 0.15f is the length of the shooty tube
+						tempYPos = ypos + height * 0.5f;
 					}
 					else {
 						faceDir.x = -1.0f;
 						faceDir.y = 0.0f;	
 
-						x_pos = xpos + width - 0.38f; // 0.15f is the length of the shooty tube
-						y_pos = ypos + height * 0.5f;
+						tempXPos = xpos + width - 0.38f; // 0.15f is the length of the shooty tube
+						tempYPos = ypos + height * 0.5f;
 					}
 					
-					world.addMonster( new ShootStickMonster(x_pos, y_pos, faceDir ) );	
+					world.addMonster( new ShootStickMonster(tempXPos, tempYPos, faceDir ) );	
 
 					if(height > 3) {
-						y_pos = ypos + height * 0.5f - 1;
-						world.addMonster( new ShootStickMonster(x_pos, y_pos, faceDir ) );	
-						y_pos = ypos + height * 0.5f + 1;
-						world.addMonster( new ShootStickMonster(x_pos, y_pos, faceDir ) );	
+						tempYPos = ypos + height * 0.5f - 1;
+						world.addMonster( new ShootStickMonster(tempXPos, tempYPos, faceDir ) );	
+						tempYPos = ypos + height * 0.5f + 1;
+						world.addMonster( new ShootStickMonster(tempXPos, tempYPos, faceDir ) );	
 					}
 					
 				}
