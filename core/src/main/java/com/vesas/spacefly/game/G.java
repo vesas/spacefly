@@ -52,11 +52,6 @@ public class G
 		return atlas;
 	}
 	
-	static public float floatLerp( float start, float end, float pos )
-	{
-		return (start + pos*(end - start));
-	}
-	
 	static public void loadTextures()
 	{
 		atlas = new TextureAtlas(Gdx.files.local("data/fly.atlas"));

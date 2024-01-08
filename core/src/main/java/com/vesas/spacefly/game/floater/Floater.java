@@ -1,8 +1,10 @@
-package com.vesas.spacefly.game;
+package com.vesas.spacefly.game.floater;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.vesas.spacefly.GameScreen;
+import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.game.Util;
 
 public final class Floater
 {
@@ -17,16 +19,7 @@ public final class Floater
 	
 	private String displayString;
 	
-	
-	private Floater() 
-	{
-	}
-	
-	public static Floater newInstance()
-	{
-		Floater f = new Floater();
-		f.init();
-		return f;
+	Floater() {
 	}
 	
 	public void setString( String val )
@@ -89,7 +82,7 @@ public final class Floater
 		tmpColor = G.font.getColor();
 
 		float pos = lifetime / maxLifetime;
-		float tempA = G.floatLerp(maxLifetime, 0, pos) / maxLifetime;
+		float tempA = Util.floatLerp(maxLifetime, 0, pos) / maxLifetime;
 		G.font.setColor(1.0f, 1.0f, 1.0f, tempA);
 		G.font.draw(screen.worldBatch, displayString, x, y);
 		G.font.setColor(tmpColor);

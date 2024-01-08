@@ -1,27 +1,25 @@
 package com.vesas.spacefly.world.procedural.room.rectangleroom;
 
+import java.util.EnumMap;
+
 import com.vesas.spacefly.world.procedural.GenSeed;
 
 public enum ExitDir
 {
 	N,E,S,W;
+
+	private static EnumMap<ExitDir, ExitDir> opposites = new EnumMap<ExitDir, ExitDir>(ExitDir.class);
+
+	static {
+		opposites.put(N, S);
+		opposites.put(S, N);
+		opposites.put(E, W);
+		opposites.put(W, E);
+	}
 	
 	public ExitDir getOpposite()
 	{
-		if( this == S )
-			return N;
-		
-		if( this == N )
-			return S;
-		
-		if( this == W )
-			return E;
-		
-		if( this == E )
-			return W;
-		
-		return null;
-			
+		return opposites.get(this);
 	}
 	
 	public static ExitDir getRandom()

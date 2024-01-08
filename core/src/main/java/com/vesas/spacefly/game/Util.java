@@ -25,4 +25,9 @@ public class Util
 
 		return angleDiff;
 	}
+
+	static public float floatLerp( float start, float end, float pos )
+	{
+		return (start + pos*(end - start));
+	}
 }
