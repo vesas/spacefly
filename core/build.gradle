@@ -1,7 +1,17 @@
 apply plugin: "java"
+apply plugin: 'jacoco'
 
 sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+
+
+jacoco {
+    toolVersion = "0.8.9"
+    // reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+
+
 
 dependencies {
 
@@ -10,8 +20,23 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
     testImplementation("org.junit.platform:junit-platform-console-standalone:1.8.1")
 
+    testImplementation("com.approvaltests:approvaltests:22.3.2")
+
+    testImplementation 'org.mockito:mockito-core:5.8.0'
+
 }
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport // report is always generated after tests run
 }
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+
+    reports {
+        xml.required = true
+    }
+}
+
+
