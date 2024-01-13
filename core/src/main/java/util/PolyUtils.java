@@ -19,7 +19,7 @@ public class PolyUtils
 	 */
 	static public boolean isClockwise( float x1, float y1, float x2, float y2 )
 	{
-		return x2 * -y1 + y2 * x1 < 0.0f;
+		return x2 * -y1 + y2 * x1 <= 0.0f;
 	}
 	
 	/**
