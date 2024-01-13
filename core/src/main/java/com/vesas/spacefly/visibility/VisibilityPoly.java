@@ -42,4 +42,9 @@ public class VisibilityPoly
 		}
 		triPoints.clear();
 	}
+
+	@Override
+	public String toString() {
+		return "VisibilityPoly [triPoints=" + triPoints + "]";
+	}
 }
