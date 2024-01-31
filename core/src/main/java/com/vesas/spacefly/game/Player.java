@@ -111,7 +111,7 @@ public final class Player
 				
 	}
 
-	public void init()
+	public void init(float x, float y)
 	{
 		sprite = G.getAtlas().createSprite("ship2");
 		sprite.setSize(0.5f,0.5f);
@@ -124,7 +124,7 @@ public final class Player
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		
-		bodyDef.position.set((0f), (0f));
+		bodyDef.position.set(x, y);
 
 		body = Box2DWorld.world.createBody(bodyDef);
 

@@ -76,8 +76,8 @@ public class Edge
 	
 	public boolean canSeeFromGate( Vector2 start, Vector2 lGate, Vector2 rGate )
 	{
-		Vector2 v1 = p1.p;
-		Vector2 v2 = p2.p;
+		Vector2 v1 = p1.point;
+		Vector2 v2 = p2.point;
 		
 		boolean v2Right = PolyUtils.isClockwise(	v1.x-start.x, v1.y-start.y, 
 													v2.x-start.x, v2.y-start.y);
@@ -99,11 +99,7 @@ public class Edge
 		boolean leftIn = PolyUtils.isCounterClockwise( rx-start.x, ry-start.y, lGate.x-start.x, lGate.y-start.y);
 		boolean rightIn = PolyUtils.isClockwise( lx-start.x, ly-start.y, rGate.x-start.x, rGate.y-start.y);
 		
-		if( leftIn && rightIn )
-			return true;
-		
-		return false;
-	
+		return leftIn && rightIn;
 	}
 	
 	public String toString()

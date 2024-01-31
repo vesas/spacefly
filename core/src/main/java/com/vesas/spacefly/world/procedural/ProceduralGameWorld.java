@@ -43,14 +43,14 @@ public class ProceduralGameWorld extends AbstractGameWorld
 	@Override
 	public void init()
 	{
-		feats = new Array<Feature>();
 		
 		visib = new Visibility();
-		
 		visib.startLoad();
+		
+		// WorldGenTest gen = new WorldGenTest(this, visib);
+		// feats = gen.generate();
 		WorldGen gen = new WorldGen( this,visib );
 		gen.setFirstRoomCenter(Player.INSTANCE.getWorldCenter());
-		
 		feats = gen.generate(); 
 		
 		visib.finishLoad();
@@ -126,7 +126,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		screen.worldBatch.setShader(null);
 		
 		long startNano = System.nanoTime();
-		
+		 
 		for( int i = 0; i < feats.size; i++ )
 		{
 			Feature feat = feats.get( i );
@@ -202,12 +202,12 @@ public class ProceduralGameWorld extends AbstractGameWorld
 			}
 
 			final EndPoint e0 = edge.getEndPoint1();
-			final float ax = e0.p.x;
-			final float ay = e0.p.y;
+			final float ax = e0.point.x;
+			final float ay = e0.point.y;
 			
 			final EndPoint e1 = edge.getEndPoint2();
-			final float bx = e1.p.x;
-			final float by = e1.p.y;
+			final float bx = e1.point.x;
+			final float by = e1.point.y;
 						
 			G.shapeRenderer.line(ax, ay, bx, by);
 

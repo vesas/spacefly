@@ -5,12 +5,12 @@ import com.badlogic.gdx.utils.Array;
 
 public class EndPoint
 {
-	public Vector2 p = new Vector2();
+	public Vector2 point = new Vector2();
 	
 	public EndPoint( float x, float y )
 	{
-		this.p.x = x;
-		this.p.y = y;
+		this.point.x = x;
+		this.point.y = y;
 	}
 
 	private Array<Edge> edges = new Array<Edge>();
@@ -18,17 +18,6 @@ public class EndPoint
 	public void addEdge( Edge e )
 	{
 		edges.add( e );
-	}
-	
-	public boolean hasDirectConnectionTo( EndPoint e )
-	{
-		for( int i = 0; i < edges.size; i++ )
-		{
-			if( edges.get(i).getOtherEnd(this) == e )
-				return true;
-		}
-		
-		return false;
 	}
 	
 	public Edge getDirectConnectionTo( EndPoint e )
@@ -44,19 +33,19 @@ public class EndPoint
 	
 	public boolean isSamePoint( EndPoint o )
 	{
-		return Math.abs( o.p.x - p.x ) < 0.00001f &&
-			   Math.abs( o.p.y - p.y ) < 0.00001f;
+		return 	Math.abs( o.point.x - point.x ) < 0.00001f &&
+				Math.abs( o.point.y - point.y ) < 0.00001f;
 	}
 	
 	public boolean isSamePoint( float x, float y )
 	{
-		return Math.abs( x - p.x ) < 0.00001f &&
-			   Math.abs( y - p.y ) < 0.00001f;
+		return 	Math.abs( x - point.x ) < 0.00001f &&
+				Math.abs( y - point.y ) < 0.00001f;
 	}
 	
 	
 	public String toString()
 	{
-		return "(" + p.x + ":" + p.y + ")";
+		return "(" + point.x + ":" + point.y + ")";
 	}
 }

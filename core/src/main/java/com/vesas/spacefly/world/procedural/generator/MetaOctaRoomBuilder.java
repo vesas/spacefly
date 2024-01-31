@@ -3,7 +3,7 @@ package com.vesas.spacefly.world.procedural.generator;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
-public class MetaOctaRoomBuilder
+public final class MetaOctaRoomBuilder
 {
 	private MetaPortal startPortal;
 	

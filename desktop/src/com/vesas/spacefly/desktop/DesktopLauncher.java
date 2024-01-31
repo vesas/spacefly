@@ -11,6 +11,8 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		
 		config.setTitle("spacefly");
+		// config.useVsync(false);
+
 		// config.fullscreen = false;
 		// config.vSyncEnabled = false;
 		// config.foregroundFPS = 60;

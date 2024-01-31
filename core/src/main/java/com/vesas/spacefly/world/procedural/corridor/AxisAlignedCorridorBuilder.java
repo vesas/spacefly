@@ -7,11 +7,11 @@ import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor.Dir;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.room.Block1;
-import com.vesas.spacefly.world.procedural.room.BlockRight;
+import com.vesas.spacefly.world.procedural.room.WallBlock;
 import com.vesas.spacefly.world.procedural.room.BlockUp;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
-public class AxisAlignedCorridorBuilder
+public final class AxisAlignedCorridorBuilder
 {
 	private static float WALL_WIDTH = 0.5f;
 
@@ -223,97 +223,17 @@ public class AxisAlignedCorridorBuilder
 
 	private void addBlocksToRight(float xpos, float ypos, float distance )
 	{
-		int intDistance = (int) Math.floor( distance );
-		int tens = intDistance / 5;
-		int fives = (int) ((intDistance - tens * 5.0f) / 2.5f);
-		int twos = (int) ((intDistance - tens * 5.0f - fives * 2.5f) );
-		int ones = (int)  Math.ceil((distance - tens * 5.0f - fives * 2.5f - twos) );
+		WallBlock block = new WallBlock((int)distance*2);
+		blocks.add(block);
+		block.initBottomLeft( xpos, ypos , 0);
 		
-		float curpos = 0;
-		
-		for( int i = 0; i < tens; i++ )
-		{
-			BlockRight a1 = new BlockRight(10);
-			
-			a1.init( xpos + curpos, ypos , 0);
-			
-			blocks.add( a1 );
-			curpos += 5;
-		}
-		
-		for( int i = 0; i < fives; i++ )
-		{
-			BlockRight a1 = new BlockRight(5);
-			a1.init( xpos + curpos, ypos , 0);
-			
-			blocks.add( a1 );
-			curpos += 2.5;
-		}
-		
-		for( int i = 0; i < twos; i++ )
-		{
-			BlockRight a1 = new BlockRight(2);
-			a1.init( xpos + curpos, ypos , 0);
-			
-			blocks.add( a1 );
-			curpos += 1;
-		}
-		
-		for( int i = 0; i < ones; i++ )
-		{
-			Block1 a1 = new Block1();
-			a1.init( xpos + curpos, ypos , 0);
-			
-			blocks.add( a1 );
-			curpos += 0.5;
-		}
 	}
 	
 	private void addBlocksToUp(float xpos, float ypos, float distance )
 	{
-		int intDistance = (int) Math.floor( distance );
-		int tens = intDistance / 5;
-		int fives = (int) ((intDistance - tens * 5.0f) / 2.5f);
-		int twos = (int) ((intDistance - tens * 5.0f - fives * 2.5f) );
-		int ones = (int)  Math.ceil((distance - tens * 5.0f - fives * 2.5f - twos) );
-		
-		float curpos = 0;
-		
-		for( int i = 0; i < tens; i++ )
-		{
-			BlockUp a1 = new BlockUp(10);
-			a1.init( xpos, ypos + curpos , 0);
-			
-			blocks.add( a1 );
-			curpos += 5;
-		}
-		
-		for( int i = 0; i < fives; i++ )
-		{
-			BlockUp a1 = new BlockUp(5);
-			a1.init( xpos , ypos + curpos, 0);
-			
-			blocks.add( a1 );
-			curpos += 2.5;
-		}
-		
-		for( int i = 0; i < twos; i++ )
-		{
-			BlockUp a1 = new BlockUp(2);
-			a1.init( xpos, ypos + curpos , 0);
-			
-			blocks.add( a1 );
-			curpos += 1;
-		}
-		
+		WallBlock block = new WallBlock((int)distance*2);
+		blocks.add(block);
+		block.initTopLeft( xpos, ypos , 90);
 
-		for( int i = 0; i < ones; i++ )
-		{
-			Block1 a1 = new Block1();
-			a1.init( xpos, ypos  + curpos , 0);
-			
-			blocks.add( a1 );
-			curpos += 0.5;
-		}
 	}
 }

@@ -19,7 +19,7 @@ public class TestGame extends Game
 		
 		G.loadTextures();
 
-		Player.INSTANCE.init();
+		Player.INSTANCE.init(3,1);
 		
 		// Lwjgl3Window.getGraphics();
 		

@@ -21,7 +21,7 @@ import com.vesas.spacefly.world.procedural.room.octaroom.OctaRoomBuilder;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoomBuilder;
 
-public class WorldGen
+public class WorldGen implements WorldGenInterface
 {	
 	private AddMonsterCallback world;
 
@@ -44,8 +44,8 @@ public class WorldGen
 	}
 	public Array<Feature> generate()
 	{
-		GenSeed.random.setSeed(567);
-		metaRegionBuilder.setSize(32);
+		GenSeed.random.setSeed(2);
+		metaRegionBuilder.setSize(42);
 		Region metaRegion = metaRegionBuilder.generateMetaRegion();
 		
 		Array<Feature> feats = new Array<Feature>();
@@ -61,7 +61,7 @@ public class WorldGen
 	{
 		RectangleRoomBuilder roomBuilder = RectangleRoomBuilder.INSTANCE;
 		AxisAlignedCorridorBuilder corrBuilder = AxisAlignedCorridorBuilder.INSTANCE;
-		OctaRoomBuilder hexaBuilder = OctaRoomBuilder.INSTANCE;
+		OctaRoomBuilder octaBuilder = OctaRoomBuilder.INSTANCE;
 		
 		Array<MetaFeature> metaFeats = region.getMetaList();
 		
@@ -81,7 +81,7 @@ public class WorldGen
 			}
 			if( metaFeat instanceof MetaOctaRoom )
 			{
-				OctaRoom room = hexaBuilder.buildFrom( ((MetaOctaRoom)metaFeat));
+				OctaRoom room = octaBuilder.buildFrom( ((MetaOctaRoom)metaFeat));
 				feats.add( room );
 			}
 		}

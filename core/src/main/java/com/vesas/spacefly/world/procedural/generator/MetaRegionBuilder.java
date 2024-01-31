@@ -74,7 +74,8 @@ public class MetaRegionBuilder {
 
 		if(portal.START_TYPE == MetaPortal.CORRIDOR)
 		{
-			if(GenSeed.random.nextDouble() < 0.000999 )
+			// TODO: THIS IS TEMPORARY, change this
+			if(GenSeed.random.nextDouble() < -0.999999 )
 				ret = generateRandomOctaRoom(region, portal);
 			else
 				ret = generateRandomRoom( region, portal );

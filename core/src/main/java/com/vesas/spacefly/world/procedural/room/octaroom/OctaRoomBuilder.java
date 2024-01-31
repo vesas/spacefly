@@ -8,7 +8,7 @@ import com.vesas.spacefly.world.procedural.generator.MetaOctaRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.room.Block1;
-import com.vesas.spacefly.world.procedural.room.BlockRight;
+import com.vesas.spacefly.world.procedural.room.WallBlock;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
 
@@ -105,6 +105,8 @@ public class OctaRoomBuilder
 		buildNorthWestWall(room);
 		buildSouthEastWall(room);
 		buildSouthWestWall(room);
+
+		visib.finishConvexArea();
 
 		// Do the small entrance areas
 		if( nPortal != null )
@@ -208,9 +210,9 @@ public class OctaRoomBuilder
 		
 		for( int i = 0; i < tens; i++ )
 		{
-			BlockRight a1 = new BlockRight(10);
+			WallBlock a1 = new WallBlock(10);
 			
-			a1.init( xpos + curpos, ypos , 0);
+			a1.initBottomLeft( xpos + curpos, ypos , 0);
 			
 			blocks.add( a1 );
 			curpos += 5;
@@ -218,8 +220,8 @@ public class OctaRoomBuilder
 		
 		for( int i = 0; i < fives; i++ )
 		{
-			BlockRight a1 = new BlockRight(5);
-			a1.init( xpos + curpos, ypos , 0);
+			WallBlock a1 = new WallBlock(5);
+			a1.initBottomLeft( xpos + curpos, ypos , 0);
 			
 			blocks.add( a1 );
 			curpos += 2.5;
@@ -227,8 +229,8 @@ public class OctaRoomBuilder
 		
 		for( int i = 0; i < twos; i++ )
 		{
-			BlockRight a1 = new BlockRight(2);
-			a1.init( xpos + curpos, ypos , 0);
+			WallBlock a1 = new WallBlock(2);
+			a1.initBottomLeft( xpos + curpos, ypos , 0);
 			
 			blocks.add( a1 );
 			curpos += 1;
@@ -236,8 +238,8 @@ public class OctaRoomBuilder
 		
 		for( int i = 0; i < ones; i++ )
 		{
-			Block1 a1 = new Block1();
-			a1.init( xpos + curpos, ypos , 0);
+			WallBlock a1 = new WallBlock(1);
+			a1.initBottomLeft( xpos + curpos, ypos , 0);
 			
 			blocks.add( a1 );
 			curpos += 0.5;
