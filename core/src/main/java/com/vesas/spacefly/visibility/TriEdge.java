@@ -25,26 +25,24 @@ public class TriEdge
 	
 	public void createInitialGate( final Vector2 viewPoint )
 	{
-		final Vector2 p1 = e.getEndPoint1().p;
-		final Vector2 p2 = e.getEndPoint2().p;
+		final Vector2 p1 = e.getEndPoint1().point;
+		final Vector2 p2 = e.getEndPoint2().point;
 		
-		final boolean p2Right = PolyUtils.isCounterClockwise(p1.x-viewPoint.x, p1.y-viewPoint.y, p2.x-viewPoint.x, p2.y-viewPoint.y);
+		final boolean p2Left = PolyUtils.isCounterClockwise(p1.x-viewPoint.x, p1.y-viewPoint.y, p2.x-viewPoint.x, p2.y-viewPoint.y);
 		
-		if( !p2Right )
-		{
-			rGate.x = p2.x;
-			rGate.y = p2.y;
-			
-			lGate.x = p1.x;
-			lGate.y = p1.y;
-		}
-		else
-		{
+		if( p2Left ) {
 			rGate.x = p1.x;
 			rGate.y = p1.y;
 			
 			lGate.x = p2.x;
 			lGate.y = p2.y;
+		}
+		else {
+			rGate.x = p2.x;
+			rGate.y = p2.y;
+			
+			lGate.x = p1.x;
+			lGate.y = p1.y;
 		}
 		
 		return;

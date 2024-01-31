@@ -6,7 +6,7 @@ import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.room.Block1;
-import com.vesas.spacefly.world.procedural.room.BlockRight;
+import com.vesas.spacefly.world.procedural.room.WallBlock;
 import com.vesas.spacefly.world.procedural.room.BlockUp;
 import com.vesas.spacefly.world.procedural.room.FeatureConnector;
 import com.vesas.spacefly.visibility.Visibility;
@@ -126,8 +126,8 @@ public class RectangleRoomBuilder
 			// y points down
 			room.addRoomEntrance(new RoomEntrance(0, 0 + beginSize, RectangleRoom.WALL_WIDTH, wPortal.width));
 			
-			addBlocksToUp( xpos, ypos,  beginSize);
-			addBlocksToUp( xpos, ypos + (beginSize + wPortal.width), endSize);
+			addBlocksToUp( xpos, ypos + RectangleRoom.WALL_WIDTH,  beginSize - RectangleRoom.WALL_WIDTH);
+			addBlocksToUp( xpos, ypos + (beginSize + wPortal.width), endSize - RectangleRoom.WALL_WIDTH);
 			
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize);
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
@@ -154,8 +154,8 @@ public class RectangleRoomBuilder
 			// y points down
 			room.addRoomEntrance(new RoomEntrance(xsize - RectangleRoom.WALL_WIDTH, 0 + beginSize, RectangleRoom.WALL_WIDTH, ePortal.width));
 			
-			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos,  beginSize);
-			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos+ (beginSize + ePortal.width), endSize);
+			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH,  beginSize - RectangleRoom.WALL_WIDTH);
+			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos+ (beginSize + ePortal.width), endSize - RectangleRoom.WALL_WIDTH);
 			
 			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize );
 			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
@@ -290,6 +290,12 @@ public class RectangleRoomBuilder
 	//
 	private void addBlocksToRight(float xpos, float ypos, float distance )
 	{
+
+		WallBlock block = new WallBlock((int)(distance*2.0f));
+		blocks.add(block);
+		block.initBottomLeft( xpos, ypos , 0);
+
+		/*
 		int intDistance = (int) Math.floor( distance );
 		int tens = (int) (distance / 5);
 		int fives = (int) ((distance - tens * 5.0f) / 2.5f);
@@ -300,9 +306,9 @@ public class RectangleRoomBuilder
 		
 		for( int i = 0; i < tens; i++ )
 		{
-			BlockRight a1 = new BlockRight(10);
+			WallBlock a1 = new WallBlock(10);
 			
-			a1.init( xpos + curpos, ypos , 0);
+			a1.initBottomLeft( xpos + curpos, ypos , 0);
 			
 			blocks.add( a1 );
 			curpos += 5;
@@ -310,8 +316,8 @@ public class RectangleRoomBuilder
 		
 		for( int i = 0; i < fives; i++ )
 		{
-			BlockRight a1 = new BlockRight(5);
-			a1.init( xpos + curpos, ypos , 0);
+			WallBlock a1 = new WallBlock(5);
+			a1.initBottomLeft( xpos + curpos, ypos , 0);
 			
 			blocks.add( a1 );
 			curpos += 2.5;
@@ -319,8 +325,8 @@ public class RectangleRoomBuilder
 		
 		for( int i = 0; i < twos; i++ )
 		{
-			BlockRight a1 = new BlockRight(2);
-			a1.init( xpos + curpos, ypos , 0);
+			WallBlock a1 = new WallBlock(2);
+			a1.initBottomLeft( xpos + curpos, ypos , 0);
 			
 			blocks.add( a1 );
 			curpos += 1;
@@ -328,13 +334,13 @@ public class RectangleRoomBuilder
 		
 		for( int i = 0; i < ones; i++ )
 		{
-			Block1 a1 = new Block1();
-			a1.init( xpos + curpos, ypos , 0);
+			WallBlock a1 = new WallBlock(1);
+			a1.initBottomLeft( xpos + curpos, ypos , 0);
 			
 			blocks.add( a1 );
 			curpos += 0.5;
 		}
-		
+		*/
 		
 	}
 	
@@ -343,49 +349,10 @@ public class RectangleRoomBuilder
 	//
 	private void addBlocksToUp(float xpos, float ypos, float distance )
 	{
-		int intDistance = (int) Math.floor( distance );
-		int tens = (int)(distance / 5);
-		int fives = (int) ((distance - tens * 5.0f) / 2.5f);
-		int twos = (int) ((distance - tens * 5.0f - fives * 2.5f) );
-		int ones = (int)  Math.ceil((distance - tens * 5.0f - fives * 2.5f - twos) );
+		WallBlock block = new WallBlock((int)(distance*2.0f));
+		blocks.add(block);
+		block.initTopLeft( xpos, ypos , 90);
 		
-		float curpos = 0;
-		
-		for( int i = 0; i < tens; i++ )
-		{
-			BlockUp a1 = new BlockUp(10);
-			a1.init( xpos, ypos + curpos , 0);
-			
-			blocks.add( a1 );
-			curpos += 5.0f;
-		}
-		
-		for( int i = 0; i < fives; i++ )
-		{
-			BlockUp a1 = new BlockUp(5);
-			a1.init( xpos , ypos + curpos, 0);
-			
-			blocks.add( a1 );
-			curpos += 2.5f;
-		}
-		
-		for( int i = 0; i < twos; i++ )
-		{
-			BlockUp a1 = new BlockUp(2);
-			a1.init( xpos, ypos + curpos , 0);
-			
-			blocks.add( a1 );
-			curpos += 1f;
-		}
-		
-		for( int i = 0; i < ones; i++ )
-		{
-			Block1 a1 = new Block1();
-			a1.init( xpos, ypos + curpos , 0);
-			
-			blocks.add( a1 );
-			curpos += RectangleRoom.WALL_WIDTH;
-		}
 	}
 	
 }

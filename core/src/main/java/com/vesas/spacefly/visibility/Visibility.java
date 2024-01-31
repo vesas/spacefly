@@ -125,21 +125,19 @@ public class Visibility
 	 */
 	private Edge findEdge( EndPoint e1, EndPoint e2 )
 	{
-		for( int i = 0; i < edges.size(); i++ )
-        {
-        	Edge edge = edges.get( i );
-        	
-        	if( (edge.getEndPoint1().isSamePoint( e1 ) &&
-        		edge.getEndPoint2().isSamePoint( e2 ) ) 
-        		||
-        		(edge.getEndPoint1().isSamePoint( e2 ) &&
-                edge.getEndPoint2().isSamePoint( e1 ) ) 
+		for( int i = 0; i < edges.size(); i++ ) {
+			Edge edge = edges.get( i );
+
+			if((	edge.getEndPoint1().isSamePoint( e1 ) &&
+					edge.getEndPoint2().isSamePoint( e2 ) ) ||
+					(edge.getEndPoint1().isSamePoint( e2 ) &&
+					edge.getEndPoint2().isSamePoint( e1 ) ) 
                 )
-        	{
-        		return edge;
-        	}
+			{
+				return edge;
+			}
         }
-		 return null;
+		return null;
 	}
 	
 	private void triangulateRoom()
@@ -149,11 +147,11 @@ public class Visibility
         int count = 0;
         for( int i = 0; i < roomPoints.size; i++ )
         {
-        	EndPoint e = roomPoints.get( i );
-        	points[count] = e.p.x;
-        	count++;
-        	points[count] = e.p.y;
-        	count++;
+			EndPoint e = roomPoints.get( i );
+			points[count] = e.point.x;
+			count++;
+			points[count] = e.point.y;
+			count++;
         }
         
         ShortArray tris = triangulator.computeTriangles(points, false);
@@ -289,7 +287,7 @@ public class Visibility
 		}
 		else
 		{
-			visibPoly.addHit( e1.getEndPoint1().p, e1.getEndPoint2().p );
+			visibPoly.addHit( e1.getEndPoint1().point, e1.getEndPoint2().point );
 		}
 		
 		if( !e2.isBoundary() )
@@ -304,7 +302,7 @@ public class Visibility
 		}
 		else
 		{
-			visibPoly.addHit( e2.getEndPoint1().p, e2.getEndPoint2().p );
+			visibPoly.addHit( e2.getEndPoint1().point, e2.getEndPoint2().point );
 		}
 		
 		if( !e3.isBoundary() )
@@ -317,7 +315,7 @@ public class Visibility
 		}
 		else
 		{
-			visibPoly.addHit( e3.getEndPoint1().p, e3.getEndPoint2().p );
+			visibPoly.addHit( e3.getEndPoint1().point, e3.getEndPoint2().point );
 		}
 		
 		long count = 0;
@@ -385,13 +383,13 @@ public class Visibility
 		
 		final EndPoint oppositeEnd = tri.getThirdEndPoint( current.e );
 		
-		final boolean centerToLeftOfLeftGate = PolyUtils.isCounterClockwise( 	lGate.x-center.x, lGate.y-center.y,  oppositeEnd.p.x-center.x, oppositeEnd.p.y-center.y);
-		final boolean centerToRightOfRightGate = PolyUtils.isClockwise( 		rGate.x-center.x, rGate.y-center.y,  oppositeEnd.p.x-center.x, oppositeEnd.p.y-center.y);
+		final boolean centerToLeftOfLeftGate = PolyUtils.isCounterClockwise( 	lGate.x-center.x, lGate.y-center.y,  oppositeEnd.point.x-center.x, oppositeEnd.point.y-center.y);
+		final boolean centerToRightOfRightGate = PolyUtils.isClockwise( 		rGate.x-center.x, rGate.y-center.y,  oppositeEnd.point.x-center.x, oppositeEnd.point.y-center.y);
 		
 		final boolean centerVisible = !centerToLeftOfLeftGate && !centerToRightOfRightGate;
 		
-		Vector2 p1 = current.e.getEndPoint1().p;
-		Vector2 p2 = current.e.getEndPoint2().p;
+		Vector2 p1 = current.e.getEndPoint1().point;
+		Vector2 p2 = current.e.getEndPoint2().point;
 		
 		final boolean p2Right = PolyUtils.isClockwise(p1.x-center.x, p1.y-center.y, p2.x-center.x, p2.y-center.y);
 		
@@ -424,20 +422,20 @@ public class Visibility
 			{
 				if( rightGateNotNarrowed )
 				{
-					visibPoly.addHit( edge2.getEndPoint1().p, edge2.getEndPoint2().p );
+					visibPoly.addHit( edge2.getEndPoint1().point, edge2.getEndPoint2().point );
 				}
 				else
 				{
 					// right "wing", right gate
 					final boolean rwrg = Intersector.intersectLines(center.x, center.y, 
 							rGate.x + (rGate.x-center.x)*15.0f, rGate.y + (rGate.y-center.y)*15.0f, 
-							edge2.getEndPoint1().p.x,  edge2.getEndPoint1().p.y, 
-							edge2.getEndPoint2().p.x, edge2.getEndPoint2().p.y, intersection3 );
+							edge2.getEndPoint1().point.x,  edge2.getEndPoint1().point.y, 
+							edge2.getEndPoint2().point.x, edge2.getEndPoint2().point.y, intersection3 );
 					
 					
 					Vector2 inter2 = new Vector2( intersection3 );
 
-					visibPoly.addHit( oppositeEnd.p, inter2);
+					visibPoly.addHit( oppositeEnd.point, inter2);
 				}
 			}
 			
@@ -445,19 +443,19 @@ public class Visibility
 			{
 				if( leftGateNotNarrowed )
 				{
-					visibPoly.addHit( edge1.getEndPoint1().p, edge1.getEndPoint2().p );
+					visibPoly.addHit( edge1.getEndPoint1().point, edge1.getEndPoint2().point );
 				}
 				else
 				{
 					// left "wing", left gate
 					final boolean lwlg = Intersector.intersectLines(center.x, center.y, 
 							lGate.x + (lGate.x-center.x)*15.0f, lGate.y + (lGate.y-center.y)*15.0f, 
-							edge1.getEndPoint1().p.x,  edge1.getEndPoint1().p.y, 
-							edge1.getEndPoint2().p.x, edge1.getEndPoint2().p.y, intersection3 );
+							edge1.getEndPoint1().point.x,  edge1.getEndPoint1().point.y, 
+							edge1.getEndPoint2().point.x, edge1.getEndPoint2().point.y, intersection3 );
 					
 					Vector2 inter1 = new Vector2( intersection3 );
 					
-					visibPoly.addHit( oppositeEnd.p, inter1);
+					visibPoly.addHit( oppositeEnd.point, inter1);
 				}
 			}
 			
@@ -470,8 +468,8 @@ public class Visibility
 				// right "wing", left gate
 				final boolean rwlg = Intersector.intersectLines(center.x, center.y, 
 						lGate.x + (lGate.x-center.x)*15.0f, lGate.y + (lGate.y-center.y)*15.0f, 
-						edge2.getEndPoint1().p.x,  edge2.getEndPoint1().p.y, 
-						edge2.getEndPoint2().p.x, edge2.getEndPoint2().p.y, intersection3 );
+						edge2.getEndPoint1().point.x,  edge2.getEndPoint1().point.y, 
+						edge2.getEndPoint2().point.x, edge2.getEndPoint2().point.y, intersection3 );
 				
 				Vector2 inter1 = new Vector2( intersection3 );
 				
@@ -483,16 +481,16 @@ public class Visibility
 				// right "wing", left gate
 				final boolean rwlg = Intersector.intersectLines(center.x, center.y, 
 						lGate.x + (lGate.x-center.x)*15.0f, lGate.y + (lGate.y-center.y)*15.0f, 
-						edge2.getEndPoint1().p.x,  edge2.getEndPoint1().p.y, 
-						edge2.getEndPoint2().p.x, edge2.getEndPoint2().p.y, intersection3 );
+						edge2.getEndPoint1().point.x,  edge2.getEndPoint1().point.y, 
+						edge2.getEndPoint2().point.x, edge2.getEndPoint2().point.y, intersection3 );
 				
 				Vector2 inter1 = new Vector2( intersection3 );
 				
 				// right "wing", right gate
 				final boolean rwrg = Intersector.intersectLines(center.x, center.y, 
 						rGate.x + (rGate.x-center.x)*15.0f, rGate.y + (rGate.y-center.y)*15.0f, 
-						edge2.getEndPoint1().p.x,  edge2.getEndPoint1().p.y, 
-						edge2.getEndPoint2().p.x, edge2.getEndPoint2().p.y, intersection3 );
+						edge2.getEndPoint1().point.x,  edge2.getEndPoint1().point.y, 
+						edge2.getEndPoint2().point.x, edge2.getEndPoint2().point.y, intersection3 );
 				
 				Vector2 inter2 = new Vector2( intersection3 );
 				
@@ -507,8 +505,8 @@ public class Visibility
 				// left "wing", right gate
 				final boolean rwlg = Intersector.intersectLines(center.x, center.y, 
 						rGate.x + (rGate.x-center.x)*15.0f, rGate.y + (rGate.y-center.y)*15.0f, 
-						edge1.getEndPoint1().p.x,  edge1.getEndPoint1().p.y, 
-						edge1.getEndPoint2().p.x, edge1.getEndPoint2().p.y, intersection3 );
+						edge1.getEndPoint1().point.x,  edge1.getEndPoint1().point.y, 
+						edge1.getEndPoint2().point.x, edge1.getEndPoint2().point.y, intersection3 );
 				
 				Vector2 inter2 = new Vector2( intersection3 );
 				
@@ -519,16 +517,16 @@ public class Visibility
 				// left "wing", left gate
 				final boolean rwlg = Intersector.intersectLines(center.x, center.y, 
 						lGate.x + (lGate.x-center.x)*15.0f, lGate.y + (lGate.y-center.y)*15.0f, 
-						edge1.getEndPoint1().p.x,  edge1.getEndPoint1().p.y, 
-						edge1.getEndPoint2().p.x, edge1.getEndPoint2().p.y, intersection3 );
+						edge1.getEndPoint1().point.x,  edge1.getEndPoint1().point.y, 
+						edge1.getEndPoint2().point.x, edge1.getEndPoint2().point.y, intersection3 );
 				
 				Vector2 inter1 = new Vector2( intersection3 );
 				
 				// left "wing", right gate
 				final boolean rwrg = Intersector.intersectLines(center.x, center.y, 
 						rGate.x + (rGate.x-center.x)*15.0f, rGate.y + (rGate.y-center.y)*15.0f, 
-						edge1.getEndPoint1().p.x,  edge1.getEndPoint1().p.y, 
-						edge1.getEndPoint2().p.x, edge1.getEndPoint2().p.y, intersection3 );
+						edge1.getEndPoint1().point.x,  edge1.getEndPoint1().point.y, 
+						edge1.getEndPoint2().point.x, edge1.getEndPoint2().point.y, intersection3 );
 				
 				Vector2 inter2 = new Vector2( intersection3 );
 				
@@ -562,11 +560,11 @@ public class Visibility
 	
 	private boolean isClockwise( Edge e1, Edge e2 )
 	{
-		float center1x = (e1.getEndPoint1().p.x + e1.getEndPoint2().p.x) * 0.5f;
-		float center1y = (e1.getEndPoint1().p.y + e1.getEndPoint2().p.y) * 0.5f;
+		float center1x = (e1.getEndPoint1().point.x + e1.getEndPoint2().point.x) * 0.5f;
+		float center1y = (e1.getEndPoint1().point.y + e1.getEndPoint2().point.y) * 0.5f;
 		
-		float center2x = (e2.getEndPoint1().p.x + e2.getEndPoint2().p.x) * 0.5f;
-		float center2y = (e2.getEndPoint1().p.y + e2.getEndPoint2().p.y) * 0.5f;
+		float center2x = (e2.getEndPoint1().point.x + e2.getEndPoint2().point.x) * 0.5f;
+		float center2y = (e2.getEndPoint1().point.y + e2.getEndPoint2().point.y) * 0.5f;
 		
 		boolean e2Right = PolyUtils.isClockwise(center1x-center.x, center1y-center.y, center2x-center.x, center2y-center.y);
 		return e2Right;
@@ -588,16 +586,16 @@ public class Visibility
 			final Triangle t = triangles.get( i );
 
 			final EndPoint e0 = t.getPoint(0);
-			final float ax = e0.p.x;
-			final float ay = e0.p.y;
+			final float ax = e0.point.x;
+			final float ay = e0.point.y;
 			
 			final EndPoint e1 = t.getPoint(1);
-			final float bx = e1.p.x;
-			final float by = e1.p.y;
+			final float bx = e1.point.x;
+			final float by = e1.point.y;
 			
 			final EndPoint e2 = t.getPoint(2); 
-			float cx = e2.p.x;
-			float cy = e2.p.y;
+			float cx = e2.point.x;
+			float cy = e2.point.y;
 			
 			boolean found = Intersector.isPointInTriangle(center.x, center.y, ax, ay, bx, by, cx, cy);
 			

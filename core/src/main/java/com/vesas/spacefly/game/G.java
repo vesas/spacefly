@@ -1,12 +1,11 @@
 package com.vesas.spacefly.game;
 
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -41,6 +40,8 @@ public class G
 	static public Sprite [] health;
 	
 	static public Sprite [] props;
+
+	static public TextureRegion [] walls;
 	
 	static public Sound shot;
 	static public Sound explo1;
@@ -106,6 +107,10 @@ public class G
 		
 		shot = Gdx.audio.newSound( Gdx.files.local("data/shot.ogg"));
 		explo1 = Gdx.audio.newSound( Gdx.files.local("data/explo1.ogg"));
+		
+		walls = new TextureRegion[2];
+		walls[0] = G.getAtlas().findRegion("edgeA1");
+		walls[1] = G.getAtlas().findRegion("edgeA10");
 	}
 	
 	static public void disposeTextures()
