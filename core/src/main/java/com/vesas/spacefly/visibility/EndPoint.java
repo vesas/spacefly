@@ -31,16 +31,18 @@ public class EndPoint
 		return null;
 	}
 	
+	private static final float EPSILON = 0.0001f;
+
 	public boolean isSamePoint( EndPoint o )
 	{
-		return 	Math.abs( o.point.x - point.x ) < 0.00001f &&
-				Math.abs( o.point.y - point.y ) < 0.00001f;
+		return 	Math.abs( o.point.x - point.x ) < EPSILON &&
+				Math.abs( o.point.y - point.y ) < EPSILON;
 	}
 	
 	public boolean isSamePoint( float x, float y )
 	{
-		return 	Math.abs( x - point.x ) < 0.00001f &&
-				Math.abs( y - point.y ) < 0.00001f;
+		return 	Math.abs( x - point.x ) < EPSILON &&
+				Math.abs( y - point.y ) < EPSILON;
 	}
 	
 	

@@ -28,13 +28,7 @@ public class Visibility
 	
 	private Vector2 center = new Vector2();
 	
-	private ShortArray triShorts;
 	private float [] points;
-	
-	public ShortArray getTriangles()
-	{
-		return triShorts;
-	}
 	
 	public float[] getPoints()
 	{
@@ -77,9 +71,8 @@ public class Visibility
 	}
 	
 	static private Array<EndPoint> roomPoints = new Array<EndPoint>();
-	
-	public void addSegment( float x1, float y1, float x2, float y2 )
-	{	
+
+	public void addSegment( float x1, float y1, float x2, float y2, boolean boundary) {
 		EndPoint p1 = getOrCreateEndPoint( x1, y1 );
 		EndPoint p2 = getOrCreateEndPoint( x2, y2 );
 		
@@ -93,9 +86,14 @@ public class Visibility
 		p1.addEdge( edge );
 		p2.addEdge( edge );
 
-		edge.setBoundary( true );
+		edge.setBoundary( boundary );
     
 		edges.add(edge);
+	}
+	
+	public void addSegment( float x1, float y1, float x2, float y2 )
+	{	
+		addSegment( x1, y1, x2, y2, true );
 	}
 	
 	private DelaunayTriangulator triangulator;
@@ -251,8 +249,7 @@ public class Visibility
 	Vector2 enter2 = new Vector2();
 	
 	public void sweep()
-	{
-		
+	{	
 		visibPoly.clear();
 		toProcess.clear();
 		
