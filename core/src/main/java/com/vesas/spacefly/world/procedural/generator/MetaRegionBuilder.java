@@ -75,7 +75,7 @@ public class MetaRegionBuilder {
 		if(portal.START_TYPE == MetaPortal.CORRIDOR)
 		{
 			// TODO: THIS IS TEMPORARY, change this
-			if(GenSeed.random.nextDouble() < -0.999999 )
+			if(GenSeed.random.nextDouble() < 0.2999999 )
 				ret = generateRandomOctaRoom(region, portal);
 			else
 				ret = generateRandomRoom( region, portal );
@@ -252,11 +252,8 @@ public class MetaRegionBuilder {
 		MetaOctaRoomBuilder roomBuilder = MetaOctaRoomBuilder.INSTANCE;
 		roomBuilder.init();
 
-		int minwidth = 3;
-		int minheight = 3;
-
-		float w = minwidth;
-		float h = minheight;
+		float sidewidth = 0;
+		float w, h;
 
 		ExitDir excludeDir = null;
 
@@ -265,21 +262,9 @@ public class MetaRegionBuilder {
 		
 		if( fromPortal != null )
 		{
-			if( fromPortal.getExit() == ExitDir.N || 
-				fromPortal.getExit() == ExitDir.S )
-			{
-				minwidth = (int) (fromPortal.getWidth() + 2);
-			}
-			
-			if( fromPortal.getExit() == ExitDir.E || 
-				fromPortal.getExit() == ExitDir.W )
-			{
-				minheight = (int) (fromPortal.getWidth() + 2);
-			}
+			sidewidth = fromPortal.getWidth();
 
-			// have to be at least minx/miny long/wide to accommodate the possible corridor
-			w = Math.max(minwidth, GenSeed.random.nextInt( 16 ) );
-			// for now make it square
+			w = sidewidth * (1 + (float)Math.sqrt(2));
 			h = w;
 
 			roomBuilder.setSize( w, h );
@@ -299,26 +284,10 @@ public class MetaRegionBuilder {
 			if( excludeDir != null )
 				existingExits[excludeDir.ordinal()] = true;
 		}
-		else {
-			// lets set first room explicitly
-			w = 5;
-			h = 5;
-			roomBuilder.setSize( w, h);
-			roomBuilder.setPosition( firstRoomCenter.x - w * 0.51f, firstRoomCenter.y - h * 0.51f);
-
-			// for the first room we create exactly one exit
-			howManyAdditionalExits = 1;
-
-			// Lets just define so that we have "existing" exists in all directions except north,
-			// This forces first direction north
-			existingExits[ExitDir.S.ordinal()] = true;
-			existingExits[ExitDir.W.ordinal()] = true;
-			existingExits[ExitDir.E.ordinal()] = true;
-		}
 
 		// https://en.wikipedia.org/wiki/Octagon
 		// This is the length one side of the octagon (one of the 8 sides)
-		int maxPortalSize = (int)(h / (1 + Math.sqrt(2)));
+		float portalsize = sidewidth;
 
 		for(int i = 0; i < howManyAdditionalExits; i++ )
 		{
@@ -331,17 +300,11 @@ public class MetaRegionBuilder {
 			
 			if( ex.equals(ExitDir.N ) || ex.equals(ExitDir.S ) )
 			{
-				int portalWidth = Math.max( 1 , 1 + GenSeed.random.nextInt(maxPortalSize) );
-				portalWidth = (int) Math.min( portalWidth , w - 2);
-				
-				roomBuilder.addPortal( ex, portalWidth );
+				roomBuilder.addPortal( ex, portalsize );
 			}
 			else 
 			{
-				int portalWidth = Math.max( 1, 1 + GenSeed.random.nextInt(maxPortalSize) );
-				portalWidth = (int) Math.min( portalWidth , h - 2);
-				
-				roomBuilder.addPortal( ex, portalWidth );
+				roomBuilder.addPortal( ex, portalsize );
 			}
 		}
 		

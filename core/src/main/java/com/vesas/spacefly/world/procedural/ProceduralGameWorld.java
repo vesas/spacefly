@@ -178,7 +178,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		
 		G.shapeRenderer.begin(ShapeType.Line);
 		
-		G.shapeRenderer.setColor(0.999f, 0.999f, 0.999f, 0.499f);
+		G.shapeRenderer.setColor(0.999f, 0.999f, 0.999f, 0.299f);
 		
 		List<Edge> edges = visib.edges;
 		final int size = edges.size();
@@ -188,7 +188,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 			
 			if( edge.isBoundary() ) 
 			{
-				G.shapeRenderer.setColor(0.999f, 0.999f, 0.999f, 0.899f);
+				G.shapeRenderer.setColor(0.999f, 0.999f, 0.999f, 0.599f);
 			}
 			else 
 			{
@@ -198,7 +198,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 					val = 1.0f;
 				}
 
-				G.shapeRenderer.setColor(0.0f + val, 0.299f, 0.299f, 0.899f);
+				G.shapeRenderer.setColor(0.0f + val, 0.299f, 0.299f, 0.499f);
 			}
 
 			final EndPoint e0 = edge.getEndPoint1();

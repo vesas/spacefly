@@ -15,6 +15,8 @@ import com.vesas.spacefly.world.procedural.FeatureBlock;
 
 /* 
  * Walls which have 0.5 world unit thickness
+ * 
+ * Contains physics body and texture
 */
 public class WallBlock implements FeatureBlock
 {
@@ -125,14 +127,14 @@ public class WallBlock implements FeatureBlock
 		v[7] = ypos + up.y;
 		
 		BodyBuilder builder = BodyBuilder.getInstance();
-		
+
 		builder.setPosition( 0 , 0 );
 		builder.polygon( v );
 		builder.setBodyType(BodyType.StaticBody );
 		
 		body = builder.construct();
 	}
-	
+
 	public void draw(Batch batch) {
 
 		TextureRegion wallTex = G.walls[1];
