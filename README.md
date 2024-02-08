@@ -11,6 +11,11 @@ Screenshot:
 
 ![alt text](readme_img/spacefly.gif "Screenshot")
 
+New octagonal rooms:
+
+![alt text](readme_img/octagon2.gif "Octagon rooms")
+
+
 ## Dependencies
 
 LibGDX 1.12.1
