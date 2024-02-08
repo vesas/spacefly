@@ -6,12 +6,9 @@ import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.generator.MetaOctaRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
-import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
-import com.vesas.spacefly.world.procedural.room.Block1;
 import com.vesas.spacefly.world.procedural.room.WallBlock;
+import com.vesas.spacefly.world.procedural.room.octaroom.OctaRoom.WallWedge;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
-import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
-import com.vesas.spacefly.world.procedural.room.rectangleroom.RoomEntrance;
 
 public class OctaRoomBuilder
 {
@@ -54,7 +51,7 @@ public class OctaRoomBuilder
 		return INSTANCE;
 	}
 
-	private void buildNorthWall(MetaPortal portal) {
+	private void buildNorthWall(MetaPortal portal, OctaRoom room) {
 
 		// will the segment be at the edge of the visibility polygon?
 		boolean boundary = portal == null;
@@ -62,6 +59,12 @@ public class OctaRoomBuilder
 		if( portal == null )
 		{
 			addBlocksToNorth( xpos + apersqrttwo, ypos + ysize, sidelen);
+
+			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos + apersqrttwo, ypos + ysize, 90+22.5f);
+			room.addWedge(wedge);
+
+			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos + xsize - apersqrttwo, ypos + ysize, 90-22.5f);
+			room.addWedge(wedge2);
 		}
 
 		visib.addSegment( xpos + apersqrttwo, 
@@ -71,13 +74,19 @@ public class OctaRoomBuilder
 						boundary);
 
 	}
-	private void buildSouthWall(MetaPortal portal) {
+	private void buildSouthWall(MetaPortal portal, OctaRoom room) {
 		
 		// will the segment be at the edge of the visibility polygon?
 		boolean boundary = portal == null;
 
 		if( portal == null ) {
 			addBlocksToSouth( xpos + apersqrttwo, ypos, sidelen);
+
+			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos + apersqrttwo, ypos, -90-22.5f);
+			room.addWedge(wedge);
+
+			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos + xsize - apersqrttwo, ypos, -90+22.5f);
+			room.addWedge(wedge2);
 		}
 
 		visib.addSegment( 
@@ -88,7 +97,7 @@ public class OctaRoomBuilder
 					boundary
 					);
 	}
-	private void buildWestWall(MetaPortal portal) {
+	private void buildWestWall(MetaPortal portal, OctaRoom room) {
 
 		// will the segment be at the edge of the visibility polygon?
 		boolean boundary = portal == null;
@@ -96,6 +105,12 @@ public class OctaRoomBuilder
 		if( portal == null ) {
 
 			addBlocksToLeftUp( xpos, ypos + apersqrttwo, sidelen);
+
+			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos, ypos + apersqrttwo, 180+22.5f);
+			room.addWedge(wedge);
+
+			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos, ypos + ysize - apersqrttwo, 180-22.5f);
+			room.addWedge(wedge2);
 		}
 
 		visib.addSegment( xpos, 
@@ -105,7 +120,7 @@ public class OctaRoomBuilder
 			boundary);
 		
 	}
-	private void buildEastWall(MetaPortal portal) {
+	private void buildEastWall(MetaPortal portal, OctaRoom room) {
 
 		// will the segment be at the edge of the visibility polygon?
 		boolean boundary = portal == null;
@@ -113,6 +128,11 @@ public class OctaRoomBuilder
 		if( portal == null ) {
 			addBlocksToRightUp( xpos + xsize, ypos + apersqrttwo, sidelen);
 
+			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos + xsize, ypos + apersqrttwo, 0-22.5f);
+			room.addWedge(wedge);
+
+			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos + xsize, ypos + ysize - apersqrttwo, 0+22.5f);
+			room.addWedge(wedge2);
 		}
 
 		visib.addSegment( xpos + xsize, 
@@ -205,19 +225,19 @@ public class OctaRoomBuilder
 
 		visib.startConvexArea();
 		buildSouthEastWall();
-		buildEastWall(ePortal);
+		buildEastWall(ePortal, room);
 		buildNorthEastWall();
 		visib.finishConvexArea();
 
 		visib.startConvexArea();
-		buildSouthWall(sPortal);
-		buildNorthWall(nPortal);
+		buildSouthWall(sPortal, room);
+		buildNorthWall(nPortal, room);
 		visib.finishConvexArea();
 		
 		visib.startConvexArea();
 		buildNorthWestWall();
 		buildSouthWestWall();
-		buildWestWall(wPortal);
+		buildWestWall(wPortal, room);
 		visib.finishConvexArea();
 		
 		room.setPosition( metaRoom.getBounds().x, metaRoom.getBounds().y);
