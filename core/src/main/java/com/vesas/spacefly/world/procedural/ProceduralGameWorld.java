@@ -230,13 +230,12 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		for( int i = 0; i < feats.size; i++ )
 		{
 			Feature feat = feats.get( i );
+
+			feat.drawMiniMap();
 			
-			float xpos = feat.getXpos();
-			float ypos = feat.getYpos();
-			float width = feat.getWidth();
-			float height = feat.getHeight();
 			
-			G.shapeRenderer.rect(xpos, ypos, width, height);
+
+			// public void polygon (float[] vertices) {
 		}
 		
 		G.shapeRenderer.setColor(1.0f, 0.0f, 0.0f, 1.0f);

@@ -33,6 +33,10 @@ public class TestFeature implements Feature {
     }
 
     @Override
+    public void drawMiniMap() {
+    }
+
+    @Override
     public void draw(SpriteBatch batch) {
     }
 

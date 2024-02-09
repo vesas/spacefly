@@ -8,6 +8,7 @@ public interface Feature
 {
 	public void init();
 	
+	public void drawMiniMap();
 	public void draw(SpriteBatch batch);
 	public void drawWithVisibility(GameScreen screen);
 	
