@@ -71,6 +71,9 @@ public class RectangleRoomBuilder
 			// left side
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH);
 
+			// door
+			visib.addSegment( xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+
 			// right side
 			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 			
@@ -100,7 +103,13 @@ public class RectangleRoomBuilder
 			addBlocksToRight( xpos, ypos, beginSize);
 			addBlocksToRight( xpos + (beginSize + sPortal.width), ypos, endSize);
 			
+			// left side
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
+
+			// doorway
+			visib.addSegment( xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH, xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, false);
+
+			// right side
 			visib.addSegment( xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
 		}
 	}
@@ -129,7 +138,13 @@ public class RectangleRoomBuilder
 			addBlocksToUp( xpos, ypos + RectangleRoom.WALL_WIDTH,  beginSize - RectangleRoom.WALL_WIDTH);
 			addBlocksToUp( xpos, ypos + (beginSize + wPortal.width), endSize - RectangleRoom.WALL_WIDTH);
 			
+			// bottom wall
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize);
+
+			// doorway
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), false);
+
+			// upper wall
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 			
 		}
@@ -157,7 +172,13 @@ public class RectangleRoomBuilder
 			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH,  beginSize - RectangleRoom.WALL_WIDTH);
 			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos+ (beginSize + ePortal.width), endSize - RectangleRoom.WALL_WIDTH);
 			
+			// bottom wall
 			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize );
+
+			// door
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), false );
+
+			// upper wall
 			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
 		
 		}
@@ -181,10 +202,12 @@ public class RectangleRoomBuilder
 		visib.startConvexArea();
 		
 		buildNorthWall(room, nPortal);
-		buildSouthWall(room, sPortal);
 		buildWestWall(room, wPortal);
+		visib.finishConvexArea();
+
+		visib.startConvexArea();
 		buildEastWall(room, ePortal);
-		
+		buildSouthWall(room, sPortal);
 		visib.finishConvexArea();
 
 		// Do the small entrance areas
