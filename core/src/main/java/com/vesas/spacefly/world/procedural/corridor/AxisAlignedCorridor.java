@@ -48,6 +48,15 @@ public class AxisAlignedCorridor implements Feature
 		this.blocks.addAll( blocks );
 	}
 
+	@Override
+    public void drawMiniMap() {
+		float xpos = getXpos();
+		float ypos = getYpos();
+		float width = getWidth();
+		float height = getHeight();
+		
+		G.shapeRenderer.rect(xpos, ypos, width, height);
+    }
 
 	private static final float WALL_WIDTH = 0.5f;
 

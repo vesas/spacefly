@@ -40,6 +40,19 @@ public class OctaRoom extends RoomFeature
 		wedges.add(wallWedge);
 	}
 
+	private float [] verts = new float[16];
+
+	@Override
+    public void drawMiniMap() {
+
+		G.shapeRenderer.triangle(verts[0], verts[1], verts[2], verts[3], verts[4], verts[5]);
+		G.shapeRenderer.triangle(verts[0], verts[1], verts[4], verts[5], verts[6], verts[7]);
+		G.shapeRenderer.triangle(verts[0], verts[1], verts[6], verts[7], verts[8], verts[9]);
+		G.shapeRenderer.triangle(verts[0], verts[1], verts[8], verts[9], verts[10], verts[11]);
+		G.shapeRenderer.triangle(verts[0], verts[1], verts[10], verts[11], verts[12], verts[13]);
+		G.shapeRenderer.triangle(verts[0], verts[1], verts[12], verts[13], verts[14], verts[15]);
+    }
+
 	public void draw(SpriteBatch batch)	
 	{
 		long startNano = System.nanoTime();
@@ -70,6 +83,31 @@ public class OctaRoom extends RoomFeature
 	{
 		float sidelen = (float)(this.getWidth() / (1 + Math.sqrt(2)));
 		float apersqrttwo = (float)(sidelen / Math.sqrt(2));
+
+		// start from left top, move clockwise
+		verts[0] = this.xpos;
+		verts[1] = this.ypos + this.height - apersqrttwo;
+
+		verts[2] = this.xpos + apersqrttwo;
+		verts[3] = this.ypos + this.height;
+
+		verts[4] = this.xpos + this.width - apersqrttwo;
+		verts[5] = this.ypos + this.height;
+
+		verts[6] = this.xpos + this.width;
+		verts[7] = this.ypos + this.height - apersqrttwo;
+
+		verts[8] = this.xpos + this.width;
+		verts[9] = this.ypos + apersqrttwo;
+
+		verts[10] = this.xpos + this.width - apersqrttwo;
+		verts[11] = this.ypos;
+
+		verts[12] = this.xpos + apersqrttwo;
+		verts[13] = this.ypos;
+
+		verts[14] = this.xpos;
+		verts[15] = this.ypos + apersqrttwo;
 
 		// this width is in "units". (eg 5-13)
 		float ratio = this.width / this.height;

@@ -3,6 +3,7 @@ package com.vesas.spacefly.world.procedural.room;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Values;
+import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.world.procedural.Feature;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.Exit;
@@ -34,6 +35,16 @@ public abstract class RoomFeature implements Feature
 		
 		return false;
 	}
+
+	@Override
+    public void drawMiniMap() {
+		float xpos = getXpos();
+		float ypos = getYpos();
+		float width = getWidth();
+		float height = getHeight();
+		
+		G.shapeRenderer.rect(xpos, ypos, width, height);
+    }
 	
 	public void addConnectors( ObjectMap<ExitDir, MetaPortal> portals )
 	{
