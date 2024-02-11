@@ -222,7 +222,7 @@ public class MetaRegionBuilder {
 				
 			existingExits[ex.ordinal()] = true;
 			
-			int portalWidth = 1 + GenSeed.random.nextInt(6);
+			int portalWidth = 1 + GenSeed.random.nextInt(7);
 			
 			if( ex.equals(ExitDir.N ) || ex.equals(ExitDir.S ) ) {
 				portalWidth = (int) Math.min( portalWidth , w - 2);	

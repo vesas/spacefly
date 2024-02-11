@@ -27,28 +27,17 @@ import quadtree.XY;
 public final class Player
 {
 	private Sprite sprite;
-	private Sprite gunSprite;
-
-	private float thrust = 0.0f;
 	
 	private float bulletFireCooldown = 0;
-
-	private AABB aabb;
 
 	private static float THRUST_AMOUNT = 4.86f;
 	private static float MAX_VELOCITY = 5.39f;
 	
-	private float PI_PER_180 = (float) (Math.PI / 180.0f);
-
 	public static Player INSTANCE = new Player();
 	
 	private static Vector2 tempVector = new Vector2();
 	private static Vector2 tempVector2 = new Vector2();
 	
-	private float m_desiredAngularVelocity;
-	private float m_impulse;
-	private float m_nextangle;
-
 	public Body body;
 	
 	private int health = 120;
@@ -62,13 +51,9 @@ public final class Player
 	
 	private static Vector2 bulletDirectionVector = new Vector2();
 	
-	private String healthString = "" + health;
-	
 	private long shotTime = 0;
 	
 	private int spice = 0;
-	
-	private String spiceString = "Spice: " + spice;
 	
 	private ImpulseParticleSystem particles = new ImpulseParticleSystem();
 	private Trail trail = new Trail();
@@ -104,11 +89,7 @@ public final class Player
 		if( GenSeed.random.nextBoolean() )
 			amount += 10;
 		
-		if( (ammo+amount) < maxAmmo )
-			ammo += amount;
-		else
-			ammo = maxAmmo;
-				
+		ammo = Math.min(ammo + amount, maxAmmo);
 	}
 
 	public void init(float x, float y)
@@ -117,10 +98,7 @@ public final class Player
 		sprite.setSize(0.5f,0.5f);
 		sprite.setOriginCenter();
 //		sprite.setSize(1.5f, 1.5f);
-		gunSprite = G.getAtlas().createSprite("shipgun");
 		
-		aabb = new AABB(new XY(68 + 16, 16 + 16), new XY(16, 16));
-
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		
@@ -179,15 +157,15 @@ public final class Player
 	{
 		spice++;
 		
-		spiceString = "Spice: " + spice;
 	}
 	
 	public boolean recentlyShot()
 	{
 		long currentTime = TimeUtils.millis();
 		
-		if( (currentTime - shotTime) < 7000 )
+		if( (currentTime - shotTime) < 7000 ) {
 			return true;
+		}
 		
 		return false;
 	}
@@ -201,26 +179,20 @@ public final class Player
 	{
 		int healUp = 1 + GenSeed.random.nextInt( 4 ); 
 		
-		if( (health + healUp) < maxHealth )
-			health = health + healUp;
-		else
-			health = maxHealth;
+		health = Math.min(health + healUp, maxHealth);
 	}
 	
 	public void getHit( MonsterBullet b )
 	{
-		if( health <= 0 )
+		if( health <= 0 ) {
 			return;
-		
+		}
+			
 		health--;
 		
-		if( GenSeed.random.nextBoolean() )
+		if( GenSeed.random.nextBoolean() ) {
 			health--;
-		
-		healthString = "" + (int)health;
-		
-		//if( health < 0 )
-			//health = 0;
+		}
 	}
 	
 	public Vector2 getPosition()
@@ -331,7 +303,6 @@ public final class Player
 		
 		Vector2 pos = body.getPosition();
 		float angle = body.getAngle();
-		Vector2 vel = body.getLinearVelocity();
 		trail.setEmitterPos( pos.x, pos.y );
 
 		final boolean anyPressed = wpressed | apressed | spressed | dpressed;
@@ -342,17 +313,22 @@ public final class Player
 		{
 			float xdir = 0;
 			float ydir = 0;
-			if( apressed )
+
+			if( apressed ) {
 				xdir = 0.045f;
-			
-			if( dpressed )
+			}
+
+			if( dpressed ) {
 				xdir = -0.045f;
+			}
 			
-			if( wpressed )
+			if( wpressed ) {
 				ydir = -0.045f;
+			}
 			
-			if( spressed )
+			if( spressed ) {
 				ydir = 0.045f;
+			}
 			
 			particles.setReleaseDir( xdir, ydir );
 		}
@@ -456,8 +432,6 @@ public final class Player
 		whiteDisc.draw(screen.worldBatch);
 		*/
 
-		final float angle = body.getAngle();
-		
 //		body.setTransform(body.getPosition(), ( gunangle - 90) * DEGTORAD );
 		
 		float bodyAngle = body.getAngle();
