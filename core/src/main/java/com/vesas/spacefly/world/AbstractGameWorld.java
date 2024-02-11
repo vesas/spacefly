@@ -84,11 +84,11 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 		
 		if( m instanceof ZipperMonster)
 		{
-			addLittleExplosion(pos,vel, 0.25f, 2.0f );
+			addLittleExplosion(pos,vel, 0.25f, 3.0f );
 		}
 		else
 		{
-			addBigExplosion(pos,vel, 0.25f, 1.5f );
+			addBigExplosion(pos,vel, 0.25f, 6.5f );
 		}
 		
 		if (!monstersToBeRemoved.contains(m, true))

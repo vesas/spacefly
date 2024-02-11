@@ -44,8 +44,8 @@ public class WorldGen implements WorldGenInterface
 	}
 	public Array<Feature> generate()
 	{
-		GenSeed.random.setSeed(2);
-		metaRegionBuilder.setSize(42);
+		GenSeed.random.setSeed(3);
+		metaRegionBuilder.setSize(44);
 		Region metaRegion = metaRegionBuilder.generateMetaRegion();
 		
 		Array<Feature> feats = new Array<Feature>();
@@ -162,7 +162,7 @@ public class WorldGen implements WorldGenInterface
 			final float height = feat.getHeight();
 			final float width = feat.getWidth();
 
-			for( int j = 0, size = GenSeed.random.nextInt(1); j < size; j++)
+			for( int j = 0, size = GenSeed.random.nextInt(2); j < size; j++)
 			{
 				SlurgMonster monster = new SlurgMonster(xpos + width * 0.45f, ypos + height * 0.45f );
 				world.addMonster( monster );	

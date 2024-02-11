@@ -78,12 +78,13 @@ public class ContinuousParticleSystem implements Poolable
 			px[i] += (dx[i] * delta);
 			py[i] += (dy[i] * delta);
 			
-			if( dx[i] > 0.0f )
+			if( dx[i] > 0.0f ) {
 				dx[i] = dx[i] - speedDecay;
+			}
 			
-			if( dy[i] > 0.0f )
+			if( dy[i] > 0.0f ) {
 				dy[i] = dy[i] - speedDecay;
-			 
+			}
 		}
 		
 		time = time - delta;

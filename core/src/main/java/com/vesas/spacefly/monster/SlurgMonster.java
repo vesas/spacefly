@@ -1,5 +1,6 @@
 package com.vesas.spacefly.monster;
 
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Interpolation;
@@ -57,7 +58,7 @@ public class SlurgMonster extends Monster
 		body = Box2DWorld.world.createBody(bodyDef);
 
 		CircleShape shape = new CircleShape();
-		shape.setRadius(0.45f);
+		shape.setRadius(0.43f);
 
 		// Create a fixture definition to apply our shape to
 		FixtureDef fixtureDef = new FixtureDef();
@@ -438,7 +439,7 @@ public class SlurgMonster extends Monster
 		final Sprite haloSprite = G.monsters[3];
 		
 		sprite.setOriginCenter();
-		sprite.setSize(0.9f, 0.9f);
+		sprite.setSize(0.84f, 0.84f);
 		sprite.setPosition(pos.x - sprite.getWidth()*0.5f, pos.y - sprite.getHeight()*0.5f);
 		
 		float angle = body.getAngle();
@@ -455,15 +456,13 @@ public class SlurgMonster extends Monster
 			haloSprite.setColor( 0.6f + val * 0.4f, 0.1f + val * 0.4f, 0.1f + val * 0.4f,0.2f + val * 0.8f );
 		else 
 			haloSprite.setColor( 0.0f + val * 0.6f, 0.1f + val * 0.6f, 0.5f + val * 0.5f,0.2f + val * 0.8f );
-		haloSprite.setSize(0.95f + val * 0.13f, 0.95f + val * 0.13f);
+		haloSprite.setSize(0.92f + val * 0.08f, 0.92f + val * 0.08f);
 		haloSprite.setPosition(pos.x - haloSprite.getWidth()*0.5f, pos.y - haloSprite.getHeight()*0.5f);
 		haloSprite.setRotation(angle * Util.RADTODEG - 90.0f);
 
 		sprite.setRotation(angle * Util.RADTODEG - 90.0f);
 
 		sprite.draw(screen.worldBatch);
-		
-//		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 		
 		haloSprite.draw(screen.worldBatch);
 
