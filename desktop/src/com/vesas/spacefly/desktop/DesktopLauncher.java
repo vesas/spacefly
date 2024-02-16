@@ -4,9 +4,12 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.vesas.spacefly.SpaceflyGame;
 
-public class DesktopLauncher {
+public final class DesktopLauncher {
 
-	
+	private DesktopLauncher() {
+		// empty
+	}
+
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		

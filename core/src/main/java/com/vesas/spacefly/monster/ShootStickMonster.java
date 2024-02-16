@@ -15,8 +15,6 @@ public class ShootStickMonster extends Monster
 {
 	private float cooldown = 0;
 
-	private static Vector2 tmpVector = new Vector2();
-
 	private Vector2 faceDir = new Vector2();
 
 	public enum DIRECTION

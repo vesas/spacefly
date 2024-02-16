@@ -4,7 +4,6 @@ package com.vesas.spacefly.world.procedural.generator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.vesas.spacefly.world.procedural.GenSeed;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
 public class MetaRectangleRoom implements MetaFeature

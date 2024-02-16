@@ -102,8 +102,8 @@ public class ShellMonster extends Monster
 			playerPos.sub(pos);
 			playerPos.nor();
 
-			float playerAngle = playerPos.angle();
-			float gunAngle = gunDir.angle();
+			float playerAngle = playerPos.angleDeg();
+			float gunAngle = gunDir.angleDeg();
 
 			// debug3 = "playerAngle: " + playerAngle;
 
@@ -112,7 +112,7 @@ public class ShellMonster extends Monster
 			
 			if( angleAbsDiff > 1 )
 			{
-				gunDir.rotate( angleDiff * 0.05f );
+				gunDir.rotateDeg( angleDiff * 0.05f );
 			}
 		}
 
@@ -247,12 +247,6 @@ public class ShellMonster extends Monster
 			Box2DWorld.world.rayCast(wallcb, target, pos);
 			float westDist = wallcb.distanceToWall;
 
-			if (DebugHelper.BOX2D_DEBUG)
-			{
-				//debug1 = "westDist: " + westDist;
-
-			}
-
 			if (westDist < closestDistance)
 			{
 				tempDir = DIRECTION.W;
@@ -284,11 +278,6 @@ public class ShellMonster extends Monster
 			Box2DWorld.world.rayCast(wallcb, target, pos);
 			float southDist = wallcb.distanceToWall;
 
-			if (DebugHelper.BOX2D_DEBUG)
-			{
-				//debug3 = "southDist: " + southDist;
-			}
-
 			if (southDist < closestDistance)
 			{
 				tempDir = DIRECTION.S;
@@ -301,11 +290,6 @@ public class ShellMonster extends Monster
 			wallcb.init();
 			Box2DWorld.world.rayCast(wallcb, target, pos);
 			float northDist = wallcb.distanceToWall;
-
-			if (DebugHelper.BOX2D_DEBUG)
-			{
-				//debug4 = "northDist: " + northDist;
-			}
 
 			if (northDist < closestDistance)
 			{
@@ -398,11 +382,9 @@ public class ShellMonster extends Monster
 	@Override
 	public void tick( float delta )
 	{
-		if (false)
+		if (body == null) {
 			return;
-
-		if (body == null)
-			return;
+		}
 
 		brain.tick( delta );
 
@@ -441,7 +423,7 @@ public class ShellMonster extends Monster
 
 			if (random.nextInt(100) < 50 && brain.canSeePlayer)
 			{
-				// moveTowardsPlayer();
+				moveTowardsPlayer();
 			}
 		}
 
@@ -490,31 +472,6 @@ public class ShellMonster extends Monster
 		sprite.setRotation(bodyAngleInDegrees);
 
 		sprite.draw(screen.worldBatch);
-
-//		Sprite gunSprite = G.monsters[5];
-		//gunSprite.setOrigin(0, 0);
-//		gunSprite.setPosition(pos.x- 5, pos.y-8);
-		//gunSprite.draw(screen.batch);
-		
-		//G.font.draw(screen.batch, healthString, sprite.getX() + 28, sprite.getY() + 34);
-
-		int qwe = 0;
-		if (brain.canSeePlayer)
-			qwe = 0;//G.font.draw(screen.batch, "S", sprite.getX() - 19, sprite.getY() + 15);
-
-		if (brain.canHearPlayer)
-			qwe = 0;//G.font.draw(screen.batch, "H", sprite.getX() - 19, sprite.getY() + 32);
-
-		if (DebugHelper.BOX2D_DEBUG)
-		{
-			//G.font.draw(screen.batch, debug1, sprite.getX() + 28, sprite.getY() + 50);
-			//G.font.draw(screen.batch, debug2, sprite.getX() + 28, sprite.getY() + 70);
-
-			//G.font.draw(screen.batch, debug3, sprite.getX() + 28, sprite.getY() + 90);
-			//G.font.draw(screen.batch, debug4, sprite.getX() + 28, sprite.getY() + 110);
-		}
-
-		// batch.draw( ship, 384, 284 );
 
 	}
 
