@@ -2,11 +2,6 @@ package com.vesas.game.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.SortedMap;
-
 import com.vesas.spacefly.game.Util;
 
 import org.junit.jupiter.api.Test;

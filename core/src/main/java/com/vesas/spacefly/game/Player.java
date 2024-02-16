@@ -21,9 +21,6 @@ import com.vesas.spacefly.particles.ImpulseParticleSystem;
 import com.vesas.spacefly.particles.Trail;
 import com.vesas.spacefly.world.procedural.GenSeed;
 
-import quadtree.AABB;
-import quadtree.XY;
-
 public final class Player
 {
 	private Sprite sprite;
@@ -86,9 +83,10 @@ public final class Player
 	{
 		int amount = 30;
 		
-		if( GenSeed.random.nextBoolean() )
+		if( GenSeed.random.nextBoolean() ) {
 			amount += 10;
-		
+		}
+
 		ammo = Math.min(ammo + amount, maxAmmo);
 	}
 
@@ -214,9 +212,10 @@ public final class Player
 		}
 		
 		// no ammo, can't shoot
-		if( ammo <= 0 )
+		if( ammo <= 0 ) {
 			return;
-		
+		}
+
 		ammo--;
 		
 		muzzleflash = maxmuzzleflash;
@@ -233,9 +232,6 @@ public final class Player
 		
 		// update shotTime
 		shotTime = TimeUtils.millis();
-		
-		float randomNoise1 = GenSeed.random.nextFloat();
-		float randomNoise2 = GenSeed.random.nextFloat();
 		
 		final Vector2 bodyPos = body.getWorldCenter();
 		

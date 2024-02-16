@@ -159,19 +159,6 @@ public class GameScreen implements Screen
 		CameraPositionState.tick( delta );
 		CameraPositionState.performEffect( pos, camera.position );
 
-		float playerAngle = ((angle+90) % 360) * Util.RADTODEG;
-		// Vector3 camDir = new Vector3(0.0f, 1.0f, 0.0f);
-		// camDir.rotate(angle, 0.0f, 0.0f, 1.0f);
-		// camera.rotate((this.getCameraAngle(((OrthographicCamera)camera)) - playerAngle), 0.0f, 0.0f, -1.0f);
-
-		// camera. rotate(angle, 0.0f, 0.0f, 1.0f);
-		
-		final int width = Gdx.graphics.getWidth();
-		final int height = Gdx.graphics.getHeight();
-		
-		final boolean centerCamera = false;
-		
-		
 		camera.update();    
 		minimapCamera.update();
 		

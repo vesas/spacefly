@@ -2,7 +2,6 @@ package com.vesas.spacefly;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Filter;
 import com.badlogic.gdx.graphics.Texture;
@@ -50,10 +49,12 @@ public class MainMenuLabel extends Label {
         batch.setShader(glowShader);
         
         glowShader.bind();
-        if(active)
+        if(active) {
             glowShader.setUniformf("glow_amount", 1.5f);
-        else
+        }
+        else {
             glowShader.setUniformf("glow_amount", 1.0f);
+        }
 
         batch.draw( tex, this.getX(), this.getY(), this.getWidth(), this.getHeight());
         batch.setShader(null);

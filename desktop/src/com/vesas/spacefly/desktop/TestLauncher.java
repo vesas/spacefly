@@ -4,8 +4,11 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.vesas.spacefly.TestGame;
 
-public class TestLauncher {
+public final class TestLauncher {
 
+	private TestLauncher() {
+		// empty
+	}
 	
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();

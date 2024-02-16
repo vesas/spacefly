@@ -260,9 +260,6 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		G.shapeRenderer.end();
 	}
 	
-	
-	private PolygonSprite poly;
-	private PolygonSpriteBatch polyBatch;
 	private Texture textureSolid;
 	
 	private void drawVisibility( GameScreen screen, FrameBuffer fb, Vector2 playerCenter )

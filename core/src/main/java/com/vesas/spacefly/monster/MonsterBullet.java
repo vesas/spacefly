@@ -27,7 +27,7 @@ public class MonsterBullet extends AbstractBullet
 		{
 			Vector2 dir = body.getLinearVelocity();
 			dir.nor();
-			float angle = dir.angle();
+			float angle = dir.angleDeg();
 			
 			Sprite sprite = G.bullets[2];
 			sprite.setSize( 0.2f, 0.55f);

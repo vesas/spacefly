@@ -1,7 +1,6 @@
 package com.vesas.spacefly;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -23,7 +21,6 @@ public class EscScreen implements Screen {
 
     private Stage stage;
     private Table table;
-    private InputProcessor oldInputProcessor;
 
     private SpaceflyGame game;
 
@@ -151,7 +148,6 @@ public class EscScreen implements Screen {
 
         TextureRegionDrawable inactiveBg = new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap)));
 
-        oldInputProcessor = Gdx.input.getInputProcessor();
 		Gdx.input.setInputProcessor(stage);
 
         table = new Table(skin);

@@ -96,10 +96,6 @@ public class RectangleRoom extends RoomFeature
 	
 	private static Color col1 = new Color(0.24f, 0.25f, 0.33f, 1.0f);
 	
-	private static Color col2 = new Color(0.30f, 0.30f, 0.30f, 1.0f );
-	private static Color col3 = new Color(0.90f, 0.20f, 0.20f, 1.0f );
-	private static Color col4 = new Color(0.23f, 0.23f, 0.23f, 0.3f );
-
 	@Override
 	public void init()
 	{
