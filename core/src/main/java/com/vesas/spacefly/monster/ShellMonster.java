@@ -169,7 +169,7 @@ public class ShellMonster extends Monster
 				tmp.y = -tmp.y;
 				tmp.nor();
 
-				float targetAngle = tmp.angle();
+				float targetAngle = tmp.angleDeg();
 				float bodyAngle = body.getAngle() * Util.RADTODEG;
 
 				// debug1 = "targetAngle: " + targetAngle;
@@ -181,20 +181,25 @@ public class ShellMonster extends Monster
 
 				float absDiff = Math.abs(diff);
 
-				if (absDiff < 140.0)
+				if (absDiff < 140.0) {
 					scaling = scaling * 0.9f;
+				}
 
-				if (absDiff < 75.0)
+				if (absDiff < 75.0) {
 					scaling = scaling * 0.7f;
+				}
 
-				if (absDiff < 35.0)
+				if (absDiff < 35.0) {
 					scaling = scaling * 0.6f;
+				}
 
-				if (absDiff < 15.0)
+				if (absDiff < 15.0) {
 					scaling = scaling * 0.6f;
+				}
 
-				if (absDiff < 5.0)
+				if (absDiff < 5.0) {
 					scaling = scaling * 0.6f;
+				}
 
 				if (diff < 0)
 				{
@@ -216,7 +221,7 @@ public class ShellMonster extends Monster
 			playerPos.sub(pos);
 			playerPos.nor();
 
-			float playerAngle = playerPos.angle();
+			float playerAngle = playerPos.angleDeg();
 			float bodyAngle = body.getAngle() * Util.RADTODEG;
 
 			// debug3 = "playerAngle: " + playerAngle;
@@ -452,8 +457,9 @@ public class ShellMonster extends Monster
 	@Override
 	public void draw(GameScreen screen)
 	{
-		if (body == null)
+		if (body == null) {
 			return;
+		}
 
 		Vector2 pos = body.getWorldCenter();
 

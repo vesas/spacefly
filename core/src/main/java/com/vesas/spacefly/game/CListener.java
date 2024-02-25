@@ -91,9 +91,9 @@ public class CListener implements ContactListener
 			o2 = b2.getUserData();
 		}
 		
-		if( (o1 != null && o1 instanceof Monster) )
+		if(o1 instanceof Monster)
 		{
-			if( o2 != null && o2 instanceof Bullet )
+			if(o2 instanceof Bullet )
 			{
 				Bullet b = (Bullet)o2;
 				Monster m = (Monster)o1;
@@ -104,9 +104,9 @@ public class CListener implements ContactListener
 		
 		
 		
-		if( o1 != null && o1 instanceof Bullet )
+		if(o1 instanceof Bullet )
 		{
-			if( (o2 != null && o2 instanceof Monster) )
+			if(o2 instanceof Monster)
 			{
 				Bullet bullet = (Bullet)o1;
 				Monster m = (Monster)o2;
@@ -114,11 +114,11 @@ public class CListener implements ContactListener
 			}
 		}
 		
-		if( o1 != null && o1 instanceof MonsterBullet )
+		if(o1 instanceof MonsterBullet)
 		{
 			MonsterBullet b = (MonsterBullet)o1;
 			
-			if( (o2 != null && o2 instanceof Player) )
+			if(o2 instanceof Player)
 			{
 				Player.INSTANCE.getHit( b );
 			}
@@ -127,11 +127,11 @@ public class CListener implements ContactListener
 			AbstractGameWorld.INSTANCE.addLittleExplosion( b.body.getPosition(), b.body.getLinearVelocity(), 0.2f, 2.5f);
 		}
 		
-		if( o2 != null && o2 instanceof MonsterBullet )
+		if(o2 instanceof MonsterBullet)
 		{
 			MonsterBullet b = (MonsterBullet)o2;
 				
-			if( (o1 != null && o1 instanceof Player) )
+			if(o1 instanceof Player)
 			{
 				Player.INSTANCE.getHit( b );
 				
@@ -140,7 +140,7 @@ public class CListener implements ContactListener
 			AbstractGameWorld.INSTANCE.addLittleExplosion( b.body.getPosition(), b.body.getLinearVelocity(), 0.5f, 1.0f);
 		}
 		
-		if( (o2 != null && o2 instanceof Bullet) )
+		if(o2 instanceof Bullet)
 		{
 			Bullet b = (Bullet)o2;
 			
@@ -155,34 +155,15 @@ public class CListener implements ContactListener
 			shake.setInterpolation( Interpolation.circleIn  );
 			shake.setStrength( 0.06f ); 
 			CameraPositionState.addEffect(shake);
-			
 		}
 		
-		if( o1 != null && o1 instanceof Player &&
-			o2 != null && o2 instanceof Spice )
-		{
-			Spice s = (Spice)o2;
-//			ProceduralGameWorld.INSTANCE.removeSpice( s );
-			Player.INSTANCE.addSpice();
-		}
-		
-		if( o1 != null && o1 instanceof Spice && o2 != null && o2 instanceof Player )
-		{
-			Spice s = (Spice)o1;
-//			ProceduralGameWorld.INSTANCE.removeSpice(s);
-			
-			Player.INSTANCE.addSpice();
-		}
-		
-		
-		if( o1 != null && o1 instanceof Powerup && o2 != null && o2 instanceof Player )
+		if(o1 instanceof Powerup && o2 instanceof Player )
 		{
 			Powerup p = (Powerup)o1;
 		
 			if( p.getType() == Powerup.HEAL )
 			{
 				Player.INSTANCE.healUp();
-//				ProceduralGameWorld.INSTANCE.removeSpice( p );
 			}
 			else if( p.getType() == Powerup.AMMO1 )
 			{
@@ -195,7 +176,7 @@ public class CListener implements ContactListener
 			}
 		}
 		
-		if( o1 != null && o1 instanceof Player && o2 != null && o2 instanceof Powerup )
+		if(o1 instanceof Player && o2 instanceof Powerup )
 		{
 			Powerup p = (Powerup)o2;
 		
@@ -216,27 +197,24 @@ public class CListener implements ContactListener
 			}
 		}
 
-		if( (o1 != null && o1 instanceof Player) || 
-			(o2 != null && o2 instanceof Player)
-				)
+		if(o1 instanceof Player || o2 instanceof Player)
 		{
 			if( o1 instanceof Player )
 			{
-				if( o2 instanceof Bullet || o2 instanceof MonsterBullet )
+				if( o2 instanceof Bullet || o2 instanceof MonsterBullet ) {
 					return;
+				}
 			}
 			
 			if( o2 instanceof Player )
 			{
-				if( o1 instanceof Bullet || o1 instanceof MonsterBullet )
+				if( o1 instanceof Bullet || o1 instanceof MonsterBullet ) {
 					return;
+				}
 			}
 			
 			
 			Player player = Player.INSTANCE;
-			
-			boolean touching = contact.isTouching();
-			boolean enabled = contact.isEnabled();
 			
 			Vector2 dir = player.body.getLinearVelocity();
 			

@@ -70,7 +70,7 @@ public class PlayerInput implements InputProcessor
 		screen.viewport.setWorldWidth(worldW + (worldW * amountY * 0.05f ));
 		screen.viewport.update(screenW, screenH);
 		
-		zoom += (amountY * 1);
+		zoom += amountY * 1;
 		
 		screen.worldBatch.setProjectionMatrix(screen.camera.combined);
 		screen.screenBatch.setProjectionMatrix(screen.screenCamera.combined);
