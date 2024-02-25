@@ -1,9 +1,6 @@
 package com.vesas.spacefly.world.procedural;
 
-import com.badlogic.gdx.math.Vector2;
 import com.vesas.spacefly.visibility.Visibility;
-import com.vesas.spacefly.visibility.VisibilityPoly;
-import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoomBuilder;
 
 public class TestAreaBuilder {
 

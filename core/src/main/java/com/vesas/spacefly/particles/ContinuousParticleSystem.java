@@ -1,15 +1,11 @@
 package com.vesas.spacefly.particles;
 
-import java.util.Random;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
 public class ContinuousParticleSystem implements Poolable
 {
 	private static int MAXSIZE = 128;
-	
-	static private Random rand = new Random( 123 );
 	
 	public float px[] = new float[ MAXSIZE ];
 	public float py[] = new float[ MAXSIZE ];
@@ -32,10 +28,6 @@ public class ContinuousParticleSystem implements Poolable
 	private float rateCounter = 0.0f;
 	
 	private static Vector2 tmpVector = new Vector2();
-	
-	public ContinuousParticleSystem()
-	{
-	}
 	
 	public void setMaxTime( float maxTime )
 	{
@@ -75,8 +67,8 @@ public class ContinuousParticleSystem implements Poolable
 		}
 		for( int i = 0; i < size; i++ )
 		{
-			px[i] += (dx[i] * delta);
-			py[i] += (dy[i] * delta);
+			px[i] += dx[i] * delta;
+			py[i] += dy[i] * delta;
 			
 			if( dx[i] > 0.0f ) {
 				dx[i] = dx[i] - speedDecay;
@@ -94,7 +86,7 @@ public class ContinuousParticleSystem implements Poolable
 	@Override
 	public void reset()
 	{
-		
+		// Nothing for now
 	}
 
 	public float getSpeedDecay()

@@ -12,7 +12,7 @@ public class Hud
 	public void draw(GameScreen screen)
 	{
 		int width = Gdx.graphics.getWidth();
-		int height = Gdx.graphics.getHeight();
+		// int height = Gdx.graphics.getHeight();
 		
 		int health = Player.INSTANCE.getHealth();
 		int healthMax = Player.INSTANCE.getHealthMax();

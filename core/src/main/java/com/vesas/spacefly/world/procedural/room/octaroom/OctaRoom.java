@@ -49,7 +49,6 @@ public class OctaRoom extends RoomFeature
 
 	public void draw(SpriteBatch batch)	
 	{
-		long startNano = System.nanoTime();
 
 		final int size = blocks.size;
 		

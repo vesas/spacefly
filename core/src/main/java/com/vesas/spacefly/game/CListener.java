@@ -221,8 +221,6 @@ public class CListener implements ContactListener
 			Vector2 normal = contact.getWorldManifold().getNormal();
 			Vector2 normNormal = new Vector2( normal );
 			normNormal.nor();
-			
-			
 			float dot = dir.dot( normNormal );
 			
 			Vector2 temp = new Vector2(normNormal);
@@ -232,45 +230,22 @@ public class CListener implements ContactListener
 			temp.scl( -1.0f );
 			temp.add( dir );
 			temp.scl( 0.95f );
-			
-//			player.body.setLinearVelocity( temp );
-			
-			int contactCount = contact.getWorldManifold().getNumberOfContactPoints();
-			
-			int qwe = 0;
-			//player.dx = temp2.x * 5.0f;
-			//player.dy = temp2.y  * 5.0f;
-			
-			//player.thrust = 0.0f;
-			
-			
-			//player.dx = player.body.getLinearVelocity().x * 0.15f;
-			//player.dy = player.body.getLinearVelocity().y * 0.15f;
-			
-			//player.dirx = player.body.getLinearVelocity().x * 0.05f;
-			//player.diry = player.body.getLinearVelocity().y * 0.05f;
-			
-//			Vector2 contactPoint = contact.getWorldManifold().getPoints()[0];
-			
-		
 		}
-
 	}
 	
-	
 	@Override
-	public void endContact(Contact contact)
-	{
+	public void endContact(Contact contact) {
+		// Nothing for now
 	}
 
 	@Override
-	public void preSolve(Contact contact, Manifold oldManifold)
-	{
+	public void preSolve(Contact contact, Manifold oldManifold) {
+		// Nothing for now
 	}
 
 	@Override
-	public void postSolve(Contact contact, ContactImpulse impulse)
-	{
+	public void postSolve(Contact contact, ContactImpulse impulse) {
+		// Nothing for now
 	}
 
 }
