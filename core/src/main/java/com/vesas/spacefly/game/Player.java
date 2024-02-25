@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -140,7 +139,7 @@ public final class Player
 //		fixtureDef.isSensor = true;
 
 		// Create our fixture and attach it to the body
-		Fixture fixture = body.createFixture(fixtureDef);
+		body.createFixture(fixtureDef);
 		
 		body.setUserData(this);
 
@@ -152,12 +151,7 @@ public final class Player
 	public boolean recentlyShot()
 	{
 		long currentTime = TimeUtils.millis();
-		
-		if( (currentTime - shotTime) < 7000 ) {
-			return true;
-		}
-		
-		return false;
+		return (currentTime - shotTime) < 7000;
 	}
 	
 	public void addMaxHealth()
@@ -286,8 +280,9 @@ public final class Player
 		
 		updateGunAngle( screen );
 		
-		if( muzzleflash > 0.0f )
+		if( muzzleflash > 0.0f ) {
 			muzzleflash -= floatDelta;
+		}
 		
 		Vector2 pos = body.getPosition();
 		float angle = body.getAngle();

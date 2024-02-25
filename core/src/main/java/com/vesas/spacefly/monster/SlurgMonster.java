@@ -30,10 +30,6 @@ public class SlurgMonster extends Monster
 
 	private Vector2 targetDir = new Vector2(0.0f, 1.0f);
 	private Vector2 dir = new Vector2(0.0f, 1.0f);
-
-	private float dA = 0;
-	private static String CAN_SEE = "S";
-	private static String CAN_HEAR = "H";
 	
 	private float fireCooldown = 0;
 	
@@ -105,7 +101,6 @@ public class SlurgMonster extends Monster
 			halo = 0.0f;
 		}
 		
-		dA += delta;
 		brain.tick( delta );
 
 		if (body == null) {
@@ -190,18 +185,18 @@ public class SlurgMonster extends Monster
 
 		AnimateEntity closestSpice = findClosestSpice();
 
-		if (closestSpice == null)
+		if (closestSpice == null) {
 			return;
+		}
 
-		int sx, sy, tx, ty;
 		Vector2 temp = body.getWorldCenter();
 		Vector2 temp2 = closestSpice.getBody().getWorldCenter();
 
-		sx = (int) ((temp.x) / 32.0f);
-		sy = (int) ((temp.y) / 32.0f);
+		int sx = (int) ((temp.x) / 32.0f);
+		int sy = (int) ((temp.y) / 32.0f);
 
-		tx = (int) ((temp2.x) / 32.0f);
-		ty = (int) ((temp2.y) / 32.0f);
+		int tx = (int) ((temp2.x) / 32.0f);
+		int ty = (int) ((temp2.y) / 32.0f);
 
 		this.debug_sx = sx;
 		this.debug_sy = sy;
@@ -264,8 +259,9 @@ public class SlurgMonster extends Monster
 					closestDist = dist;
 					closestBigMonster = e;
 				}
-			} else
+			} else {
 				continue;
+			}
 
 		}
 
@@ -302,7 +298,7 @@ public class SlurgMonster extends Monster
 		if (distanceToBlock < 0.3f)
 		{
 			float adjust = 0.0f;
-			float angle = targetDir.angle();
+			float angle = targetDir.angleDeg();
 
 			if (angle < 0) {
 				adjust = 180.0f;
@@ -347,7 +343,7 @@ public class SlurgMonster extends Monster
 	{
 		float bodyAngle = body.getAngle() * Util.RADTODEG;
 		float nextAngle = (float) (bodyAngle + body.getAngularVelocity() / 60.0f);
-		float targetAngle = targetDir.angle();
+		float targetAngle = targetDir.angleDeg();
 		
 		float diff = Util.angleDiff(targetAngle, nextAngle);
 		
@@ -479,34 +475,16 @@ public class SlurgMonster extends Monster
 		//G.font.draw(screen.batch, healthString, sprite.getX() + 26, sprite.getY() + 32);
 		
 		G.font.setColor( 0.7f, 0.7f, 0.7f, 0.7f );
-		/*
-		if (brain.canSeePlayer)
-			G.font.draw(screen.batch, CAN_SEE, sprite.getX() - 16, sprite.getY() + 15);
-
-		if (brain.canHearPlayer)
-			G.font.draw(screen.batch, CAN_HEAR, sprite.getX() - 16, sprite.getY() + 32);
-			*/
-
-		
-		//G.font.draw( screen.batch, "DA" + dA, sprite.getX() - 26, sprite.getY() + 45);
-
-		dA = 0.0f;
-		// sprite = G.effects[0];
-		// sprite.setPosition(pos.x-25, pos.y-25);
-		// sprite.setColor(1.0f, 1.0f, 1.0f, 0.5f);
-		// sprite.draw( screen.batch );
-
 
 		debugDraw();
-
-		// batch.draw( ship, 384, 284 );
 
 	}
 
 	private void debugDraw()
 	{
-		if( true )
+		if(true) {
 			return;
+		}
 		
 		targetDir.nor();
 		G.shapeRenderer.begin(ShapeType.Line);

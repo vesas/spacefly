@@ -10,7 +10,6 @@ public class Goo implements ExplosionInterface
 {
 	private ParticleSystem smoke;
 	
-	private float startx, starty;
 	private float t;
 	
 	public Goo()
@@ -24,8 +23,6 @@ public class Goo implements ExplosionInterface
 	public void startAt( float x, float y, float dx, float dy )
 	{
 		t = 0.0f;
-		startx = x;
-		starty = y;
 		smoke.startAt( x, y, dx, dy, 0.1f, 0.64f );
 	}
 
@@ -72,7 +69,7 @@ public class Goo implements ExplosionInterface
 	{
 		float trans = 0.4f - t * 0.028f;
 		
-		return( trans < 0.0f );
+		return trans < 0.0f;
 	}
 
 }

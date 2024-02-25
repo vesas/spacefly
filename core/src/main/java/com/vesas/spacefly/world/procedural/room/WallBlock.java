@@ -1,13 +1,11 @@
 package com.vesas.spacefly.world.procedural.room;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.game.G;
@@ -32,10 +30,11 @@ public class WallBlock implements FeatureBlock
 
 	private int DONT_DRAW;
 	
-	private Texture texture;
 	
-	private float xpos, ypos;
-	private float originx, originy;
+	private float xpos;
+	private float ypos;
+	private float originx;
+	private float originy;
 	private int blocks;
 	private float rotation;
 	

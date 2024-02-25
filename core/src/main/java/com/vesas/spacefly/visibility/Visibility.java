@@ -476,7 +476,7 @@ public class Visibility
 			else
 			{
 				// right "wing", left gate
-				final boolean rwlg = Intersector.intersectLines(center.x, center.y, 
+				Intersector.intersectLines(center.x, center.y, 
 						lGate.x + (lGate.x-center.x)*15.0f, lGate.y + (lGate.y-center.y)*15.0f, 
 						edge2.getEndPoint1().point.x,  edge2.getEndPoint1().point.y, 
 						edge2.getEndPoint2().point.x, edge2.getEndPoint2().point.y, intersection3 );
@@ -484,7 +484,7 @@ public class Visibility
 				Vector2 inter1 = new Vector2( intersection3 );
 				
 				// right "wing", right gate
-				final boolean rwrg = Intersector.intersectLines(center.x, center.y, 
+				Intersector.intersectLines(center.x, center.y, 
 						rGate.x + (rGate.x-center.x)*15.0f, rGate.y + (rGate.y-center.y)*15.0f, 
 						edge2.getEndPoint1().point.x,  edge2.getEndPoint1().point.y, 
 						edge2.getEndPoint2().point.x, edge2.getEndPoint2().point.y, intersection3 );
@@ -500,7 +500,7 @@ public class Visibility
 			if( leftGateNotNarrowed )
 			{
 				// left "wing", right gate
-				final boolean rwlg = Intersector.intersectLines(center.x, center.y, 
+				Intersector.intersectLines(center.x, center.y, 
 						rGate.x + (rGate.x-center.x)*15.0f, rGate.y + (rGate.y-center.y)*15.0f, 
 						edge1.getEndPoint1().point.x,  edge1.getEndPoint1().point.y, 
 						edge1.getEndPoint2().point.x, edge1.getEndPoint2().point.y, intersection3 );
@@ -512,7 +512,7 @@ public class Visibility
 			else
 			{
 				// left "wing", left gate
-				final boolean rwlg = Intersector.intersectLines(center.x, center.y, 
+				Intersector.intersectLines(center.x, center.y, 
 						lGate.x + (lGate.x-center.x)*15.0f, lGate.y + (lGate.y-center.y)*15.0f, 
 						edge1.getEndPoint1().point.x,  edge1.getEndPoint1().point.y, 
 						edge1.getEndPoint2().point.x, edge1.getEndPoint2().point.y, intersection3 );
@@ -520,7 +520,7 @@ public class Visibility
 				Vector2 inter1 = new Vector2( intersection3 );
 				
 				// left "wing", right gate
-				final boolean rwrg = Intersector.intersectLines(center.x, center.y, 
+				Intersector.intersectLines(center.x, center.y, 
 						rGate.x + (rGate.x-center.x)*15.0f, rGate.y + (rGate.y-center.y)*15.0f, 
 						edge1.getEndPoint1().point.x,  edge1.getEndPoint1().point.y, 
 						edge1.getEndPoint2().point.x, edge1.getEndPoint2().point.y, intersection3 );
