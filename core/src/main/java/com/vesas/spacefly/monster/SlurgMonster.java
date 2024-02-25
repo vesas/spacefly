@@ -1,6 +1,5 @@
 package com.vesas.spacefly.monster;
 
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Interpolation;
@@ -102,14 +101,16 @@ public class SlurgMonster extends Monster
 	{
 		halo += delta * 2.0f;
 		
-		if( halo > 2.0f )
+		if( halo > 2.0f ) {
 			halo = 0.0f;
+		}
 		
 		dA += delta;
 		brain.tick( delta );
 
-		if (body == null)
+		if (body == null) {
 			return;
+		}
 		
 		fireCooldown -= delta;
 
@@ -127,8 +128,8 @@ public class SlurgMonster extends Monster
 				Vector2 veloc = Player.INSTANCE.body.getLinearVelocity();
 
 				Vector2 tmp = SlurgMonster.tmpVector;
-				tmp.x = (playerPos.x + veloc.x * 0.15f - pos.x);
-				tmp.y = (playerPos.y + veloc.y * 0.15f - pos.y);
+				tmp.x = playerPos.x + veloc.x * 0.15f - pos.x;
+				tmp.y = playerPos.y + veloc.y * 0.15f - pos.y;
 				tmp.nor();
 
 				targetDir.x = tmp.x;
@@ -144,7 +145,7 @@ public class SlurgMonster extends Monster
 
 			if (random.nextInt(100) < 50)
 			{
-				dir.setAngleDeg((body.getAngle() * Util.RADTODEG));
+				dir.setAngleDeg(body.getAngle() * Util.RADTODEG);
 				dir.nor();
 				dir.scl(random.nextFloat() * 358.45f * delta );
 
@@ -157,7 +158,7 @@ public class SlurgMonster extends Monster
 				makeRayCast();
 			}
 			
-			if( (random.nextInt(100) < 18) && brain.canSeePlayer && fireCooldown <= 0)
+			if(random.nextInt(100) < 18 && brain.canSeePlayer && fireCooldown <= 0)
 			{
 				fireBullet();
 				fireCooldown = 0.08f;
@@ -289,8 +290,9 @@ public class SlurgMonster extends Monster
 
 		RayCastClosestCB cb = new RayCastClosestCB(body.getWorldCenter());
 
-		if (diff.len2() > 0.0f)
+		if (diff.len2() > 0.0f) {
 			Box2DWorld.world.rayCast(cb, body.getPosition(), feeler);
+		}
 
 		distanceToBlock = cb.closest;
 
@@ -302,18 +304,19 @@ public class SlurgMonster extends Monster
 			float adjust = 0.0f;
 			float angle = targetDir.angle();
 
-			if (angle < 0)
+			if (angle < 0) {
 				adjust = 180.0f;
-			else
+			}
+			else {
 				adjust = -180f;
+			}
 
-			targetDir.rotate(adjust);
+			targetDir.rotateDeg(adjust);
 
-			int qwe = 0;
 		} else if (distanceToBlock < 0.8f)
 		{
 			final float scalingFactor = 120.0f;
-			targetDir.rotate((random.nextFloat() - 0.5f) * scalingFactor);
+			targetDir.rotateDeg((random.nextFloat() - 0.5f) * scalingFactor);
 		}
 
 	}
@@ -350,15 +353,15 @@ public class SlurgMonster extends Monster
 		
 		float absDiff = Math.abs(diff);
 		
-		if( absDiff < 0.1f )
+		if( absDiff < 0.1f ) {
 			return;
+		}
 
-		 float desiredAngularVelocity = diff * 60.0f;
-		 
-		 float inertia = body.getInertia();
-		  float torque = (float) (inertia * desiredAngularVelocity / (1.0f/60.0f));
-		  body.applyTorque( torque * 0.0005f, true );
-		  
+		float desiredAngularVelocity = diff * 60.0f;
+		float inertia = body.getInertia();
+		float torque = (float) (inertia * desiredAngularVelocity / (1.0f/60.0f));
+		body.applyTorque( torque * 0.0005f, true );
+
 		/*
 		float scaling = 24.50f * delta;
 
@@ -425,13 +428,15 @@ public class SlurgMonster extends Monster
 
 		// sprite.setPosition(camera.position.x+384, camera.position.y+284);
 
-		if (body == null)
+		if (body == null) {
 			return;
+		}
 
 		final Vector2 pos = body.getPosition();
 
-		if (screen.outSideScreen(pos, 16))
+		if (screen.outSideScreen(pos, 16)) {
 			return;
+		}
 
 //		pos.scl(Physics.BOX_TO_WORLD);
 
@@ -447,15 +452,20 @@ public class SlurgMonster extends Monster
 		haloSprite.setOriginCenter();
 		
 		float val = 0.0f;
-		if( halo > 1.0f )
+		if( halo > 1.0f ) {
 			val = Interpolation.pow3Out.apply( 2.0f- halo);
-		else
+		}
+		else {
 			val = Interpolation.pow3In.apply(halo);
+		}
 		
-		if( brain.canSeePlayer )
+		if( brain.canSeePlayer ) {
 			haloSprite.setColor( 0.6f + val * 0.4f, 0.1f + val * 0.4f, 0.1f + val * 0.4f,0.2f + val * 0.8f );
-		else 
+		}
+		else {
 			haloSprite.setColor( 0.0f + val * 0.6f, 0.1f + val * 0.6f, 0.5f + val * 0.5f,0.2f + val * 0.8f );
+		}
+
 		haloSprite.setSize(0.92f + val * 0.08f, 0.92f + val * 0.08f);
 		haloSprite.setPosition(pos.x - haloSprite.getWidth()*0.5f, pos.y - haloSprite.getHeight()*0.5f);
 		haloSprite.setRotation(angle * Util.RADTODEG - 90.0f);

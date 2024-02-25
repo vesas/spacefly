@@ -89,7 +89,7 @@ public class Powerup implements AnimateEntity
 		if( starStarted )
 		{
 			starRot += delta;
-			starEase += (delta * 2.5f) ;
+			starEase += delta * 2.5f;
 		}	
 		
 	}
@@ -114,7 +114,6 @@ public class Powerup implements AnimateEntity
 		Sprite star = G.effects[3];
 		
 		Interpolation interIn = Interpolation.pow4In;
-		Interpolation interOut = Interpolation.pow4Out;
 		
 		if( starStarted )
 		{
@@ -127,11 +126,12 @@ public class Powerup implements AnimateEntity
 			
 			float val = 0.0f;
 			
-			if( starEase > 1.0f )
+			if( starEase > 1.0f ) {
 				val = interIn.apply( 2.0f- starEase);
-			else
+			}
+			else {
 				val = interIn.apply(starEase);
-			
+			}
 		
 			star.setSize( val * 0.51f, val * 0.51f );
 			star.setOriginCenter();

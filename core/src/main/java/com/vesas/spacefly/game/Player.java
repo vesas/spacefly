@@ -50,8 +50,6 @@ public final class Player
 	
 	private long shotTime = 0;
 	
-	private int spice = 0;
-	
 	private ImpulseParticleSystem particles = new ImpulseParticleSystem();
 	private Trail trail = new Trail();
 
@@ -149,12 +147,6 @@ public final class Player
 		// Remember to dispose of any shapes after you're done with them!
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
 		polyShape.dispose();
-	}
-	
-	public void addSpice()
-	{
-		spice++;
-		
 	}
 	
 	public boolean recentlyShot()
@@ -345,11 +337,6 @@ public final class Player
 		int mousex = Gdx.input.getX();
 		int mousey = Gdx.input.getY();
 		
-		int screenx = Gdx.graphics.getWidth();
-		int screeny = Gdx.graphics.getHeight();
-		
-		int realMouseViewportY = screeny - mousey - screen.viewport.getBottomGutterHeight();
-		
 		Vector2 bodyPos = body.getWorldCenter();
 		tempVector.x = bodyPos.x;
 		tempVector.y = bodyPos.y;// - 0.31f;
@@ -514,56 +501,9 @@ public final class Player
 		
 		}
 		
-		
-//		tempVector.x = bodyPos.x;
-//		tempVector.y = bodyPos.y;
-//		screen.viewport.project(tempVector);
-		
-		/*
-		Sprite onHealth = G.health[0];
-		Sprite offHealth = G.health[1];
-		
-		for( int i = 0 ; i < maxHealth; i++ )
-		{
-			if( i < health )
-			{
-				onHealth.setPosition( 15 + i * 19 , 50 );
-				onHealth.draw( screen.screenBatch );
-			}
-			else
-			{
-				offHealth.setPosition( 15 + i * 19 , 50 );
-				offHealth.draw( screen.screenBatch );
-			}
-			
-		}
-		*/
-		
-		float radBodyAngle = body.getAngle();
-		
-		float degBodyangle = (float) (radBodyAngle * (180.0 / Math.PI));
-		
-//		G.font.draw( screen.screenBatch, "gunangle: " + gunangle +" degBodyangle: " + degBodyangle, 10, 80);
-		
-//		G.font.draw( screen.screenBatch, "m_desiredAngularVelocity: " + m_desiredAngularVelocity, 10, 120);
-//		G.font.draw( screen.screenBatch, "m_impulse: " + m_impulse , 10, 140);
-//		G.font.draw( screen.screenBatch, "m_nextangle: " + m_nextangle, 10, 160);
-		
 		screen.screenBatch.end();
 		
-//		screen.screenBatch.begin();
-		//G.font.draw( screen.screenBatch, "player posx: " + posx +" posy: " + posy, 10, 80);
-
-
 		screen.worldBatch.begin();
-
-		
-		
-		// G.font.draw( screen.screenBatch, "player dx: " + dx + " dy: " + dy, 50, 120);
-		
-		
-//		screen.screenBatch.end();
-		
 
 	}
 
