@@ -13,6 +13,12 @@ import util.DebugShow;
 public class TestGame extends Game 
 {
 	private GameScreen gameScreen;
+
+	private int test;
+
+	public TestGame(int test) {
+		this.test = test;
+	}
 	
 	@Override
 	public void create() {		
@@ -29,7 +35,7 @@ public class TestGame extends Game
 		
 		Box2DWorld.world.setContactListener( new CListener() );
 		
-		this.setScreen(new TestScreen(this));
+		this.setScreen(new TestScreen(this, test));
 		// currentScreen = new MainMenuScreen(this);
 		
 		Thread.currentThread().setPriority(Thread.NORM_PRIORITY);

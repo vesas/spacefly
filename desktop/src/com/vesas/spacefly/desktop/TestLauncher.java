@@ -14,22 +14,11 @@ public final class TestLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		
 		config.setTitle("spacefly");
-		// config.fullscreen = false;
-		// config.vSyncEnabled = false;
-		// config.foregroundFPS = 60;
-		// config.width = 1100;
-		// config.height = 650;
-		// config.width = 640*6;
 		config.setWindowedMode(640*2, 480*2);
-		// config.height = 480*4;
-		// config.width = 640*4;
-		// config.height = 480*4;
-		// config.width = 640*2;
-		// config.height = 480*2;
-		// config.width = (int)(640*1.2);
-		// config.height = (int)(480*1.2);
+		test1(config);
+	}
 
-		new Lwjgl3Application(new TestGame(), config);
-
+	public static void test1(Lwjgl3ApplicationConfiguration config) {
+		new Lwjgl3Application(new TestGame(1), config);
 	}
 }

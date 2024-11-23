@@ -17,7 +17,7 @@ public class Util
 	}
 	
 	/**
-	 * Returns the difference between two angles in degrees
+	 * Returns the smallest difference between two angles in degrees
 	 * @param target Target angle in degrees
 	 * @param source Starting angle in degrees
 	 * @return Difference between the two angles in degrees

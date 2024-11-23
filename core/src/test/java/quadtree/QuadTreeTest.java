@@ -9,18 +9,11 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import util.Timing;
+
 
 public class QuadTreeTest {
     
-    @Test
-	public void test() 
-    {
-        Point center = new Point(0.0f,5.0f);
-        Point halfDimension = new Point(1.0f,1.0f);
-        AABB aabb = new AABB();
-        QuadTree tree = new QuadTree(aabb);
-
-    }
 
     @Test
     public void testInsertAndQuery() {
@@ -33,9 +26,9 @@ public class QuadTreeTest {
         Point p2 = new Point(-4, 2);
         Point p3 = new Point(6, -5);
 
-        tree.insert(p1);
-        tree.insert(p2);
-        tree.insert(p3);
+        tree.insert(p1.x, p1.y);
+        tree.insert(p2.x, p2.y);
+        tree.insert(p3.x, p3.y);
 
         // Query a region that should contain p1
         AABB queryRegion = new AABB(new Point(0, 0), new Point(5, 5));
@@ -61,15 +54,15 @@ public class QuadTreeTest {
         };
         
         for (Point p : points) {
-            tree.insert(p);
+            tree.insert(p.x, p.y);
         }
 
         // Query a small region that should contain exactly 2 points
-        AABB queryRegion = new AABB(new Point(0.9f, 0.9f), new Point(1.1f, 1.1f));
+        AABB queryRegion = new AABB(1.9f, 0.9f,2.1f, 2.1f);
         List<Point> found = tree.queryRange(queryRegion);
         
         assertEquals(2, found.size());
-        assertTrue(found.contains(points[0])); // Should find point (1,1) and (1.5f, 1.5f)
+        assertTrue(found.contains(points[2])); // Should find point (2,1) and (2, 2)
         
         // Query larger region that should contain all points
         AABB allRegion = new AABB(new Point(0, 0), new Point(10, 10));
@@ -83,18 +76,68 @@ public class QuadTreeTest {
 
     @Test
     public void testSubdivision() {
-        QuadTree tree = new QuadTree(new AABB(new Point(15,15), new Point(10,10)));
+
+        float center_x = 15f;
+        float center_y = 15f;
+
+        QuadTree tree = new QuadTree(new AABB(new Point(center_x,center_y), new Point(5,5)), 2);
 
         float xx = 15f;
         float yy = 15f;
-        tree.insert(new Point(xx+1,yy+1));
-        tree.insert(new Point(xx+1,yy+1));
-        tree.insert(new Point(xx+1,yy+1));
-        tree.insert(new Point(xx+1,yy+1));
-        tree.insert(new Point(xx+1,yy+1));
-        tree.insert(new Point(xx+1.001f,yy+1.001f));
+        tree.insert(xx+1,yy+1);
+        tree.insert(xx+1,yy+1);
+        tree.insert(xx+1,yy+1);
+        tree.insert(xx+1,yy+1);
+        tree.insert(xx+1,yy+1);
+        tree.insert(xx+1.001f,yy+1.001f);
 
         int qew = 0;
+    }
+
+    @Test
+    public void testPerformance() {
+
+        // Create a quad tree with a large number of points
+        // Test the performance of inserting a point
+        // Test the performance of querying a point
+
+        int numPoints = 1000000;
+        int numQueries = 100000;
+
+        QuadTree tree = new QuadTree(new AABB(new Point(0,0), new Point(100,100)), 4);
+
+        Timing t1 = Timing.startNew();
+        
+        // Insert points
+        for (int i = 0; i < numPoints; i++) {
+            tree.insert((float)(Math.random() * 100.0), (float)(Math.random() * 100.0));
+        }
+
+        t1.stop();
+
+        AABB queryRegion = new AABB(new Point(0,0), new Point(100,100));
+
+        // Query points
+        Timing t2 = Timing.startNew();
+        for (int i = 0; i < numQueries; i++) {
+            queryRegion.center.x = (float)(Math.random() * 100.0);
+            queryRegion.center.y = (float)(Math.random() * 100.0);
+            queryRegion.halfDimension.x = 0.1f;
+            queryRegion.halfDimension.y = 0.1f;
+
+            tree.queryRange(queryRegion);
+        }
+
+        t2.stop();
+
+        System.out.println("Time taken to insert " + numPoints + " points: " + t1.getElapsedMillis() + "ms");
+        System.out.println("Time taken to query " + numQueries + " points: " + t2.getElapsedMillis() + "ms");
+
+        // Query should be faster than insert
+        assertTrue(t2.getElapsedMillis() < t1.getElapsedMillis());
+
+        // Querying 100000 times should be less than 200ms
+        assertTrue(t2.getElapsedMillis() < 200);
     }
 
 }

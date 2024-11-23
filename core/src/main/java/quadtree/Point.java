@@ -1,5 +1,7 @@
 package quadtree;
 
+import java.util.Objects;
+
 public class Point
 {
 	public float x;
@@ -16,7 +18,17 @@ public class Point
 		return "XY X: " + x + " Y: " + y;
 	}
 
-	public boolean equals(Point other) {
-		return this.x == other.x && this.y == other.y;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		Point other = (Point) obj;
+		return Float.compare(other.x, x) == 0 
+			&& Float.compare(other.y, y) == 0;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(x, y);
 	}
 }
