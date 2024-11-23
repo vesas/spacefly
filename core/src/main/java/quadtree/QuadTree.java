@@ -12,23 +12,23 @@ public class QuadTree
 
 	// Axis-aligned bounding box stored as a center with half-dimensions
 	// to represent the boundaries of this quad tree
-	AABB boundary;
+	private AABB boundary;
 
 	public AABB getBoundary() {
 		return boundary;
 	}
 
-	private ArrayList<Point> points = new ArrayList<Point>();
+	private List<Point> points = new ArrayList<Point>();
 
-	public ArrayList<Point> getPoints() {
+	public List<Point> getPoints() {
 		return points;
 	}
 
 	// Children
-	QuadTree northWest = null;
-	QuadTree northEast = null;
-	QuadTree southWest = null;
-	QuadTree southEast = null;
+	private QuadTree northWest = null;
+	private QuadTree northEast = null;
+	private QuadTree southWest = null;
+	private QuadTree southEast = null;
 	
 	public QuadTree getNorthWest() {
 		return northWest;
@@ -57,12 +57,20 @@ public class QuadTree
 		if (!boundary.containsPoint(p))
 	    	return false; // object cannot be added
 
-		points.add( p );
+		if (northWest == null) {
+			// If all the points are the same, we can just add the point to the list, no need to subdivide
+			if (points.stream().allMatch(point -> point.x == p.x && point.y == p.y)) {
+				points.add( p );
+				return true;
+			}
+			
+			if (points.size() < QT_NODE_CAPACITY) {
+				points.add(p);
+				return true;
+			}
+		}
 
-	    // If this node has not been subdivided, just return
-		if (northWest == null && points.size() <= QT_NODE_CAPACITY) {
-	    	return true;
-	    }
+		points.add( p );
 
 		// Otherwise, we need to subdivide then add the point to whichever node will accept it
 
@@ -82,7 +90,7 @@ public class QuadTree
 		}
 
 		points.clear();
-	    return true;
+	    return true;	
 	}
 
 	/**
@@ -98,12 +106,15 @@ public class QuadTree
 		
 		Point half = new Point(halfx, halfy);
 		
-		northWest = new QuadTree( new AABB(new Point(centerx-halfx, centery-halfy), half) );
-		northEast = new QuadTree( new AABB(new Point(centerx+halfx, centery-halfy), half) );
-		southWest = new QuadTree( new AABB(new Point(centerx-halfx, centery+halfy), half) );
-		southEast = new QuadTree( new AABB(new Point(centerx+halfx, centery+halfy), half) );
+		northWest = new QuadTree( new AABB(new Point(centerx-halfx, centery+halfy), half) );
+		northEast = new QuadTree( new AABB(new Point(centerx+halfx, centery+halfy), half) );
+		southWest = new QuadTree( new AABB(new Point(centerx-halfx, centery-halfy), half) );
+		southEast = new QuadTree( new AABB(new Point(centerx+halfx, centery-halfy), half) );
 	}
 
+	/**
+	 * Returns all points within the given range
+	 */
 	public List<Point> queryRange(AABB range) 
 	{
 		ArrayList<Point> results = new ArrayList<Point>();
