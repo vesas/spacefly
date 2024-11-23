@@ -14,7 +14,15 @@ public class QuadTree
 	// to represent the boundaries of this quad tree
 	AABB boundary;
 
+	public AABB getBoundary() {
+		return boundary;
+	}
+
 	private ArrayList<Point> points = new ArrayList<Point>();
+
+	public ArrayList<Point> getPoints() {
+		return points;
+	}
 
 	// Children
 	QuadTree northWest = null;
@@ -22,6 +30,22 @@ public class QuadTree
 	QuadTree southWest = null;
 	QuadTree southEast = null;
 	
+	public QuadTree getNorthWest() {
+		return northWest;
+	}
+
+	public QuadTree getNorthEast() {
+		return northEast;
+	}
+
+	public QuadTree getSouthWest() {
+		return southWest;
+	}
+
+	public QuadTree getSouthEast() {
+		return southEast;
+	}
+
 	public QuadTree(AABB _boundary)
 	{
 		boundary = _boundary;
@@ -33,28 +57,32 @@ public class QuadTree
 		if (!boundary.containsPoint(p))
 	    	return false; // object cannot be added
 
-	    // If there is space in this quad tree, add the object here
-		if (points.size() < QT_NODE_CAPACITY)
-	    {
-	    	points.add( p );
+		points.add( p );
+
+	    // If this node has not been subdivided, just return
+		if (northWest == null && points.size() <= QT_NODE_CAPACITY) {
 	    	return true;
 	    }
 
-	    // Otherwise, we need to subdivide then add the point to whichever node will accept it
-	    if (northWest == null)
-	      subdivide();
+		// Otherwise, we need to subdivide then add the point to whichever node will accept it
 
-	    if (northWest.insert(p)) 
-	    	return true;
-	    if (northEast.insert(p)) 
-	    	return true;
-	    if (southWest.insert(p)) 
-	    	return true;
-	    if (southEast.insert(p)) 
-	    	return true;
+		if (northWest == null)
+			subdivide();
 
-	    // Otherwise, the point cannot be inserted for some unknown reason (which should never happen)
-	    return false;
+		for(Point point : points) {
+
+			if (northWest.insert(point))
+				continue; 
+			if (northEast.insert(point)) 
+				continue;
+			if (southWest.insert(point)) 
+				continue;
+			if (southEast.insert(point)) 
+				continue;
+		}
+
+		points.clear();
+	    return true;
 	}
 
 	/**
