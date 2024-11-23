@@ -21,10 +21,10 @@ public class AABB
 	
 	public boolean containsPoint(Point p) 
 	{
-		return p.x > center.x - halfDimension.x &&
-				p.x < center.x + halfDimension.x &&
-				p.y > center.y - halfDimension.y &&
-				p.y < center.y + halfDimension.y;
+		return p.x >= (center.x - halfDimension.x) &&
+				p.x <= (center.x + halfDimension.x) &&
+				p.y >= (center.y - halfDimension.y) &&
+				p.y <= (center.y + halfDimension.y);
 	}
  
 	public boolean intersectsAABB(AABB other) 

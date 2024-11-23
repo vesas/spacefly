@@ -81,4 +81,26 @@ public class QuadTreeTest {
         }
     }
 
+    @Test
+    public void testSubdivision() {
+        QuadTree tree = new QuadTree(new AABB(new Point(15,15), new Point(10,10)));
+
+        float xx = 15f;
+        float yy = 15f;
+        tree.insert(new Point(xx+1,yy+1));
+        tree.insert(new Point(xx+5,yy+2.7f));
+        tree.insert(new Point(xx+2,yy+1));
+        tree.insert(new Point(xx-4f,yy+2.6f));
+        tree.insert(new Point(xx+1.5f, yy+1.5f));
+        tree.insert(new Point(xx+3.9f,yy-3));
+        tree.insert(new Point(xx-8.4f,yy-1.15f));
+        tree.insert(new Point(xx-8.6f,yy-1.31f));
+        tree.insert(new Point(xx-8.77f,yy-1.42f));
+        tree.insert(new Point(xx-8.8f,yy-1.55f));
+        tree.insert(new Point(xx-9.2f,yy-2.22f));
+        tree.insert(new Point(xx-8.99f,yy-1.85f));
+
+        int qew = 0;
+    }
+
 }
