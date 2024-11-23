@@ -1,5 +1,8 @@
 package com.vesas.spacefly.world.procedural;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.monster.ShellMonster;
@@ -18,6 +21,7 @@ import com.vesas.spacefly.world.procedural.generator.MetaRegionBuilder;
 import com.vesas.spacefly.world.procedural.generator.Region;
 import com.vesas.spacefly.world.procedural.room.octaroom.OctaRoom;
 import com.vesas.spacefly.world.procedural.room.octaroom.OctaRoomBuilder;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.FeatureBuilder;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoomBuilder;
 
@@ -42,6 +46,7 @@ public class WorldGen implements WorldGenInterface
 		AxisAlignedCorridorBuilder.INSTANCE.setVisib( visib );
 		OctaRoomBuilder.INSTANCE.setVisib(visib);
 	}
+
 	public Array<Feature> generate()
 	{
 		GenSeed.random.setSeed(3);
@@ -50,44 +55,31 @@ public class WorldGen implements WorldGenInterface
 		
 		Array<Feature> feats = new Array<Feature>();
 		
-		buildRooms(metaRegion, feats);
+		buildFeatures(metaRegion, feats);
 		
 		addMonstersPass( metaRegion, feats );
 		
 		return feats;
 	}
-	
-	private void buildRooms( Region region, Array<Feature> feats )
+
+	private static Map<Class<? extends MetaFeature>, FeatureBuilder<?>> builders = new HashMap<>();
+
+	static {
+		builders.put(MetaRectangleRoom.class, (FeatureBuilder<?>) RectangleRoomBuilder.INSTANCE);
+		builders.put(MetaCorridor.class, (FeatureBuilder<?>) AxisAlignedCorridorBuilder.INSTANCE);
+		builders.put(MetaOctaRoom.class, (FeatureBuilder<?>) OctaRoomBuilder.INSTANCE);
+	}
+
+	private void buildFeatures( Region region, Array<Feature> features )
 	{
-		RectangleRoomBuilder roomBuilder = RectangleRoomBuilder.INSTANCE;
-		AxisAlignedCorridorBuilder corrBuilder = AxisAlignedCorridorBuilder.INSTANCE;
-		OctaRoomBuilder octaBuilder = OctaRoomBuilder.INSTANCE;
-		
-		Array<MetaFeature> metaFeats = region.getMetaList();
-		
-		for( int i = 0; i < metaFeats.size; i++ )
-		{
-			MetaFeature metaFeat = metaFeats.get( i );
-			
-			if( metaFeat instanceof MetaRectangleRoom )
-			{
-				RectangleRoom room = roomBuilder.buildFrom( ((MetaRectangleRoom)metaFeat));
-				feats.add( room );
-			}
-			if( metaFeat instanceof MetaCorridor )
-			{
-				AxisAlignedCorridor corr = corrBuilder.buildFrom( (MetaCorridor)metaFeat );
-				feats.add( corr );
-			}
-			if( metaFeat instanceof MetaOctaRoom )
-			{
-				OctaRoom room = octaBuilder.buildFrom( ((MetaOctaRoom)metaFeat));
-				feats.add( room );
+		for( MetaFeature metaFeat : region.getMetaList() ) {
+			@SuppressWarnings("unchecked")
+			FeatureBuilder<MetaFeature> builder = (FeatureBuilder<MetaFeature>) builders.get(metaFeat.getClass());
+			if (builder != null) {
+				features.add(builder.buildFrom(metaFeat));
 			}
 		}
 	}
-
-	private static final float WALL_WIDTH = 0.5f;
 
 	private void addMonstersPass( Region region, Array<Feature> feats )
 	{

@@ -156,24 +156,28 @@ public class OctaRoom extends RoomFeature
 
 	public static class WallWedge
 	{
-		private Sprite sprite;
+		private final Sprite sprite;
+		private final float xpos;
+		private final float ypos;
+		private final float rotation;
 		
-		private float xpos, ypos;
-		private float rotation;
-		
-		public WallWedge( float xpos, float ypos, float rotate )
+		public WallWedge( float xpos, float ypos, float rotation )
 		{
 			this.xpos = xpos;
 			this.ypos = ypos;
-			this.rotation = rotate;
+			this.rotation = rotation;
+			this.sprite = initSprite();
+		}
 
-			sprite = G.getAtlas().createSprite("edge_tri");
+		private Sprite initSprite() {
+			Sprite sprite = G.getAtlas().createSprite("edge_tri");
+			sprite.setSize(0.477f, 0.40f);
+			sprite.setOrigin(0.0f, 0.2f);
+			return sprite;
 		}
 
 		public void draw(Batch batch) {
 
-			sprite.setSize(0.477f,0.40f);
-			sprite.setOrigin(0.0f, 0.2f);
 			sprite.setPosition( xpos, ypos - 0.2f); // -0.25f to compensate for the origin
 			sprite.setRotation( rotation );
 			sprite.draw(batch);

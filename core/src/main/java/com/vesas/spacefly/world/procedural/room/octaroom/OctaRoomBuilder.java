@@ -7,10 +7,10 @@ import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.generator.MetaOctaRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.room.WallBlock;
-import com.vesas.spacefly.world.procedural.room.octaroom.OctaRoom.WallWedge;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.FeatureBuilder;
 
-public class OctaRoomBuilder
+public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 {
 	// bottom left position
 	private float xpos, ypos;

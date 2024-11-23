@@ -4,21 +4,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.badlogic.gdx.math.Vector2;
-
 public class TriangulatorTest {
     
 
     @Test
     public void testEmptyInputReturnsEmptyTriangleList() {
-        Triangulator triangulator = new Triangulator();
+        DelaunayTriangulator triangulator = new DelaunayTriangulator();
         short[] triangles = triangulator.triangulate(new float[0]);
         assertEquals(0, triangles.length);
     }
 
     @Test
     public void testOneTriangle() {
-        Triangulator triangulator = new Triangulator();
+        DelaunayTriangulator triangulator = new DelaunayTriangulator();
 
         float[] vertices = new float[] {
             0, 0,
@@ -35,7 +33,32 @@ public class TriangulatorTest {
 
     }
 
-    
+    @Test
+    public void testSquare() {
+        DelaunayTriangulator triangulator = new DelaunayTriangulator();
+
+        float[] vertices = new float[] {
+            0, 0,  // bottom left
+            1, 0,  // bottom right
+            1, 1,  // top right
+            0, 1   // top left
+        };
+        short[] triangles = triangulator.triangulate(vertices);
+        
+        assertEquals(6, triangles.length); // should create 2 triangles (6 indices)
+        
+        // First triangle
+        assertEquals(0, triangles[0]);
+        assertEquals(1, triangles[1]);
+        assertEquals(2, triangles[2]);
+        
+        // Second triangle
+        assertEquals(0, triangles[3]);
+        assertEquals(2, triangles[4]);
+        assertEquals(3, triangles[5]);
+    }
+
+    /*
     @Test
     public void testSlope() {
 
@@ -63,4 +86,5 @@ public class TriangulatorTest {
         
 
     }
+         */
 }

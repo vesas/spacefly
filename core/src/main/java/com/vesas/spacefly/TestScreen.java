@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.visibility.Triangulator;
+import com.vesas.spacefly.visibility.DelaunayTriangulator;
 import com.vesas.spacefly.world.procedural.room.WallBlock;
 
 public class TestScreen implements Screen {
@@ -107,8 +107,8 @@ public class TestScreen implements Screen {
         
     }
 
-    private Triangulator.Triangle triangle = new Triangulator.Triangle(new Triangulator.Vertex(2,1), 
-        new Triangulator.Vertex(5,8), new Triangulator.Vertex(1,3.5f));
+    private DelaunayTriangulator.Triangle triangle = new DelaunayTriangulator.Triangle(new DelaunayTriangulator.Vertex(2,1), 
+        new DelaunayTriangulator.Vertex(5,8), new DelaunayTriangulator.Vertex(1,3.5f));
 
     private static float degs = 0.0f;
     @Override
