@@ -10,52 +10,33 @@ import com.badlogic.gdx.utils.Array;
 
 public class VisibilityTest {
     
+    private void assertVisibleArea(Visibility visib, float x, float y, float expectedArea) {
+        visib.setLightLocation(x, y);
+        visib.sweep();
+        VisibilityPoly poly = visib.getVisibPoly();
+        float area = calculateArea(x, y, poly.getTriEndPoints());
+        assertEquals(expectedArea, area, 0.01f);
+    }
 
-    /**
-     * Test with a square shape
-     */
     @Test
-    public void test10By10HasAreaOf100()
-    {
+    public void testEmptySpace() {
         Visibility visib = new Visibility();
-
         visib.startLoad();
         visib.startConvexArea();
-
-        // square with sides of 10 units
-        // bottom left: 0,0
-        // bottom right: 10,0
-        // top right: 10,10
-        // top left: 0,10
-
-        // bottom left --> bottom right
-        visib.addSegment(0,0,10,0);
-
-        // bottom right --> top right 
-        visib.addSegment(10, 0, 10, 10);
-
-        // top right --> top left
-        visib.addSegment(10,10, 0, 10);
-
-        // top left --> bottom left
-        visib.addSegment(0,10,0,0);
-
+        
+        // Simple 10x10 square
+        visib.addSegment(0,0, 10,0);
+        visib.addSegment(10,0, 10,10);
+        visib.addSegment(10,10, 0,10);
+        visib.addSegment(0,10, 0,0);
         
         visib.finishConvexArea();
-
         visib.finishLoad();
 
-        visib.setLightLocation(5f,5f);
-        visib.sweep();
-        
-        VisibilityPoly poly = visib.getVisibPoly();
-
-        // poly contains the end points of triangles from the light location
-        float actualPolyArea = calculateArea(5,5, poly.getTriEndPoints());
-
-        // area is 100, as sides are 10x10
-        float expectedArea = 100.0f;
-        assertEquals(expectedArea, actualPolyArea);
+        // Test different light positions
+        assertVisibleArea(visib, 5,5, 100f);  // Center
+        assertVisibleArea(visib, 0.1f,0.1f, 100f);  // Corner
+        assertVisibleArea(visib, -1,-1, 0f);  // Outside
     }
 
     @Test

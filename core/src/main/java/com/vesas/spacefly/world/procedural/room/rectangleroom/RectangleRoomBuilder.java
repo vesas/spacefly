@@ -3,6 +3,7 @@ package com.vesas.spacefly.world.procedural.room.rectangleroom;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
+import com.vesas.spacefly.world.procedural.generator.MetaFeature;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.room.Block1;
@@ -11,7 +12,7 @@ import com.vesas.spacefly.world.procedural.room.BlockUp;
 import com.vesas.spacefly.world.procedural.room.FeatureConnector;
 import com.vesas.spacefly.visibility.Visibility;
 
-public class RectangleRoomBuilder
+public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 {
 	// these are in world units
 	// bottom left position
@@ -184,8 +185,9 @@ public class RectangleRoomBuilder
 		}
 	}
 	
-	public RectangleRoom buildFrom( MetaRectangleRoom metaRoom )
-	{
+	@Override
+    public RectangleRoom buildFrom(MetaRectangleRoom metaRoom) {
+    
 		this.xpos = metaRoom.getBounds().x;
 		this.ypos = metaRoom.getBounds().y;
 		

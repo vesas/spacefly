@@ -6,7 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.vesas.spacefly.game.G;
 
-public class Triangulator {
+public class DelaunayTriangulator {
 
     // private short[] triangleList = new short[0];
 
@@ -108,7 +108,7 @@ public class Triangulator {
     }
 
 
-    public Triangulator() {
+    public DelaunayTriangulator() {
         
     }
 
@@ -121,8 +121,21 @@ public class Triangulator {
             return new short[0];
         }
 
-        float xmax = Float.MIN_VALUE;
-        float ymax = Float.MIN_VALUE;
+        // if vertexList has exactly 3 points, just return that triangle
+        if(vertexList.length == 6) {
+            return new short[] {0, 1, 2};
+        }
+
+        // if vertexList has exactly 4 points, return 2 triangles' indices
+        if(vertexList.length == 8) {
+            return new short[] {
+                0, 1, 2,  // first triangle
+                0, 2, 3   // second triangle
+            };
+        }
+
+        float xmax = -Float.MAX_VALUE;
+        float ymax = -Float.MAX_VALUE;
 
         float ymin = Float.MAX_VALUE;
         float xmin = Float.MAX_VALUE;

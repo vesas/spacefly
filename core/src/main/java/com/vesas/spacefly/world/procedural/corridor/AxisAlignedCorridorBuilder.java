@@ -8,8 +8,9 @@ import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.room.WallBlock;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.FeatureBuilder;
 
-public final class AxisAlignedCorridorBuilder
+public final class AxisAlignedCorridorBuilder implements FeatureBuilder<MetaCorridor>
 {
 	private static float WALL_WIDTH = 0.5f;
 
