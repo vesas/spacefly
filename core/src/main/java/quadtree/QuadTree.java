@@ -14,7 +14,7 @@ public class QuadTree
 	// to represent the boundaries of this quad tree
 	AABB boundary;
 
-	private ArrayList<XY> points = new ArrayList<XY>();
+	private ArrayList<Point> points = new ArrayList<Point>();
 
 	// Children
 	QuadTree northWest = null;
@@ -27,7 +27,7 @@ public class QuadTree
 		boundary = _boundary;
 	}
 
-	public boolean insert( XY p )
+	public boolean insert( Point p )
 	{
 		// Ignore objects which do not belong in this quad tree
 		if (!boundary.containsPoint(p))
@@ -68,24 +68,24 @@ public class QuadTree
 		float centerx = this.boundary.center.x;
 		float centery = this.boundary.center.y;
 		
-		XY half = new XY(halfx, halfy);
+		Point half = new Point(halfx, halfy);
 		
-		northWest = new QuadTree( new AABB(new XY(centerx-halfx, centery-halfy), half) );
-		northEast = new QuadTree( new AABB(new XY(centerx+halfx, centery-halfy), half) );
-		southWest = new QuadTree( new AABB(new XY(centerx-halfx, centery+halfy), half) );
-		southEast = new QuadTree( new AABB(new XY(centerx+halfx, centery+halfy), half) );
+		northWest = new QuadTree( new AABB(new Point(centerx-halfx, centery-halfy), half) );
+		northEast = new QuadTree( new AABB(new Point(centerx+halfx, centery-halfy), half) );
+		southWest = new QuadTree( new AABB(new Point(centerx-halfx, centery+halfy), half) );
+		southEast = new QuadTree( new AABB(new Point(centerx+halfx, centery+halfy), half) );
 	}
 
-	public List<XY> queryRange(AABB range) 
+	public List<Point> queryRange(AABB range) 
 	{
-		ArrayList<XY> results = new ArrayList<XY>();
+		ArrayList<Point> results = new ArrayList<Point>();
 		
 	    // Automatically abort if the range does not collide with this quad
 	    if (!boundary.intersectsAABB(range))
 	      return results; // empty list
 
 	    // Check objects at this quad level
-	    for( XY p : points )
+	    for( Point p : points )
 	    {
 	    	if (range.containsPoint(p))
 	    		results.add( p );

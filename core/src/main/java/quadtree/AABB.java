@@ -3,19 +3,23 @@ package quadtree;
 public class AABB
 {
 	
-	public XY center;
-	public XY halfDimension;
+	public Point center;
+	public Point halfDimension;
 	
 	public AABB() { }
 	
-	public AABB( XY center, XY halfDimension )
+	/**
+	 * Creates an axis-aligned bounding box with the given center and half-dimension.
+	 * Half dimension is the distance from the center to the edge of the box. Box dimensions are twice the half-dimension.
+	 */
+	public AABB( Point center, Point halfDimension )
 	{
 		this.center = center;
 		this.halfDimension = halfDimension;
 		
 	}
 	
-	public boolean containsPoint(XY p) 
+	public boolean containsPoint(Point p) 
 	{
 		return p.x > center.x - halfDimension.x &&
 				p.x < center.x + halfDimension.x &&
