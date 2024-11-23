@@ -1,5 +1,6 @@
 package com.vesas.spacefly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -39,12 +40,13 @@ public class TestScreen implements Screen {
     private SpriteBatch batch;
     private Viewport viewport;
 
-    
+    private int test = 0;
 
-    public TestScreen(TestGame game) {
+    public TestScreen(TestGame game, int test) {
 
 		super();
 		this.game = game;
+        this.test = test;
 
         stage = new Stage(new ScreenViewport());
 
@@ -60,9 +62,8 @@ public class TestScreen implements Screen {
     private WallBlock block6;
 
     private QuadTree tree = null;
-    private void init() {
 
-        
+    private void init() {
 
         final int width = Gdx.graphics.getWidth();
 		final int height = Gdx.graphics.getHeight();
@@ -111,35 +112,39 @@ public class TestScreen implements Screen {
 
         tree = new QuadTree(new AABB(new Point(15,15), new Point(10,10)));
 
-        float xx = 15f;
-        float yy = 15f;
-        tree.insert(new Point(xx+1,yy+1));
-        tree.insert(new Point(xx+1.4f,yy+1.2f));
-        tree.insert(new Point(xx+1.24f,yy+1.12f));
-        tree.insert(new Point(xx+5,yy+2.7f));
-        tree.insert(new Point(xx+2,yy+1));
-        tree.insert(new Point(xx-4f,yy+2.6f));
-        tree.insert(new Point(xx+1.5f, yy+1.5f));
-        tree.insert(new Point(xx+3.9f,yy-3));
-        tree.insert(new Point(xx-8.4f,yy-1.15f));
-        tree.insert(new Point(xx-8.6f,yy-1.31f));
-        tree.insert(new Point(xx-8.77f,yy-1.42f));
-        tree.insert(new Point(xx-8.8f,yy-1.55f));
-        tree.insert(new Point(xx-9.2f,yy-2.22f));
-        tree.insert(new Point(xx-8.99f,yy-1.85f));
-    }
 
-    @Override
-    public void show() {
+        if(test == 1) {
+            test1Init();
+        }
         
     }
 
-    private DelaunayTriangulator.Triangle triangle = new DelaunayTriangulator.Triangle(new DelaunayTriangulator.Vertex(2,1), 
-        new DelaunayTriangulator.Vertex(5,8), new DelaunayTriangulator.Vertex(1,3.5f));
+    // 
+    // test1
+    // 
+    private void test1Init() {
 
-    private static float degs = 0.0f;
-
-    private void renderTree(float delta, QuadTree tree) {
+        float xx = 15f;
+        float yy = 15f;
+        tree.insert(xx+1, yy+1);
+        tree.insert(xx+1.4f, yy+1.2f);
+        tree.insert(xx+1.24f, yy+1.12f);
+        tree.insert(xx+5,yy+2.7f);
+        tree.insert(xx+2,yy+1);
+        tree.insert(xx-4f,yy+2.6f);
+        tree.insert(xx+1.5f, yy+1.5f);
+        tree.insert(xx+3.9f,yy-3);
+        tree.insert(xx-8.4f,yy-1.15f);
+        tree.insert(xx-8.6f,yy-1.31f);
+        tree.insert(xx-8.77f,yy-1.42f);
+        tree.insert(xx-8.8f,yy-1.55f);
+        tree.insert(xx-9.2f,yy-2.22f);
+        tree.insert(xx-8.99f,yy-1.85f);
+    }
+    private void test1Render(float delta) {
+        test1RenderTree(delta, tree);
+    }
+    private void test1RenderTree(float delta, QuadTree tree) {
 
         Point c = tree.getBoundary().center;
         Point d = tree.getBoundary().halfDimension;
@@ -152,7 +157,8 @@ public class TestScreen implements Screen {
         G.shapeRenderer.line(c.x - d.x, c.y + d.y, c.x - d.x, c.y - d.y);
         G.shapeRenderer.end();
 
-        List<Point> points = tree.getPoints();
+        List<Point> points = new ArrayList<>();
+        tree.getAllPoints(points);
 
         G.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         G.shapeRenderer.setColor(1, 0.5f, 0.5f, 1);
@@ -162,25 +168,42 @@ public class TestScreen implements Screen {
         G.shapeRenderer.end();
 
         if(tree.getNorthWest() != null) {
-            renderTree(delta, tree.getNorthWest());
+            test1RenderTree(delta, tree.getNorthWest());
         }
         if(tree.getNorthEast() != null) {
-            renderTree(delta, tree.getNorthEast());
+            test1RenderTree(delta, tree.getNorthEast());
         }
         if(tree.getSouthWest() != null) {
-            renderTree(delta, tree.getSouthWest());
+            test1RenderTree(delta, tree.getSouthWest());
         }
         if(tree.getSouthEast() != null) {
-            renderTree(delta, tree.getSouthEast());
+            test1RenderTree(delta, tree.getSouthEast());
         }
     }
+
+    // 
+    // 
+    // 
+
+    @Override
+    public void show() {
+        
+    }
+
+    private DelaunayTriangulator.Triangle triangle = new DelaunayTriangulator.Triangle(new DelaunayTriangulator.Vertex(2,1), 
+        new DelaunayTriangulator.Vertex(5,8), new DelaunayTriangulator.Vertex(1,3.5f));
+
+    private static float degs = 0.0f;
+
+    
 
     @Override
     public void render(float delta) {
 
+        if(test == 1) {
+            test1Render(delta);
+        }
         
-        
-        renderTree(delta, tree);
 
     }
 
