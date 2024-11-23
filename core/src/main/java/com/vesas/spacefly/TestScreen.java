@@ -1,6 +1,6 @@
 package com.vesas.spacefly;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -152,7 +152,7 @@ public class TestScreen implements Screen {
         G.shapeRenderer.line(c.x - d.x, c.y + d.y, c.x - d.x, c.y - d.y);
         G.shapeRenderer.end();
 
-        ArrayList<Point> points = tree.getPoints();
+        List<Point> points = tree.getPoints();
 
         G.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         G.shapeRenderer.setColor(1, 0.5f, 0.5f, 1);
