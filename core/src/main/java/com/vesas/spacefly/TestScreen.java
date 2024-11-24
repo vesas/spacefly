@@ -146,8 +146,8 @@ public class TestScreen implements Screen {
     }
     private void test1RenderTree(float delta, QuadTree tree) {
 
-        Point c = tree.getBoundary().center;
-        Point d = tree.getBoundary().halfDimension;
+        Point c = new Point(tree.getBoundary().centerX, tree.getBoundary().centerY);
+        Point d = new Point(tree.getBoundary().halfWidth, tree.getBoundary().halfHeight);
 
         G.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         G.shapeRenderer.setColor(1, 1, 1, 1);
