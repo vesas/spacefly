@@ -12,7 +12,7 @@ public class MonsterBullet extends AbstractBullet
 	
 	public MonsterBullet( float posx, float posy, float dirx, float diry, int type ) 
 	{ 
-		createBody( posx, posy, dirx, diry, (short)8, (short)3 );
+		super( posx, posy, dirx, diry, (short)8, (short)3 );
 		
 		this.type = type;
 		

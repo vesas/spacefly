@@ -7,7 +7,7 @@ public class ShakeExplo extends Shake
 	@Override
 	public void performOn(Vector2 pos)
 	{
-		float val = interpolation.apply( 1.0f - t );
+		final float val = interpolation.apply( 1.0f - t );
 		
 		pos.x -= direction.x * val * strength;
 		pos.y -= direction.y * val * strength;

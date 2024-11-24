@@ -6,10 +6,8 @@ public class FloaterFactory
 {
 	private static Array<Floater> pool = new Array<Floater>(false,32);
 	
-	static public Floater getFloater()
-	{
-		if( pool.size > 0 )
-		{
+	static public Floater getFloater() {
+		if( pool.size > 0 ) {
 			Floater f = pool.pop();
 			f.init();
 			return f;
@@ -20,8 +18,7 @@ public class FloaterFactory
 		return f;
 	}
 	
-	static public void returnFloater( Floater f )
-	{
+	static public void returnFloater( Floater f ) {
 		pool.add( f );
 	}
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
@@ -39,12 +40,13 @@ public class OctaRoom extends RoomFeature
 	@Override
     public void drawMiniMap() {
 
-		G.shapeRenderer.triangle(verts[0], verts[1], verts[2], verts[3], verts[4], verts[5]);
-		G.shapeRenderer.triangle(verts[0], verts[1], verts[4], verts[5], verts[6], verts[7]);
-		G.shapeRenderer.triangle(verts[0], verts[1], verts[6], verts[7], verts[8], verts[9]);
-		G.shapeRenderer.triangle(verts[0], verts[1], verts[8], verts[9], verts[10], verts[11]);
-		G.shapeRenderer.triangle(verts[0], verts[1], verts[10], verts[11], verts[12], verts[13]);
-		G.shapeRenderer.triangle(verts[0], verts[1], verts[12], verts[13], verts[14], verts[15]);
+		for (int i = 2; i < 13; i += 2) {
+			G.shapeRenderer.triangle(
+				verts[0], verts[1],  // Center point
+				verts[i], verts[i+1],
+				verts[i+2], verts[i+3]
+			);
+		}
     }
 
 	public void draw(SpriteBatch batch)	

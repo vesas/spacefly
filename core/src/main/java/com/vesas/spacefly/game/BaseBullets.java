@@ -46,7 +46,7 @@ public class BaseBullets
 		for (int i = 0; i < size; i++)
 		{
 			AbstractBullet b = bulletsToBeRemoved.get(i);
-			b.deactivate();
+			b.setActive( false );
 
 			deadPool.add(b);
 		}

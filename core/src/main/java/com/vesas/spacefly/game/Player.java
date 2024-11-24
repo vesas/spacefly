@@ -52,32 +52,25 @@ public final class Player
 	private ImpulseParticleSystem particles = new ImpulseParticleSystem();
 	private Trail trail = new Trail();
 
-	private Player()
-	{
-	}
+	private Player() { }
 
-	public int getHealth()
-	{
+	public int getHealth() {
 		return health;
 	}
 	
-	public int getHealthMax()
-	{
+	public int getHealthMax() {
 		return maxHealth;
 	}
 	
-	public int getAmmo()
-	{
+	public int getAmmo() {
 		return ammo;
 	}
 	
-	public int getAmmoMax()
-	{
+	public int getAmmoMax() {
 		return maxAmmo;
 	}
 	
-	public void addAmmo()
-	{
+	public void addAmmo() {
 		int amount = 30;
 		
 		if( GenSeed.random.nextBoolean() ) {
@@ -115,14 +108,15 @@ public final class Player
 		
 		float []v = new float[6];
 		
+		float buffer = 0.02f;  // Small buffer
 		v[0] = 0;
-		v[1] = 0.28f;
+		v[1] = 0.28f + buffer;
 		
-		v[2] = -0.20f;
-		v[3] = -0.23f;
+		v[2] = -0.20f - buffer;
+		v[3] = -0.23f - buffer;
 		
-		v[4] = 0.20f;
-		v[5] = -0.23f;
+		v[4] = 0.20f + buffer;
+		v[5] = -0.23f - buffer;
 		
 		polyShape.set(v);
 
@@ -130,7 +124,7 @@ public final class Player
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = polyShape;
 		fixtureDef.density = 3.175f;
-		fixtureDef.friction = 0.0001f;
+		fixtureDef.friction = 0.2f;
 		fixtureDef.restitution = 0.05f; // Make it bounce a little bit
 		//fixtureDef.filter.groupIndex = Physics.GROUP_PLAYER;
 		
@@ -502,9 +496,14 @@ public final class Player
 
 	}
 
-	private void limitSpeed()
-	{
+	private void limitSpeed() {
 		Vector2 vel = body.getLinearVelocity();
+
+		// Stop very slow movement that can cause penetration
+		if (vel.len2() < 0.01f) {
+			body.setLinearVelocity(0, 0);
+			return;
+		}
 
 		if (vel.len() > MAX_VELOCITY)
 		{
