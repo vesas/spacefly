@@ -2,9 +2,10 @@ package quadtree;
 
 public class AABB
 {
-	
-	public final Point center;
-	public final Point halfDimension;
+	public float centerX;
+    public float centerY;
+    public float halfWidth;
+    public float halfHeight;
 	
 	
 	/**
@@ -13,61 +14,63 @@ public class AABB
 	 */
 	public AABB( Point center, Point halfDimension )
 	{
-		this.center = center;
-		this.halfDimension = halfDimension;
-		
+		this.centerX = center.x;
+        this.centerY = center.y;
+        this.halfWidth = halfDimension.x;
+        this.halfHeight = halfDimension.y;
 	}
 
 	/**
 	 * Creates an axis-aligned bounding box with the given bottom-left and top-right points.
 	 */
 	public AABB(float x1, float y1, float x2, float y2) {
-		this.center = new Point((x1 + x2) * 0.5f, (y1 + y2) * 0.5f);
-		this.halfDimension = new Point(Math.abs(x2 - x1) * 0.5f, Math.abs(y2 - y1) * 0.5f);
+		this.centerX = (x1 + x2) * 0.5f;
+        this.centerY = (y1 + y2) * 0.5f;
+        this.halfWidth = Math.abs(x2 - x1) * 0.5f;
+        this.halfHeight = Math.abs(y2 - y1) * 0.5f;
+	}
+
+	public void update(float minX, float minY, float maxX, float maxY) {
+		this.centerX = (minX + maxX) * 0.5f;
+        this.centerY = (minY + maxY) * 0.5f;
+        this.halfWidth = Math.abs(maxX - minX) * 0.5f;
+        this.halfHeight = Math.abs(maxY - minY) * 0.5f;
 	}
 	
 	public boolean contains(Point p) 
 	{
-		return p.x >= (center.x - halfDimension.x) &&
-				p.x <= (center.x + halfDimension.x) &&
-				p.y >= (center.y - halfDimension.y) &&
-				p.y <= (center.y + halfDimension.y);
+		return p.x >= (centerX - halfWidth) &&
+               p.x <= (centerX + halfWidth) &&
+               p.y >= (centerY - halfHeight) &&
+               p.y <= (centerY + halfHeight);
 	}
 
 	public boolean contains(float x, float y) {
-        return x >= (center.x - halfDimension.x) &&
-               x <= (center.x + halfDimension.x) &&
-               y >= (center.y - halfDimension.y) &&
-               y <= (center.y + halfDimension.y);
+        return x >= (centerX - halfWidth) &&
+               x <= (centerX + halfWidth) &&
+               y >= (centerY - halfHeight) &&
+               y <= (centerY + halfHeight);
     }
  
 	public boolean intersects(AABB other) 
 	{
-		if( other.center.x + other.halfDimension.x < center.x - halfDimension.x )
-			return false;
-		
-		if( other.center.x - other.halfDimension.x > center.x + halfDimension.x )
-			return false;
-		
-		if( other.center.y + other.halfDimension.y < center.y - halfDimension.y )
-			return false;
-		
-		if( other.center.y - other.halfDimension.y > center.y + halfDimension.y )
-			return false;
-		
-		
-		return true;
+		if ((other.centerX + other.halfWidth) < (centerX - halfWidth)) return false;
+        if ((other.centerX - other.halfWidth) > (centerX + halfWidth)) return false;
+        if ((other.centerY + other.halfHeight) < (centerY - halfHeight)) return false;
+        if ((other.centerY - other.halfHeight) > (centerY + halfHeight)) return false;
+        return true;
 	}
 
 	public boolean contains(AABB other) {
-		return (other.center.x + other.halfDimension.x) <= (center.x + halfDimension.x) &&
-				(other.center.x - other.halfDimension.x) >= (center.x - halfDimension.x) &&
-				(other.center.y + other.halfDimension.y) <= (center.y + halfDimension.y) &&
-				(other.center.y - other.halfDimension.y) >= (center.y - halfDimension.y);
+		return (other.centerX + other.halfWidth) <= (centerX + halfWidth) &&
+               (other.centerX - other.halfWidth) >= (centerX - halfWidth) &&
+               (other.centerY + other.halfHeight) <= (centerY + halfHeight) &&
+               (other.centerY - other.halfHeight) >= (centerY - halfHeight);
 	}
 	
 	public String toString()
 	{
-		return "AABB center: " + center.toString() + " halfDimension: " + halfDimension.toString();
+		return String.format("AABB center: (%.2f, %.2f) half-dimensions: (%.2f, %.2f)", 
+            centerX, centerY, halfWidth, halfHeight);
 	}
 }

@@ -73,75 +73,68 @@ public class QuadTree
 
 	public boolean insert(float x, float y)
 	{
-		// Ignore objects which do not belong in this quad tree
 		if (!boundary.contains(x, y))
-	    	return false; // object cannot be added
+        return false;
 
+		// If we're at a leaf node and not full, add the point
+		if (northWest == null && pointCount < QT_NODE_CAPACITY) {
+			xs[pointCount] = x;
+			ys[pointCount] = y;
+			pointCount++;
+			return true;
+		}
+
+		// If we don't have subtrees yet, subdivide
 		if (northWest == null) {
-			// If all the points are the same, we can just add the point to the list, no need to subdivide
-			boolean allSame = true;
-            for (int i = 0; i < pointCount; i++) {
-                if (xs[i] != x || ys[i] != y) {
-                    allSame = false;
-                    break;
-                }
-            }
+			subdivide();
 			
-			if (allSame || pointCount < QT_NODE_CAPACITY) {
-
-				if(pointCount >= xs.length) { 
-
-					float[] newXs = new float[xs.length * 2];
-					float[] newYs = new float[ys.length * 2];
-		
-					System.arraycopy(xs, 0, newXs, 0, xs.length);
-					System.arraycopy(ys, 0, newYs, 0, ys.length);
-		
-					this.xs = newXs;
-					this.ys = newYs;
-				}
-				
-                xs[pointCount] = x;
-                ys[pointCount] = y;
-                pointCount++;
-                return true;
-            }
+			// Move existing points to children
+			for (int i = 0; i < pointCount; i++) {
+				insertToChildren(xs[i], ys[i]);
+			}
+			pointCount = 0; // Clear this node's points
+			xs = null;
+			ys = null;
 		}
 
-		// Add point before subdividing
-
-		if(pointCount >= xs.length) { 
-
-			float[] newXs = new float[xs.length * 2];
-			float[] newYs = new float[ys.length * 2];
-
-			System.arraycopy(xs, 0, newXs, 0, xs.length);
-			System.arraycopy(ys, 0, newYs, 0, ys.length);
-
-			this.xs = newXs;
-			this.ys = newYs;
+		// Add a minimum size check to prevent infinite subdivision
+		if (boundary.halfWidth < 0.01f || boundary.halfHeight < 0.01f) {
+			// Just add to current node if we're too small
+			if (xs == null) {
+				xs = new float[QT_NODE_CAPACITY];
+				ys = new float[QT_NODE_CAPACITY];
+			}
+			if (pointCount < QT_NODE_CAPACITY) {
+				xs[pointCount] = x;
+				ys[pointCount] = y;
+				pointCount++;
+				return true;
+			}
+			return false;
 		}
 
-        xs[pointCount] = x;
-        ys[pointCount] = y;
-        pointCount++;
+		// Insert into appropriate child
+		return insertToChildren(x, y);
+	}
 
-		// Otherwise, we need to subdivide then add the point to whichever node will accept it
+	private boolean insertToChildren(float x, float y) {
+		if (northWest.boundary.contains(x, y)) return northWest.insert(x, y);
+		if (northEast.boundary.contains(x, y)) return northEast.insert(x, y);
+		if (southWest.boundary.contains(x, y)) return southWest.insert(x, y);
+		if (southEast.boundary.contains(x, y)) return southEast.insert(x, y);
+		return false; // Should never happen if boundary check passed
+	}
 
-		if (northWest == null) {
-            subdivide();
+	public void nullify() {
+		if(northWest != null) {
+			xs = null;
+			ys = null;
+
+			northWest.nullify();
+			northEast.nullify();
+			southWest.nullify();
+			southEast.nullify();
 		}
-		// Redistribute points to children
-		for (int i = 0; i < pointCount; i++) {
-			float px = xs[i];
-			float py = ys[i];
-			if (northWest.insert(px, py)) continue;
-			if (northEast.insert(px, py)) continue;
-			if (southWest.insert(px, py)) continue;
-			if (southEast.insert(px, py)) continue;
-		}
-		pointCount = 0; // Clear points from this node
-        return true;
 	}
 
 	/**
@@ -149,40 +142,37 @@ public class QuadTree
 	 */
 	public void subdivide()
 	{
-		float halfx = this.boundary.halfDimension.x * 0.5f;
-		float halfy = this.boundary.halfDimension.y * 0.5f;
+		float halfx = this.boundary.halfWidth;
+		float halfy = this.boundary.halfHeight;
 		
-		float centerx = this.boundary.center.x;
-		float centery = this.boundary.center.y;
+		float centerx = this.boundary.centerX;
+		float centery = this.boundary.centerY;
 		
-		Point half = new Point(halfx, halfy);
-		
-		northWest = new QuadTree( new AABB(new Point(centerx-halfx, centery+halfy), half) );
-		northEast = new QuadTree( new AABB(new Point(centerx+halfx, centery+halfy), half) );
-		southWest = new QuadTree( new AABB(new Point(centerx-halfx, centery-halfy), half) );
-		southEast = new QuadTree( new AABB(new Point(centerx+halfx, centery-halfy), half) );
+		 // Remove Point usage, just pass floats directly
+		 northWest = new QuadTree(new AABB(centerx-halfx, centery, centerx, centery+halfy));
+		 northEast = new QuadTree(new AABB(centerx, centery, centerx+halfx, centery+halfy));
+		 southWest = new QuadTree(new AABB(centerx-halfx, centery-halfy, centerx, centery));
+		 southEast = new QuadTree(new AABB(centerx, centery-halfy, centerx+halfx, centery+halfy));
 	}
 
 	/**
 	 * Returns all points within the given range
 	 */
-	public List<Point> queryRange(AABB range) {
-		List<Point> results = new ArrayList<Point>();
+	public void queryRange(AABB range, List<Point> results) {
 
-		queryRange(range, results);
+		if (!boundary.intersects(range))
+			return;
 
-		return results;
+		queryRangeImpl(range, results);
+
+		return;
 	}
 
 	/**
 	 * To avoid creating a new list for each internal call, we pass in a list
 	 * and add to it.
 	 */
-	private void queryRange(AABB range, List<Point> results) {
-
-		// Automatically abort if the range does not collide with this quad
-	    if (!boundary.intersects(range))
-	      return; // empty list
+	private void queryRangeImpl(AABB range, List<Point> results) {
 
 		if (range.contains(boundary)) {
 			getAllPoints(results);
@@ -202,10 +192,14 @@ public class QuadTree
 
 	    // Otherwise, add the points from the children
 	    
-	    northWest.queryRange(range, results);
-	    northEast.queryRange(range, results);
-	    southWest.queryRange(range, results);
-	    southEast.queryRange(range, results);
+		if(northWest.boundary.intersects(range))
+	    	northWest.queryRangeImpl(range, results);
+	    if(northEast.boundary.intersects(range))
+	    	northEast.queryRangeImpl(range, results);
+	    if(southWest.boundary.intersects(range))
+	    	southWest.queryRangeImpl(range, results);
+	    if(southEast.boundary.intersects(range))
+	    	southEast.queryRangeImpl(range, results);
 	    
 	    return;	
 	}
