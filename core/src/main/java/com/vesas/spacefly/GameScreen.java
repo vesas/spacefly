@@ -364,7 +364,7 @@ public class GameScreen implements Screen
 		PlayerBullets.INSTANCE.tick( floatDelta );
 		MonsterBullets.INSTANCE.tick( floatDelta );
 		
-		Box2DWorld.world.step(floatDelta, 3, 2);
+		Box2DWorld.world.step(floatDelta, 8, 3);
 		
 		PlayerBullets.INSTANCE.removeBullets();
 		MonsterBullets.INSTANCE.removeBullets();

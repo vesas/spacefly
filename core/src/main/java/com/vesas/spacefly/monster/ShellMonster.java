@@ -385,8 +385,7 @@ public class ShellMonster extends Monster
 	}
 	
 	@Override
-	public void tick( float delta )
-	{
+	public void tick( float delta ) {
 		if (body == null) {
 			return;
 		}
@@ -434,8 +433,7 @@ public class ShellMonster extends Monster
 
 	}
 
-	private void moveTowardsPlayer()
-	{
+	private void moveTowardsPlayer() {
 		Vector2 playerPos = Player.INSTANCE.getPosition();
 		Vector2 pos = body.getWorldCenter();
 
@@ -449,14 +447,12 @@ public class ShellMonster extends Monster
 		body.applyForceToCenter(tmp, true);
 	}
 
-	private void fireBullet()
-	{
+	private void fireBullet() {
 		fireBulletAtDir( gunDir, 0.15f, 12.2f, 1);
 	}
 
 	@Override
-	public void draw(GameScreen screen)
-	{
+	public void draw(GameScreen screen) {
 		if (body == null) {
 			return;
 		}

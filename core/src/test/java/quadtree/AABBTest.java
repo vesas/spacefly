@@ -9,19 +9,44 @@ import org.junit.jupiter.api.Test;
 public class AABBTest {
     
     @Test
-    public void testIntersects() {
-        AABB a = new AABB(0, 0, 10, 10);
-        AABB b = new AABB(5, 5, 15, 15);
-        AABB c = new AABB(20, 20, 30, 30);
-        
-        assertTrue(a.intersects(b));
-        assertTrue(b.intersects(a));
+    void testIntersects() {
+        AABB box = new AABB(0, 0, 10, 10); // center (5,5), half-dimensions (5,5)
 
-        assertFalse(a.intersects(c));
-        assertFalse(c.intersects(a));
+        // Test all four early return false conditions
+        // 1. Right edge of other < left edge of this
+        assertFalse(box.intersects(new AABB(-15, 5, -11, 8))); // box completely to left
+
+        // 2. Left edge of other > right edge of this
+        assertFalse(box.intersects(new AABB(15, 5, 20, 8))); // box completely to right
+
+        // 3. Top edge of other < bottom edge of this
+        assertFalse(box.intersects(new AABB(5, -15, 8, -11))); // box completely below
+
+        // 4. Bottom edge of other > top edge of this
+        assertFalse(box.intersects(new AABB(5, 15, 8, 20))); // box completely above
+
+        // Test true conditions
+        // Overlapping cases
+        assertTrue(box.intersects(new AABB(-5, -5, 5, 5))); // overlap bottom-left
+        assertTrue(box.intersects(new AABB(5, 5, 15, 15))); // overlap top-right
+        assertTrue(box.intersects(new AABB(2, 2, 8, 8))); // completely inside
+        assertTrue(box.intersects(new AABB(-5, -5, 15, 15))); // completely contains
+        
+        // Edge touching cases (should intersect)
+        assertTrue(box.intersects(new AABB(-5, 0, 0, 10))); // touching left edge
+        assertTrue(box.intersects(new AABB(10, 0, 15, 10))); // touching right edge
+        assertTrue(box.intersects(new AABB(0, -5, 10, 0))); // touching bottom edge
+        assertTrue(box.intersects(new AABB(0, 10, 10, 15))); // touching top edge
+        
+        // Corner touching cases (should intersect)
+        assertTrue(box.intersects(new AABB(-5, -5, 0, 0))); // touching bottom-left corner
+        assertTrue(box.intersects(new AABB(10, 10, 15, 15))); // touching top-right corner
+        
+        // Same box
+        assertTrue(box.intersects(new AABB(0, 0, 10, 10))); // identical box
     }
 
-    @Test
+        @Test
     public void testContains() {
         AABB box = new AABB(0, 0, 10, 10);
         
@@ -97,40 +122,7 @@ public class AABBTest {
         assertEquals(-7.5, box.centerX, 0.001);
         assertEquals(-7.5, box.centerY, 0.001);
     }
-
-    @Test
-    public void testZeroSize() {
-        AABB point = new AABB(5, 5, 5, 5);
-        AABB box = new AABB(0, 0, 10, 10);
-
-        assertTrue(box.contains(point));
-        assertTrue(point.intersects(point));
-        assertEquals(0.0, point.halfWidth, 0.001);
-        assertEquals(0.0, point.halfHeight, 0.001);
-    }
-
-    @Test
-    public void testEdgeIntersections() {
-        AABB center = new AABB(10, 10, 20, 20);
-        
-        // Touching exactly at edges
-        AABB left = new AABB(0, 10, 10, 20);
-        AABB top = new AABB(10, 0, 20, 10);
-        
-        // Touching at corner
-        AABB cornerTouch = new AABB(20, 20, 30, 30);
-        
-        // Should all intersect since we consider edges/corners as intersecting
-        assertTrue(center.intersects(left));
-        assertTrue(center.intersects(top));
-        assertTrue(center.intersects(cornerTouch));
-        
-        // Verify symmetry
-        assertTrue(left.intersects(center));
-        assertTrue(top.intersects(center));
-        assertTrue(cornerTouch.intersects(center));
-    }
-
+    
     @Test
     public void testConstructorWithPoints() {
         Point center = new Point(5, 5);
@@ -166,12 +158,61 @@ public class AABBTest {
     
     @Test
     public void testContainsPoint() {
-        AABB box = new AABB(0, 0, 4, 4);
+        AABB box = new AABB(0, 0, 10, 10); // center (5,5), half-dimensions (5,5)
         
-        assertTrue(box.contains(new Point(2, 2)));  // Center
-        assertTrue(box.contains(new Point(0, 0)));  // Corner
-        assertTrue(box.contains(new Point(4, 4)));  // Corner
-        assertFalse(box.contains(new Point(5, 5))); // Outside
+        // Test points inside
+        assertTrue(box.contains(new Point(5, 5))); // center
+        assertTrue(box.contains(new Point(0, 0))); // bottom-left corner
+        assertTrue(box.contains(new Point(10, 10))); // top-right corner
+        assertTrue(box.contains(new Point(0, 10))); // top-left corner
+        assertTrue(box.contains(new Point(10, 0))); // bottom-right corner
+
+        // Test points outside
+        assertFalse(box.contains(new Point(-0.1f, 5))); // left
+        assertFalse(box.contains(new Point(10.1f, 5))); // right
+        assertFalse(box.contains(new Point(5, -0.1f))); // bottom
+        assertFalse(box.contains(new Point(5, 10.1f))); // top
+        assertFalse(box.contains(new Point(-1, -1))); // diagonal outside
+    }
+
+    @Test
+    void testContainsXY() {
+        AABB box = new AABB(0, 0, 10, 10); // center (5,5), half-dimensions (5,5)
+
+        // Test points inside
+        assertTrue(box.contains(5, 5)); // center
+        assertTrue(box.contains(0, 0)); // bottom-left corner
+        assertTrue(box.contains(10, 10)); // top-right corner
+        assertTrue(box.contains(0, 10)); // top-left corner
+        assertTrue(box.contains(10, 0)); // bottom-right corner
+
+        // Test points on edges
+        assertTrue(box.contains(0, 5)); // left edge
+        assertTrue(box.contains(10, 5)); // right edge
+        assertTrue(box.contains(5, 0)); // bottom edge
+        assertTrue(box.contains(5, 10)); // top edge
+
+        // Test points outside
+        assertFalse(box.contains(-0.1f, 5)); // left
+        assertFalse(box.contains(10.1f, 5)); // right
+        assertFalse(box.contains(5, -0.1f)); // bottom
+        assertFalse(box.contains(5, 10.1f)); // top
+    }
+
+    @Test
+    void testEdgeCases() {
+
+        AABB box = new AABB(0, 0, 10, 10); // center (5,5), half-dimensions (5,5)
+
+        // Test zero-size boxes
+        AABB zeroBox = new AABB(5, 5, 5, 5); // zero-width/height box
+        assertTrue(box.contains(zeroBox));
+        assertTrue(zeroBox.contains(5, 5));
+        assertFalse(zeroBox.contains(5.1f, 5));
+
+        // Test very small boxes
+        AABB tinyBox = new AABB(5, 5, 5.0001f, 5.0001f);
+        assertTrue(box.contains(tinyBox));
     }
     
     @Test
@@ -182,18 +223,6 @@ public class AABBTest {
         assertTrue(box.contains(0f, 0f));   // Corner
         assertTrue(box.contains(4f, 4f));   // Corner
         assertFalse(box.contains(5f, 5f));  // Outside
-    }
-    
-    @Test
-    public void testIntersects2() {
-        AABB box1 = new AABB(0, 0, 4, 4);
-        
-        // Overlapping
-        assertTrue(box1.intersects(new AABB(2, 2, 6, 6)));
-        // Touching
-        assertTrue(box1.intersects(new AABB(4, 4, 8, 8)));
-        // Not intersecting
-        assertFalse(box1.intersects(new AABB(6, 6, 8, 8)));
     }
     
     @Test

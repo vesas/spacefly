@@ -35,27 +35,22 @@ abstract public class Monster implements AnimateEntity
 
 		int id;
 
-		public Brain()
-		{
+		public Brain() {
 			id = brainCount;
 			brainCount++;
 		}
 
-		public void tick( float delta )
-		{
+		public void tick( float delta ) {
 			cooldown -= delta;
 
-			if (cooldown <= 0)
-			{
+			if (cooldown <= 0) {
 				oncePerSecond();
 				cooldown = 0.1f;
 			}
 		}
 
-		private void oncePerSecond()
-		{
+		private void oncePerSecond() {
 			determineSight();
-
 			determineHearing();
 		}
 
@@ -65,16 +60,13 @@ abstract public class Monster implements AnimateEntity
 			Vector2 playerPos = Player.INSTANCE.getPosition();
 
 			float distance = pos.dst2(playerPos);
-			if (distance < 5.9)
-			{
+			if (distance < 5.9) {
 				canHearPlayer = true;
 			} 
-			else if (distance < 18.6 && Player.INSTANCE.recentlyShot())
-			{
+			else if (distance < 18.6 && Player.INSTANCE.recentlyShot()) {
 				canHearPlayer = true;
 			} 
-			else
-			{
+			else {
 				canHearPlayer = false;
 			}
 
@@ -92,29 +84,23 @@ abstract public class Monster implements AnimateEntity
 			float bodyAngle = body.getAngle() * Util.RADTODEG;
 
 			float absAngle = Util.absAngleDiff(playerAngle, bodyAngle);
-			if (absAngle < 95)
-			{
+			if (absAngle < 95) {
 				makeSightRayCast();
 			} 
-			else
-			{
+			else {
 				canSeePlayer = false;
 			}
 		}
 
-		protected void makeSightRayCast()
-		{
-			Vector2 pos = body.getWorldCenter();
+		protected void makeSightRayCast() {
+			final Vector2 pos = body.getWorldCenter();
+			final Vector2 playerPos = Player.INSTANCE.getWorldCenter();
 
-			Vector2 playerPos = Player.INSTANCE.getWorldCenter();
-
-			if (pos.dst(playerPos) < 36)
-			{
+			if (pos.dst2(playerPos) < 1296) { // 36 * 36
 				lookingForPlayer = true;
 				canSeePlayer = false;
 				Box2DWorld.world.rayCast(this, pos, playerPos);
-			} else
-			{
+			} else {
 				canSeePlayer = false;
 			}
 
@@ -127,25 +113,21 @@ abstract public class Monster implements AnimateEntity
 
 			Object o2 = fixture.getBody().getUserData();
 
-			if (o2 instanceof MonsterBullet || o2 instanceof Bullet)
-			{
+			if (o2 instanceof MonsterBullet || o2 instanceof Bullet) {
 				// ignore bullets
 				return -1;
 			}
 
-			if (o2 instanceof Monster)
-			{
+			if (o2 instanceof Monster) {
 				// ignore other monsters
 				return -1;
 			}
 
-			for (int i = 0, size = playerFixtures.size; i < size; i++)
-			{
+			for (int i = 0, size = playerFixtures.size; i < size; i++) {
 				Fixture fix = playerFixtures.get(i);
 				Object o1 = fix.getBody().getUserData();
 
-				if (o1 != null && o2 != null && o1 == o2)
-				{
+				if (o1 != null && o2 != null && o1 == o2) {
 					canSeePlayer = true;
 					lookingForPlayer = false;
 
@@ -160,32 +142,27 @@ abstract public class Monster implements AnimateEntity
 		}
 	}
 
-	public Body getBody()
-	{
+	public Body getBody() {
 		return body;
 	}
 
 	protected Brain brain = new Brain();
 
-	public void setHealth(int h)
-	{
+	public void setHealth(int h) {
 		health = h;
 		healthString = "" + h;
 	}
 
-	public void getHit(Bullet b)
-	{
+	public void getHit(Bullet b) {
 		health--;
 		healthString = "" + health;
 	}
 
-	public boolean isDead()
-	{
+	public boolean isDead() {
 		return health <= 0;
 	}
 
-	public void destroy()
-	{
+	public void destroy() {
 		Box2DWorld.safeDestroyBody(this.body);
 	}
 
@@ -193,23 +170,19 @@ abstract public class Monster implements AnimateEntity
 		fireBulletAtDir(dir, scatter, speed, type, 0.0f);
 	}
 
-	protected void fireBulletAtDir(Vector2 dir, float scatter, float speed, int type, float posAdvance)
-	{
-		Vector2 pos = body.getPosition();
+	protected void fireBulletAtDir(Vector2 dir, float scatter, float speed, int type, float posAdvance) {
+		final Vector2 pos = body.getPosition();
 
 		dir.x += (scatter - random.nextFloat() * scatter * 2.0f);
 		dir.y += (scatter - random.nextFloat() * scatter * 2.0f);
 
 		dir.nor();
 
-
-
 		MonsterBullets.INSTANCE.fireBullet(pos.x + dir.x * posAdvance, pos.y + dir.y * posAdvance, dir.x * speed, dir.y
 				* speed, type);
 	}
 
-	protected void fireBulletAtPlayer(float scatter, float speed, int type)
-	{
+	protected void fireBulletAtPlayer(float scatter, float speed, int type) {
 		Vector2 pos = body.getPosition();
 
 		Vector2 playerPos = Player.INSTANCE.getPosition();
@@ -229,8 +202,7 @@ abstract public class Monster implements AnimateEntity
 
 	}
 
-	public boolean monsterNearby(float x, float y)
-	{
+	public boolean monsterNearby(float x, float y) {
 		Vector2 anotherPos = new Vector2(x, y);
 		Vector2 myPos = body.getPosition();
 

@@ -158,7 +158,7 @@ public class QuadTree
 	/**
 	 * Returns all points within the given range
 	 */
-	public void queryRange(AABB range, List<Point> results) {
+	public void queryRange(final AABB range, final List<Point> results) {
 
 		if (!boundary.intersects(range))
 			return;
@@ -172,7 +172,7 @@ public class QuadTree
 	 * To avoid creating a new list for each internal call, we pass in a list
 	 * and add to it.
 	 */
-	private void queryRangeImpl(AABB range, List<Point> results) {
+	private void queryRangeImpl(final AABB range, final List<Point> results) {
 
 		if (range.contains(boundary)) {
 			getAllPoints(results);
@@ -180,9 +180,11 @@ public class QuadTree
 		}
 
 	    // Check objects at this quad level
-		for (int i = 0; i < pointCount; i++) {
-			if (range.contains(xs[i], ys[i])) {
-				results.add(new Point(xs[i], ys[i]));
+		if (xs != null) {  // Only check if we have points
+			for (int i = 0; i < pointCount; i++) {
+				if (range.contains(xs[i], ys[i])) {
+					results.add(new Point(xs[i], ys[i]));
+				}
 			}
 		}
 

@@ -33,5 +33,17 @@ public class MetaRegionBuilderTest {
         // first item should be a normal rectangle room
         assertEquals(firstItem.getClass(), MetaRectangleRoom.class);
     }
+
+    @Test
+    public void regionSizeMatchesSpecifiedSize() {
+        MetaRegionBuilder gen = new MetaRegionBuilder();
+        gen.setFirstRoomCenter(new Vector2(0, 0));
+        gen.setSize(5);
+
+        Region region = gen.generateMetaRegion();
+        
+        assertEquals(5, region.getSize());
+        assertEquals(5, region.getMetaList().size);
+    }
     
 }

@@ -9,32 +9,26 @@ import com.vesas.spacefly.box2d.BodyBuilder;
 public abstract class AbstractBullet
 {
 	public Body body;
-	
 	public long creationTime;
 	
-	public void createBody( float posx, float posy, float dirx, float diry, short category, short mask )
+	public AbstractBullet( float posx, float posy, float dirx, float diry, short category, short mask )
 	{
 		creationTime = TimeUtils.millis();
 		
-		BodyBuilder builder = BodyBuilder.getInstance();
-		
-		builder.circle(0.05f);
-		builder.setDensity(0.8f).setFriction( 0.00001f).setRestitution( 0.85f);
-		
-		// 1 wall, 2 player, 4 playerbullet, 8 monsterbullet, 16 monster
-		builder.setFilterCategoryBits( category );
-		builder.setFilterMaskBits( mask );
-		
-		builder.setBodyType( BodyType.DynamicBody);
-		
-		builder.setPosition(posx, posy);
-		
-		builder.setLinearVelocity(dirx, diry);
-		builder.setLinearDamping(0.000f);
-		builder.isBullet( true );
-		builder.setUserdata( this );
-		
-		this.body = builder.construct();
+		body = BodyBuilder.getInstance()
+			.circle(0.05f)
+			.setDensity(0.8f)
+			.setFriction( 0.00001f)
+			.setRestitution( 0.85f)
+			.setFilterCategoryBits( category )
+			.setFilterMaskBits( mask )
+			.setBodyType( BodyType.DynamicBody)
+			.setPosition(posx, posy)
+			.setLinearVelocity(dirx, diry)
+			.setLinearDamping(0.0f)
+			.isBullet( true )
+			.setUserdata( this )
+			.construct();
 		
 	}
 	
@@ -43,16 +37,10 @@ public abstract class AbstractBullet
 		creationTime = TimeUtils.millis();
 	}
 	
-	public void deactivate()
+	public void setActive( boolean active )
 	{
-		body.setAwake( false );
-		body.setActive( false );
-	}
-	
-	public void activate()
-	{
-		body.setAwake( true );
-		body.setActive( true );
+		body.setAwake( active );
+		body.setActive( active );
 	}
 	
 	abstract public void draw( SpriteBatch batch );

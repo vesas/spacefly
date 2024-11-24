@@ -12,7 +12,7 @@ public class AABB
 	 * Creates an axis-aligned bounding box with the given center and half-dimension.
 	 * Half dimension is the distance from the center to the edge of the box. Box dimensions are twice the half-dimension.
 	 */
-	public AABB( Point center, Point halfDimension )
+	public AABB(final Point center, final Point halfDimension )
 	{
 		this.centerX = center.x;
         this.centerY = center.y;
@@ -37,7 +37,7 @@ public class AABB
         this.halfHeight = Math.abs(maxY - minY) * 0.5f;
 	}
 	
-	public boolean contains(Point p) 
+	public boolean contains(final Point p) 
 	{
 		return p.x >= (centerX - halfWidth) &&
                p.x <= (centerX + halfWidth) &&
@@ -52,7 +52,7 @@ public class AABB
                y <= (centerY + halfHeight);
     }
  
-	public boolean intersects(AABB other) 
+	public boolean intersects(final AABB other) 
 	{
 		if ((other.centerX + other.halfWidth) < (centerX - halfWidth)) return false;
         if ((other.centerX - other.halfWidth) > (centerX + halfWidth)) return false;
@@ -61,7 +61,7 @@ public class AABB
         return true;
 	}
 
-	public boolean contains(AABB other) {
+	public boolean contains(final AABB other) {
 		return (other.centerX + other.halfWidth) <= (centerX + halfWidth) &&
                (other.centerX - other.halfWidth) >= (centerX - halfWidth) &&
                (other.centerY + other.halfHeight) <= (centerY + halfHeight) &&

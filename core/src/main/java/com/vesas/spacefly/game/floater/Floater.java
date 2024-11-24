@@ -19,52 +19,39 @@ public final class Floater
 	
 	private String displayString;
 	
-	Floater() {
-	}
-	
-	public void setString( String val )
-	{
+	public void setString( String val ) {
 		displayString = val;
 	}
 	
-	public void setLife( float val )
-	{
+	public void setLife( float val ) {
 		lifetime = val;
 	}
 	
-	public void setMaxLife( float val )
-	{
+	public void setMaxLife( float val ) {
 		maxLifetime = val;
 	}
 	
-	public void setPos( Vector2 pos )
-	{
+	public void setPos( Vector2 pos ) {
 		x = pos.x;
 		y = pos.y;
 		
 	}
 	
-	
-	
-	public void init()
-	{
+	public void init() {
 		active = true;
 		lifetime = 0.0f;
 		
 		maxLifetime = 2.0f;
 	}
 	
-	public boolean isActive()
-	{
+	public boolean isActive() {
 		return active;
 	}
 	
-	public void tick( float delta )
-	{
+	public void tick( float delta ) {
 		lifetime += delta;
 		
-		if( lifetime > maxLifetime )
-		{
+		if( lifetime > maxLifetime ) {
 			active = false;
 		}
 		
@@ -74,8 +61,7 @@ public final class Floater
 	
 	private static Color tmpColor = new Color();
 	
-	public void render( GameScreen screen )
-	{
+	public void render( GameScreen screen ) {
 		if (!active)
 			return;
 
