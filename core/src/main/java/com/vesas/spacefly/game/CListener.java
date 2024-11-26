@@ -28,21 +28,17 @@ public class CListener implements ContactListener
 		{
 			AbstractGameWorld.INSTANCE.removeMonster( monster );
 			
-			float explosionStrength = 0.20f;
-			if( monster instanceof SlurgMonster )
-			{
-				explosionStrength = 0.15f;
+			float explosionStrength = 0.70f;
+			if( monster instanceof SlurgMonster ) {
+				explosionStrength = 0.75f;
 				G.explo1.play( 0.05f );
 				
 			}
-				
-			else if( monster instanceof ZipperMonster )
-			{
-				explosionStrength = 0.08f;
+			else if( monster instanceof ZipperMonster ) {
+				explosionStrength = 0.31f;
 				G.explo1.play( 0.03f );
 			}
 				
-			
 			ShakeExplo shake = new ShakeExplo();
 			shake.setTimeScale( 10.0f );
 			shake.setDirection( bullet.body.getLinearVelocity() );

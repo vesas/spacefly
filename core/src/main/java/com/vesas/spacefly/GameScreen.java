@@ -23,8 +23,6 @@ import com.vesas.spacefly.game.PlayerBullets;
 import com.vesas.spacefly.game.PlayerInput;
 import com.vesas.spacefly.game.Util;
 import com.vesas.spacefly.game.cameraeffects.CameraPositionState;
-import com.vesas.spacefly.game.cameraeffects.Shake;
-import com.vesas.spacefly.game.cameraeffects.ShakeTranslate;
 import com.vesas.spacefly.monster.MonsterBullets;
 import com.vesas.spacefly.world.AbstractGameWorld;
 
@@ -138,9 +136,6 @@ public class GameScreen implements Screen
 		
 		hud = new Hud();
 
-		Shake shake = new ShakeTranslate();
-		CameraPositionState.addEffect( shake );
-
 		inventory.init();
 
 		playerInput = new PlayerInput( this );
@@ -213,18 +208,12 @@ public class GameScreen implements Screen
 		// float delta = Gdx.graphics.getDeltaTime();
 		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		while( (time - lastFrameStarted) < (TARGET_FRAME_NANOTIME - 100000000 ))
-		{
-			Thread.yield();
-		
-			try
-			{
-				Thread.sleep(0, 1);
-			} catch (InterruptedException e)
-			{
+		if (time - lastFrameStarted < TARGET_FRAME_NANOTIME - 100000000) {
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 			}
-			time = TimeUtils.nanoTime();
 		}
 
 		long end = TimeUtils.nanoTime();

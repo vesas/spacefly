@@ -28,23 +28,19 @@ public class CameraPositionState
 	
 	public static void tick( float delta )
 	{
-		for( int i = 0; i < active.size; i++ )
-		{
+		for( int i = 0; i < active.size; i++ ) {
 			Shake shake = active.get( i );
 			
-			if( shake.isDead() )
-				continue;
-			
-			shake.tick( delta );
+			if(!shake.isDead())
+				shake.tick( delta );
 		}
 		
-		for( int i = 0; i < active.size; i++ )
-		{
-			Shake shake = active.get( i );
-			
-			if( shake.isDead() )
-				active.removeIndex(i);
-		}
+		// Remove dead shakes in reverse order to avoid index shifting problems
+        for(int i = active.size - 1; i >= 0; i--) {
+            if(active.get(i).isDead()) {
+                active.removeIndex(i);
+            }
+        }
 	}
 	
 	public static void addEffect( Shake shake )
