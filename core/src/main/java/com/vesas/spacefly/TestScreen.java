@@ -5,10 +5,14 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -22,6 +26,7 @@ import com.vesas.spacefly.world.procedural.room.WallBlock;
 import quadtree.AABB;
 import quadtree.Point;
 import quadtree.QuadTree;
+import util.SimplexNoise;
 
 public class TestScreen implements Screen {
 
@@ -87,7 +92,7 @@ public class TestScreen implements Screen {
         viewport.update(width, height, true);
 
         batch.setProjectionMatrix(camera.combined);
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+        // batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 
         block = new WallBlock(10);
         block.initBottomLeft( 5f, 3f , 0);
@@ -115,6 +120,9 @@ public class TestScreen implements Screen {
 
         if(test == 1) {
             test1Init();
+        }
+        else if(test == 2) {
+            testInit2();
         }
         
     }
@@ -182,8 +190,55 @@ public class TestScreen implements Screen {
     }
 
     // 
+    // test2
     // 
-    // 
+
+    private Texture noiseTexture;
+    private void testInit2() {
+        int width = 512;
+        int height = 512;
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                // Multiple octaves with amplification
+                double value =  
+                      SimplexNoise.noise(x * 0.01f, y * 0.01f) * 0.6     // base frequency, amplified
+                    + SimplexNoise.noise(x * 0.02f, y * 0.02f) * 0.3     // double frequency, half amplitude
+                    + SimplexNoise.noise(x * 0.04f, y * 0.04f) * 0.15    // quadruple frequency, quarter amplitude
+                    + SimplexNoise.noise(x * 0.08f, y * 0.08f) * 0.075;    
+                
+                // Clamp to [0,1]
+                value = MathUtils.clamp((value + 1.0) / 2.0, 0, 1);
+                
+                // Debug first few values
+                if (x < 2 && y < 2) {
+                    System.out.println("Noise at " + x + "," + y + ": " + value);
+                }
+                
+                pixmap.setColor((float)value, (float)value * 1.0f, (float)value * 1.0f, 1);
+                pixmap.drawPixel(x, y);
+            }
+        }
+        
+        noiseTexture = new Texture(pixmap);
+        pixmap.dispose();
+    }
+
+    public void testRender2(float delta) {
+
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        // Reset projection matrix before drawing
+        batch.setProjectionMatrix(camera.combined);
+        
+        batch.begin();
+        float x = 0; // Start with fixed position for debugging
+        float y = 0;
+        batch.draw(noiseTexture, x, y, 32, 32);  // smaller size for testing
+        batch.end();
+    }
+
 
     @Override
     public void show() {
@@ -203,64 +258,14 @@ public class TestScreen implements Screen {
         if(test == 1) {
             test1Render(delta);
         }
+        else if(test == 2) {
+            testRender2(delta);
+        }
         
 
     }
 
 
-    public void render2(float delta) {
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // sets the active texture unit to texture unit 0
-        // spritebatch assumes this
-        Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
-
-        batch.begin();
-
-        // Sprite sprite = G.health[0];
-        // 
-        // sprite.setPosition(5, 2);
-        // sprite.draw(batch);
-
-        
-
-        batch.disableBlending();
-
-        // G.props[0].draw(batch);
-        // block.draw(batch);
-        // block2.draw(batch);
-        // block3.draw(batch);
-        // block4.draw(batch);
-        // block5.draw(batch);
-        block6.draw(batch);
-
-        batch.end();
-
-        degs += delta * 18.7f;
-        line1.setAngleDeg(degs);
-
-        G.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        
-        G.shapeRenderer.setColor(1, 1, 1, 1);
-        
-        float centerx = 5;
-        float centery = 8;
-        
-        // G.shapeRenderer.line(centerx, centery, centerx + 100, centery + 50);
-
-        G.shapeRenderer.line(centerx, centery, centerx + line1.x, centery + line1.y);
-
-        G.shapeRenderer.setColor(1, 0.5f, 0.5f, 1);
-        line2.set(line1.y, -line1.x);
-        G.shapeRenderer.line(centerx + 0, centery + 0, centerx + line2.x, centery + line2.y);
-
-        triangle.circumCenter(G.shapeRenderer);
-
-        G.shapeRenderer.end();
-
-        Gdx.gl.glFlush();
-    }
 
     static private Vector2 line1 = new Vector2(5,0);
     static private Vector2 line2 = new Vector2(5,0);
