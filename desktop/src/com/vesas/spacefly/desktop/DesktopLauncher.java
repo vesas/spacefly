@@ -15,7 +15,7 @@ public final class DesktopLauncher {
 		
 		config.setTitle("spacefly");
 		config.useVsync(true);
-		config.setWindowedMode(2560, 1920);
+		config.setWindowedMode(1920, 1280);
 		config.setForegroundFPS(60);
 		
 		new Lwjgl3Application(new SpaceflyGame(), config);

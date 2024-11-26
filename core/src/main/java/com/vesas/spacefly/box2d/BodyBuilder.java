@@ -47,136 +47,106 @@ public class BodyBuilder
 	
 	private boolean isSensor = false;
 	
-	public BodyBuilder circle( float radius )
-	{
+	public BodyBuilder circle( float radius ) {
 		shape = new CircleShape();
-		
 		shape.setRadius( radius );
 		return this;
 	}
 	
-	public BodyBuilder polybox( float xlen, float ylen)
-	{
+	public BodyBuilder polybox( float xlen, float ylen) {
 		shape = new PolygonShape();
 		((PolygonShape)shape).setAsBox( xlen, ylen );
-		
 		return this;
 	}
 	
-	public BodyBuilder polygon( float [] vertices )
-	{
+	public BodyBuilder polygon( float [] vertices ) {
 		shape = new PolygonShape();
 		((PolygonShape)shape).set(vertices);
-		
 		return this;
 	}
 	
-	public BodyBuilder chainLoop( float [] vertices )
-	{
+	public BodyBuilder chainLoop( float [] vertices ) {
 		shape = new ChainShape();
 		((ChainShape)shape).createLoop(vertices);
-		
 		return this;
 	}
 	
-	public BodyBuilder chain( float [] vertices )
-	{
+	public BodyBuilder chain( float [] vertices ) {
 		shape = new ChainShape();
 		((ChainShape)shape).createChain(vertices);
-		
 		return this;
 	}
 	
-	public BodyBuilder setDensity( float density )
-	{
+	public BodyBuilder setDensity( float density ) {
 		physics.density = density;
-		
 		return this;
 	}
 	
-	public BodyBuilder setFriction( float friction )
-	{
+	public BodyBuilder setFriction( float friction ) {
 		physics.friction = friction;
-		
 		return this;
 	}
 	
-	public BodyBuilder setRestitution( float restitution )
-	{
+	public BodyBuilder setRestitution( float restitution ) {
 		physics.restitution = restitution;
 		return this;
 	}
-	
-	
-	public BodyBuilder setBodyType( BodyType bodyType )
-	{
+
+	public BodyBuilder setBodyType( BodyType bodyType ) {
 		this.bodyType = bodyType;
 		return this;
 	}
 	
-	public BodyBuilder setPosition( float xpos, float ypos )
-	{
+	public BodyBuilder setPosition( float xpos, float ypos ) {
 		position.xpos = xpos;
 		position.ypos = ypos;
 		return this;
 	}
 	
-	public BodyBuilder setLinearDamping( float val )
-	{
+	public BodyBuilder setLinearDamping( float val ) {
 		physics.linearDamping = val;
 		return this;
 	}
 	
-	public BodyBuilder setAngularDamping( float val )
-	{
+	public BodyBuilder setAngularDamping( float val ) {
 		physics.angularDamping = val;
 		return this;
 	}
 	
-	public BodyBuilder setUserdata( Object userData )
-	{
+	public BodyBuilder setUserdata( Object userData ) {
 		this.userData = userData;
 		return this;
 	}
 	
-	public BodyBuilder isSensor( boolean val )
-	{
+	public BodyBuilder isSensor( boolean val ) {
 		this.isSensor = val;
 		return this;
 	}
 	
-	public BodyBuilder setFilterCategoryBits( short bits )
-	{
+	public BodyBuilder setFilterCategoryBits( short bits ) {
 		filterCategoryBits = bits;
 		return this;
 	}
 	
-	public BodyBuilder setFilterMaskBits( short bits )
-	{
+	public BodyBuilder setFilterMaskBits( short bits ) {
 		filterMaskBits = bits;
 		return this;
 	}
 
-	public BodyBuilder setLinearVelocity( float dirx, float diry )
-	{
+	public BodyBuilder setLinearVelocity( float dirx, float diry ) {
 		position.linearVelX = dirx;
 		position.linearVelY = diry;
 		return this;
 	}
 	
-	public BodyBuilder isBullet( boolean val )
-	{
+	public BodyBuilder isBullet( boolean val ) {
 		physics.bullet = val;
 		return this;
 	}
 	
-	
-	public Body construct()
-	{
+	public Body construct() {
 		FixtureDef fixtureDef = createFixtureDef();
-		
 		BodyDef bodyDef = new BodyDef();
-		
 		bodyDef.position.set(position.xpos, position.ypos );
 		
 		if( this.bodyType == null )
@@ -193,7 +163,6 @@ public class BodyBuilder
 		body.setAngularDamping( physics.angularDamping );
 		body.setUserData( this.userData );
 		body.setLinearVelocity(position.linearVelX, position.linearVelY);
-		
 		body.createFixture(fixtureDef);
 		
 		shape.dispose();
@@ -222,8 +191,7 @@ public class BodyBuilder
 		return fixtureDef;
 	}
 	
-	private void init()
-	{
+	private void init() {
 		bodyType = null;
 		shape = null;
 		userData = null;

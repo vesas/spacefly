@@ -35,7 +35,6 @@ public class Box2DWorld
 	
 	public static void safeDestroyBody( Body body )
 	{
-		
 		// first remove joints
 		final Array<JointEdge> joints = body.getJointList();
 		
