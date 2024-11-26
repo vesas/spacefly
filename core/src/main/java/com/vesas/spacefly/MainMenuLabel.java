@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Filter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class MainMenuLabel extends Label {
     
@@ -27,6 +29,8 @@ public class MainMenuLabel extends Label {
     public MainMenuLabel(CharSequence text, Skin skin, Color bgcolor) {
         super(text, skin);
 
+        
+
         // background
         int width = 1;
 		int height = 1;
@@ -39,6 +43,14 @@ public class MainMenuLabel extends Label {
 		tex = new Texture(pixmap);
 		pixmap.dispose();
         // background
+
+
+        // Add padding to the label style
+        LabelStyle style = getStyle();
+        style.background = new TextureRegionDrawable(new TextureRegion(tex));
+        style.fontColor = Color.WHITE;
+        style.background.setLeftWidth(30);
+        style.background.setRightWidth(30);
 
     }
 
