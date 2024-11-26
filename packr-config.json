@@ -1,0 +1,19 @@
+{
+    "platform": "windows64",
+    "jdk": "/Program Files/Eclipse Adoptium/jdk-21.0.5.11-hotspot/",
+    "executable": "spacefly",
+    "classpath": [
+        "desktop/build/libs/desktop-1.0.jar"
+    ],
+    "removelibs": [
+    ],
+    "mainclass": "com.vesas.spacefly.desktop.DesktopLauncher",
+    "vmargs": [
+       "Xmx1G"
+    ],
+    "resources": [
+        "core/assets"
+    ],
+    "minimizejre": "soft",
+    "output": "dist"
+}
