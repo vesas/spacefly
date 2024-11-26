@@ -5,13 +5,18 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -20,11 +25,15 @@ public class MainMenuScreen implements Screen {
     private Stage stage;
     private Table table;
 
+    private ShaderProgram shader;
+    private Mesh fullscreenQuad;
+    private float time = 0;
+
     private SpaceflyGame game;
 
-    private MainMenuLabel menu0;
-    private MainMenuLabel menu1;
-    private MainMenuLabel menu2;
+    private static final int MENU_ITEMS = 3;
+    private static final String[] MENU_LABELS = {"New game", "Settings", "Exit"};
+    private MainMenuLabel[] menuItems;
 
     private int currentSelectedMenu = 0;
 
@@ -36,155 +45,152 @@ public class MainMenuScreen implements Screen {
 	}
 
     private void init() {
+        setupInputProcessor();
+        createUI();
+        setupShader();  // Add this line
+    }
+
+    private void setupShader() {
+        // Create shader
+        shader = new ShaderProgram(
+            Gdx.files.internal("shaders/default.vert").readString(),
+            Gdx.files.internal("shaders/background.frag").readString()
+        );
+        
+        // Create fullscreen quad
+        fullscreenQuad = new Mesh(
+            true, 4, 6,
+            new VertexAttribute(Usage.Position, 2, "a_position")
+        );
+        
+        fullscreenQuad.setVertices(new float[] {
+            -1, -1,
+            1, -1,
+            1, 1,
+            -1, 1
+        });
+        
+        fullscreenQuad.setIndices(new short[] {0, 1, 2, 2, 3, 0});
+    }
+
+    private void setupInputProcessor() {
 
         stage = new Stage(new ScreenViewport()) {
             @Override
             public boolean keyDown(int keyCode) {
-                if (keyCode == Keys.ENTER) {
-                    if(currentSelectedMenu == 0) {
-                        game.setGameScreen();
-                    }
-                    else if(currentSelectedMenu == 1) {
-                        // game.setScreen(new SettingsScreen(game));
-                    }
-                    else if(currentSelectedMenu == 2) {
-                        Gdx.app.exit();
-                    }
+                switch(keyCode) {
+                    case Keys.ENTER: handleMenuSelection(); break;
+                    case Keys.DOWN: updateSelectedMenu(1); break;
+                    case Keys.UP: updateSelectedMenu(-1); break;
+                    case Keys.SPACE: Gdx.app.exit(); break;
                 }
-                if (keyCode == Keys.DOWN) {
-                    currentSelectedMenu++;
-                    if(currentSelectedMenu > 2) {
-                        currentSelectedMenu = 0;
-                    }
-
-                }
-                if (keyCode == Keys.UP) {
-                    currentSelectedMenu--;
-                    if(currentSelectedMenu < 0) {
-                        currentSelectedMenu = 2;
-                    }
-                }
-                if (keyCode == Keys.SPACE) {
-                    Gdx.app.exit();
-                }
-
-                if(currentSelectedMenu == 0) {
-                    menu0.setActive(true);
-                    menu1.setActive(false);
-                    menu2.setActive(false);
-                }
-                else if(currentSelectedMenu == 1) {
-                    menu0.setActive(false);
-                    menu1.setActive(true);
-                    menu2.setActive(false);
-                }
-                else if(currentSelectedMenu == 2) {
-                    menu0.setActive(false);
-                    menu1.setActive(false);
-                    menu2.setActive(true);
-                }
-
+                updateMenuVisuals();
                 return super.keyDown(keyCode);
             }
 
-            @Override public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-
-                Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-                Vector2 mouseLocalPosition = stage.screenToStageCoordinates(mouseScreenPosition);
-                Actor hitActor = stage.hit(mouseLocalPosition.x, mouseLocalPosition.y, false);
-
-                if(hitActor == menu0) {
-                    game.setGameScreen();
-                    return true;
-                }
-                if(hitActor == menu1) {
-                    // game.setScreen(new SettingsScreen(game));
-                    return true;
-                }
-                if(hitActor == menu2) {
-                    Gdx.app.exit();
-                    return true;
+            @Override 
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                Actor hitActor = getHitActor(screenX, screenY);
+                for (int i = 0; i < menuItems.length; i++) {
+                    if (hitActor == menuItems[i]) {
+                        currentSelectedMenu = i;
+                        handleMenuSelection();
+                        return true;
+                    }
                 }
                 return false;
             }
 
-            @Override public boolean mouseMoved (int screenX, int screenY) {
-                Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-                Vector2 mouseLocalPosition = stage.screenToStageCoordinates(mouseScreenPosition);
-                Actor hitActor = stage.hit(mouseLocalPosition.x, mouseLocalPosition.y, false);
-                if(hitActor == menu0) {
-                    currentSelectedMenu = 0;
-                    menu0.setActive(true);
-                    menu1.setActive(false);
-                    menu2.setActive(false);
-                    return true;
+            @Override 
+            public boolean mouseMoved(int screenX, int screenY) {
+                Actor hitActor = getHitActor(screenX, screenY);
+                for (int i = 0; i < menuItems.length; i++) {
+                    if (hitActor == menuItems[i]) {
+                        currentSelectedMenu = i;
+                        updateMenuVisuals();
+                        return true;
+                    }
                 }
-                if(hitActor == menu1) {
-                    currentSelectedMenu = 1;
-                    menu0.setActive(false);
-                    menu1.setActive(true);
-                    menu2.setActive(false);
-                    return true;
-                }
-                if(hitActor == menu2) {
-                    currentSelectedMenu = 2;
-                    menu0.setActive(false);
-                    menu1.setActive(false);
-                    menu2.setActive(true);
-                    return true;
-                }
-                
                 return false;
             }
         };
 
+    }
+
+    private void handleMenuSelection() {
+        switch(currentSelectedMenu) {
+            case 0: game.setGameScreen(); break;
+            case 1: /* game.setScreen(new SettingsScreen(game)); */ break;
+            case 2: Gdx.app.exit(); break;
+        }
+    }
+
+    private void updateSelectedMenu(int direction) {
+        currentSelectedMenu = (currentSelectedMenu + direction + MENU_ITEMS) % MENU_ITEMS;
+    }
+
+    private void updateMenuVisuals() {
+        for (int i = 0; i < menuItems.length; i++) {
+            menuItems[i].setActive(i == currentSelectedMenu);
+        }
+    }
+
+    private void createUI() {
         Skin skin = new Skin(Gdx.files.internal("data/menuskin.json"));
+        setupTable(skin);
+        createTitle(skin);
+        createMenuItems(skin);
+        
+        Gdx.input.setInputProcessor(stage);
+    }
 
-        Pixmap bgPixmap = new Pixmap(1,1, Pixmap.Format.RGB565);
-        bgPixmap.setColor(Color.RED);
-        bgPixmap.fill();
-
-        // TextureRegionDrawable inactiveBg = new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap)));
-
-		Gdx.input.setInputProcessor(stage);
-
+    private void setupTable(Skin skin) {
         table = new Table(skin);
         table.pad(110);
-		table.setFillParent(true);
-		// table.setDebug(true);
-		stage.addActor(table);
+        table.setFillParent(true);
+        stage.addActor(table);
+    }
 
-        int screenWidth = stage.getViewport().getScreenWidth();
-        float scale = 0.35f * screenWidth / 640.0f;
-
-		Label testLabel = new Label("Spacefly", skin);
+    private void createTitle(Skin skin) {
+        Label testLabel = new Label("Spacefly", skin);
         testLabel.setAlignment(Align.center);
-        testLabel.setFontScale(1.4f * scale);
+        testLabel.setFontScale(calculateScale());
         table.row();
 		table.add(testLabel).align(Align.center).expandY().fill().center();
+    }
 
-        table.row();
-        menu0 = new MainMenuLabel("New game", skin, new Color(0,0,0,0) );
-        menu0.setActive(true);
-        menu0.setAlignment(Align.center);
-        menu0.setFontScale(scale);
-		table.add(menu0).align(Align.center).expandY().fill().center();
-
-        table.row();
-        menu1 = new MainMenuLabel("Settings", skin, new Color(0,0,0,0) );
-        menu1.setAlignment(Align.center);
-        menu1.setFontScale(scale);
-		table.add(menu1).align(Align.center).expandY().fill().center();
-
-        table.row();
-        menu2 = new MainMenuLabel("Exit", skin, new Color(0,0,0,0) );
-        menu2.setAlignment(Align.center);
-        menu2.setFontScale(scale);
-        // menu2.setDebug(true);
-		table.add(menu2).align(Align.center).expandY().fill().center();
-
+    private void createMenuItems(Skin skin) {
+        menuItems = new MainMenuLabel[MENU_ITEMS];
+        float scale = calculateScale();
+        
+        for (int i = 0; i < MENU_ITEMS; i++) {
+            table.row();
+            menuItems[i] = new MainMenuLabel(MENU_LABELS[i], skin, new Color(0,0,0,0));
+            menuItems[i].setAlignment(Align.center);
+            menuItems[i].setFontScale(scale);
+            table.add(menuItems[i])
+                .align(Align.center)
+                .expandY().fill().center()
+                .padLeft(50).padRight(50)
+                .padBottom(10)  // Added vertical spacing between items
+                .minWidth(300)  // Added minimum width
+                .expand(0, 1);
+        }
+        
         table.row();
         table.add().align(Align.center).expandY().fill().center();
+        menuItems[0].setActive(true);
+    }
+
+    private Actor getHitActor(int screenX, int screenY) {
+        Vector2 mouseScreenPosition = new Vector2(screenX, screenY);
+        Vector2 mouseLocalPosition = stage.screenToStageCoordinates(mouseScreenPosition);
+        return stage.hit(mouseLocalPosition.x, mouseLocalPosition.y, false);
+    }
+
+    private float calculateScale() {
+        int screenWidth = stage.getViewport().getScreenWidth();
+        return 0.35f * screenWidth / 640.0f;
     }
 
     @Override
@@ -194,11 +200,17 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        time += delta;
+        
+        // Render background
+        shader.bind();
+        shader.setUniformf("u_time", time);
+        shader.setUniformf("u_resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        fullscreenQuad.render(shader, GL20.GL_TRIANGLES);
+        
+        // Render UI
         stage.act(delta);
-		stage.draw();
+        stage.draw();
     }
 
     @Override
@@ -220,6 +232,9 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        shader.dispose();
+        fullscreenQuad.dispose();
+        stage.dispose();
     }
     
 }
