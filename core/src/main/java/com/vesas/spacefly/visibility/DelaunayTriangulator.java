@@ -175,7 +175,119 @@ public class DelaunayTriangulator {
 
         triangleList.add(superTriangle);
 
-        return new short[0];
+        // Add vertices one by one
+        for (int i = 0; i < vertexList.length; i += 2) {
+            
+            Vertex point = new Vertex(vertexList[i], vertexList[i + 1]);
+            
+            // Find all triangles whose circumcircle contains this point
+            List<Triangle> badTriangles = new ArrayList<>();
+            for (Triangle triangle : triangleList) {
+                if (isPointInCircumcircle(point, triangle)) {
+                    badTriangles.add(triangle);
+                }
+            }
+            
+            // Find the boundary of the polygonal hole
+            List<Edge> polygon = new ArrayList<>();
+            for (Triangle triangle : badTriangles) {
+                Edge[] edges = new Edge[] {
+                    new Edge(triangle.a, triangle.b),
+                    new Edge(triangle.b, triangle.c),
+                    new Edge(triangle.c, triangle.a)
+                };
+                
+                for (Edge edge : edges) {
+                    if (isEdgeShared(edge, badTriangles) == 1) {
+                        polygon.add(edge);
+                    }
+                }
+            }
+            
+            // Remove bad triangles
+            triangleList.removeAll(badTriangles);
+            
+            // Re-triangulate the polygonal hole
+            for (Edge edge : polygon) {
+                Triangle newTriangle = new Triangle(edge.start, edge.end, point);
+                triangleList.add(newTriangle);
+            }
+        }
+
+        // Convert triangles to indices and return
+        return trianglesToIndices(vertexList);
+    }
+
+    public boolean isPointInCircumcircle(Vertex point, Triangle triangle) {
+        Vertex a = triangle.a;
+        Vertex b = triangle.b;
+        Vertex c = triangle.c;
+
+        // First determine triangle orientation
+        float orientation = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+        
+        // Swap b and c if triangle is clockwise
+        if (orientation < 0) {
+            Vertex temp = b;
+            b = c;
+            c = temp;
+        }
+
+        float ax = a.x, ay = a.y;
+        float bx = b.x, by = b.y;
+        float cx = c.x, cy = c.y;
+        float px = point.x, py = point.y;
+
+        float determinant = (ax - px) * ((by - py) * (cx * cx + cy * cy - px * px - py * py) -
+                        (cy - py) * (bx * bx + by * by - px * px - py * py)) -
+                        (ay - py) * ((bx - px) * (cx * cx + cy * cy - px * px - py * py) -
+                        (cx - px) * (bx * bx + by * by - px * px - py * py)) +
+                        ((bx - px) * (cy - py) - (cx - px) * (by - py)) * (ax * ax + ay * ay - px * px - py * py);
+
+        return determinant > 0;
+    }
+
+    private int isEdgeShared(Edge edge, List<Triangle> triangles) {
+        int count = 0;
+        for (Triangle triangle : triangles) {
+            if ((edge.start == triangle.a && edge.end == triangle.b) ||
+                (edge.start == triangle.b && edge.end == triangle.c) ||
+                (edge.start == triangle.c && edge.end == triangle.a) ||
+                (edge.end == triangle.a && edge.start == triangle.b) ||
+                (edge.end == triangle.b && edge.start == triangle.c) ||
+                (edge.end == triangle.c && edge.start == triangle.a)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private short[] trianglesToIndices(float[] vertexList) {
+        // Remove super triangle
+        triangleList.removeIf(t -> 
+            t.a == superTriangle.a || t.a == superTriangle.b || t.a == superTriangle.c ||
+            t.b == superTriangle.a || t.b == superTriangle.b || t.b == superTriangle.c ||
+            t.c == superTriangle.a || t.c == superTriangle.b || t.c == superTriangle.c);
+
+        // Convert to indices
+        short[] indices = new short[triangleList.size() * 3];
+        int idx = 0;
+        for (Triangle t : triangleList) {
+            indices[idx++] = findVertexIndex(t.a, vertexList);
+            indices[idx++] = findVertexIndex(t.b, vertexList);
+            indices[idx++] = findVertexIndex(t.c, vertexList);
+        }
+        return indices;
+    }
+
+    private short findVertexIndex(Vertex v, float[] vertexList) {
+        for (short i = 0; i < vertexList.length; i += 2) {
+            if (Math.abs(vertexList[i] - v.x) < 0.0001f && 
+                Math.abs(vertexList[i + 1] - v.y) < 0.0001f) {
+                return (short)(i / 2);
+            }
+        }
+        return -1;
     }
 
 }
