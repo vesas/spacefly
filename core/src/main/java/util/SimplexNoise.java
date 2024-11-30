@@ -23,10 +23,6 @@ public class SimplexNoise {
         }
     }
 
-    private static int fastFloor(double x) {
-        return x > 0 ? (int)x : (int)x - 1;
-    }
-
     private static double dot(int[] g, double x, double y) {
         return g[0] * x + g[1] * y;
     }
@@ -39,8 +35,8 @@ public class SimplexNoise {
         
         // Skew input space to determine which simplex cell we're in
         double s = (xin + yin) * F2;
-        int i = fastFloor(xin + s);
-        int j = fastFloor(yin + s);
+        int i = (int)Math.floor(xin + s);
+        int j = (int)Math.floor(yin + s);
         
         double t = (i + j) * G2;
         // Unskew back to (x,y) space
