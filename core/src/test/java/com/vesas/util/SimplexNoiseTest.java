@@ -36,5 +36,9 @@ public class SimplexNoiseTest {
             max = Math.max(max, value);
         }
         System.out.println("Min: " + min + ", Max: " + max);
+
+        assertTrue(min >= -1.0f, "Minimum value " + min + " should be >= -1.0");
+        assertTrue(max <= 1.0f, "Maximum value " + max + " should be <= 1.0");
     }
+
 }
