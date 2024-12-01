@@ -1,9 +1,7 @@
 buildscript {
-    
-
     repositories {
-        mavenLocal()
         mavenCentral()
+        gradlePluginPortal()
         gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
@@ -14,21 +12,30 @@ buildscript {
     }
 }
 
-
 plugins {
     id "org.sonarqube" version "2.5"
     id 'distribution'
     id 'java'
 }
 
+
+def getGitCommit() {
+    def cmd = 'git rev-parse --short HEAD'
+    return cmd.execute().text.trim()
+}
+
+project.ext.versionName = "v0.1.0-${getGitCommit()}"
+
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
     
-
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-
     version = '1.0'
     ext {
         appName = "spacefly"
@@ -71,6 +78,33 @@ project(":graphics") {
 project(":core") {
     apply plugin: "java-library"
 
+    task generateBuildConfig {
+        outputs.dir file("$buildDir/generated/source/buildConfig/main")
+        
+        doLast {
+            def outputDir = file("$buildDir/generated/source/buildConfig/main/com/vesas/spacefly")
+            outputDir.mkdirs()
+            new File(outputDir, "BuildConfig.java").text = """
+                package com.vesas.spacefly;
+                
+                public final class BuildConfig {
+                    public static final String VERSION_NAME = "${project.versionName}";
+                    private BuildConfig() {}
+                }
+            """
+        }
+    }
+
+    tasks.compileJava.dependsOn(generateBuildConfig)
+    
+    sourceSets {
+        main {
+            java {
+                srcDir "$buildDir/generated/source/buildConfig/main"
+            }
+        }
+    }
+
     dependencies {
         
         implementation project(":graphics")
@@ -82,6 +116,7 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         
     }
+
 }
 
 java {
@@ -89,4 +124,3 @@ java {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
-
