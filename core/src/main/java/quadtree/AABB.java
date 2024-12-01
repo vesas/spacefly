@@ -70,7 +70,8 @@ public class AABB
 	
 	public String toString()
 	{
-		return String.format("AABB center: (%.2f, %.2f) half-dimensions: (%.2f, %.2f)", 
-            centerX, centerY, halfWidth, halfHeight);
+		return String.format("AABB center: (%,.2f, %,.2f) half-dimensions: (%,.2f, %,.2f)", 
+            centerX, centerY, halfWidth, halfHeight)
+            .replace(".", ",");
 	}
 }
