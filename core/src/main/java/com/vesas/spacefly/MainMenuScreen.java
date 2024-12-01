@@ -159,8 +159,8 @@ public class MainMenuScreen implements Screen {
         table.add(testLabel).align(Align.center).expandY().fill().center();
         
         // Add description
-        Label descLabel = new Label("Your civilization has succumbed to a mystical disease, there is a rare form of a spice which grows " +
-        "in the Zorg territory, unfortunately you are at war with Zorgs. You have to find this rare spice and save your people!", skin);
+        Label descLabel = new Label("A deadly disease grips your civilization. The cure is a rare form of spice found deep in Threxon territory," +
+        " but war blocks your path. Secure the spice. Save your people!", skin);
         descLabel.setAlignment(Align.center);
         descLabel.setFontScale(calculateScale() * 0.5f);
         descLabel.setWrap(true);
