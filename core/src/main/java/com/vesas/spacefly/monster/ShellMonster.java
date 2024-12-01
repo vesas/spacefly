@@ -13,6 +13,7 @@ import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.Bullet;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.game.G.MonsterType;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.game.Util;
 
@@ -460,8 +461,8 @@ public class ShellMonster extends Monster
 		Vector2 pos = body.getWorldCenter();
 
 //		pos.scl(Physics.BOX_TO_WORLD);
-		Sprite sprite = G.monsters[2];
-
+		Sprite sprite = G.monsters.get(MonsterType.SHELL);
+		
 		sprite.setOriginCenter();
 		sprite.setScale( 0.012f );
 		// sprite.setOrigin(-6, -5);

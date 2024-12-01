@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
+import com.vesas.spacefly.game.G.PowerUpType;
 
 public class Spice implements AnimateEntity
 {
@@ -73,7 +74,7 @@ public class Spice implements AnimateEntity
 	{
 		Vector2 pos = body.getPosition();
 		
-		Sprite sprite = G.spice[0];
+		Sprite sprite = G.powerUps.get(PowerUpType.SPICE);
 		
 		float bodyAngleInDegrees = body.getAngle() * Util.RADTODEG - 90.0f;
 

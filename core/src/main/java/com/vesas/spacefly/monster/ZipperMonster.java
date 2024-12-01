@@ -10,6 +10,7 @@ import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.Bullet;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.game.G.MonsterType;
 import com.vesas.spacefly.game.Util;
 
 public class ZipperMonster extends Monster
@@ -262,8 +263,7 @@ public class ZipperMonster extends Monster
 //		if (screen.outSideScreen(pos, 16))
 //			return;
 
-		final Sprite sprite = G.monsters[1];
-		
+		final Sprite sprite = G.monsters.get(MonsterType.ZIPPER);
 		
 		
 		if( state == IMPULSESTATE.PUSHING )

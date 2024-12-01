@@ -14,6 +14,7 @@ import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.game.G.MonsterType;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.game.RayCastClosestCB;
 import com.vesas.spacefly.game.Util;
@@ -436,8 +437,8 @@ public class SlurgMonster extends Monster
 
 //		pos.scl(Physics.BOX_TO_WORLD);
 
-		final Sprite sprite = G.monsters[0];
-		final Sprite haloSprite = G.monsters[3];
+		final Sprite sprite = G.monsters.get(MonsterType.BASIC);
+		final Sprite haloSprite = G.monsters.get(MonsterType.BASIC_HALO);
 		
 		sprite.setOriginCenter();
 		sprite.setSize(0.84f, 0.84f);
