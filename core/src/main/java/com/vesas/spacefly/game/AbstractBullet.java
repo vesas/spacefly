@@ -10,6 +10,10 @@ public abstract class AbstractBullet
 {
 	public Body body;
 	public long creationTime;
+
+	public AbstractBullet() {
+		// Default constructor for testing
+	}
 	
 	public AbstractBullet( float posx, float posy, float dirx, float diry, short category, short mask )
 	{

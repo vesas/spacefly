@@ -13,7 +13,7 @@ public class MonsterBullets extends BaseBullets {
 	{
 		if (deadPool.size > 0) 
 		{
-			AbstractBullet bul = deadPool.removeIndex(deadPool.size - 1);
+			AbstractBullet bul = deadPool.pop();
 			if (bul != null) 
 			{
 				bul.body.setTransform(posx, posy, 0f);
@@ -27,7 +27,6 @@ public class MonsterBullets extends BaseBullets {
 				bullets.add(bul);
 				return;
 			}
-
 		}
 
 		MonsterBullet b = new MonsterBullet(posx, posy, dirx, diry, type);

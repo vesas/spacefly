@@ -2,38 +2,23 @@ package com.vesas.spacefly.game;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.PooledLinkedList;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.vesas.spacefly.GameScreen;
 
 public class BaseBullets
 {
-	private static int MAXSIZE = 364;
 
-	protected Array<AbstractBullet> deadPool = new Array<AbstractBullet>(false, 16);
-	protected Array<AbstractBullet> bulletsToBeRemoved = new Array<AbstractBullet>(false, 16);
+	protected Array<AbstractBullet> deadPool = new Array<>(false, 16);
+	protected Array<AbstractBullet> bulletsToBeRemoved = new Array<>(false, 16);
 
-	protected PooledLinkedList<AbstractBullet> bullets = new PooledLinkedList<AbstractBullet>(MAXSIZE);
+	protected Array<AbstractBullet> bullets = new Array<>(false, 32);
 
 	public void preRemove(AbstractBullet b)
 	{
 		if (!bulletsToBeRemoved.contains(b, true))
 			bulletsToBeRemoved.add(b);
 
-		bullets.iter();
-		for (int i = 0; i <= MAXSIZE; i++)
-		{
-			AbstractBullet bn = bullets.next();
-
-			if (bn == null)
-				break;
-
-			if (bn == b)
-			{
-				bullets.remove();
-				break;
-			}
-		}
+		bullets.removeValue(b, true);
 	}
 
 	public void removeBullets()
@@ -58,22 +43,14 @@ public class BaseBullets
 	{
 		long time = TimeUtils.millis();
 
-		bullets.iter();
-
-		for (int i = 0; i <= MAXSIZE; i++)
+		for (int i = bullets.size - 1; i >= 0; i--)
 		{
-			AbstractBullet b = bullets.next();
-
-			if (b == null)
-				break;
-
+			AbstractBullet b = bullets.get(i);
 			if (time - b.creationTime > 4000)
 			{
 				bulletsToBeRemoved.add(b);
-
-				bullets.remove();
+				bullets.removeIndex(i);
 			}
-
 		}
 	}
 
@@ -81,18 +58,25 @@ public class BaseBullets
 	{
 		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA , GL20.GL_ONE_MINUS_SRC_ALPHA);
 		
-		PooledLinkedList<AbstractBullet> localBullets = bullets;
-
-		localBullets.iter();
-		for (int i = 0; i <= MAXSIZE; i++)
+		for (AbstractBullet b : bullets)
 		{
-			AbstractBullet b = localBullets.next();
-
-			if (b == null)
-				break;
-
 			b.draw(screen.worldBatch);
 		}
+	}
 
+	public void add(AbstractBullet bullet) {
+		bullets.add(bullet);
+	}
+
+	public void clear() {
+		bullets.clear();
+	}
+
+	public Array<AbstractBullet> getBullets() {
+		return bullets;
+	}
+
+	public void remove() {
+		removeBullets();
 	}
 }
