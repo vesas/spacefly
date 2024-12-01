@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Bullet extends AbstractBullet
 {
+	
 	public Bullet( float posx, float posy, float dirx, float diry ) 
 	{ 
 		super( posx, posy, dirx, diry, (short)4, (short)17 );
