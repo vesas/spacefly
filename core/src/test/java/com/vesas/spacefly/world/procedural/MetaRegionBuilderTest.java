@@ -38,12 +38,15 @@ public class MetaRegionBuilderTest {
     public void regionSizeMatchesSpecifiedSize() {
         MetaRegionBuilder gen = new MetaRegionBuilder();
         gen.setFirstRoomCenter(new Vector2(0, 0));
+        
+        // set the see so we have repeatable results
+        GenSeed.random.setSeed(151);
         gen.setSize(5);
 
         Region region = gen.generateMetaRegion();
         
-        assertEquals(5, region.getSize());
-        assertEquals(5, region.getMetaList().size);
+        assertEquals(5, region.getSize(), "Region size was: " + region.getSize() + " expected: 5");
+        assertEquals(5, region.getMetaList().size, "Region meta list size was: " + region.getMetaList().size + " expected: 5");
     }
     
 }
