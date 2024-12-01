@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.AnimateEntity;
+import com.vesas.spacefly.game.G.PowerUpType;
 import com.vesas.spacefly.game.Powerup;
 import com.vesas.spacefly.game.floater.Floater;
 import com.vesas.spacefly.monster.Monster;
@@ -127,11 +128,11 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 		float worldX = boxPos.x;
 		float worldY = boxPos.y;
 		
-		int type = Powerup.AMMO1;
+		PowerUpType type = PowerUpType.AMMO;
 
 		if( GenSeed.random.nextFloat() > 0.7 )
 		{
-			type = Powerup.HEAL;
+			type = PowerUpType.HEAL;
 		}
 			
 		

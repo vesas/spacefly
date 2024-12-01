@@ -10,27 +10,23 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
+import com.vesas.spacefly.game.G.PowerUpType;
 import com.vesas.spacefly.world.procedural.GenSeed;
 
 public class Powerup implements AnimateEntity
 {
 	protected Body body;
 	
-	private int type = 0;
-	
-	public static int HEAL = 0;
-	public static int AMMO1 = 1;
-	public static int ADD_HEALTH = 2;
-	public static int ADD_FIRERATE = 3;
+	public PowerUpType powerupType;
 	
 	private float starRot = 0.0f;
 	private float starEase = 0.0f;
 	
 	private boolean starStarted = false;
 	
-	public Powerup( float x, float y, int paramtype )
+	public Powerup( float x, float y, PowerUpType type )
 	{
-		this.type = paramtype;
+		this.powerupType = type;
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;	
@@ -62,9 +58,9 @@ public class Powerup implements AnimateEntity
 		
 	}
 	
-	public int getType()
+	public PowerUpType getType()
 	{
-		return type;
+		return powerupType;
 	}
 	
 	@Override
@@ -99,7 +95,7 @@ public class Powerup implements AnimateEntity
 	{
 		Vector2 pos = body.getPosition();
 		
-		Sprite sprite = G.spice[ type ];
+		Sprite sprite = G.powerUps.get(powerupType);
 		
 		sprite.setOriginCenter();
 		sprite.setSize(0.55f, 0.55f);

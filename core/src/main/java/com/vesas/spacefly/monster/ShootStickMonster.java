@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.game.G.MonsterType;
 import com.vesas.spacefly.game.Util;
 
 public class ShootStickMonster extends Monster
@@ -108,7 +109,7 @@ public class ShootStickMonster extends Monster
 		Vector2 pos = body.getWorldCenter();
 
 //		pos.scl(Physics.BOX_TO_WORLD);
-		Sprite sprite = G.monsters[4];
+		Sprite sprite = G.monsters.get(MonsterType.SHOOT_STICK);
 
 		sprite.setOriginCenter();
 		sprite.setScale( 0.012f );

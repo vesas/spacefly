@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.vesas.spacefly.game.G.PowerUpType;
 import com.vesas.spacefly.game.cameraeffects.CameraPositionState;
 import com.vesas.spacefly.game.cameraeffects.ShakeExplo;
 import com.vesas.spacefly.monster.Monster;
@@ -157,15 +158,16 @@ public class CListener implements ContactListener
 		{
 			Powerup p = (Powerup)o1;
 		
-			if( p.getType() == Powerup.HEAL )
+			// TODO: not good to have depepdency on the resources enum
+			if( p.getType() == PowerUpType.HEAL )
 			{
 				Player.INSTANCE.healUp();
 			}
-			else if( p.getType() == Powerup.AMMO1 )
+			else if( p.getType() == PowerUpType.AMMO )
 			{
 				Player.INSTANCE.addAmmo();	
 			}
-			else if( p.getType() == Powerup.ADD_HEALTH )
+			else if( p.getType() == PowerUpType.HEALTH )
 			{
 				Player.INSTANCE.addMaxHealth();
 //				ProceduralGameWorld.INSTANCE.removeSpice( p );
@@ -176,17 +178,17 @@ public class CListener implements ContactListener
 		{
 			Powerup p = (Powerup)o2;
 		
-			if( p.getType() == Powerup.HEAL )
+			if( p.getType() == PowerUpType.HEAL )
 			{
 				Player.INSTANCE.healUp();
 				AbstractGameWorld.INSTANCE.removeSpice( p );
 			}
-			else if( p.getType() == Powerup.AMMO1 )
+			else if( p.getType() == PowerUpType.AMMO )
 			{
 				Player.INSTANCE.addAmmo();
 				AbstractGameWorld.INSTANCE.removeSpice( p );
 			}
-			else if( p.getType() == Powerup.ADD_HEALTH )
+			else if( p.getType() == PowerUpType.HEALTH )
 			{
 				Player.INSTANCE.addMaxHealth();
 				AbstractGameWorld.INSTANCE.removeSpice( p );

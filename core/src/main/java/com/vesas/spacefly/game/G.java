@@ -1,5 +1,8 @@
 package com.vesas.spacefly.game;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -28,12 +31,35 @@ public class G
 	
 	static public TextureAtlas atlas;
 	
-	static public Sprite [] monsters;
+	public enum MonsterType {
+		BASIC("monster1"),
+		BASIC_HALO("monster1_halo"),
+		ZIPPER("zippermonster"),
+		SHELL("shellmonster.1"),
+		SHOOT_STICK("shoot_stick");
+	
+		private final String textureName;
+		MonsterType(String textureName) { this.textureName = textureName; }
+	}
+
+	static public Map<MonsterType, Sprite> monsters = new EnumMap<>(MonsterType.class);
+
+	public enum PowerUpType {
+		HEAL("powerup_heal"),
+		AMMO("powerup_ammo1"),
+		SPICE("spice"),
+		SHOOT("powerup_shoot1"),
+		HEALTH("powerup_health1");
+	
+		private final String textureName;
+		PowerUpType(String textureName) { this.textureName = textureName; }
+	}
+
+	static public Map<PowerUpType, Sprite> powerUps = new EnumMap<>(PowerUpType.class);
+
 	static public Sprite [] bullets;
 	
 	static public Sprite [] effects;
-	
-	static public Sprite [] spice;
 	
 	static public Sprite [] cursors;
 	
@@ -57,21 +83,13 @@ public class G
 	{
 		atlas = new TextureAtlas(Gdx.files.local("data/fly.atlas"));
 		
-		monsters = new Sprite[5];
-		
-		monsters[0] = G.getAtlas().createSprite("monster1");
-		monsters[1] = G.getAtlas().createSprite("zippermonster");
-		monsters[2] = G.getAtlas().createSprite("shellmonster.1");
-		monsters[3] = G.getAtlas().createSprite("monster1");
-		monsters[4] = G.getAtlas().createSprite("shoot_stick");
-		
-		spice = new Sprite[5];
-		
-		spice[0] = G.getAtlas().createSprite("powerup_heal");
-		spice[1] = G.getAtlas().createSprite("powerup_ammo1");
-		spice[2] = G.getAtlas().createSprite("spice");
-		spice[3] = G.getAtlas().createSprite("powerup_shoot1");
-		spice[4] = G.getAtlas().createSprite("powerup_health1");
+		for (MonsterType type : MonsterType.values()) {
+			monsters.put(type, atlas.createSprite(type.textureName));
+		}
+
+		for (PowerUpType type : PowerUpType.values()) {
+			powerUps.put(type, atlas.createSprite(type.textureName));
+		}
 		
 		health = new Sprite[2];
 		health[0] = G.getAtlas().createSprite("health_on");
