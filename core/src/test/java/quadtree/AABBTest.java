@@ -243,6 +243,7 @@ public class AABBTest {
     public void testToString() {
         AABB box = new AABB(1, 2, 5, 8);
         String expected = "AABB center: (3,00, 5,00) half-dimensions: (2,00, 3,00)";
-        assertEquals(expected, box.toString());
+        final String actual = box.toString();
+        assertEquals(expected, box.toString(), "actual was: " + actual + " expected is: " + expected);
     }
 }
