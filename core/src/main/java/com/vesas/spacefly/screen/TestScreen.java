@@ -1,4 +1,4 @@
-package com.vesas.spacefly;
+package com.vesas.spacefly.screen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +19,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.vesas.spacefly.TestGame;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.quadtree.AABB;
+import com.vesas.spacefly.quadtree.Point;
+import com.vesas.spacefly.quadtree.QuadTree;
+import com.vesas.spacefly.util.SimplexNoise;
 import com.vesas.spacefly.visibility.DelaunayTriangulator;
 import com.vesas.spacefly.world.procedural.room.WallBlock;
-
-import quadtree.AABB;
-import quadtree.Point;
-import quadtree.QuadTree;
-import util.SimplexNoise;
 
 public class TestScreen implements Screen {
 

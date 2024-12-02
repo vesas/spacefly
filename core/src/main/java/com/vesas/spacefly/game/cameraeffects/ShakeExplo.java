@@ -2,8 +2,7 @@ package com.vesas.spacefly.game.cameraeffects;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-
-import util.SimplexNoise;
+import com.vesas.spacefly.util.SimplexNoise;
 
 public class ShakeExplo extends Shake
 {

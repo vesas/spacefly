@@ -1,6 +1,6 @@
 package com.vesas.spacefly.particles;
 
-import com.vesas.spacefly.GameScreen;
+import com.vesas.spacefly.screen.GameScreen;
 
 public interface ExplosionInterface
 {

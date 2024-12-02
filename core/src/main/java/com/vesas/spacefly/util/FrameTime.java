@@ -1,8 +1,6 @@
-package util;
+package com.vesas.spacefly.util;
 
 import java.util.concurrent.TimeUnit;
-
-import com.vesas.spacefly.DebugHelper;
 
 public class FrameTime {
     public static long frametime;

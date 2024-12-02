@@ -1,4 +1,4 @@
-package quadtree;
+package com.vesas.spacefly.quadtree;
 
 import java.util.Objects;
 

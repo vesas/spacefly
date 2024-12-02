@@ -3,7 +3,7 @@ package com.vesas.spacefly.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.vesas.spacefly.GameScreen;
+import com.vesas.spacefly.screen.GameScreen;
 import com.vesas.spacefly.world.AbstractGameWorld;
 
 public class Hud {

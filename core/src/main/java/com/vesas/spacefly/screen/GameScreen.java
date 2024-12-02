@@ -1,4 +1,4 @@
-package com.vesas.spacefly;
+package com.vesas.spacefly.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.vesas.spacefly.SpaceflyGame;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Hud;
@@ -24,11 +25,11 @@ import com.vesas.spacefly.game.PlayerInput;
 import com.vesas.spacefly.game.Util;
 import com.vesas.spacefly.game.cameraeffects.CameraPositionState;
 import com.vesas.spacefly.monster.MonsterBullets;
+import com.vesas.spacefly.util.DebugHelper;
+import com.vesas.spacefly.util.DebugShow;
+import com.vesas.spacefly.util.FrameTime;
+import com.vesas.spacefly.util.Log;
 import com.vesas.spacefly.world.AbstractGameWorld;
-
-import util.DebugShow;
-import util.FrameTime;
-import util.Log;
 
 public class GameScreen implements Screen
 {

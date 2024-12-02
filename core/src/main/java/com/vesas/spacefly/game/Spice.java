@@ -7,9 +7,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.G.PowerUpType;
+import com.vesas.spacefly.screen.GameScreen;
 
 public class Spice implements AnimateEntity
 {

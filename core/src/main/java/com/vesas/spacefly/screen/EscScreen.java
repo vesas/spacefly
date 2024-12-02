@@ -1,4 +1,4 @@
-package com.vesas.spacefly;
+package com.vesas.spacefly.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.vesas.spacefly.SpaceflyGame;
 
 public class EscScreen implements Screen {
 

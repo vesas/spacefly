@@ -1,4 +1,4 @@
-package util;
+package com.vesas.spacefly.util;
 
 import java.io.BufferedWriter;
 import java.io.File;

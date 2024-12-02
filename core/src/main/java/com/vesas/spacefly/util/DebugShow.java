@@ -1,11 +1,11 @@
-package util;
+package com.vesas.spacefly.util;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
 
-import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.screen.GameScreen;
 
 public class DebugShow
 {

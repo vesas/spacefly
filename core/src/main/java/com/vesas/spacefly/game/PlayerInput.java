@@ -2,7 +2,7 @@ package com.vesas.spacefly.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.vesas.spacefly.GameScreen;
+import com.vesas.spacefly.screen.GameScreen;
 
 public class PlayerInput implements InputProcessor
 {

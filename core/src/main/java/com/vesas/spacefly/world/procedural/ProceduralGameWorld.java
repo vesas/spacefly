@@ -14,21 +14,20 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.DebugHelper;
-import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.monster.Monster;
 import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.particles.ExplosionInterface;
+import com.vesas.spacefly.screen.GameScreen;
+import com.vesas.spacefly.util.DebugHelper;
+import com.vesas.spacefly.util.FrameTime;
 import com.vesas.spacefly.visibility.Edge;
 import com.vesas.spacefly.visibility.EndPoint;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.visibility.VisibilityPoly;
 import com.vesas.spacefly.world.AbstractGameWorld;
-
-import util.FrameTime;
 
 public class ProceduralGameWorld extends AbstractGameWorld
 {

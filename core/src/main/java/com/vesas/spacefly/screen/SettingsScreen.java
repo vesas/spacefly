@@ -1,4 +1,4 @@
-package com.vesas.spacefly;
+package com.vesas.spacefly.screen;
 
 public class SettingsScreen {
     

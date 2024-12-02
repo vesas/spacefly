@@ -1,4 +1,4 @@
-package util;
+package com.vesas.spacefly.util;
 
 /**
  * Can be used to time code blocks.

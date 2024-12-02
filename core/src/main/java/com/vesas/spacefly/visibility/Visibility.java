@@ -12,11 +12,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ShortArray;
-import com.vesas.spacefly.DebugHelper;
-
-import util.FrameTime;
-import util.Log;
-import util.PolyUtils;
+import com.vesas.spacefly.util.DebugHelper;
+import com.vesas.spacefly.util.FrameTime;
+import com.vesas.spacefly.util.Log;
+import com.vesas.spacefly.util.PolyUtils;
 
 public class Visibility
 {
