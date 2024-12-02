@@ -16,58 +16,40 @@ public class ShootStickMonster extends Monster
 {
 	private float cooldown = 0;
 
-	private Vector2 faceDir = new Vector2();
+	private final Vector2 faceDir;
 
-	public enum DIRECTION
-	{
-		E, W, S, N;
-	}
-	
-	public ShootStickMonster(float posx, float posy, Vector2 faceDir)
-	{
+	public ShootStickMonster(float posx, float posy, Vector2 faceDir) {
 		this.faceDir = faceDir;
-
 		cooldown = 0 + random.nextFloat() * 0.1f;
+		initializeBody(posx, posy);
+		setHealth( 4 );
+	}
 
+	private void initializeBody(float posx, float posy) {
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set(posx, posy);
 		bodyDef.angle = faceDir.angleRad();
 
 		body = Box2DWorld.world.createBody(bodyDef);
 
 		PolygonShape polyShape = new PolygonShape();
-
-		float[] v = new float[8];
-
-		// right back corner
-		v[0] = -0.38f;
-		v[1] = 0.12f;
-
-		// left back corner
-		v[2] = -0.38f;
-		v[3] = -0.12f;
-		
-		// front left corner
-		v[4] = 0.03f;
-		v[5] = -0.12f;
-
-		// front right corner
-		v[6] = 0.03f;
-		v[7] = 0.12f;
-
-		polyShape.set(v);
+		polyShape.set(
+			new float[] {
+				-0.38f, 0.12f, // right back corner
+				-0.38f, -0.12f, // left back corner
+				0.03f, -0.12f, // front left corner
+				0.03f, 0.12f // front right corner
+			}
+		);
 
 		// Create a fixture definition to apply our shape to
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = polyShape;
 		fixtureDef.density = 2.11f;
 		fixtureDef.friction = 0.6f;
-		fixtureDef.restitution = 0.75f; // Make it bounce a little bit
-		// fixtureDef.filter.groupIndex = Physics.GROUP_MONSTER;
-		fixtureDef.filter.categoryBits = 16; // 1 wall, 2 player, 4
-											 // playerbullet, 8 monsterbullet,
-											 // 16 monster
+		fixtureDef.restitution = 0.75f; 
+		fixtureDef.filter.categoryBits = 16; // monster
 		fixtureDef.filter.maskBits = 23;
 
 		body.createFixture(fixtureDef);
@@ -78,51 +60,36 @@ public class ShootStickMonster extends Monster
 		body.setAngularDamping(0.7f);
 
 		body.setUserData(this);
-
-		setHealth( 4 );
 	}
 	
 	@Override
-	public void tick( float delta )
-	{
+	public void tick( float delta ) {
 		cooldown -= delta;
 
-		if (cooldown <= 0)
-		{
+		if (cooldown <= 0) {
 			fireBullet();
 			cooldown = 2.5f + cooldown;
 		}
-
 	}
 
-	private void fireBullet()
-	{
+	private void fireBullet() {
 		fireBulletAtDir( faceDir, 0.0f, 2.0f, 1, 0.2f);
 	}
 
 	@Override
-	public void draw(GameScreen screen)
-	{
-		if (body == null)
-			return;
+	public void draw(GameScreen screen) {
+		if (body == null) return;
 
 		Vector2 pos = body.getWorldCenter();
 
-//		pos.scl(Physics.BOX_TO_WORLD);
 		Sprite sprite = G.monsters.get(MonsterType.SHOOT_STICK);
 
 		sprite.setOriginCenter();
 		sprite.setScale( 0.012f );
 		sprite.setPosition(pos.x - sprite.getWidth() * 0.5f, pos.y - sprite.getHeight() * 0.5f);
-
-		float angle = body.getAngle();
-		float bodyAngleInDegrees = angle * Util.RADTODEG - 90f;
-
-		sprite.setRotation(bodyAngleInDegrees);
+		sprite.setRotation(body.getAngle() * Util.RADTODEG - 90f);
 
 		sprite.draw(screen.worldBatch);
-
-
 	}
 
 }
