@@ -47,6 +47,17 @@ public class SlurgMonster extends Monster
 	public SlurgMonster(float posx, float posy)
 	{
 		cooldown = 0 + random.nextFloat() * 0.01f;
+		
+		initializeBody(posx, posy);
+
+		targetDir.setAngleDeg(body.getAngle() * Util.RADTODEG);
+		dir.setAngleDeg(body.getAngle() * Util.RADTODEG);
+
+		setHealth(4);
+	}
+
+	private void initializeBody(float posx, float posy) {
+
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(posx, posy);
@@ -81,16 +92,9 @@ public class SlurgMonster extends Monster
 		// DEGREES_TO_RADIANS);
 
 		body.setUserData(this);
-
-		targetDir.setAngleDeg(body.getAngle() * Util.RADTODEG);
-		dir.setAngleDeg(body.getAngle() * Util.RADTODEG);
-
 		// Remember to dispose of any shapes after you're done with them!
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
 		shape.dispose();
-
-		setHealth(4);
-
 	}
 
 	@Override
@@ -117,8 +121,7 @@ public class SlurgMonster extends Monster
 			//cooldown = 0.0015f;
 			cooldown = 0.10f + cooldown;
 			
-			if (this.brain.canHearPlayer || this.brain.canSeePlayer)
-			{
+			if (this.brain.canHearPlayer || this.brain.canSeePlayer) {
 				Vector2 playerPos = Player.INSTANCE.getWorldCenter();
 				Vector2 pos = body.getWorldCenter();
 				Vector2 veloc = Player.INSTANCE.body.getLinearVelocity();
@@ -132,15 +135,7 @@ public class SlurgMonster extends Monster
 				targetDir.y = tmp.y;
 			}
 
-			
-			// Vector2 vel = body.getLinearVelocity();
-			/*
-			 * if( vel.len() > MAX_VELOCITY ) { vel.nor(); vel.mul( MAX_VELOCITY
-			 * ); body.setLinearVelocity( vel ); }
-			 */
-
-			if (random.nextInt(100) < 50)
-			{
+			if (random.nextInt(100) < 50) {
 				dir.setAngleDeg(body.getAngle() * Util.RADTODEG);
 				dir.nor();
 				dir.scl(random.nextFloat() * 358.45f * delta );
@@ -149,33 +144,26 @@ public class SlurgMonster extends Monster
 
 			}
 
-			if (random.nextInt(100) < 30)
-			{
+			if (random.nextInt(100) < 30) {
 				makeRayCast();
 			}
 			
-			if(random.nextInt(100) < 18 && brain.canSeePlayer && fireCooldown <= 0)
-			{
+			if(random.nextInt(100) < 18 && brain.canSeePlayer && fireCooldown <= 0) {
 				fireBullet();
 				fireCooldown = 0.08f;
 			}
 
-			if (random.nextInt(100) < 60)
-			{
+			if (random.nextInt(100) < 60) {
 				turnToTarget( delta );
 			}
 
-			if (random.nextInt(100) < 20 && !brain.canSeePlayer && !brain.canHearPlayer)
-			{
+			if (random.nextInt(100) < 20 && !brain.canSeePlayer && !brain.canHearPlayer) {
 				moveDirToRandom();
-				
 			}
 
-			if (random.nextInt(100) < 20 && !searchForSpice)
-			{
+			if (random.nextInt(100) < 20 && !searchForSpice) {
 				startSpiceSearch();
 			}
-
 		}
 
 	}
@@ -207,8 +195,7 @@ public class SlurgMonster extends Monster
 
 	}
 
-	private AnimateEntity findClosestSpice()
-	{
+	private AnimateEntity findClosestSpice() {
 
 		Array<AnimateEntity> spices = new Array<AnimateEntity>();//  ProceduralGameWorld.INSTANCE.getSpiceList();
 
@@ -236,8 +223,7 @@ public class SlurgMonster extends Monster
 		return closestSpice;
 	}
 
-	private Monster findClosestBigMonster()
-	{
+	private Monster findClosestBigMonster() {
 		Array<Monster> monsters = new Array<Monster>();// ProceduralGameWorld.INSTANCE.getMonsterList();
 
 		float closestDist = 50000.0f;
@@ -269,8 +255,7 @@ public class SlurgMonster extends Monster
 		return closestBigMonster;
 	}
 
-	private void makeRayCast()
-	{
+	private void makeRayCast() {
 		Vector2 pos = body.getPosition();
 
 		Vector2 feeler = SlurgMonster.tmpVector;
@@ -319,25 +304,7 @@ public class SlurgMonster extends Monster
 	}
 
 
-	private void moveDirToRandom()
-	{
-		// if( distanceToBlock < 0.3f )
-		// {
-		// targetDir.x = -targetDir.x;
-		// targetDir.y = -targetDir.y;
-		// return;
-		// }
-
-		// if( distanceToBlock < 1.5f )
-		// {
-		// targetDir.x = targetDir.x + blockNormal.x;
-		// targetDir.y = targetDir.y + blockNormal.y;
-		// targetDir.nor();
-		// }
-
-//		final float scalingFactor = 55.0f;
-//		targetDir.rotate((random.nextFloat() - 0.5f) * scalingFactor);
-
+	private void moveDirToRandom() {
 	}
 
 	private void turnToTarget( float delta )
@@ -359,35 +326,6 @@ public class SlurgMonster extends Monster
 		float torque = (float) (inertia * desiredAngularVelocity / (1.0f/60.0f));
 		body.applyTorque( torque * 0.0005f, true );
 
-		/*
-		float scaling = 24.50f * delta;
-
-		float absDiff = Math.abs(diff);
-
-		if (absDiff < 140.0)
-			scaling = scaling * 1.2f;
-
-		if (absDiff < 65.0)
-			scaling = scaling * 0.8f;
-
-		if (absDiff < 35.0)
-			scaling = scaling * 0.6f;
-
-		if (absDiff < 15.0)
-			scaling = scaling * 0.4f;
-
-		if (absDiff < 5.0)
-			scaling = scaling * 0.3f;
-
-		if (diff < 0)
-		{
-			body.applyTorque(-scaling, true );
-		} else
-		{
-			body.applyTorque(scaling, true );
-		}
-		*/
-		
 	}
 	
 
@@ -413,18 +351,11 @@ public class SlurgMonster extends Monster
 		
 		MonsterBullets.INSTANCE.fireBullet(pos.x + temp2.x, pos.y + temp2.y , 
 				temp.x * speed, temp.y * speed, type );
-		
-		//G.shot.play( 0.04f );
-		
+				
 	}
 
 	@Override
-	public void draw(GameScreen screen)
-	{
-		// TODO Auto-generated method stub
-
-		// sprite.setPosition(camera.position.x+384, camera.position.y+284);
-
+	public void draw(GameScreen screen) {
 		if (body == null) {
 			return;
 		}
