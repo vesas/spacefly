@@ -2,7 +2,6 @@ package com.vesas.spacefly.world;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.G.PowerUpType;
 import com.vesas.spacefly.game.Powerup;
@@ -13,6 +12,7 @@ import com.vesas.spacefly.particles.BigExplosion;
 import com.vesas.spacefly.particles.Explosion;
 import com.vesas.spacefly.particles.ExplosionInterface;
 import com.vesas.spacefly.particles.Goo;
+import com.vesas.spacefly.screen.GameScreen;
 import com.vesas.spacefly.world.procedural.GenSeed;
 import com.vesas.spacefly.world.procedural.ProceduralGameWorld;
 

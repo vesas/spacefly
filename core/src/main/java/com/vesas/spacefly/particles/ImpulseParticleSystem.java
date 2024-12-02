@@ -3,8 +3,8 @@ package com.vesas.spacefly.particles;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool.Poolable;
-import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.screen.GameScreen;
 
 public class ImpulseParticleSystem implements Poolable
 {

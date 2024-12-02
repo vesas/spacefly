@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.vesas.spacefly.GameScreen;
+import com.vesas.spacefly.screen.GameScreen;
 
 public class TestFeature implements Feature {
 

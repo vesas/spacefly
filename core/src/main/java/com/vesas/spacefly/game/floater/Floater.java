@@ -2,9 +2,9 @@ package com.vesas.spacefly.game.floater;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
-import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Util;
+import com.vesas.spacefly.screen.GameScreen;
 
 public final class Floater
 {

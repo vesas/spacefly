@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
-import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.screen.GameScreen;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.room.RoomFeature;
 

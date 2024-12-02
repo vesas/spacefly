@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import com.vesas.spacefly.quadtree.AABB;
+import com.vesas.spacefly.quadtree.Point;
+
 public class AABBTest {
     
     @Test

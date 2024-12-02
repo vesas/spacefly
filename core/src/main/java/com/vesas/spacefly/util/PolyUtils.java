@@ -1,4 +1,4 @@
-package util;
+package com.vesas.spacefly.util;
 
 public class PolyUtils
 {

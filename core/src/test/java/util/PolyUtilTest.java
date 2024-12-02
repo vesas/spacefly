@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.badlogic.gdx.math.Vector2;
+import com.vesas.spacefly.util.PolyUtils;
 
 public class PolyUtilTest {
     

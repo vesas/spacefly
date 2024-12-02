@@ -1,4 +1,4 @@
-package com.vesas.spacefly;
+package com.vesas.spacefly.util;
 
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.screen.GameScreen;
 
 public class DebugHelper
 {

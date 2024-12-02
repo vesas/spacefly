@@ -1,4 +1,4 @@
-package quadtree;
+package com.vesas.spacefly.quadtree;
 
 public class AABB
 {

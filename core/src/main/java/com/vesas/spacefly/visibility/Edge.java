@@ -1,8 +1,7 @@
 package com.vesas.spacefly.visibility;
 
-import util.PolyUtils;
-
 import com.badlogic.gdx.math.Vector2;
+import com.vesas.spacefly.util.PolyUtils;
 
 public class Edge
 {

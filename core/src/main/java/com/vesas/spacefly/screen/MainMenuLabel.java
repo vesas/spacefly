@@ -1,4 +1,4 @@
-package com.vesas.spacefly;
+package com.vesas.spacefly.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

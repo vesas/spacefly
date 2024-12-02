@@ -3,7 +3,7 @@ package com.vesas.spacefly.game;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.vesas.spacefly.GameScreen;
+import com.vesas.spacefly.screen.GameScreen;
 
 public class BaseBullets
 {

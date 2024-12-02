@@ -1,4 +1,4 @@
-package util;
+package com.vesas.spacefly.util;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.TextureData;

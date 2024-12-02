@@ -10,7 +10,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import util.Timing;
+import com.vesas.spacefly.quadtree.AABB;
+import com.vesas.spacefly.quadtree.Point;
+import com.vesas.spacefly.quadtree.QuadTree;
+import com.vesas.spacefly.util.Timing;
 
 
 public class QuadTreeTest {

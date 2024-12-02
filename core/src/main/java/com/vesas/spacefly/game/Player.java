@@ -12,12 +12,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.vesas.spacefly.DebugHelper;
-import com.vesas.spacefly.GameScreen;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.monster.MonsterBullet;
 import com.vesas.spacefly.particles.ImpulseParticleSystem;
 import com.vesas.spacefly.particles.Trail;
+import com.vesas.spacefly.screen.GameScreen;
+import com.vesas.spacefly.util.DebugHelper;
 import com.vesas.spacefly.world.procedural.GenSeed;
 
 public final class Player

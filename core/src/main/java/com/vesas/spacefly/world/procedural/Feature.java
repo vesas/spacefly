@@ -1,7 +1,7 @@
 package com.vesas.spacefly.world.procedural;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.vesas.spacefly.GameScreen;
+import com.vesas.spacefly.screen.GameScreen;
 
 // feature on the live map
 public interface Feature
