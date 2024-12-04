@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.vesas.spacefly.game.AbstractBullet;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.game.G.BulletType;
 
 public class MonsterBullet extends AbstractBullet
 {
@@ -29,7 +30,7 @@ public class MonsterBullet extends AbstractBullet
 			dir.nor();
 			float angle = dir.angleDeg();
 			
-			Sprite sprite = G.bullets[2];
+			Sprite sprite = G.bullets.get(BulletType.MONSTER2);
 			sprite.setSize( 0.2f, 0.55f);
 			sprite.setOriginCenter();
 			sprite.setPosition(center.x - sprite.getWidth() * 0.5f, center.y - sprite.getHeight() * 0.5f);
@@ -38,7 +39,7 @@ public class MonsterBullet extends AbstractBullet
 		}
 		else
 		{
-			Sprite sprite = G.bullets[1];
+			Sprite sprite = G.bullets.get(BulletType.MONSTER);
 			sprite.setSize( 0.2f, 0.55f);
 			sprite.setOriginCenter();
 			sprite.setPosition(center.x - sprite.getWidth() * 0.5f, center.y - sprite.getHeight() * 0.5f);
