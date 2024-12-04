@@ -8,14 +8,15 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.Bullet;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.G.MonsterType;
-import com.vesas.spacefly.screen.GameScreen;
-import com.vesas.spacefly.util.DebugHelper;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.game.Util;
+import com.vesas.spacefly.screen.GameScreen;
+import com.vesas.spacefly.util.DebugHelper;
 
 public class ShellMonster extends Monster
 {
@@ -311,70 +312,33 @@ public class ShellMonster extends Monster
 	{
 		cooldown = 0 + random.nextFloat() * 0.1f;
 
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(posx, posy);
+		float[] vertices = new float[] {
+			// backside
+			-0.25f,  0.38f,
+			-0.25f, -0.38f,
+			
+			// curve from down to up
+			-0.07f, -0.36f,
+			 0.02f, -0.30f,
+			 0.10f, -0.10f,
+			 0.10f,  0.10f,
+			 0.02f,  0.30f,
+			-0.07f,  0.36f
+		};
 
-		body = Box2DWorld.world.createBody(bodyDef);
-
-		PolygonShape polyShape = new PolygonShape();
-
-		float[] v = new float[16];
-
-		// facing east
-		
-		// backside
-		v[0] = -0.25f;
-		v[1] = 0.38f;
-
-		v[2] = -0.25f;
-		v[3] = -0.38f;
-		// end of backside
-		
-		
-		// curve from down to up
-		v[4] = -0.07f;
-		v[5] = -0.36f;
-
-		v[6] = 0.02f;
-		v[7] = -0.30f;
-
-		
-		v[8] = 0.10f;
-		v[9] = -0.1f;
-
-		v[10] = 0.10f;
-		v[11] = 0.1f;
-
-		
-		v[12] = 0.02f;
-		v[13] = 0.30f;
-
-		v[14] = -0.07f;
-		v[15] = 0.36f;
-
-		polyShape.set(v);
-
-		// Create a fixture definition to apply our shape to
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = polyShape;
-		fixtureDef.density = 2.11f;
-		fixtureDef.friction = 0.6f;
-		fixtureDef.restitution = 0.75f; // Make it bounce a little bit
-		// fixtureDef.filter.groupIndex = Physics.GROUP_MONSTER;
-		fixtureDef.filter.categoryBits = 16; // 1 wall, 2 player, 4
-											 // playerbullet, 8 monsterbullet,
-											 // 16 monster
-		fixtureDef.filter.maskBits = 23;
-
-		body.createFixture(fixtureDef);
-
-		polyShape.dispose();
-
-		body.setLinearDamping(0.7f);
-		body.setAngularDamping(0.7f);
-
-		body.setUserData(this);
+		body = BodyBuilder.getInstance()
+			.setBodyType(BodyType.DynamicBody)
+			.setPosition(posx, posy)
+			.polygon(vertices)
+			.setDensity(2.11f)
+			.setFriction(0.6f)
+			.setRestitution(0.75f)
+			.setFilterCategoryBits((short)16)  // monster
+			.setFilterMaskBits((short)23)
+			.setLinearDamping(0.7f)
+			.setAngularDamping(0.7f)
+			.setUserdata(this)
+			.construct();
 
 		gunDir.x = 1.0f;
 		gunDir.y = 0.0f;

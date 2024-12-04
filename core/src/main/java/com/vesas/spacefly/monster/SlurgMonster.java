@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.G;
@@ -58,43 +59,19 @@ public class SlurgMonster extends Monster
 
 	private void initializeBody(float posx, float posy) {
 
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(posx, posy);
-
-		body = Box2DWorld.world.createBody(bodyDef);
-
-		CircleShape shape = new CircleShape();
-		shape.setRadius(0.43f);
-
-		// Create a fixture definition to apply our shape to
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = shape;
-		fixtureDef.density = 2.25f;
-		fixtureDef.friction = 0.000001f;
-		fixtureDef.restitution = 0.75f; // Make it bounce a little bit
-		// fixtureDef.filter.groupIndex = Physics.GROUP_MONSTER;
-
-		fixtureDef.filter.categoryBits = 16; // 1 wall, 2 player, 4
-											 // playerbullet, 8 monsterbullet,
-											 // 16 monster
-		fixtureDef.filter.maskBits = 23;
-
-		body.createFixture(fixtureDef);
-
-		body.setAwake(true);
-		body.setActive(true);
-
-		body.setLinearDamping(0.30f);
-		body.setAngularDamping(1.90f);
-
-		// body.setTransform(body.getPosition().x, body.getPosition().y, 90.0f *
-		// DEGREES_TO_RADIANS);
-
-		body.setUserData(this);
-		// Remember to dispose of any shapes after you're done with them!
-		// BodyDef and FixtureDef don't need disposing, but shapes do.
-		shape.dispose();
+		body = BodyBuilder.getInstance()
+        .setBodyType(BodyType.DynamicBody)
+        .setPosition(posx, posy)
+        .circle(0.43f)
+        .setDensity(2.25f)
+        .setFriction(0.000001f)
+        .setRestitution(0.75f)
+        .setFilterCategoryBits((short)16)  // monster
+        .setFilterMaskBits((short)23)
+        .setLinearDamping(0.30f)
+        .setAngularDamping(1.90f)
+        .setUserdata(this)
+        .construct();
 	}
 
 	@Override
