@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.vesas.spacefly.BuildConfig;
 import com.vesas.spacefly.SpaceflyGame;
+import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class MainMenuScreen implements Screen {
 
@@ -38,6 +39,8 @@ public class MainMenuScreen implements Screen {
 
     private int currentSelectedMenu = 0;
 
+    private Label mainLabel;
+
     public MainMenuScreen(SpaceflyGame game) {
 		super();
 		this.game = game;
@@ -47,8 +50,8 @@ public class MainMenuScreen implements Screen {
 
     private void init() {
         setupInputProcessor();
+        setupShader();
         createUI();
-        setupShader();  // Add this line
     }
 
     private void setupShader() {
@@ -154,11 +157,11 @@ public class MainMenuScreen implements Screen {
     }
 
     private void createTitle(Skin skin) {
-        Label testLabel = new Label("Spacefly", skin);
-        testLabel.setAlignment(Align.center);
-        testLabel.setFontScale(calculateScale());
+        mainLabel = new Label("Spacefly", skin);
+        mainLabel.setAlignment(Align.center);
+        mainLabel.setFontScale(calculateScale());
         table.row();
-        table.add(testLabel).align(Align.center).expandY().fill().center();
+        table.add(mainLabel).align(Align.center).expandY().fill().center().pad(20);
         
         // Add description
         Label descLabel = new Label("A deadly disease grips your civilization. The cure is a rare form of spice found deep in Threxon territory," +
