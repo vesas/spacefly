@@ -11,9 +11,8 @@ public class PlayerBullets extends BaseBullets
 		// See if the pool contains anything
 		if( deadPool.size > 0 )
 		{
-			AbstractBullet bul = deadPool.removeIndex( deadPool.size - 1);
-			if( bul != null )
-			{
+			AbstractBullet bul = deadPool.pop();
+			if( bul != null ) {
 				bul.body.setTransform(posx, posy, 0f);
 				bul.body.setLinearVelocity( dirx, diry );
 				bul.body.setAwake( true );

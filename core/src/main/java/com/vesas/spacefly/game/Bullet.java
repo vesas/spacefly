@@ -3,6 +3,7 @@ package com.vesas.spacefly.game;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.vesas.spacefly.game.G.BulletType;
 
 public class Bullet extends AbstractBullet
 {
@@ -22,7 +23,7 @@ public class Bullet extends AbstractBullet
 		dir.nor();
 		float angle = dir.angleDeg();
 		
-		final Sprite sprite = G.bullets[0];
+		final Sprite sprite = G.bullets.get(BulletType.PLAYER);
 		
 		sprite.setSize( 0.15f, 0.4f);
 		sprite.setOriginCenter();

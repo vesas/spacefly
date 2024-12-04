@@ -31,6 +31,7 @@ public class G
 	
 	static public TextureAtlas atlas;
 	
+	// Monster types
 	public enum MonsterType {
 		BASIC("monster1"),
 		BASIC_HALO("monster1_halo"),
@@ -44,6 +45,7 @@ public class G
 
 	static public Map<MonsterType, Sprite> monsters = new EnumMap<>(MonsterType.class);
 
+	// Power up types
 	public enum PowerUpType {
 		HEAL("powerup_heal"),
 		AMMO("powerup_ammo1"),
@@ -57,7 +59,17 @@ public class G
 
 	static public Map<PowerUpType, Sprite> powerUps = new EnumMap<>(PowerUpType.class);
 
-	static public Sprite [] bullets;
+	// Bullet types
+	public enum BulletType {
+		PLAYER("bullet"),
+		MONSTER("monsterbullet"),
+		MONSTER2("monsterbullet2");
+
+		private final String textureName;
+		BulletType(String textureName) { this.textureName = textureName; }
+	}
+
+	static public Map<BulletType, Sprite> bullets = new EnumMap<>(BulletType.class);
 	
 	static public Sprite [] effects;
 	
@@ -90,16 +102,16 @@ public class G
 		for (PowerUpType type : PowerUpType.values()) {
 			powerUps.put(type, atlas.createSprite(type.textureName));
 		}
+
+		for(BulletType type : BulletType.values()) {
+			bullets.put(type, atlas.createSprite(type.textureName));
+		}
 		
 		health = new Sprite[2];
 		health[0] = G.getAtlas().createSprite("health_on");
 		health[1] = G.getAtlas().createSprite("health_off");
 		
-		bullets = new Sprite[3];
 		
-		bullets[0] = G.getAtlas().createSprite("bullet");
-		bullets[1] = G.getAtlas().createSprite("monsterbullet");
-		bullets[2] = G.getAtlas().createSprite("monsterbullet2");
 		
 		effects = new Sprite[5];
 		effects[0] = G.getAtlas().createSprite("smallpuff");
