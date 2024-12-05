@@ -3,13 +3,9 @@ package com.vesas.spacefly.world.procedural.room.rectangleroom;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
-import com.vesas.spacefly.world.procedural.generator.MetaFeature;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
-import com.vesas.spacefly.world.procedural.room.Block1;
 import com.vesas.spacefly.world.procedural.room.WallBlock;
-import com.vesas.spacefly.world.procedural.room.BlockUp;
-import com.vesas.spacefly.world.procedural.room.FeatureConnector;
 import com.vesas.spacefly.visibility.Visibility;
 
 public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
@@ -37,27 +33,46 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 	{
 		this.xpos = xpos; 
 		this.ypos = ypos;
+
+		xsize = 0;
+		ysize = 0;
+		blocks.clear();
 		
 		return INSTANCE;
 	}
 
-	private void buildNorthWall(RectangleRoom room, MetaPortal nPortal) {
-
-		if( nPortal == null )
-		{
-			// add blocks for the whole length
-			addBlocksToRight( xpos, ypos + ysize - RectangleRoom.WALL_WIDTH, xsize);
-			
-			// xpos + RectangleRoom.WALL_WIDTH because: The floor starts at xpos, wall goes from xpos up to xpos + RectangleRoom.WALL_WIDTH
+	private void buildNorthWallVisibility(RectangleRoom room, MetaPortal nPortal) {
+		if( nPortal == null ) {
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
-		else
-		{
+		else {
 			// calculate side size in units, without the exit
 			float xsizeWithoutExit = xsize - nPortal.width;
 			// then divide by two to get width of either side of the portal
 			float sideSize = xsizeWithoutExit / 2;
 			
+			float beginSize = Math.max( 1, sideSize );
+
+			// left side
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH);
+
+			// door
+			visib.addSegment( xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+
+			// right side
+			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+		}
+	}
+	private void buildNorthWall(RectangleRoom room, MetaPortal nPortal) {
+
+		if( nPortal == null ) {
+			addBlocksToRight( xpos, ypos + ysize - RectangleRoom.WALL_WIDTH, xsize);
+		}
+		else {
+			// calculate side size in units, without the exit
+			float xsizeWithoutExit = xsize - nPortal.width;
+			// then divide by two to get width of either side of the portal
+			float sideSize = xsizeWithoutExit / 2;
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = xsize - (beginSize + nPortal.width);
 
@@ -68,27 +83,34 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			addBlocksToRight( xpos, ypos + ysize - RectangleRoom.WALL_WIDTH, beginSize);
 			// right side
 			addBlocksToRight( xpos + (beginSize + nPortal.width), ypos + ysize- RectangleRoom.WALL_WIDTH, endSize);
-			
-			// left side
-			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH);
+		}
+	}
 
-			// door
-			visib.addSegment( xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+	private void buildSouthWallVisibility(RectangleRoom room, MetaPortal sPortal) {
+		if( sPortal == null ) {
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
+		}
+		else {
+			float xsizeWithoutExit = xsize - sPortal.width;
+			float sideSize = xsizeWithoutExit / 2;
+			
+			float beginSize = Math.max( 1, sideSize );
+			float endSize = xsize - (beginSize + sPortal.width);
+
+			// left side
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
+
+			// doorway
+			visib.addSegment( xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH, xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, false);
 
 			// right side
-			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
-			
+			visib.addSegment( xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
 		}
 	}
 
 	private void buildSouthWall(RectangleRoom room, MetaPortal sPortal) {
-		if( sPortal == null )
-		{
-			// add blocks for the whole length
+		if( sPortal == null ) {
 			addBlocksToRight( xpos, ypos, xsize);
-			
-			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
-			
 		}
 		else
 		{
@@ -103,42 +125,18 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			
 			addBlocksToRight( xpos, ypos, beginSize);
 			addBlocksToRight( xpos + (beginSize + sPortal.width), ypos, endSize);
-			
-			// left side
-			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
-
-			// doorway
-			visib.addSegment( xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH, xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, false);
-
-			// right side
-			visib.addSegment( xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
 		}
 	}
 
-	private void buildWestWall(RectangleRoom room, MetaPortal wPortal) {
-		if( wPortal == null )
-		{
-			// add blocks for the whole length
-			addBlocksToUp( xpos, ypos + RectangleRoom.WALL_WIDTH,  ysize - 2 * RectangleRoom.WALL_WIDTH);
-			
+	private void buildWestWallVisibility(RectangleRoom room, MetaPortal wPortal) {
+		if( wPortal == null ) {
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
-		else
-		{
+		else {
 			float ysizeWithoutExit = ysize - wPortal.width;
 			float sideSize = ysizeWithoutExit / 2;
-//			if( sideSize % 2 != 0 )
-//				sideSize += RectangleRoom.WALL_WIDTH;
-			
 			float beginSize = Math.max( 1, sideSize );
-			float endSize = ysizeWithoutExit - beginSize;
 
-			// y points down
-			room.addRoomEntrance(new RoomEntrance(0, 0 + beginSize, RectangleRoom.WALL_WIDTH, wPortal.width));
-			
-			addBlocksToUp( xpos, ypos + RectangleRoom.WALL_WIDTH,  beginSize - RectangleRoom.WALL_WIDTH);
-			addBlocksToUp( xpos, ypos + (beginSize + wPortal.width), endSize - RectangleRoom.WALL_WIDTH);
-			
 			// bottom wall
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize);
 
@@ -147,17 +145,54 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 
 			// upper wall
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+		}
+	}
+
+	private void buildWestWall(RectangleRoom room, MetaPortal wPortal) {
+		if( wPortal == null ) {
+			addBlocksToUp( xpos, ypos + RectangleRoom.WALL_WIDTH,  ysize - 2 * RectangleRoom.WALL_WIDTH);
+		}
+		else
+		{
+			float ysizeWithoutExit = ysize - wPortal.width;
+			float sideSize = ysizeWithoutExit / 2;
+			float beginSize = Math.max( 1, sideSize );
+			float endSize = ysizeWithoutExit - beginSize;
+
+			// y points down
+			room.addRoomEntrance(new RoomEntrance(0, 0 + beginSize, RectangleRoom.WALL_WIDTH, wPortal.width));
 			
+			addBlocksToUp( xpos, ypos + RectangleRoom.WALL_WIDTH,  beginSize - RectangleRoom.WALL_WIDTH);
+			addBlocksToUp( xpos, ypos + (beginSize + wPortal.width), endSize - RectangleRoom.WALL_WIDTH);
+		}
+	}
+
+	private void buildEastWallVisibility(RectangleRoom room, MetaPortal ePortal) {
+		if( ePortal == null ) {
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+		}
+		else {
+			float ysizeWithoutExit = ysize - ePortal.width;
+			float sideSize = ysizeWithoutExit / 2;
+			
+			float beginSize = Math.max( 1, sideSize );
+			float endSize = ysize - (beginSize + ePortal.width);
+
+			// bottom wall
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize );
+
+			// door
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), false );
+
+			// upper wall
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
+
 		}
 	}
 
 	private void buildEastWall(RectangleRoom room, MetaPortal ePortal) {
-		if( ePortal == null )
-		{
-			// add blocks for the whole length
+		if( ePortal == null ) {
 			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH,  ysize - 2 * RectangleRoom.WALL_WIDTH);
-			
-			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
 		else
 		{
@@ -173,15 +208,6 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH,  beginSize - RectangleRoom.WALL_WIDTH);
 			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos+ (beginSize + ePortal.width), endSize - RectangleRoom.WALL_WIDTH);
 			
-			// bottom wall
-			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize );
-
-			// door
-			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), false );
-
-			// upper wall
-			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
-		
 		}
 	}
 	
@@ -202,14 +228,19 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		RectangleRoom room = new RectangleRoom(); 
 
 		visib.startConvexArea();
-		
 		buildNorthWall(room, nPortal);
+		buildNorthWallVisibility(room, nPortal);
+
 		buildWestWall(room, wPortal);
+		buildWestWallVisibility(room, wPortal);
 		visib.finishConvexArea();
 
 		visib.startConvexArea();
 		buildEastWall(room, ePortal);
+		buildEastWallVisibility(room, ePortal);
+
 		buildSouthWall(room, sPortal);
+		buildSouthWallVisibility(room, sPortal);
 		visib.finishConvexArea();
 
 		// Do the small entrance areas
@@ -292,88 +323,27 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		return room;
 	}
 	
-	private void buildExits(RectangleRoom room, MetaRectangleRoom metaRoom )
-	{
+	private void buildExits(RectangleRoom room, MetaRectangleRoom metaRoom ) {
 		ObjectMap<ExitDir, MetaPortal> portals = metaRoom.getPortals();
 		
 		room.addConnectors( portals );
 	}
 	
-	/*
-	public RectangleRoom build()
-	{
-		RectangleRoom room = new RectangleRoom(); 
-		
-		room.setPosition( xpos, ypos);
-		return room;
-	} 
-	 */
-	
 
 	//
 	// BUILDING
 	//
-	private void addBlocksToRight(float xpos, float ypos, float distance )
-	{
-
+	private void addBlocksToRight(float xpos, float ypos, float distance ) {
 		WallBlock block = new WallBlock((int)(distance*2.0f));
 		blocks.add(block);
 		block.initBottomLeft( xpos, ypos , 0);
 
-		/*
-		int intDistance = (int) Math.floor( distance );
-		int tens = (int) (distance / 5);
-		int fives = (int) ((distance - tens * 5.0f) / 2.5f);
-		int twos = (int) ((distance - tens * 5.0f - fives * 2.5f) );
-		int ones = (int)  Math.ceil((distance - tens * 5.0f - fives * 2.5f - twos) );
-		
-		float curpos = 0;
-		
-		for( int i = 0; i < tens; i++ )
-		{
-			WallBlock a1 = new WallBlock(10);
-			
-			a1.initBottomLeft( xpos + curpos, ypos , 0);
-			
-			blocks.add( a1 );
-			curpos += 5;
-		}
-		
-		for( int i = 0; i < fives; i++ )
-		{
-			WallBlock a1 = new WallBlock(5);
-			a1.initBottomLeft( xpos + curpos, ypos , 0);
-			
-			blocks.add( a1 );
-			curpos += 2.5;
-		}
-		
-		for( int i = 0; i < twos; i++ )
-		{
-			WallBlock a1 = new WallBlock(2);
-			a1.initBottomLeft( xpos + curpos, ypos , 0);
-			
-			blocks.add( a1 );
-			curpos += 1;
-		}
-		
-		for( int i = 0; i < ones; i++ )
-		{
-			WallBlock a1 = new WallBlock(1);
-			a1.initBottomLeft( xpos + curpos, ypos , 0);
-			
-			blocks.add( a1 );
-			curpos += 0.5;
-		}
-		*/
-		
 	}
 	
 	//
 	// BUILDING
 	//
-	private void addBlocksToUp(float xpos, float ypos, float distance )
-	{
+	private void addBlocksToUp(float xpos, float ypos, float distance ) {
 		WallBlock block = new WallBlock((int)(distance*2.0f));
 		blocks.add(block);
 		block.initTopLeft( xpos, ypos , 90);

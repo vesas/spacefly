@@ -5,13 +5,13 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,13 +20,16 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.vesas.spacefly.TestGame;
-import com.vesas.spacefly.game.G;
-import com.vesas.spacefly.quadtree.AABB;
 import com.vesas.spacefly.quadtree.Point;
 import com.vesas.spacefly.quadtree.QuadTree;
 import com.vesas.spacefly.util.SimplexNoise;
 import com.vesas.spacefly.visibility.DelaunayTriangulator;
-import com.vesas.spacefly.world.procedural.room.WallBlock;
+import com.vesas.spacefly.visibility.Edge;
+import com.vesas.spacefly.visibility.EndPoint;
+import com.vesas.spacefly.visibility.Visibility;
+import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoomBuilder;
 
 public class TestScreen implements Screen {
 
@@ -44,6 +47,9 @@ public class TestScreen implements Screen {
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private Viewport viewport;
+    private Visibility visib;
+
+    private ShapeRenderer shapeRenderer;
 
     private int test = 0;
 
@@ -55,18 +61,11 @@ public class TestScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
+        visib = new Visibility();
+
         init();
 	}
-
-    private static float WALL_WIDTH = 0.5f;
-    private WallBlock block;
-    private WallBlock block2;
-    private WallBlock block3;
-    private WallBlock block4;
-    private WallBlock block5;
-    private WallBlock block6;
-
-    private QuadTree tree = null;
+    
 
     private void init() {
 
@@ -79,7 +78,7 @@ public class TestScreen implements Screen {
 
         camera.position.set(0, 0, 0);
 
-        float scale = 0.028f;
+        float scale = 0.021f;
 
         // viewport = new FitViewport( width  * scale, height * scale, camera );
         viewport = new FitViewport( width  * scale, height * scale, camera );
@@ -94,29 +93,8 @@ public class TestScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         // batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 
-        block = new WallBlock(10);
-        block.initBottomLeft( 5f, 3f , 0);
-
-        block2 = new WallBlock(10);
-        block2.initBottomLeft( 10, 3 , 45);
-
-        block3 = new WallBlock(10);
-        block3.initBottomLeft( (float)(10 + (5 / Math.sqrt(2))) , (float)(3 + (5 / Math.sqrt(2))) , 90);
-
-        block4 = new WallBlock(10);
-        block4.initBottomLeft( (float)(5 - (5 / Math.sqrt(2))) , (float)(3 + (5 / Math.sqrt(2))) , -45);
-
-        block5 = new WallBlock(10);
-        block5.initBottomLeft( (float)(5 - (5 / Math.sqrt(2))) + WALL_WIDTH, (float)(3 + (5 / Math.sqrt(2))) , 90);
-
-        block6 = new WallBlock(10);
-        block6.initBottomLeft( (float)(5 - (5 / Math.sqrt(2))) + WALL_WIDTH, (float)(3 + 5 + (5 / Math.sqrt(2))) , 45);
-
-        G.shapeRenderer = new ShapeRenderer();
-        G.shapeRenderer.setProjectionMatrix(camera.combined);
-
-        tree = new QuadTree(new AABB(new Point(15,15), new Point(10,10)));
-
+        this.shapeRenderer = new ShapeRenderer();
+        this.shapeRenderer.setProjectionMatrix(camera.combined);
 
         if(test == 1) {
             test1Init();
@@ -124,12 +102,17 @@ public class TestScreen implements Screen {
         else if(test == 2) {
             testInit2();
         }
+        else if(test == 3) {
+            testInit3();
+        }
         
     }
 
     // 
     // test1
     // 
+    private QuadTree tree = null;
+
     private void test1Init() {
 
         float xx = 15f;
@@ -157,23 +140,23 @@ public class TestScreen implements Screen {
         Point c = new Point(tree.getBoundary().centerX, tree.getBoundary().centerY);
         Point d = new Point(tree.getBoundary().halfWidth, tree.getBoundary().halfHeight);
 
-        G.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        G.shapeRenderer.setColor(1, 1, 1, 1);
-        G.shapeRenderer.line(c.x - d.x, c.y - d.y, c.x + d.x, c.y - d.y);
-        G.shapeRenderer.line(c.x + d.x, c.y - d.y, c.x + d.x, c.y + d.y);
-        G.shapeRenderer.line(c.x + d.x, c.y + d.y, c.x - d.x, c.y + d.y);
-        G.shapeRenderer.line(c.x - d.x, c.y + d.y, c.x - d.x, c.y - d.y);
-        G.shapeRenderer.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1, 1, 1, 1);
+        shapeRenderer.line(c.x - d.x, c.y - d.y, c.x + d.x, c.y - d.y);
+        shapeRenderer.line(c.x + d.x, c.y - d.y, c.x + d.x, c.y + d.y);
+        shapeRenderer.line(c.x + d.x, c.y + d.y, c.x - d.x, c.y + d.y);
+        shapeRenderer.line(c.x - d.x, c.y + d.y, c.x - d.x, c.y - d.y);
+        shapeRenderer.end();
 
         List<Point> points = new ArrayList<>();
         tree.getAllPoints(points);
 
-        G.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        G.shapeRenderer.setColor(1, 0.5f, 0.5f, 1);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1, 0.5f, 0.5f, 1);
         for(Point p : points) {
-            G.shapeRenderer.circle(p.x, p.y, 0.15f, 12);
+            shapeRenderer.circle(p.x, p.y, 0.15f, 12);
         }
-        G.shapeRenderer.end();
+        shapeRenderer.end();
 
         if(tree.getNorthWest() != null) {
             test1RenderTree(delta, tree.getNorthWest());
@@ -239,6 +222,98 @@ public class TestScreen implements Screen {
         batch.end();
     }
 
+    // 
+    // test3
+    // 
+
+    private RectangleRoom room1;
+    private void testInit3() {
+
+        visib.startLoad();
+        RectangleRoomBuilder.INSTANCE.setPos(0,0);
+        RectangleRoomBuilder.INSTANCE.setVisib(visib);
+
+        MetaRectangleRoom metaRoom = new MetaRectangleRoom();
+        metaRoom.setSize(4, 4, 12, 12);
+
+        room1 = RectangleRoomBuilder.INSTANCE.buildFrom(metaRoom);
+
+        visib.finishLoad();
+
+    }
+
+    private void testRender3(float delta) {
+
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        // Reset projection matrix before drawing
+        batch.setProjectionMatrix(camera.combined);
+        
+        batch.begin();
+
+        room1.draw(batch);
+
+
+        batch.end();
+
+        
+        visib.setLightLocation(5, 5);
+        visib.sweep();
+
+        // drawVisibility(new Vector2(5,5));
+        renderVisibilityDebug2();
+
+        
+    }
+
+    private void renderVisibilityDebug2() 
+	{
+		shapeRenderer.begin(ShapeType.Line);
+		
+		shapeRenderer.setColor(0.999f, 0.999f, 0.999f, 0.299f);
+		
+		List<Edge> edges = visib.edges;
+		final int size = edges.size();
+		for( int i = 0; i < size; i++ )
+		{
+			final Edge edge = edges.get( i );
+			
+			if( edge.isBoundary() ) 
+			{
+				shapeRenderer.setColor(0.999f, 0.999f, 0.999f, 0.599f);
+			}
+			else 
+			{
+				float val = edge.procRank;
+				val = val * 0.5f;
+				if(val > 1.0f) {
+					val = 1.0f;
+				}
+
+				shapeRenderer.setColor(0.0f + val, 0.299f, 0.299f, 0.499f);
+			}
+
+			final EndPoint e0 = edge.getEndPoint1();
+			final float ax = e0.point.x;
+			final float ay = e0.point.y;
+			
+			final EndPoint e1 = edge.getEndPoint2();
+			final float bx = e1.point.x;
+			final float by = e1.point.y;
+						
+			shapeRenderer.line(ax, ay, bx, by);
+
+		}
+
+		shapeRenderer.end();
+
+		/*
+		screen.worldBatch.begin();
+		G.font.draw(screen.worldBatch, "S", 123 - 16, 123 + 15);
+		screen.worldBatch.end();
+		*/
+	}
+
 
     @Override
     public void show() {
@@ -260,6 +335,9 @@ public class TestScreen implements Screen {
         }
         else if(test == 2) {
             testRender2(delta);
+        }
+        else if(test == 3) {
+            testRender3(delta);
         }
         
 
