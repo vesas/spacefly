@@ -13,6 +13,15 @@ public class MetaRectangleRoom implements MetaFeature
 	private ObjectMap<ExitDir, MetaPortal> portals = new ObjectMap<ExitDir, MetaPortal>();
 
 	private int id;
+	private boolean hasColumns = false;
+
+	public boolean hasColumns() {
+		return hasColumns;
+	}	
+
+	public void setHasColumns(boolean hasColumns) {
+		this.hasColumns = hasColumns;
+	}
 
 	public MetaRectangleRoom() 
 	{ 

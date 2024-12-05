@@ -110,6 +110,10 @@ public class MetaRectangleRoomBuilder
 				metaPortalW.setSource(room);
 			room.addPortal( ExitDir.W, metaPortalW );
 		}
+
+		if(this.width > 10 && this.height > 10) {
+			room.setHasColumns(true);
+		}
 		
 		return room;
 	}

@@ -14,8 +14,8 @@ public final class TestLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		
 		config.setTitle("spacefly");
-		config.setWindowedMode(640*2, 480*2);
-		test2(config);
+		config.setWindowedMode(1920, 1280);
+		test3(config);
 	}
 
 	// Quadtree experiment
@@ -26,5 +26,10 @@ public final class TestLauncher {
 	// Noise expriment
 	public static void test2(Lwjgl3ApplicationConfiguration config) {
 		new Lwjgl3Application(new TestGame(2), config);
+	}
+
+	// Procedural room experiment
+	public static void test3(Lwjgl3ApplicationConfiguration config) {
+		new Lwjgl3Application(new TestGame(3), config);
 	}
 }

@@ -15,10 +15,11 @@ public class TestGame extends Game
 {
 	private GameScreen gameScreen;
 
-	private int test;
+	// which test to run
+	private int testNumber;
 
 	public TestGame(int test) {
-		this.test = test;
+		this.testNumber = test;
 	}
 	
 	@Override
@@ -30,13 +31,11 @@ public class TestGame extends Game
 		
 		// Lwjgl3Window.getGraphics();
 		
-		
-		
 		AbstractGameWorld.INSTANCE.init();
 		
 		Box2DWorld.world.setContactListener( new CListener() );
 		
-		this.setScreen(new TestScreen(this, test));
+		this.setScreen(new TestScreen(this, testNumber));
 		// currentScreen = new MainMenuScreen(this);
 		
 		Thread.currentThread().setPriority(Thread.NORM_PRIORITY);

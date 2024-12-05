@@ -26,50 +26,53 @@ public class WallBlock implements FeatureBlock
 	}
 
 	private Body body;
-	private Polygon poly;
-
-	private int DONT_DRAW;
-	
 	
 	private float xpos;
 	private float ypos;
-	private float originx;
-	private float originy;
 	private int blocks;
 	private float rotation;
 	
-	public WallBlock( int blox )
-	{
+	/**
+	 * Blocks have 0.5 world unit thickness. 
+	 * @param blocks defines how many 0.5 units the block is.
+	 */
+	public WallBlock( int blox ) {
 		this.blocks = blox;
 	}
 
+	/**
+	 * Initializes the block with the bottom left as the origin of this block.
+	 */
 	public void initBottomLeft( float originx, float originy, float rotate) {
 		init( originx, originy, rotate, Origin.ORIGIN_BOTTOM_LEFT );
 	}
 
+	/**
+	 * Initializes the block with the right right as the origin of this block.
+	 */
 	public void initTopRight( float originx, float originy, float rotate) {
 		init( originx, originy, rotate, Origin.ORIGIN_TOP_RIGHT );
 	}
 
+	/**
+	 * Initializes the block with the top left as the origin of this block.
+	 */
 	public void initTopLeft( float originx, float originy, float rotate) {
 		init( originx, originy, rotate, Origin.ORIGIN_TOP_LEFT );
 	}
 	
+	/**
+	 * Initializes the block with the given origin.
+	 */
 	private void init( float originx, float originy, float rotate, Origin origin)
 	{
-		
-
 		/*
 		 * These are the unit measurements in world space "blocks"
 		 */
-		Vector2 right = new Vector2();
-		right.x = 0.5f;
-		right.y = 0f;
+		Vector2 right = new Vector2(0.5f, 0f);
 		right.rotateDeg( rotate );
 		
-		Vector2 up = new Vector2();
-		up.x = 0f;
-		up.y = 0.5f;
+		Vector2 up = new Vector2(0f, 0.5f);
 		up.rotateDeg( rotate );
 		
 		if(origin == Origin.ORIGIN_BOTTOM_LEFT) {
@@ -107,31 +110,30 @@ public class WallBlock implements FeatureBlock
 
 	private void setUpBody(Vector2 right, Vector2 up) {
 
-		float[] v = new float[8];
+		float [] v = {
 
-		// Bottom left
-		v[0] = xpos;
-		v[1] = ypos;
+			// Bottom left
+			xpos, ypos,
 
-		// Bottom right
-		v[2] = xpos + right.x * blocks;
-		v[3] = ypos + right.y * blocks;
+			// Bottom right
+			xpos + right.x * blocks,
+			ypos + right.y * blocks,
 
-		// Top right
-		v[4] = xpos + right.x * blocks + up.x;
-		v[5] = ypos + right.y * blocks + up.y;
+			// Top right
+			xpos + right.x * blocks + up.x,
+			ypos + right.y * blocks + up.y,
 
-		// Top left
-		v[6] = xpos + up.x;
-		v[7] = ypos + up.y;
+			// Top left
+			xpos + up.x,
+			ypos + up.y
+		};
+
+		body = BodyBuilder.getInstance()
+			.setPosition( 0 , 0 )
+			.polygon( v )
+			.setBodyType(BodyType.StaticBody )
+			.construct();
 		
-		BodyBuilder builder = BodyBuilder.getInstance();
-
-		builder.setPosition( 0 , 0 );
-		builder.polygon( v );
-		builder.setBodyType(BodyType.StaticBody );
-		
-		body = builder.construct();
 	}
 
 	public void draw(Batch batch) {
