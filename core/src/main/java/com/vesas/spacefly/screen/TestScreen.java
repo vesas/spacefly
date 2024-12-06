@@ -14,12 +14,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.vesas.spacefly.TestGame;
+import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.quadtree.Point;
 import com.vesas.spacefly.quadtree.QuadTree;
 import com.vesas.spacefly.util.SimplexNoise;
@@ -27,6 +30,7 @@ import com.vesas.spacefly.visibility.DelaunayTriangulator;
 import com.vesas.spacefly.visibility.Edge;
 import com.vesas.spacefly.visibility.EndPoint;
 import com.vesas.spacefly.visibility.Visibility;
+import com.vesas.spacefly.visibility.VisibilityPoly;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
@@ -229,6 +233,7 @@ public class TestScreen implements Screen {
     // 
 
     private RectangleRoom room1;
+
     private void testInit3() {
 
         visib.startLoad();
@@ -238,9 +243,10 @@ public class TestScreen implements Screen {
         MetaRectangleRoom metaRoom = new MetaRectangleRoom();
         metaRoom.setSize(4, 4, 12, 12);
         metaRoom.setHasColumns(true);
-        MetaPortal metaPortalN = new MetaPortal();
-        metaPortalN.setWidth(2);
-        metaRoom.addPortal( ExitDir.S, metaPortalN );
+        metaRoom.setHalfColumnWidth(3.5f);
+        // MetaPortal metaPortal1 = new MetaPortal();
+        // metaPortal1.setWidth(2);
+        // metaRoom.addPortal( ExitDir.S, metaPortal1 );
 
         room1 = RectangleRoomBuilder.INSTANCE.buildFrom(metaRoom);
 
@@ -259,17 +265,45 @@ public class TestScreen implements Screen {
 
         room1.draw(batch);
 
-
         batch.end();
 
+
+        int mousex = Gdx.input.getX();
+		int mousey = Gdx.input.getY();
+		
+        Vector3 tempVector = new Vector3(mousex, mousey, 0);
+		camera.unproject(tempVector);
         
-        visib.setLightLocation(5, 5);
+        visib.setLightLocation(tempVector.x, tempVector.y);
         visib.sweep();
 
-        // drawVisibility(new Vector2(5,5));
+        drawVisibility(new Vector2(tempVector.x,tempVector.y));
         renderVisibilityDebug2();
 
         
+    }
+
+    private void drawVisibility(Vector2 lightPos) {
+        VisibilityPoly visiPoly = visib.getVisibPoly();
+		
+		// these are the triangle endpoints
+		final Array<Vector2> points = visiPoly.getTriEndPoints();
+		
+		shapeRenderer.begin(ShapeType.Filled);
+
+//		Matrix4 mat = new Matrix4();
+//		mat.setToTranslation(0.0f, 1.5f, 0.0f);
+//		G.shapeRenderer.setTransformMatrix(mat);
+		shapeRenderer.setColor(0.999f, 0.999f, 0.999f, 1.0f);
+
+		for( int i = 0; i < points.size; i = i + 2 )
+		{
+			final Vector2 p1 = points.get( i );
+			final Vector2 p2 = points.get( i + 1 );
+			shapeRenderer.triangle(lightPos.x, lightPos.y, p1.x, p1.y, p2.x, p2.y);
+		}
+		
+		shapeRenderer.end();
     }
 
     private void renderVisibilityDebug2() 

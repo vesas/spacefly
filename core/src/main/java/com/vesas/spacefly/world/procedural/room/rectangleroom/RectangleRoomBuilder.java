@@ -44,14 +44,14 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 	private void buildColumn(MetaRectangleRoom metaRoom, RectangleRoom room, MetaPortal sPortal) {
 		
 		// make a square column in the center
-		float centerX = xpos + xsize / 2;
-		float centerY = ypos + ysize / 2;
+		float centerX = xpos + xsize / 2.0f;
+		float centerY = ypos + ysize / 2.0f;
 		float centerSize = metaRoom.getHalfColumnWidth();
 
-		addBlocksToRight( centerX - centerSize, centerY - centerSize, centerSize * 2);
-		addBlocksToRight( centerX - centerSize, centerY + centerSize - RectangleRoom.WALL_WIDTH, centerSize * 2);
-		addBlocksToUp( centerX - centerSize, centerY - centerSize + RectangleRoom.WALL_WIDTH, centerSize * 2 - RectangleRoom.WALL_WIDTH);
-		addBlocksToUp( centerX + centerSize - RectangleRoom.WALL_WIDTH, centerY - centerSize + RectangleRoom.WALL_WIDTH, centerSize * 2 - RectangleRoom.WALL_WIDTH);
+		addBlocksToRight( centerX - centerSize, centerY - centerSize, centerSize * 2f);
+		addBlocksToRight( centerX - centerSize, centerY + centerSize - RectangleRoom.WALL_WIDTH, centerSize * 2f);
+		addBlocksToUp( centerX - centerSize, centerY - centerSize + RectangleRoom.WALL_WIDTH, centerSize * 2f - RectangleRoom.WALL_WIDTH * 2.0f);
+		addBlocksToUp( centerX + centerSize - RectangleRoom.WALL_WIDTH, centerY - centerSize + RectangleRoom.WALL_WIDTH, centerSize * 2f - RectangleRoom.WALL_WIDTH * 2.0f);
 		
 	}
 
@@ -60,8 +60,8 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		visib.startConvexArea();
 
 		// column values
-		float centerX = xpos + xsize / 2;
-		float centerY = ypos + ysize / 2;
+		float centerX = xpos + xsize / 2f;
+		float centerY = ypos + ysize / 2f;
 		float centerSize = metaRoom.getHalfColumnWidth();
 
 		if( nPortal == null ) {
@@ -73,7 +73,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			// calculate side size in units, without the exit
 			float xsizeWithoutExit = xsize - nPortal.width;
 			// then divide by two to get width of either side of the portal
-			float sideSize = xsizeWithoutExit / 2;
+			float sideSize = xsizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
 
@@ -85,8 +85,15 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 
 			// right side
 			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+
+			// column left corner to door left corner
+			visib.addSegment( centerX - centerSize, centerY + centerSize, xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+
+			// column right corner to door right corner
+			visib.addSegment( centerX + centerSize, centerY + centerSize, xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, false);
 		}
 
+		// column top line
 		visib.addSegment( centerX - centerSize, centerY + centerSize, centerX + centerSize, centerY + centerSize);
 			// left corner to corner
 		visib.addSegment( centerX - centerSize, centerY + centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, false);
@@ -100,8 +107,8 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		visib.startConvexArea();
 
 		// column values
-		float centerX = xpos + xsize / 2;
-		float centerY = ypos + ysize / 2;
+		float centerX = xpos + xsize / 2f;
+		float centerY = ypos + ysize / 2f;
 		float centerSize = metaRoom.getHalfColumnWidth();
 
 		if( wPortal == null ) {
@@ -109,7 +116,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		}
 		else {
 			float ysizeWithoutExit = ysize - wPortal.width;
-			float sideSize = ysizeWithoutExit / 2;
+			float sideSize = ysizeWithoutExit / 2f;
 			float beginSize = Math.max( 1, sideSize );
 
 			// bottom wall
@@ -120,13 +127,18 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 
 			// upper wall
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+
+			// bottom left corner to door bottom corner
+			visib.addSegment( centerX - centerSize, centerY - centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize, false);
+			// top left corner to door top corner
+			visib.addSegment( centerX - centerSize, centerY + centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), false);
 		}
 
 		visib.addSegment( centerX - centerSize, centerY - centerSize, centerX - centerSize, centerY + centerSize);
 		// bottom left corner to corner
-		visib.addSegment( centerX + centerSize, centerY - centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, false);
-		// top right corner to corner
-		visib.addSegment( centerX + centerSize, centerY + centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+		visib.addSegment( centerX - centerSize, centerY - centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, false);
+		// top left corner to corner
+		visib.addSegment( centerX - centerSize, centerY + centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, false);
 
 		visib.finishConvexArea();
 	}
@@ -135,8 +147,8 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		visib.startConvexArea();
 
 		// column values
-		float centerX = xpos + xsize / 2;
-		float centerY = ypos + ysize / 2;
+		float centerX = xpos + xsize / 2f;
+		float centerY = ypos + ysize / 2f;
 		float centerSize = metaRoom.getHalfColumnWidth();
 
 		if( ePortal == null ) {
@@ -144,7 +156,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		}
 		else {
 			float ysizeWithoutExit = ysize - ePortal.width;
-			float sideSize = ysizeWithoutExit / 2;
+			float sideSize = ysizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = ysize - (beginSize + ePortal.width);
@@ -157,6 +169,11 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 
 			// upper wall
 			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
+
+			// bottom right corner to door bottom corner
+			visib.addSegment( centerX + centerSize, centerY - centerSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, false);
+			// top right corner to door top corner
+			visib.addSegment( centerX + centerSize, centerY + centerSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), false);
 
 		}
 
@@ -174,8 +191,8 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		visib.startConvexArea();
 
 		// column values
-		float centerX = xpos + xsize / 2;
-		float centerY = ypos + ysize / 2;
+		float centerX = xpos + xsize / 2f;
+		float centerY = ypos + ysize / 2f;
 		float centerSize = metaRoom.getHalfColumnWidth();
 
 		if( sPortal == null ) {
@@ -187,7 +204,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			// calculate side size in units, without the exit
 			float xsizeWithoutExit = xsize - sPortal.width;
 			// then divide by two to get width of either side of the portal
-			float sideSize = xsizeWithoutExit / 2;
+			float sideSize = xsizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
 
@@ -199,10 +216,15 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 
 			// right side
 			visib.addSegment( xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
+
+			// column left corner to door left corner
+			visib.addSegment( centerX - centerSize, centerY - centerSize, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH, false);
+			// column right corner to door right corner
+			visib.addSegment( centerX + centerSize, centerY - centerSize, xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, false);
 		}
 
 		visib.addSegment( centerX - centerSize, centerY - centerSize, centerX + centerSize, centerY - centerSize);
-			// left corner to corner
+		// left corner to corner
 		visib.addSegment( centerX - centerSize, centerY - centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, false);
 		// right corner to corner
 		visib.addSegment( centerX + centerSize, centerY - centerSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, false);
@@ -218,7 +240,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			// calculate side size in units, without the exit
 			float xsizeWithoutExit = xsize - nPortal.width;
 			// then divide by two to get width of either side of the portal
-			float sideSize = xsizeWithoutExit / 2;
+			float sideSize = xsizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
 
@@ -241,7 +263,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			// calculate side size in units, without the exit
 			float xsizeWithoutExit = xsize - nPortal.width;
 			// then divide by two to get width of either side of the portal
-			float sideSize = xsizeWithoutExit / 2;
+			float sideSize = xsizeWithoutExit / 2f;
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = xsize - (beginSize + nPortal.width);
 
@@ -261,7 +283,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		}
 		else {
 			float xsizeWithoutExit = xsize - sPortal.width;
-			float sideSize = xsizeWithoutExit / 2;
+			float sideSize = xsizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = xsize - (beginSize + sPortal.width);
@@ -284,7 +306,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		else
 		{
 			float xsizeWithoutExit = xsize - sPortal.width;
-			float sideSize = xsizeWithoutExit / 2;
+			float sideSize = xsizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = xsize - (beginSize + sPortal.width);
@@ -303,7 +325,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		}
 		else {
 			float ysizeWithoutExit = ysize - wPortal.width;
-			float sideSize = ysizeWithoutExit / 2;
+			float sideSize = ysizeWithoutExit / 2f;
 			float beginSize = Math.max( 1, sideSize );
 
 			// bottom wall
@@ -324,7 +346,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		else
 		{
 			float ysizeWithoutExit = ysize - wPortal.width;
-			float sideSize = ysizeWithoutExit / 2;
+			float sideSize = ysizeWithoutExit / 2f;
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = ysizeWithoutExit - beginSize;
 
@@ -342,7 +364,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		}
 		else {
 			float ysizeWithoutExit = ysize - ePortal.width;
-			float sideSize = ysizeWithoutExit / 2;
+			float sideSize = ysizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = ysize - (beginSize + ePortal.width);
@@ -366,7 +388,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		else
 		{
 			float ysizeWithoutExit = ysize - ePortal.width;
-			float sideSize = ysizeWithoutExit / 2;
+			float sideSize = ysizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = ysize - (beginSize + ePortal.width);

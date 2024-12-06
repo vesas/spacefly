@@ -1,6 +1,7 @@
 package com.vesas.spacefly.world.procedural.generator;
 
 import com.badlogic.gdx.utils.ObjectMap;
+import com.vesas.spacefly.world.procedural.GenSeed;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
 public class MetaRectangleRoomBuilder
@@ -113,6 +114,11 @@ public class MetaRectangleRoomBuilder
 
 		if(this.width > 10 && this.height > 10) {
 			room.setHasColumns(true);
+
+			float [] widths = { 2.0f, 3.5f };
+			int index = GenSeed.random.nextInt(widths.length);
+			
+			room.setHalfColumnWidth(widths[index]);
 		}
 		
 		return room;

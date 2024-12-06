@@ -67,7 +67,6 @@ public class BlockRight implements FeatureBlock
 		
 		builder.setPosition( 0 , 0 );
 		builder.polygon( v );
-		builder.setBodyType(BodyType.StaticBody );
 		
 		body = builder.construct();
 	}
