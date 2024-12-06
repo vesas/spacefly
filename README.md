@@ -7,9 +7,9 @@
 * 2D visibility polygon calculation
     * Loosely follows the method described in "Efficient Computation of Visibility Polygons" by F Bungiu et al.
 
-Screenshot: 
+Gameplay: 
 
-![alt text](readme_img/spacefly.gif "Screenshot")
+![alt text](readme_img/spacefly2.gif "Gameplay gif")
 
 New octagonal rooms:
 
