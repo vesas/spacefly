@@ -10,7 +10,7 @@ public final class TestLauncher {
 		// empty
 	}
 	
-	public static void main (String[] arg) {
+	public static void main(String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		
 		config.setTitle("spacefly");

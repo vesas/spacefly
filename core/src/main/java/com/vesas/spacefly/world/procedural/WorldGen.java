@@ -81,9 +81,35 @@ public class WorldGen implements WorldGenInterface
 		}
 	}
 
+	private float[] getMonsterPositions(Feature feat, int index) {
+
+		final float xpos = feat.getXpos();
+		final float ypos = feat.getYpos();
+		
+		final float height = feat.getHeight();
+		final float width = feat.getWidth();
+		
+		if(feat instanceof RectangleRoom) {
+			RectangleRoom rectRoom = (RectangleRoom)feat;
+
+			// if the room has columns, adjust the position
+			if(rectRoom.hasColumns()) {
+
+				return new float[] {
+					xpos + width * 0.25f,
+					ypos + height * 0.25f + index * 0.2f
+				};
+			}
+		}
+		return new float[] {
+			xpos + width * 0.45f + index * 0.2f,
+			ypos + height * 0.45f - index * 0.2f
+		};
+	}
+
 	private void addMonstersPass( Region region, Array<Feature> feats )
 	{
-		// Skip first two features (ie. the first room, and the first corridor leading from that)
+		
 
 		for( int i = 0; i < feats.size; i++) {
 
@@ -94,6 +120,28 @@ public class WorldGen implements WorldGenInterface
 			
 			final float height = feat.getHeight();
 			final float width = feat.getWidth();
+
+			// Skip first two features (ie. the first room, and the first corridor leading from that)
+			if(i >= 2) {
+
+
+				for( int j = 0, size = GenSeed.random.nextInt(2); j < size; j++)
+				{
+					float[] positions = getMonsterPositions(feat, j);
+
+					SlurgMonster monster = new SlurgMonster(positions[0], positions[1]);
+
+					world.addMonster( monster );	
+				}
+				
+				if( GenSeed.random.nextInt(100 ) < 12 )
+				{
+					float[] positions = getMonsterPositions(feat, 3);
+					ShellMonster monster = new ShellMonster(positions[0], positions[1]);
+					world.addMonster( monster );	
+				}
+			}
+			
 
 			
 			if(feat instanceof AxisAlignedCorridor) {
@@ -144,45 +192,6 @@ public class WorldGen implements WorldGenInterface
 			}
 		}
 
-		for( int i = 2; i < feats.size; i++ )
-		{
-			Feature feat = feats.get(i);
-			
-			final float xpos = feat.getXpos();
-			final float ypos = feat.getYpos();
-			
-			final float height = feat.getHeight();
-			final float width = feat.getWidth();
-
-			for( int j = 0, size = GenSeed.random.nextInt(2); j < size; j++)
-			{
-				SlurgMonster monster = new SlurgMonster(xpos + width * 0.45f, ypos + height * 0.45f );
-				world.addMonster( monster );	
-			}
-			
-			if( GenSeed.random.nextInt(100 ) < 12 )
-			{
-				ShellMonster monster = new ShellMonster(xpos + width * 0.45f, ypos + height * 0.45f );
-				world.addMonster( monster );	
-			}
-			
-			/*
-			if( GenSeed.random.nextInt(100 ) < 10 )
-			{
-				ZipperCloud cloud = new ZipperCloud();
-				ZipperCloudManager.add(cloud);
-				
-				int cloudsize = GenSeed.random.nextInt(14) + 2;
-				for( int j = 0; j < cloudsize; j++  )
-				{
-					ZipperMonster monst = new ZipperMonster(xpos + width * 0.35f + GenSeed.random.nextFloat() * 0.5f, ypos + height * 0.4f + GenSeed.random.nextFloat() * 0.5f, cloudsize );
-					world.addMonster( monst );
-					monst.addCloud( cloud );	
-				}
-			}
-			 */
-			
-		}
 	}
 	
 	

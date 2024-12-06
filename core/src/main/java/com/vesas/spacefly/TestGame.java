@@ -29,10 +29,6 @@ public class TestGame extends Game
 
 		Player.INSTANCE.init(3,1);
 		
-		// Lwjgl3Window.getGraphics();
-		
-		AbstractGameWorld.INSTANCE.init();
-		
 		Box2DWorld.world.setContactListener( new CListener() );
 		
 		this.setScreen(new TestScreen(this, testNumber));

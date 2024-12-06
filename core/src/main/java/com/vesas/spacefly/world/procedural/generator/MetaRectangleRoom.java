@@ -15,6 +15,17 @@ public class MetaRectangleRoom implements MetaFeature
 	private int id;
 	private boolean hasColumns = false;
 
+	// only used for column room 
+	private float halfColumnWidth = 2; // fixed value for now
+
+	public float getHalfColumnWidth() {
+		return halfColumnWidth;
+	}
+
+	public void setHalfColumnWidth(float columnWidth) {
+		this.halfColumnWidth = columnWidth;
+	}
+
 	public boolean hasColumns() {
 		return hasColumns;
 	}	

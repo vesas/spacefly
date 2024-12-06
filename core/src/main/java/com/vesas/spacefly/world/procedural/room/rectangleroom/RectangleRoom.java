@@ -31,6 +31,25 @@ public class RectangleRoom extends RoomFeature
 	// wall width in WORLD units
 	public static float WALL_WIDTH = 0.5f;
 
+	private boolean hasColumns = false;
+	private float halfColumnWidth = 2;
+
+	public float getHalfColumnWidth() {
+		return halfColumnWidth;
+	}
+
+	public void setHalfColumnWidth(float columnWidth) {
+		this.halfColumnWidth = columnWidth;
+	}
+
+	public boolean hasColumns() {
+		return hasColumns;
+	}
+
+	public void setHasColumns(boolean hasColumns) {
+		this.hasColumns = hasColumns;
+	}
+
 	public void addRoomEntrance(RoomEntrance entrance) {
 		roomEntrances.add(entrance);
 	}
@@ -118,8 +137,30 @@ public class RectangleRoom extends RoomFeature
 		pixmap.fill();
 
 		pixmap.setColor( col1 );
-		pixmap.fillRectangle((int)(WALL_WIDTH*64f), (int)(WALL_WIDTH*64f), (int)((this.width-WALL_WIDTH*2)*64),(int)((this.height-WALL_WIDTH*2)*64));
 
+		// draw the floor texture
+		// in column room we need to leave the column area empty
+		if( !this.hasColumns() ) {
+			pixmap.fillRectangle((int)(WALL_WIDTH*64f), (int)(WALL_WIDTH*64f), (int)((this.width-WALL_WIDTH*2)*64),(int)((this.height-WALL_WIDTH*2)*64));
+		}
+		else {
+			// draw the floor texture in the column room
+			float halfCenterSize = this.getHalfColumnWidth();
+
+			// NOTE: y axis is down, x axis is right in the pixmap
+			// draw left area
+			pixmap.fillRectangle((int)(WALL_WIDTH*64f), (int)(WALL_WIDTH*64f), (int)((width * 0.5 - halfCenterSize - WALL_WIDTH)*64f),(int)((this.height-WALL_WIDTH*2f)*64f));
+			// draw top area
+			pixmap.fillRectangle((int)((width * 0.5 - halfCenterSize)*64f), (int)((WALL_WIDTH)*64f), (int)((halfCenterSize * 2f)*64f),(int)((height * 0.5 - halfCenterSize - WALL_WIDTH)*64f));
+			// draw bottom area
+			pixmap.fillRectangle((int)((width * 0.5 - halfCenterSize)*64f), (int)((height * 0.5 + halfCenterSize)*64f), (int)((halfCenterSize * 2f)*64f),(int)((height * 0.5 - halfCenterSize - WALL_WIDTH)*64f));
+			// draw right area
+			pixmap.fillRectangle((int)((width * 0.5 + halfCenterSize)*64f), (int)(WALL_WIDTH*64f), (int)((width * 0.5 - halfCenterSize - WALL_WIDTH)*64f),(int)((this.height-WALL_WIDTH*2f)*64f));
+
+			
+		}
+
+		// draw random tiles
 		// 0,0 coordinate in the pixmap is TOP LEFT
 		for(int h = 0; h < this.height -1; h++) {
 			for(int w = 0; w < this.width -1; w++) {

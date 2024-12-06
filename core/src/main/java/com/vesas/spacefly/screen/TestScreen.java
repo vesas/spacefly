@@ -27,7 +27,9 @@ import com.vesas.spacefly.visibility.DelaunayTriangulator;
 import com.vesas.spacefly.visibility.Edge;
 import com.vesas.spacefly.visibility.EndPoint;
 import com.vesas.spacefly.visibility.Visibility;
+import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
+import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoomBuilder;
 
@@ -235,6 +237,10 @@ public class TestScreen implements Screen {
 
         MetaRectangleRoom metaRoom = new MetaRectangleRoom();
         metaRoom.setSize(4, 4, 12, 12);
+        metaRoom.setHasColumns(true);
+        MetaPortal metaPortalN = new MetaPortal();
+        metaPortalN.setWidth(2);
+        metaRoom.addPortal( ExitDir.S, metaPortalN );
 
         room1 = RectangleRoomBuilder.INSTANCE.buildFrom(metaRoom);
 

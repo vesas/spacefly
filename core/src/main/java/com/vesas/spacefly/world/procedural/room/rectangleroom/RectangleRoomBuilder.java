@@ -41,6 +41,175 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		return INSTANCE;
 	}
 
+	private void buildColumn(MetaRectangleRoom metaRoom, RectangleRoom room, MetaPortal sPortal) {
+		
+		// make a square column in the center
+		float centerX = xpos + xsize / 2;
+		float centerY = ypos + ysize / 2;
+		float centerSize = metaRoom.getHalfColumnWidth();
+
+		addBlocksToRight( centerX - centerSize, centerY - centerSize, centerSize * 2);
+		addBlocksToRight( centerX - centerSize, centerY + centerSize - RectangleRoom.WALL_WIDTH, centerSize * 2);
+		addBlocksToUp( centerX - centerSize, centerY - centerSize + RectangleRoom.WALL_WIDTH, centerSize * 2 - RectangleRoom.WALL_WIDTH);
+		addBlocksToUp( centerX + centerSize - RectangleRoom.WALL_WIDTH, centerY - centerSize + RectangleRoom.WALL_WIDTH, centerSize * 2 - RectangleRoom.WALL_WIDTH);
+		
+	}
+
+	private void buildNorthColumnVisibility(MetaRectangleRoom metaRoom, RectangleRoom room, MetaPortal nPortal) {
+
+		visib.startConvexArea();
+
+		// column values
+		float centerX = xpos + xsize / 2;
+		float centerY = ypos + ysize / 2;
+		float centerSize = metaRoom.getHalfColumnWidth();
+
+		if( nPortal == null ) {
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+			
+		}
+		else {
+
+			// calculate side size in units, without the exit
+			float xsizeWithoutExit = xsize - nPortal.width;
+			// then divide by two to get width of either side of the portal
+			float sideSize = xsizeWithoutExit / 2;
+			
+			float beginSize = Math.max( 1, sideSize );
+
+			// left side
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH);
+
+			// door
+			visib.addSegment( xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+
+			// right side
+			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+		}
+
+		visib.addSegment( centerX - centerSize, centerY + centerSize, centerX + centerSize, centerY + centerSize);
+			// left corner to corner
+		visib.addSegment( centerX - centerSize, centerY + centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+		// right corner to corner
+		visib.addSegment( centerX + centerSize, centerY + centerSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+
+		visib.finishConvexArea();
+	}
+
+	private void buildWestColumnVisibility(MetaRectangleRoom metaRoom, RectangleRoom room, MetaPortal wPortal) {
+		visib.startConvexArea();
+
+		// column values
+		float centerX = xpos + xsize / 2;
+		float centerY = ypos + ysize / 2;
+		float centerSize = metaRoom.getHalfColumnWidth();
+
+		if( wPortal == null ) {
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+		}
+		else {
+			float ysizeWithoutExit = ysize - wPortal.width;
+			float sideSize = ysizeWithoutExit / 2;
+			float beginSize = Math.max( 1, sideSize );
+
+			// bottom wall
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize);
+
+			// doorway
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), false);
+
+			// upper wall
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+		}
+
+		visib.addSegment( centerX - centerSize, centerY - centerSize, centerX - centerSize, centerY + centerSize);
+		// bottom left corner to corner
+		visib.addSegment( centerX + centerSize, centerY - centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, false);
+		// top right corner to corner
+		visib.addSegment( centerX + centerSize, centerY + centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+
+		visib.finishConvexArea();
+	}
+
+	private void buildEastColumnVisibility(MetaRectangleRoom metaRoom, RectangleRoom room, MetaPortal ePortal) {
+		visib.startConvexArea();
+
+		// column values
+		float centerX = xpos + xsize / 2;
+		float centerY = ypos + ysize / 2;
+		float centerSize = metaRoom.getHalfColumnWidth();
+
+		if( ePortal == null ) {
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+		}
+		else {
+			float ysizeWithoutExit = ysize - ePortal.width;
+			float sideSize = ysizeWithoutExit / 2;
+			
+			float beginSize = Math.max( 1, sideSize );
+			float endSize = ysize - (beginSize + ePortal.width);
+
+			// bottom wall
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize );
+
+			// door
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), false );
+
+			// upper wall
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
+
+		}
+
+		visib.addSegment( centerX + centerSize, centerY - centerSize, centerX + centerSize, centerY + centerSize);
+		// bottom right corner to corner
+		visib.addSegment( centerX + centerSize, centerY - centerSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, false);
+		// top right corner to corner
+		visib.addSegment( centerX + centerSize, centerY + centerSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+
+		visib.finishConvexArea();
+	}
+
+	private void buildSouthColumnVisibility(MetaRectangleRoom metaRoom, RectangleRoom room, MetaPortal sPortal) {
+
+		visib.startConvexArea();
+
+		// column values
+		float centerX = xpos + xsize / 2;
+		float centerY = ypos + ysize / 2;
+		float centerSize = metaRoom.getHalfColumnWidth();
+
+		if( sPortal == null ) {
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
+			
+		}
+		else {
+
+			// calculate side size in units, without the exit
+			float xsizeWithoutExit = xsize - sPortal.width;
+			// then divide by two to get width of either side of the portal
+			float sideSize = xsizeWithoutExit / 2;
+			
+			float beginSize = Math.max( 1, sideSize );
+
+			// left side
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
+
+			// door
+			visib.addSegment( xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH, xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, false);
+
+			// right side
+			visib.addSegment( xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
+		}
+
+		visib.addSegment( centerX - centerSize, centerY - centerSize, centerX + centerSize, centerY - centerSize);
+			// left corner to corner
+		visib.addSegment( centerX - centerSize, centerY - centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, false);
+		// right corner to corner
+		visib.addSegment( centerX + centerSize, centerY - centerSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, false);
+
+		visib.finishConvexArea();
+	}
+
 	private void buildNorthWallVisibility(RectangleRoom room, MetaPortal nPortal) {
 		if( nPortal == null ) {
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
@@ -226,22 +395,37 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		final MetaPortal wPortal = metaRoom.getPortal( ExitDir.W );
 
 		RectangleRoom room = new RectangleRoom(); 
+		room.setHasColumns( metaRoom.hasColumns() );
+		room.setHalfColumnWidth( metaRoom.getHalfColumnWidth() );
 
-		visib.startConvexArea();
 		buildNorthWall(room, nPortal);
-		buildNorthWallVisibility(room, nPortal);
-
 		buildWestWall(room, wPortal);
-		buildWestWallVisibility(room, wPortal);
-		visib.finishConvexArea();
-
-		visib.startConvexArea();
 		buildEastWall(room, ePortal);
-		buildEastWallVisibility(room, ePortal);
-
 		buildSouthWall(room, sPortal);
-		buildSouthWallVisibility(room, sPortal);
-		visib.finishConvexArea();
+
+		if(!metaRoom.hasColumns()) {
+			// just plain room
+			visib.startConvexArea();
+			buildNorthWallVisibility(room, nPortal);
+			buildWestWallVisibility(room, wPortal);
+			visib.finishConvexArea();
+
+			visib.startConvexArea();
+			buildEastWallVisibility(room, ePortal);
+			buildSouthWallVisibility(room, sPortal);
+			visib.finishConvexArea();
+		}
+		else {
+			// columns, lets first try just one column
+
+			buildColumn(metaRoom, room, sPortal);
+
+			buildNorthColumnVisibility(metaRoom, room, nPortal);
+			buildSouthColumnVisibility(metaRoom, room, sPortal);
+			buildEastColumnVisibility(metaRoom, room, ePortal);
+			buildWestColumnVisibility(metaRoom, room, wPortal);
+		
+		}
 
 		// Do the small entrance areas
 		if( nPortal != null )
