@@ -49,7 +49,7 @@ public class WorldGen implements WorldGenInterface
 
 	public Array<Feature> generate()
 	{
-		GenSeed.random.setSeed(993);
+		GenSeed.random.setSeed(256);
 		metaRegionBuilder.setSize(44);
 		Region metaRegion = metaRegionBuilder.generateMetaRegion();
 		

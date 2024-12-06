@@ -32,7 +32,7 @@ public class RectangleRoom extends RoomFeature
 	public static float WALL_WIDTH = 0.5f;
 
 	private boolean hasColumns = false;
-	private float halfColumnWidth = 2;
+	private float halfColumnWidth = 42.0f;
 
 	public float getHalfColumnWidth() {
 		return halfColumnWidth;

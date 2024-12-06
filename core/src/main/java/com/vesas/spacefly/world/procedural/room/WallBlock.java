@@ -131,7 +131,6 @@ public class WallBlock implements FeatureBlock
 		body = BodyBuilder.getInstance()
 			.setPosition( 0 , 0 )
 			.polygon( v )
-			.setBodyType(BodyType.StaticBody )
 			.construct();
 		
 	}
