@@ -242,24 +242,24 @@ public final class Player
 		final boolean dpressed =  Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT);
 		
 		if( wpressed ) {
-			this.moveup( floatDelta );
-			// this.thrust(floatDelta);
+			// this.moveup( floatDelta );
+			this.thrust(floatDelta);
 		}
 			
 		
 		if( apressed ) {
-			this.moveleft( floatDelta );
+			// this.moveleft( floatDelta );
 			// this.rotateLeft(floatDelta);
 		}
 			
 		
 		if( spressed ) {
-			this.movedown( floatDelta );
+			// this.movedown( floatDelta );
 		}
 			
 		
 		if( dpressed ) {
-			this.moveright( floatDelta );
+			// this.moveright( floatDelta );
 			// this.rotateRight(floatDelta);
 		}
 			

@@ -71,7 +71,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		else {
 
 			// calculate side size in units, without the exit
-			float xsizeWithoutExit = xsize - nPortal.width;
+			float xsizeWithoutExit = xsize - nPortal.getWidth();
 			// then divide by two to get width of either side of the portal
 			float sideSize = xsizeWithoutExit / 2f;
 			
@@ -81,16 +81,16 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH);
 
 			// door
-			visib.addSegment( xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+			visib.addSegment( xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + (beginSize + nPortal.getWidth()), ypos + ysize - RectangleRoom.WALL_WIDTH, false);
 
 			// right side
-			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+			visib.addSegment( xpos + (beginSize + nPortal.getWidth()), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 
 			// column left corner to door left corner
 			visib.addSegment( centerX - centerSize, centerY + centerSize, xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, false);
 
 			// column right corner to door right corner
-			visib.addSegment( centerX + centerSize, centerY + centerSize, xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+			visib.addSegment( centerX + centerSize, centerY + centerSize, xpos + (beginSize + nPortal.getWidth()), ypos + ysize - RectangleRoom.WALL_WIDTH, false);
 		}
 
 		// column top line
@@ -115,7 +115,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
 		else {
-			float ysizeWithoutExit = ysize - wPortal.width;
+			float ysizeWithoutExit = ysize - wPortal.getWidth();
 			float sideSize = ysizeWithoutExit / 2f;
 			float beginSize = Math.max( 1, sideSize );
 
@@ -123,15 +123,15 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize);
 
 			// doorway
-			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), false);
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.getWidth()), false);
 
 			// upper wall
-			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.getWidth()), xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 
 			// bottom left corner to door bottom corner
 			visib.addSegment( centerX - centerSize, centerY - centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize, false);
 			// top left corner to door top corner
-			visib.addSegment( centerX - centerSize, centerY + centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), false);
+			visib.addSegment( centerX - centerSize, centerY + centerSize, xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.getWidth()), false);
 		}
 
 		visib.addSegment( centerX - centerSize, centerY - centerSize, centerX - centerSize, centerY + centerSize);
@@ -155,25 +155,25 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
 		else {
-			float ysizeWithoutExit = ysize - ePortal.width;
+			float ysizeWithoutExit = ysize - ePortal.getWidth();
 			float sideSize = ysizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
-			float endSize = ysize - (beginSize + ePortal.width);
+			float endSize = ysize - (beginSize + ePortal.getWidth());
 
 			// bottom wall
 			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize );
 
 			// door
-			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), false );
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.getWidth()), false );
 
 			// upper wall
-			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.getWidth()), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
 
 			// bottom right corner to door bottom corner
 			visib.addSegment( centerX + centerSize, centerY - centerSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, false);
 			// top right corner to door top corner
-			visib.addSegment( centerX + centerSize, centerY + centerSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), false);
+			visib.addSegment( centerX + centerSize, centerY + centerSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.getWidth()), false);
 
 		}
 
@@ -202,7 +202,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		else {
 
 			// calculate side size in units, without the exit
-			float xsizeWithoutExit = xsize - sPortal.width;
+			float xsizeWithoutExit = xsize - sPortal.getWidth();
 			// then divide by two to get width of either side of the portal
 			float sideSize = xsizeWithoutExit / 2f;
 			
@@ -212,15 +212,15 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
 
 			// door
-			visib.addSegment( xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH, xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, false);
+			visib.addSegment( xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH, xpos + (beginSize + sPortal.getWidth()), ypos + RectangleRoom.WALL_WIDTH, false);
 
 			// right side
-			visib.addSegment( xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
+			visib.addSegment( xpos + (beginSize + sPortal.getWidth()), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
 
 			// column left corner to door left corner
 			visib.addSegment( centerX - centerSize, centerY - centerSize, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH, false);
 			// column right corner to door right corner
-			visib.addSegment( centerX + centerSize, centerY - centerSize, xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, false);
+			visib.addSegment( centerX + centerSize, centerY - centerSize, xpos + (beginSize + sPortal.getWidth()), ypos + RectangleRoom.WALL_WIDTH, false);
 		}
 
 		visib.addSegment( centerX - centerSize, centerY - centerSize, centerX + centerSize, centerY - centerSize);
@@ -238,7 +238,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		}
 		else {
 			// calculate side size in units, without the exit
-			float xsizeWithoutExit = xsize - nPortal.width;
+			float xsizeWithoutExit = xsize - nPortal.getWidth();
 			// then divide by two to get width of either side of the portal
 			float sideSize = xsizeWithoutExit / 2f;
 			
@@ -248,10 +248,10 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH);
 
 			// door
-			visib.addSegment( xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, false);
+			visib.addSegment( xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + (beginSize + nPortal.getWidth()), ypos + ysize - RectangleRoom.WALL_WIDTH, false);
 
 			// right side
-			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+			visib.addSegment( xpos + (beginSize + nPortal.getWidth()), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
 	}
 	private void buildNorthWall(RectangleRoom room, MetaPortal nPortal) {
@@ -261,19 +261,19 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		}
 		else {
 			// calculate side size in units, without the exit
-			float xsizeWithoutExit = xsize - nPortal.width;
+			float xsizeWithoutExit = xsize - nPortal.getWidth();
 			// then divide by two to get width of either side of the portal
 			float sideSize = xsizeWithoutExit / 2f;
 			float beginSize = Math.max( 1, sideSize );
-			float endSize = xsize - (beginSize + nPortal.width);
+			float endSize = xsize - (beginSize + nPortal.getWidth());
 
 			// y points down
-			room.addRoomEntrance(new RoomEntrance(beginSize, 0, nPortal.width, RectangleRoom.WALL_WIDTH));
+			room.addRoomEntrance(new RoomEntrance(beginSize, 0, nPortal.getWidth(), RectangleRoom.WALL_WIDTH));
 
 			// left side
 			addBlocksToRight( xpos, ypos + ysize - RectangleRoom.WALL_WIDTH, beginSize);
 			// right side
-			addBlocksToRight( xpos + (beginSize + nPortal.width), ypos + ysize- RectangleRoom.WALL_WIDTH, endSize);
+			addBlocksToRight( xpos + (beginSize + nPortal.getWidth()), ypos + ysize- RectangleRoom.WALL_WIDTH, endSize);
 		}
 	}
 
@@ -282,20 +282,20 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
 		}
 		else {
-			float xsizeWithoutExit = xsize - sPortal.width;
+			float xsizeWithoutExit = xsize - sPortal.getWidth();
 			float sideSize = xsizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
-			float endSize = xsize - (beginSize + sPortal.width);
+			float endSize = xsize - (beginSize + sPortal.getWidth());
 
 			// left side
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
 
 			// doorway
-			visib.addSegment( xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH, xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, false);
+			visib.addSegment( xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH, xpos + (beginSize + sPortal.getWidth()), ypos + RectangleRoom.WALL_WIDTH, false);
 
 			// right side
-			visib.addSegment( xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
+			visib.addSegment( xpos + (beginSize + sPortal.getWidth()), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
 		}
 	}
 
@@ -305,17 +305,17 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		}
 		else
 		{
-			float xsizeWithoutExit = xsize - sPortal.width;
+			float xsizeWithoutExit = xsize - sPortal.getWidth();
 			float sideSize = xsizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
-			float endSize = xsize - (beginSize + sPortal.width);
+			float endSize = xsize - (beginSize + sPortal.getWidth());
 
 			// y points down
-			room.addRoomEntrance(new RoomEntrance(beginSize, ysize-RectangleRoom.WALL_WIDTH, sPortal.width, RectangleRoom.WALL_WIDTH));
+			room.addRoomEntrance(new RoomEntrance(beginSize, ysize-RectangleRoom.WALL_WIDTH, sPortal.getWidth(), RectangleRoom.WALL_WIDTH));
 			
 			addBlocksToRight( xpos, ypos, beginSize);
-			addBlocksToRight( xpos + (beginSize + sPortal.width), ypos, endSize);
+			addBlocksToRight( xpos + (beginSize + sPortal.getWidth()), ypos, endSize);
 		}
 	}
 
@@ -324,7 +324,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
 		else {
-			float ysizeWithoutExit = ysize - wPortal.width;
+			float ysizeWithoutExit = ysize - wPortal.getWidth();
 			float sideSize = ysizeWithoutExit / 2f;
 			float beginSize = Math.max( 1, sideSize );
 
@@ -332,10 +332,10 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize);
 
 			// doorway
-			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), false);
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.getWidth()), false);
 
 			// upper wall
-			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width), xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
+			visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.getWidth()), xpos + RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
 	}
 
@@ -345,16 +345,16 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		}
 		else
 		{
-			float ysizeWithoutExit = ysize - wPortal.width;
+			float ysizeWithoutExit = ysize - wPortal.getWidth();
 			float sideSize = ysizeWithoutExit / 2f;
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = ysizeWithoutExit - beginSize;
 
 			// y points down
-			room.addRoomEntrance(new RoomEntrance(0, 0 + beginSize, RectangleRoom.WALL_WIDTH, wPortal.width));
+			room.addRoomEntrance(new RoomEntrance(0, 0 + beginSize, RectangleRoom.WALL_WIDTH, wPortal.getWidth()));
 			
 			addBlocksToUp( xpos, ypos + RectangleRoom.WALL_WIDTH,  beginSize - RectangleRoom.WALL_WIDTH);
-			addBlocksToUp( xpos, ypos + (beginSize + wPortal.width), endSize - RectangleRoom.WALL_WIDTH);
+			addBlocksToUp( xpos, ypos + (beginSize + wPortal.getWidth()), endSize - RectangleRoom.WALL_WIDTH);
 		}
 	}
 
@@ -363,20 +363,20 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH);
 		}
 		else {
-			float ysizeWithoutExit = ysize - ePortal.width;
+			float ysizeWithoutExit = ysize - ePortal.getWidth();
 			float sideSize = ysizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
-			float endSize = ysize - (beginSize + ePortal.width);
+			float endSize = ysize - (beginSize + ePortal.getWidth());
 
 			// bottom wall
 			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize );
 
 			// door
-			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), false );
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.getWidth()), false );
 
 			// upper wall
-			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.getWidth()), xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + ysize - RectangleRoom.WALL_WIDTH );
 
 		}
 	}
@@ -387,17 +387,17 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		}
 		else
 		{
-			float ysizeWithoutExit = ysize - ePortal.width;
+			float ysizeWithoutExit = ysize - ePortal.getWidth();
 			float sideSize = ysizeWithoutExit / 2f;
 			
 			float beginSize = Math.max( 1, sideSize );
-			float endSize = ysize - (beginSize + ePortal.width);
+			float endSize = ysize - (beginSize + ePortal.getWidth());
 
 			// y points down
-			room.addRoomEntrance(new RoomEntrance(xsize - RectangleRoom.WALL_WIDTH, 0 + beginSize, RectangleRoom.WALL_WIDTH, ePortal.width));
+			room.addRoomEntrance(new RoomEntrance(xsize - RectangleRoom.WALL_WIDTH, 0 + beginSize, RectangleRoom.WALL_WIDTH, ePortal.getWidth()));
 			
 			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH,  beginSize - RectangleRoom.WALL_WIDTH);
-			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos+ (beginSize + ePortal.width), endSize - RectangleRoom.WALL_WIDTH);
+			addBlocksToUp( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos+ (beginSize + ePortal.getWidth()), endSize - RectangleRoom.WALL_WIDTH);
 			
 		}
 	}
@@ -454,28 +454,28 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		{
 			visib.startConvexArea();
 
-			float xsizeWithoutExit = xsize - nPortal.width;
+			float xsizeWithoutExit = xsize - nPortal.getWidth();
 			float sideSize = xsizeWithoutExit / 2;
 			
 			float beginSize = Math.max( 1, sideSize );
-			float endSize = xsize - (beginSize + nPortal.width);
+			float endSize = xsize - (beginSize + nPortal.getWidth());
 
 			// left side up
 			visib.addSegment( xpos + beginSize, ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + ysize);
 
 			// right side up
-			visib.addSegment( xpos + (beginSize + nPortal.width), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize + nPortal.width, ypos + ysize);
+			visib.addSegment( xpos + (beginSize + nPortal.getWidth()), ypos + ysize - RectangleRoom.WALL_WIDTH, xpos + beginSize + nPortal.getWidth(), ypos + ysize);
 
 			visib.finishConvexArea();
 		}
 		if( sPortal != null )
 		{
 			visib.startConvexArea();
-			float xsizeWithoutExit = xsize - sPortal.width;
+			float xsizeWithoutExit = xsize - sPortal.getWidth();
 			float sideSize = xsizeWithoutExit / 2;
 			
 			float beginSize = Math.max( 1, sideSize );
-			float endSize = xsize - (beginSize + sPortal.width);
+			float endSize = xsize - (beginSize + sPortal.getWidth());
 			
 			// visib.addSegment( xpos + RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
 			// visib.addSegment( xpos + (beginSize + sPortal.width), ypos + RectangleRoom.WALL_WIDTH, xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + RectangleRoom.WALL_WIDTH);
@@ -483,20 +483,20 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			// left side up
 			visib.addSegment( xpos + beginSize, ypos, xpos + beginSize, ypos + RectangleRoom.WALL_WIDTH);
 			// right side up
-			visib.addSegment( xpos + (beginSize + sPortal.width), ypos, xpos + beginSize + sPortal.width, ypos + RectangleRoom.WALL_WIDTH);
+			visib.addSegment( xpos + (beginSize + sPortal.getWidth()), ypos, xpos + beginSize + sPortal.getWidth(), ypos + RectangleRoom.WALL_WIDTH);
 			visib.finishConvexArea();
 		}
 		if( wPortal != null )
 		{
 			visib.startConvexArea();
-			float ysizeWithoutExit = ysize - wPortal.width;
+			float ysizeWithoutExit = ysize - wPortal.getWidth();
 			float sideSize = ysizeWithoutExit / 2;
 			
 			float beginSize = Math.max( 1, sideSize );
 			float endSize = ysizeWithoutExit - beginSize;
 			
 			// top side right
-			visib.addSegment( xpos , ypos + (beginSize + wPortal.width), xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.width));
+			visib.addSegment( xpos , ypos + (beginSize + wPortal.getWidth()), xpos + RectangleRoom.WALL_WIDTH, ypos + (beginSize + wPortal.getWidth()));
 			// bottom side right
 			visib.addSegment( xpos , ypos + beginSize , xpos + RectangleRoom.WALL_WIDTH, ypos + beginSize);
 			visib.finishConvexArea();
@@ -504,14 +504,14 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		if( ePortal != null )
 		{
 			visib.startConvexArea();
-			float ysizeWithoutExit = ysize - ePortal.width;
+			float ysizeWithoutExit = ysize - ePortal.getWidth();
 			float sideSize = ysizeWithoutExit / 2;
 			
 			float beginSize = Math.max( 1, sideSize );
-			float endSize = ysize - (beginSize + ePortal.width);
+			float endSize = ysize - (beginSize + ePortal.getWidth());
 			
 			// top side right
-			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.width), xpos + xsize, ypos + (beginSize + ePortal.width) );
+			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + (beginSize + ePortal.getWidth()), xpos + xsize, ypos + (beginSize + ePortal.getWidth()) );
 			// bottom side right
 			visib.addSegment( xpos + xsize - RectangleRoom.WALL_WIDTH, ypos + beginSize, xpos + xsize, ypos + beginSize );
 

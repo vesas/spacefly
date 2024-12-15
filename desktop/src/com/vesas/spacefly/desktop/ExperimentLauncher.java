@@ -4,9 +4,9 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.vesas.spacefly.TestGame;
 
-public final class TestLauncher {
+public final class ExperimentLauncher {
 
-	private TestLauncher() {
+	private ExperimentLauncher() {
 		// empty
 	}
 	
