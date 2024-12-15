@@ -22,7 +22,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.vesas.spacefly.TestGame;
-import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.quadtree.Point;
 import com.vesas.spacefly.quadtree.QuadTree;
 import com.vesas.spacefly.util.SimplexNoise;
@@ -31,6 +30,9 @@ import com.vesas.spacefly.visibility.Edge;
 import com.vesas.spacefly.visibility.EndPoint;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.visibility.VisibilityPoly;
+import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor;
+import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridorBuilder;
+import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
@@ -233,6 +235,8 @@ public class TestScreen implements Screen {
     // 
 
     private RectangleRoom room1;
+    private RectangleRoom room2;
+    private AxisAlignedCorridor corridor1;
 
     private void testInit3() {
 
@@ -240,15 +244,36 @@ public class TestScreen implements Screen {
         RectangleRoomBuilder.INSTANCE.setPos(0,0);
         RectangleRoomBuilder.INSTANCE.setVisib(visib);
 
+        AxisAlignedCorridorBuilder.INSTANCE.setVisib(visib);
+
         MetaRectangleRoom metaRoom = new MetaRectangleRoom();
+        
         metaRoom.setSize(4, 4, 12, 12);
         metaRoom.setHasColumns(true);
-        metaRoom.setHalfColumnWidth(3.5f);
-        // MetaPortal metaPortal1 = new MetaPortal();
-        // metaPortal1.setWidth(2);
-        // metaRoom.addPortal( ExitDir.S, metaPortal1 );
+        metaRoom.setHalfColumnWidth(1.5f);
+        
+        MetaPortal metaPortal1 = new MetaPortal(3);
+        
+        metaRoom.addPortal( ExitDir.E, metaPortal1 );
 
+        MetaPortal metaPortal2 = new MetaPortal(3);
+        MetaRectangleRoom metaRoom2 = new MetaRectangleRoom();
+        
+        metaRoom2.setSize(22, 4, 12, 12);
+        metaRoom2.addPortal( ExitDir.W, metaPortal2 );
+
+        MetaCorridor corridor = new MetaCorridor();
+        corridor.setLengthWidth( 6, 3 );
+
+        corridor.addStartPortal( ExitDir.E, metaPortal1 );
+
+        // todo: make it so this is not needed, instead calculate 
+        corridor.setSize( 16, 10-2f, 6, 3 );
+        corridor.addEndPortal( ExitDir.E, metaPortal2);
+
+        corridor1 = AxisAlignedCorridorBuilder.INSTANCE.buildFrom(corridor);
         room1 = RectangleRoomBuilder.INSTANCE.buildFrom(metaRoom);
+        room2 = RectangleRoomBuilder.INSTANCE.buildFrom(metaRoom2);
 
         visib.finishLoad();
 
@@ -264,6 +289,8 @@ public class TestScreen implements Screen {
         batch.begin();
 
         room1.draw(batch);
+        room2.draw(batch);
+        corridor1.draw(batch);
 
         batch.end();
 

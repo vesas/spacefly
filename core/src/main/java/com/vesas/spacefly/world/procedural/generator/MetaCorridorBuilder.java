@@ -20,7 +20,7 @@ public class MetaCorridorBuilder
 	{
 		MetaCorridor corr = new MetaCorridor();
 		
-		width = startPortal.width;
+		width = startPortal.getWidth();
 		corr.setLengthWidth( length, width );
 		
 		float xpos, ypos, xsize, ysize;
@@ -105,12 +105,10 @@ public class MetaCorridorBuilder
 	{
 		this.startPortal = portal;
 		
-		MetaPortal newEndPortal = new MetaPortal();
+		MetaPortal newEndPortal = new MetaPortal(portal.getWidth());
 		newEndPortal.START_TYPE = MetaPortal.CORRIDOR;
 		newEndPortal.setExit(portal.getExit());
-		
-		newEndPortal.width = portal.width;
-		
+
 		this.endPortal = newEndPortal;
 			
 		return this;

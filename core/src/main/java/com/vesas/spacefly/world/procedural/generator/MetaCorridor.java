@@ -12,14 +12,13 @@ public class MetaCorridor implements MetaFeature
 	private float length;
 	private float width;
 	
-	private MetaPortal startPortal = new MetaPortal(); 
-	private MetaPortal endPortal = new MetaPortal();
+	private MetaPortal startPortal = null; 
+	private MetaPortal endPortal = null;
 	
 	public AxisAlignedCorridor real;
 	private int id;
 
-	public MetaCorridor()
-	{
+	public MetaCorridor() {
 		id = IDGenerator.getNextId();
 	}
 

@@ -3,6 +3,7 @@ package com.vesas.spacefly.world.procedural.generator;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
 // feature exit
+// has only one dimension
 public class MetaPortal
 {
 	public static int RECTANGLE_ROOM = 0;
@@ -23,11 +24,11 @@ public class MetaPortal
 	public float centerY;
 	
 	// the inner width ("walkable" width) of the portal
-	public float width;
+	private final float width;
 
-	public MetaPortal() 
-	{  
+	public MetaPortal(float width) {
 		this.id = IDGenerator.getNextId();
+		this.width = width;
 	}
 
 	public MetaFeature getSource() {
@@ -76,10 +77,6 @@ public class MetaPortal
 
 	public float getWidth() {
 		return width;
-	}
-
-	public void setWidth(float width) {
-		this.width = width;
 	}
 
 	@Override

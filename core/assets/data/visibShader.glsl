@@ -37,30 +37,16 @@ void main() {
 	vec2 aux=(gl_FragCoord.xy-center) / resolution.x;
     float dist=length(aux) * 500.0;
     
-    if( dist > 80.0 )
-    	bug = 1.0;
-    	
-    float adjust = 1.0;
+    // Replace the hard cutoff with smooth falloff
+    float maxDist = 195.7;
+    float startFade = 90.0;
+    float adjust = 1.0 - smoothstep(startFade, maxDist, dist);
     
-    if( dist > 185.7 )
-    {
-    	// adjust = adjust - ( (dist-185.7) * 0.0055  );
-		adjust = 0.0;
-    }
-	
-
-	adjust = smoothstep( 0.0, 1.0, adjust);
+    // Add noise to the falloff
+    adjust += mix(-NOISE_GRANULARITY, NOISE_GRANULARITY, random(coordinates));
+    adjust = clamp(adjust, 0.0, 1.0);
     
-    if( adjust > 1.0 )
-    	adjust = 1.0;
-    	
-    if( adjust < 0.0 )
-    	adjust = 0.0;
-    
-	adjust += mix(-NOISE_GRANULARITY, NOISE_GRANULARITY, random(coordinates));
-	vec3 intensity = ambient + light.rgb * adjust;
-
-	
+    vec3 intensity = ambient + light.rgb * adjust;
 	
  	vec3 finalColor = diffuseColor.rgb * intensity ;
  	

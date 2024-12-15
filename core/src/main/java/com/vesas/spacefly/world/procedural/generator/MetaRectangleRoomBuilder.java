@@ -126,10 +126,9 @@ public class MetaRectangleRoomBuilder
 	
 	public MetaRectangleRoomBuilder addPortal( ExitDir dir, float width )
 	{
-		MetaPortal portal = new MetaPortal();
+		MetaPortal portal = new MetaPortal(width);
 		portal.START_TYPE = MetaPortal.RECTANGLE_ROOM;
 		portal.setExit( dir );
-		portal.width = width;
 		portal.setSource(this.room);
 		
 		portals.put( dir, portal );

@@ -63,14 +63,8 @@ public class AxisAlignedCorridor implements Feature
 	public void drawWithVisibility(GameScreen screen) {
 		
 		// draw floor texture
-		if(dir == Dir.SN) {
-			screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
-		}
-		else {
-			screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
-		}
-		
-		
+		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
+
 	}
 	
 	public void draw(SpriteBatch batch)

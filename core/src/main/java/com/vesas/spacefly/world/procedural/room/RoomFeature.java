@@ -57,7 +57,7 @@ public abstract class RoomFeature implements Feature
 			Exit exit = new Exit();
 			
 			exit.exitDir = port.getExit();
-			exit.exitWidth = (int) port.width;
+			exit.exitWidth = (int) port.getWidth();
 			
 			this.addExit( exit );
 		}

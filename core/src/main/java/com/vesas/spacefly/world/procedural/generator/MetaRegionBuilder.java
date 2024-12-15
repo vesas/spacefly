@@ -67,9 +67,13 @@ public class MetaRegionBuilder {
 			// TODO: add probability
 			ret = createRandomCorridor( region, portal );
 
-			// Just try once more if by random chance can fit
-			if(ret== null)
+			// Just try twice more if by random chance can fit
+			if(ret== null) {
 				ret = createRandomCorridor( region, portal );
+			}
+			if(ret== null) {
+				ret = createRandomCorridor( region, portal );
+			}
 		}
 
 		if(portal.START_TYPE == MetaPortal.CORRIDOR)
@@ -80,9 +84,13 @@ public class MetaRegionBuilder {
 			else
 				ret = generateRandomRoom( region, portal );
 			
-			// Just try once more if by random chance can fit
-			if(ret== null)
+			// Just try twice more if by random chance can fit
+			if(ret== null) {
 				ret = generateRandomRoom( region, portal );
+			}
+			if(ret== null) {
+				ret = generateRandomRoom( region, portal );
+			}
 		}
 
 		if( ret == null)
@@ -102,24 +110,19 @@ public class MetaRegionBuilder {
 	private Array<MetaFeature> generateFromPortals( Region region, Array<MetaPortal> portals )
 	{
 		Array<MetaFeature> ret = new Array<MetaFeature>();
-
 		Array<MetaPortal> nextRound = new Array<MetaPortal>();
 
-		for( MetaPortal portal : portals )
-		{
+		for( MetaPortal portal : portals ) {
 			MetaFeature feat = generateFromPortal(region, portal);
 			
-			if( feat != null ) 
-			{
+			if( feat != null ) {
 				nextRound.addAll(feat.getPortalArray(portal));
 				ret.add(feat);
 			}
-				
 		}
 
 		// and generate further features from the portals in the nextRound array
-		if(nextRound.size > 0) 
-		{
+		if(nextRound.size > 0) {
 			Array<MetaFeature> features = generateFromPortals( region, nextRound );
 			ret.addAll(features);
 		}
