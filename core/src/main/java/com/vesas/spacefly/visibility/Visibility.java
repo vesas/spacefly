@@ -571,11 +571,34 @@ public class Visibility
 	// static final private float EPS = 0.000000000000001f;
 	static final private float EPS = 0.000000000001f;
 	
-	
+	private Triangle lastTriangle = null;
+
 	// find triangle which contains center
 	// lets just brute force it
 	private Triangle findStartTriangle()
 	{
+		 // Check last known triangle first
+		 if(lastTriangle != null) {
+
+			final Triangle t = lastTriangle;
+
+			final EndPoint e0 = t.getPoint(0);
+			final float ax = e0.point.x;
+			final float ay = e0.point.y;
+			
+			final EndPoint e1 = t.getPoint(1);
+			final float bx = e1.point.x;
+			final float by = e1.point.y;
+			
+			final EndPoint e2 = t.getPoint(2); 
+			float cx = e2.point.x;
+			float cy = e2.point.y;
+
+			if(Intersector.isPointInTriangle(center.x, center.y, ax, ay, bx, by, cx, cy)) {
+				return lastTriangle;
+			}
+		}
+
 		final int size = triangles.size();
 		for( int i = 0; i < size; i++ )
 		{
@@ -595,8 +618,11 @@ public class Visibility
 			
 			boolean found = Intersector.isPointInTriangle(center.x, center.y, ax, ay, bx, by, cx, cy);
 			
-			if( found )
+			if( found ) {
+				lastTriangle = t; // Cache result
 				return t;
+			}
+				
 		}
 		
 		return null;
