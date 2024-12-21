@@ -96,7 +96,7 @@ public class Explosion implements ExplosionInterface
 			}
 		}
 
-		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+		// screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 		sprite.setScale( 0.015f * bloomSize);
 		sprite.setColor(0.28f, 0.18f, 0.06f, particles.getTime() );
 		
@@ -118,7 +118,7 @@ public class Explosion implements ExplosionInterface
 			}
 		}
 		
-		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+		// screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 		sprite.setScale( 0.0015f * bloomSize);
 		float timescale = bits.getTime();
 		

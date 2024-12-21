@@ -250,11 +250,11 @@ public class TestScreen implements Screen {
         
         metaRoom.setSize(4, 4, 12, 12);
         metaRoom.setHasColumns(true);
-        metaRoom.setHalfColumnWidth(1.5f);
+        metaRoom.setHalfColumnWidth(2.5f);
         
         MetaPortal metaPortal1 = new MetaPortal(3);
         
-        metaRoom.addPortal( ExitDir.E, metaPortal1 );
+        // metaRoom.addPortal( ExitDir.E, metaPortal1 );
 
         MetaPortal metaPortal2 = new MetaPortal(3);
         MetaRectangleRoom metaRoom2 = new MetaRectangleRoom();
@@ -271,9 +271,9 @@ public class TestScreen implements Screen {
         corridor.setSize( 16, 10-2f, 6, 3 );
         corridor.addEndPortal( ExitDir.E, metaPortal2);
 
-        corridor1 = AxisAlignedCorridorBuilder.INSTANCE.buildFrom(corridor);
+        // corridor1 = AxisAlignedCorridorBuilder.INSTANCE.buildFrom(corridor);
         room1 = RectangleRoomBuilder.INSTANCE.buildFrom(metaRoom);
-        room2 = RectangleRoomBuilder.INSTANCE.buildFrom(metaRoom2);
+        // room2 = RectangleRoomBuilder.INSTANCE.buildFrom(metaRoom2);
 
         visib.finishLoad();
 
@@ -289,11 +289,10 @@ public class TestScreen implements Screen {
         batch.begin();
 
         room1.draw(batch);
-        room2.draw(batch);
-        corridor1.draw(batch);
+        // room2.draw(batch);
+        // corridor1.draw(batch);
 
         batch.end();
-
 
         int mousex = Gdx.input.getX();
 		int mousey = Gdx.input.getY();
@@ -301,7 +300,8 @@ public class TestScreen implements Screen {
         Vector3 tempVector = new Vector3(mousex, mousey, 0);
 		camera.unproject(tempVector);
         
-        visib.setLightLocation(tempVector.x, tempVector.y);
+        // visib.setLightLocation(tempVector.x, tempVector.y);
+        visib.setLightLocation(6, 6);
         visib.sweep();
 
         drawVisibility(new Vector2(tempVector.x,tempVector.y));
