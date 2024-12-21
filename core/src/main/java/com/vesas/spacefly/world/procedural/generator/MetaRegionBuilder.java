@@ -179,8 +179,8 @@ public class MetaRegionBuilder {
 			}
 
 			// have to be at least minx/miny long/wide to accommodate the possible corridor
-			w = Math.max(minwidth, GenSeed.random.nextInt( 20 ) );
-			h = Math.max(minheight, GenSeed.random.nextInt( 20 ) );
+			w = Math.max(minwidth, GenSeed.random.nextInt( 26 ) );
+			h = Math.max(minheight, GenSeed.random.nextInt( 26 ) );
 
 			roomBuilder.setSize( w, h );
 
