@@ -23,7 +23,7 @@ public class Block1 implements FeatureBlock
 		
 	}
 	
-	public void init( float xpos, float ypos, float rotate)
+	public void init( float xpos, float ypos, float rotate, BodyBuilder bodyBuilder)
 	{
 		sprite = G.getAtlas().createSprite("edgeA1");
 		// this sets the absolute size, not scale
@@ -60,12 +60,10 @@ public class Block1 implements FeatureBlock
 		v[6] = xpos + up.x * 1;
 		v[7] = ypos + up.y * 1;
 		
-		BodyBuilder builder = BodyBuilder.getInstance();
+		bodyBuilder.setPosition( 0 , 0 );
+		bodyBuilder.polygon( v );
 		
-		builder.setPosition( 0 , 0 );
-		builder.polygon( v );
-		
-		body = builder.construct();
+		body = bodyBuilder.construct();
 	}
 	
 	public void draw(Batch batch)

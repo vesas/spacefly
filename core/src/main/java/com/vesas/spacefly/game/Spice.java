@@ -64,7 +64,7 @@ public class Spice implements AnimateEntity
 	}
 
 	@Override
-	public void tick( float delta )
+	public void tick(GameScreen screen, float delta )
 	{
 		
 	}

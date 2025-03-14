@@ -15,11 +15,11 @@ public abstract class AbstractBullet
 		// Default constructor for testing
 	}
 	
-	public AbstractBullet( float posx, float posy, float dirx, float diry, short category, short mask )
+	public AbstractBullet( float posx, float posy, float dirx, float diry, short category, short mask, BodyBuilder bodyBuilder )
 	{
 		creationTime = TimeUtils.millis();
 		
-		body = BodyBuilder.getInstance()
+		body = bodyBuilder
 			.circle(0.05f)
 			.setDensity(0.8f)
 			.setFriction( 0.00001f)

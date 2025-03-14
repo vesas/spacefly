@@ -3,6 +3,7 @@ package com.vesas.spacefly.monster;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.game.AbstractBullet;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.G.BulletType;
@@ -11,9 +12,9 @@ public class MonsterBullet extends AbstractBullet
 {
 	public int type;
 	
-	public MonsterBullet( float posx, float posy, float dirx, float diry, int type ) 
+	public MonsterBullet( float posx, float posy, float dirx, float diry, int type, BodyBuilder bodyBuilder ) 
 	{ 
-		super( posx, posy, dirx, diry, (short)8, (short)3 );
+		super( posx, posy, dirx, diry, (short)8, (short)3, bodyBuilder );
 		
 		this.type = type;
 		

@@ -2,11 +2,12 @@ package com.vesas.spacefly.world.procedural.room.rectangleroom;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.vesas.spacefly.box2d.BodyBuilder;
+import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.room.WallBlock;
-import com.vesas.spacefly.visibility.Visibility;
 
 public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 {
@@ -21,15 +22,14 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
 	
 	private Visibility visib;
+	private BodyBuilder bodyBuilder;
 	
-	public static RectangleRoomBuilder INSTANCE = new RectangleRoomBuilder();
-	
-	public void setVisib( Visibility visib )
-	{
+	public RectangleRoomBuilder(Visibility visib, BodyBuilder bodyBuilder) { 
 		this.visib = visib;
+		this.bodyBuilder = bodyBuilder;
 	}
 	
-	public RectangleRoomBuilder setPos( float xpos, float ypos )
+	public void setPos( float xpos, float ypos )
 	{
 		this.xpos = xpos; 
 		this.ypos = ypos;
@@ -38,7 +38,6 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		ysize = 0;
 		blocks.clear();
 		
-		return INSTANCE;
 	}
 
 	private void buildColumn(MetaRectangleRoom metaRoom, RectangleRoom room, MetaPortal sPortal) {
@@ -401,6 +400,13 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 			
 		}
 	}
+
+	/**
+	 * For testing purposes, we can override this to return a mock room
+	 */
+	protected RectangleRoom createRoom() {
+		return new RectangleRoom();
+	}
 	
 	@Override
     public RectangleRoom buildFrom(MetaRectangleRoom metaRoom) {
@@ -416,7 +422,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		final MetaPortal sPortal = metaRoom.getPortal( ExitDir.S );
 		final MetaPortal wPortal = metaRoom.getPortal( ExitDir.W );
 
-		RectangleRoom room = new RectangleRoom(); 
+		RectangleRoom room = createRoom(); 
 		room.setHasColumns( metaRoom.hasColumns() );
 		room.setHalfColumnWidth( metaRoom.getHalfColumnWidth() );
 
@@ -542,7 +548,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 	private void addBlocksToRight(float xpos, float ypos, float distance ) {
 		WallBlock block = new WallBlock((int)(distance*2.0f));
 		blocks.add(block);
-		block.initBottomLeft( xpos, ypos , 0);
+		block.initBottomLeft( xpos, ypos , 0, bodyBuilder);
 
 	}
 	
@@ -552,7 +558,7 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 	private void addBlocksToUp(float xpos, float ypos, float distance ) {
 		WallBlock block = new WallBlock((int)(distance*2.0f));
 		blocks.add(block);
-		block.initTopLeft( xpos, ypos , 90);
+		block.initTopLeft( xpos, ypos , 90, bodyBuilder);
 		
 	}
 	

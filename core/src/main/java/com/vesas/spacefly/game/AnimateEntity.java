@@ -5,7 +5,7 @@ import com.vesas.spacefly.screen.GameScreen;
 
 public interface AnimateEntity
 {
-	void tick( float delta );
+	void tick(GameScreen screen, float delta );
 	void draw(GameScreen screen);
 	void destroy();
 	Body getBody();

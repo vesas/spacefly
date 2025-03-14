@@ -43,28 +43,28 @@ public class WallBlock implements FeatureBlock
 	/**
 	 * Initializes the block with the bottom left as the origin of this block.
 	 */
-	public void initBottomLeft( float originx, float originy, float rotate) {
-		init( originx, originy, rotate, Origin.ORIGIN_BOTTOM_LEFT );
+	public void initBottomLeft( float originx, float originy, float rotate, BodyBuilder bodyBuilder) {
+		init( originx, originy, rotate, Origin.ORIGIN_BOTTOM_LEFT, bodyBuilder );
 	}
 
 	/**
 	 * Initializes the block with the right right as the origin of this block.
 	 */
-	public void initTopRight( float originx, float originy, float rotate) {
-		init( originx, originy, rotate, Origin.ORIGIN_TOP_RIGHT );
+	public void initTopRight( float originx, float originy, float rotate, BodyBuilder bodyBuilder) {
+		init( originx, originy, rotate, Origin.ORIGIN_TOP_RIGHT, bodyBuilder );
 	}
 
 	/**
 	 * Initializes the block with the top left as the origin of this block.
 	 */
-	public void initTopLeft( float originx, float originy, float rotate) {
-		init( originx, originy, rotate, Origin.ORIGIN_TOP_LEFT );
+	public void initTopLeft( float originx, float originy, float rotate, BodyBuilder bodyBuilder) {
+		init( originx, originy, rotate, Origin.ORIGIN_TOP_LEFT, bodyBuilder );
 	}
 	
 	/**
 	 * Initializes the block with the given origin.
 	 */
-	private void init( float originx, float originy, float rotate, Origin origin)
+	private void init( float originx, float originy, float rotate, Origin origin, BodyBuilder bodyBuilder)
 	{
 		/*
 		 * These are the unit measurements in world space "blocks"
@@ -89,7 +89,7 @@ public class WallBlock implements FeatureBlock
 		}
 
 		setupTexture(rotate);
-		setUpBody(right, up);
+		setUpBody(right, up, bodyBuilder);
 	}
 
 	private void setupTexture(float rotate) {
@@ -108,7 +108,7 @@ public class WallBlock implements FeatureBlock
 		 */
 	}
 
-	private void setUpBody(Vector2 right, Vector2 up) {
+	private void setUpBody(Vector2 right, Vector2 up, BodyBuilder bodyBuilder) {
 
 		float [] v = {
 
@@ -128,7 +128,7 @@ public class WallBlock implements FeatureBlock
 			ypos + up.y
 		};
 
-		body = BodyBuilder.getInstance()
+		body = bodyBuilder
 			.setPosition( 0 , 0 )
 			.polygon( v )
 			.construct();

@@ -5,20 +5,17 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.G.MonsterType;
-import com.vesas.spacefly.screen.GameScreen;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.game.RayCastClosestCB;
 import com.vesas.spacefly.game.Util;
+import com.vesas.spacefly.screen.GameScreen;
 
 public class SlurgMonster extends Monster
 {
@@ -45,11 +42,11 @@ public class SlurgMonster extends Monster
 	
 	float halo = 0.0f;
 
-	public SlurgMonster(float posx, float posy)
+	public SlurgMonster(float posx, float posy, BodyBuilder bodyBuilder)
 	{
 		cooldown = 0 + random.nextFloat() * 0.01f;
 		
-		initializeBody(posx, posy);
+		initializeBody(posx, posy, bodyBuilder);
 
 		targetDir.setAngleDeg(body.getAngle() * Util.RADTODEG);
 		dir.setAngleDeg(body.getAngle() * Util.RADTODEG);
@@ -57,9 +54,9 @@ public class SlurgMonster extends Monster
 		setHealth(4);
 	}
 
-	private void initializeBody(float posx, float posy) {
+	private void initializeBody(float posx, float posy, BodyBuilder bodyBuilder) {
 
-		body = BodyBuilder.getInstance()
+		body = bodyBuilder
         .setBodyType(BodyType.DynamicBody)
         .setPosition(posx, posy)
         .circle(0.43f)
@@ -75,7 +72,7 @@ public class SlurgMonster extends Monster
 	}
 
 	@Override
-	public void tick( float delta )
+	public void tick( GameScreen screen, float delta )
 	{
 		halo += delta * 2.0f;
 		
@@ -126,7 +123,7 @@ public class SlurgMonster extends Monster
 			}
 			
 			if(random.nextInt(100) < 18 && brain.canSeePlayer && fireCooldown <= 0) {
-				fireBullet();
+				fireBullet(screen.getBodyBuilder());
 				fireCooldown = 0.08f;
 			}
 
@@ -306,13 +303,13 @@ public class SlurgMonster extends Monster
 	}
 	
 
-	private void fireBullet()
+	private void fireBullet(BodyBuilder bodyBuilder)
 	{
-		fireBulletAtPlayer(0.42f, 8.2f, 1);
+		fireBulletAtPlayer(0.42f, 8.2f, 1, bodyBuilder);
 	}
 	
 	@Override
-	protected void fireBulletAtPlayer( float scatter, float speed, int type )
+	protected void fireBulletAtPlayer( float scatter, float speed, int type, BodyBuilder bodyBuilder )
 	{
 		Vector2 pos = body.getWorldCenter();
 		
@@ -327,7 +324,7 @@ public class SlurgMonster extends Monster
 		temp2.scl(0.1f );
 		
 		MonsterBullets.INSTANCE.fireBullet(pos.x + temp2.x, pos.y + temp2.y , 
-				temp.x * speed, temp.y * speed, type );
+			temp.x * speed, temp.y * speed, type, bodyBuilder );
 				
 	}
 

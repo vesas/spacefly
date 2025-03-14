@@ -185,12 +185,12 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 		resourcesToBeRemoved.clear();
 	}
 	
-	public void monsterTick( float delta )
+	public void monsterTick(GameScreen screen, float delta )
 	{
 		for( int i = 0, size = monsters.size; i < size; i++ )
 		{
 			Monster m = monsters.get(i);
-			m.tick(delta);
+			m.tick(screen, delta);
 		}
 	}
 	

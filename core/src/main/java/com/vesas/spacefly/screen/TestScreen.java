@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.vesas.spacefly.TestGame;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.quadtree.Point;
 import com.vesas.spacefly.quadtree.QuadTree;
 import com.vesas.spacefly.util.SimplexNoise;
@@ -241,10 +242,12 @@ public class TestScreen implements Screen {
     private void testInit3() {
 
         visib.startLoad();
-        RectangleRoomBuilder.INSTANCE.setPos(0,0);
-        RectangleRoomBuilder.INSTANCE.setVisib(visib);
 
-        AxisAlignedCorridorBuilder.INSTANCE.setVisib(visib);
+        BodyBuilder bodyBuilder = new BodyBuilder();
+
+        AxisAlignedCorridorBuilder axisAlignedCorridorBuilder = new AxisAlignedCorridorBuilder(visib, bodyBuilder);
+        RectangleRoomBuilder rectangleRoomBuilder = new RectangleRoomBuilder(visib, bodyBuilder);
+        rectangleRoomBuilder.setPos(0,0);
 
         MetaRectangleRoom metaRoom = new MetaRectangleRoom();
         
@@ -271,8 +274,7 @@ public class TestScreen implements Screen {
         corridor.setSize( 16, 10-2f, 6, 3 );
         corridor.addEndPortal( ExitDir.E, metaPortal2);
 
-        // corridor1 = AxisAlignedCorridorBuilder.INSTANCE.buildFrom(corridor);
-        room1 = RectangleRoomBuilder.INSTANCE.buildFrom(metaRoom);
+        room1 = rectangleRoomBuilder.buildFrom(metaRoom);
         // room2 = RectangleRoomBuilder.INSTANCE.buildFrom(metaRoom2);
 
         visib.finishLoad();

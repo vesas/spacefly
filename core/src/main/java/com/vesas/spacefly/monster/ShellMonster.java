@@ -308,7 +308,7 @@ public class ShellMonster extends Monster
 		}
 	}
 
-	public ShellMonster(float posx, float posy)
+	public ShellMonster(float posx, float posy, BodyBuilder bodyBuilder)
 	{
 		cooldown = 0 + random.nextFloat() * 0.1f;
 
@@ -326,7 +326,7 @@ public class ShellMonster extends Monster
 			-0.07f,  0.36f
 		};
 
-		body = BodyBuilder.getInstance()
+		body = bodyBuilder
 			.setBodyType(BodyType.DynamicBody)
 			.setPosition(posx, posy)
 			.polygon(vertices)
@@ -350,7 +350,7 @@ public class ShellMonster extends Monster
 	}
 	
 	@Override
-	public void tick( float delta ) {
+	public void tick(GameScreen screen, float delta ) {
 		if (body == null) {
 			return;
 		}
@@ -387,7 +387,7 @@ public class ShellMonster extends Monster
 
 			if (random.nextInt(100) < 70 && brain.canSeePlayer)
 			{
-				fireBullet();
+				fireBullet(screen.getBodyBuilder());
 			}
 
 			if (random.nextInt(100) < 50 && brain.canSeePlayer)
@@ -412,8 +412,8 @@ public class ShellMonster extends Monster
 		body.applyForceToCenter(tmp, true);
 	}
 
-	private void fireBullet() {
-		fireBulletAtDir( gunDir, 0.15f, 12.2f, 1);
+	private void fireBullet(BodyBuilder bodyBuilder) {
+		fireBulletAtDir( gunDir, 0.15f, 12.2f, 1, bodyBuilder);
 	}
 
 	@Override

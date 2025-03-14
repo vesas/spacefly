@@ -297,7 +297,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		for( int i = 0, size = resources.size; i < size ; i++ )
 		{
 			AnimateEntity p = resources.get( i );
-			p.tick( delta );
+			p.tick(screen, delta );
 		}
 		
 		for( int i = 0, size = systems.size; i < size ; i++ )
@@ -306,7 +306,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 			p.tick(delta);
 		}
 
-		super.monsterTick( delta );
+		super.monsterTick(screen, delta );
 		
 		cleanup();
 	}

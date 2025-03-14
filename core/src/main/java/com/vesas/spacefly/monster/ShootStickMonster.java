@@ -6,11 +6,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.G.MonsterType;
-import com.vesas.spacefly.screen.GameScreen;
 import com.vesas.spacefly.game.Util;
+import com.vesas.spacefly.screen.GameScreen;
 
 public class ShootStickMonster extends Monster
 {
@@ -18,62 +19,52 @@ public class ShootStickMonster extends Monster
 
 	private final Vector2 faceDir;
 
-	public ShootStickMonster(float posx, float posy, Vector2 faceDir) {
+	public ShootStickMonster(float posx, float posy, Vector2 faceDir, BodyBuilder bodyBuilder) {
 		this.faceDir = faceDir;
 		cooldown = 0 + random.nextFloat() * 0.1f;
-		initializeBody(posx, posy);
+		initializeBody(posx, posy, bodyBuilder);
 		setHealth( 4 );
 	}
 
-	private void initializeBody(float posx, float posy) {
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.StaticBody;
-		bodyDef.position.set(posx, posy);
-		bodyDef.angle = faceDir.angleRad();
+	private void initializeBody(float posx, float posy, BodyBuilder bodyBuilder) {
 
-		body = Box2DWorld.world.createBody(bodyDef);
+		float[] vertices = new float[] {
+			-0.38f, 0.12f, // right back corner
+			-0.38f, -0.12f, // left back corner
+			0.03f, -0.12f, // front left corner
+			0.03f, 0.12f // front right corner
+		};
 
-		PolygonShape polyShape = new PolygonShape();
-		polyShape.set(
-			new float[] {
-				-0.38f, 0.12f, // right back corner
-				-0.38f, -0.12f, // left back corner
-				0.03f, -0.12f, // front left corner
-				0.03f, 0.12f // front right corner
-			}
-		);
+		body = bodyBuilder
+			.setBodyType(BodyType.StaticBody)
+			.setPosition(posx, posy)
+			.setAngle(faceDir.angleRad())
+			.polygon(vertices)
+			.setDensity(2.11f)
+			.setFriction(0.6f)
+			.setRestitution(0.75f)
+			.setFilterCategoryBits((short)16)  // monster
+			.setFilterMaskBits((short)23)
+			.setLinearDamping(0.7f)
+			.setAngularDamping(0.7f)
+			.setUserdata(this)
+			.construct();
 
-		// Create a fixture definition to apply our shape to
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = polyShape;
-		fixtureDef.density = 2.11f;
-		fixtureDef.friction = 0.6f;
-		fixtureDef.restitution = 0.75f; 
-		fixtureDef.filter.categoryBits = 16; // monster
-		fixtureDef.filter.maskBits = 23;
-
-		body.createFixture(fixtureDef);
-
-		polyShape.dispose();
-
-		body.setLinearDamping(0.7f);
-		body.setAngularDamping(0.7f);
-
-		body.setUserData(this);
+		int qwe = 0;
 	}
 	
 	@Override
-	public void tick( float delta ) {
+	public void tick( GameScreen screen, float delta ) {
 		cooldown -= delta;
 
 		if (cooldown <= 0) {
-			fireBullet();
+			fireBullet(screen.getBodyBuilder());
 			cooldown = 2.5f + cooldown;
 		}
 	}
 
-	private void fireBullet() {
-		fireBulletAtDir( faceDir, 0.0f, 2.0f, 1, 0.2f);
+	private void fireBullet(BodyBuilder bodyBuilder) {
+		fireBulletAtDir( faceDir, 0.0f, 2.0f, 1, 0.2f, bodyBuilder);
 	}
 
 	@Override

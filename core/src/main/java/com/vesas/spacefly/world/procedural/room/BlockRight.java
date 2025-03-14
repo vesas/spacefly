@@ -28,7 +28,7 @@ public class BlockRight implements FeatureBlock
 		this.blocks = blox;
 	}
 	
-	public void init( float xpos, float ypos, float rotate)
+	public void init( float xpos, float ypos, float rotate, BodyBuilder bodyBuilder)
 	{
 		sprite = G.getAtlas().createSprite("edgeA" + blocks );
 		sprite.setSize(blocks * 0.5f ,0.5f);
@@ -63,12 +63,10 @@ public class BlockRight implements FeatureBlock
 		v[6] = xpos + up.x;
 		v[7] = ypos + up.y;
 		
-		BodyBuilder builder = BodyBuilder.getInstance();
+		bodyBuilder.setPosition( 0 , 0 );
+		bodyBuilder.polygon( v );
 		
-		builder.setPosition( 0 , 0 );
-		builder.polygon( v );
-		
-		body = builder.construct();
+		body = bodyBuilder.construct();
 	}
 	
 	public void draw(Batch batch)

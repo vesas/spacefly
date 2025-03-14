@@ -3,14 +3,15 @@ package com.vesas.spacefly.game;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.game.G.BulletType;
 
 public class Bullet extends AbstractBullet
 {
 	
-	public Bullet( float posx, float posy, float dirx, float diry ) 
+	public Bullet( float posx, float posy, float dirx, float diry, BodyBuilder bodyBuilder ) 
 	{ 
-		super( posx, posy, dirx, diry, (short)4, (short)17 );
+		super( posx, posy, dirx, diry, (short)4, (short)17, bodyBuilder );
 	}
 	
 	

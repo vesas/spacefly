@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.Bullet;
@@ -166,11 +167,11 @@ abstract public class Monster implements AnimateEntity
 		Box2DWorld.safeDestroyBody(this.body);
 	}
 
-	protected void fireBulletAtDir(Vector2 dir, float scatter, float speed, int type) {
-		fireBulletAtDir(dir, scatter, speed, type, 0.0f);
+	protected void fireBulletAtDir(Vector2 dir, float scatter, float speed, int type, BodyBuilder bodyBuilder) {
+		fireBulletAtDir(dir, scatter, speed, type, 0.0f, bodyBuilder);
 	}
 
-	protected void fireBulletAtDir(Vector2 dir, float scatter, float speed, int type, float posAdvance) {
+	protected void fireBulletAtDir(Vector2 dir, float scatter, float speed, int type, float posAdvance, BodyBuilder bodyBuilder) {
 		final Vector2 pos = body.getPosition();
 
 		dir.x += (scatter - random.nextFloat() * scatter * 2.0f);
@@ -179,10 +180,10 @@ abstract public class Monster implements AnimateEntity
 		dir.nor();
 
 		MonsterBullets.INSTANCE.fireBullet(pos.x + dir.x * posAdvance, pos.y + dir.y * posAdvance, dir.x * speed, dir.y
-				* speed, type);
+				* speed, type, bodyBuilder);
 	}
 
-	protected void fireBulletAtPlayer(float scatter, float speed, int type) {
+	protected void fireBulletAtPlayer(float scatter, float speed, int type, BodyBuilder bodyBuilder) {
 		Vector2 pos = body.getPosition();
 
 		Vector2 playerPos = Player.INSTANCE.getPosition();
@@ -196,7 +197,7 @@ abstract public class Monster implements AnimateEntity
 		playerPos.nor();
 
 		MonsterBullets.INSTANCE.fireBullet(pos.x, pos.y, playerPos.x * speed,
-				playerPos.y * speed, type);
+				playerPos.y * speed, type, bodyBuilder);	
 
 		// G.shot.play( 0.04f );
 
@@ -214,5 +215,5 @@ abstract public class Monster implements AnimateEntity
 
 	abstract public void draw(GameScreen screen);
 
-	abstract public void tick( float delta );
+	abstract public void tick(GameScreen screen, float delta );
 }

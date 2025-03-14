@@ -109,7 +109,7 @@ public class ZipperMonster extends Monster
 	}
 
 	@Override
-	public void tick( float delta )
+	public void tick( GameScreen screen, float delta )
 	{
 		brain.tick( delta );
 
