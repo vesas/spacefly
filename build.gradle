@@ -1,21 +1,10 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-        gradlePluginPortal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        google()
-    }
-    dependencies {
-        
 
-    }
-}
 
 plugins {
     id "org.sonarqube" version "2.5"
     id 'distribution'
     id 'java'
+    id 'jacoco'
 }
 
 
@@ -52,9 +41,9 @@ allprojects {
         mavenCentral()
         google()
         gradlePluginPortal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-        maven { url "https://jitpack.io" }
+        maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url = "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url = "https://jitpack.io" }
     }
 }
 

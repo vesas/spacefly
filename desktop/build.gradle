@@ -32,7 +32,7 @@ tasks.register('debug', JavaExec) {
 }
 
 tasks.register('dist', Jar) {
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes 'Main-Class': project.mainClassName
     }
