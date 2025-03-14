@@ -191,35 +191,6 @@ public class RectangleRoom extends RoomFeature
 		int halfW = (int) (pixmap.getWidth() * 0.5f);
 		int halfH = (int) (pixmap.getHeight() * 0.5f);
 		
-		
-//		pixmap.setColor( col2 );
-//		pixmap.fillRectangle(0, 0,  halfW, halfH);
-		
-//		pixmap.setColor( col3 );
-//		pixmap.fillRectangle(halfW, halfH,  pixmap.getWidth()-halfW, pixmap.getHeight()-halfH);
-		
-//		pixmap.drawPixel(0,0,  Color.rgba8888(col2.r, col2.g, col2.b, 1.0f));
-//		pixmap.drawPixel(1,1, Color.rgba8888(col3.r, col3.g, col3.b, 1.0f));
-		
-//		pixmap.setBlending(Blending.SourceOver);
-	/*
-		pixmap.setColor( col4 );
-		for( int i = 0 ; i < 4; i++ )
-		{
-			float xx = pixmap.getWidth() * GenSeed.random.nextFloat();
-			float yy = pixmap.getHeight() * GenSeed.random.nextFloat();
-			pixmap.drawCircle((int)xx, (int)yy, (int)(GenSeed.random.nextFloat() * 19.5f + 1.5f));
-		}
-		
-		if(GenSeed.random.nextBoolean() )
-			drawWineProps( pixmap );
-		if(GenSeed.random.nextBoolean() )
-			drawWineProps( pixmap );
-		
-		if(GenSeed.random.nextBoolean() )
-			drawTreeProps( pixmap );
-		
-			 */
 		tex = new Texture(pixmap);
 		pixmap.dispose();
 	}

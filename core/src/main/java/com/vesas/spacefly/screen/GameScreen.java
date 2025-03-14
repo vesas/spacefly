@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.vesas.spacefly.SpaceflyGame;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Hud;
@@ -45,6 +46,11 @@ public class GameScreen implements Screen
 
 	boolean paused = false;
 	private PlayerInput playerInput;
+	private BodyBuilder bodyBuilder;
+
+	public BodyBuilder getBodyBuilder() {
+		return bodyBuilder;
+	}
 	
 	public boolean isPaused() {
 		return paused;
@@ -141,6 +147,8 @@ public class GameScreen implements Screen
 
 		playerInput = new PlayerInput( this );
 		Gdx.input.setInputProcessor( playerInput );
+
+		bodyBuilder = new BodyBuilder();
 	}
 
 	public float getCameraAngle(OrthographicCamera cam) {

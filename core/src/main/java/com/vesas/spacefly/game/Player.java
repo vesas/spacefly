@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.monster.MonsterBullet;
 import com.vesas.spacefly.particles.ImpulseParticleSystem;
@@ -184,7 +185,7 @@ public final class Player
 	}
 	
 
-	public void fireBullet(GameScreen screen, float floatDelta,PlayerBullets bullets)
+	public void fireBullet(GameScreen screen, float floatDelta,PlayerBullets bullets, BodyBuilder bodyBuilder)
 	{
 		if( bulletFireCooldown > 0 )
 		{
@@ -224,13 +225,13 @@ public final class Player
 		bullets.fireBullet(bodyPos.x  + bulletDirectionVector.x * 0.4f, 
 				bodyPos.y + bulletDirectionVector.y * 0.4f, 
 							bulletDirectionVector.x * 11.6f,
-							bulletDirectionVector.y * 11.6f);
+							bulletDirectionVector.y * 11.6f, bodyBuilder);
 
 		G.shot.play( 0.01f );
 	}
 
 	
-	public void tick( GameScreen screen, float floatDelta )
+	public void tick(GameScreen screen, float floatDelta )
 	{
 		// body.applyForceToCenter(0.0f, -0.2f, true);
 
@@ -266,7 +267,7 @@ public final class Player
 		
 		if( firstFingerTouching )
 		{
-			Player.INSTANCE.fireBullet(screen, floatDelta,PlayerBullets.INSTANCE);
+			Player.INSTANCE.fireBullet(screen, floatDelta,PlayerBullets.INSTANCE, screen.getBodyBuilder());
 						
 		}
 		

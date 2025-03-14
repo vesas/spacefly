@@ -1,5 +1,6 @@
 package com.vesas.spacefly.monster;
 
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.game.AbstractBullet;
 import com.vesas.spacefly.game.BaseBullets;
 
@@ -9,7 +10,7 @@ public class MonsterBullets extends BaseBullets {
 	private MonsterBullets() {
 	}
 
-	public void fireBullet(float posx, float posy, float dirx, float diry, int type) 
+	public void fireBullet(float posx, float posy, float dirx, float diry, int type, BodyBuilder bodyBuilder) 
 	{
 		if (deadPool.size > 0) 
 		{
@@ -29,7 +30,7 @@ public class MonsterBullets extends BaseBullets {
 			}
 		}
 
-		MonsterBullet b = new MonsterBullet(posx, posy, dirx, diry, type);
+		MonsterBullet b = new MonsterBullet(posx, posy, dirx, diry, type, bodyBuilder);
 
 		bullets.add(b);
 

@@ -31,6 +31,7 @@ public class BodyBuilder
 		float ypos = 0.0f;
 		float linearVelX = 0.0f;
 		float linearVelY = 0.0f;
+		float angle = 0.0f;
 	}
 
 	private PhysicsProperties physics = new PhysicsProperties();
@@ -38,13 +39,6 @@ public class BodyBuilder
 	
 	private Object userData;
 
-	private static BodyBuilder INSTANCE = new BodyBuilder();
-
-	public static BodyBuilder getInstance() {
-		INSTANCE.init();
-		return INSTANCE;
-	}
-	
 	private boolean isSensor = false;
 	
 	public BodyBuilder circle( float radius ) {
@@ -102,6 +96,11 @@ public class BodyBuilder
 		position.ypos = ypos;
 		return this;
 	}
+
+	public BodyBuilder setAngle( float angle ) {
+		position.angle = angle;
+		return this;
+	}
 	
 	public BodyBuilder setLinearDamping( float val ) {
 		physics.linearDamping = val;
@@ -148,6 +147,7 @@ public class BodyBuilder
 		FixtureDef fixtureDef = createFixtureDef();
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set(position.xpos, position.ypos );
+		bodyDef.angle = position.angle;
 		
 		if( this.bodyType == null )
 			bodyDef.type = BodyType.StaticBody;
@@ -214,5 +214,7 @@ public class BodyBuilder
 		
 		position.xpos = 0.0f;
 		position.ypos = 0.0f;
+
+		position.angle = 0.0f;
 	}
 }

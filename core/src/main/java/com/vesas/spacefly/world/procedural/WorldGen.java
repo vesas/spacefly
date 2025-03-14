@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.monster.ShellMonster;
 import com.vesas.spacefly.monster.ShootStickMonster;
 import com.vesas.spacefly.monster.SlurgMonster;
@@ -19,7 +20,6 @@ import com.vesas.spacefly.world.procedural.generator.MetaOctaRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaRegionBuilder;
 import com.vesas.spacefly.world.procedural.generator.Region;
-import com.vesas.spacefly.world.procedural.room.octaroom.OctaRoom;
 import com.vesas.spacefly.world.procedural.room.octaroom.OctaRoomBuilder;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.FeatureBuilder;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
@@ -30,6 +30,10 @@ public class WorldGen implements WorldGenInterface
 	private AddMonsterCallback world;
 
 	MetaRegionBuilder metaRegionBuilder = new MetaRegionBuilder();
+
+	private BodyBuilder bodyBuilder = new BodyBuilder();
+
+	private Map<Class<? extends MetaFeature>, FeatureBuilder<?>> builders = new HashMap<>();
 
 	public Vector2 getFirstRoomCenter() {
 		return metaRegionBuilder.getFirstRoomCenter();
@@ -42,9 +46,9 @@ public class WorldGen implements WorldGenInterface
 	{
 		this.world = world;
 		
-		RectangleRoomBuilder.INSTANCE.setVisib( visib );
-		AxisAlignedCorridorBuilder.INSTANCE.setVisib( visib );
-		OctaRoomBuilder.INSTANCE.setVisib(visib);
+		builders.put(MetaRectangleRoom.class, (FeatureBuilder<?>) new RectangleRoomBuilder(visib, bodyBuilder));
+		builders.put(MetaCorridor.class, (FeatureBuilder<?>) new AxisAlignedCorridorBuilder(visib, bodyBuilder));
+		builders.put(MetaOctaRoom.class, (FeatureBuilder<?>) new OctaRoomBuilder(visib, bodyBuilder));
 	}
 
 	public Array<Feature> generate()
@@ -62,13 +66,8 @@ public class WorldGen implements WorldGenInterface
 		return feats;
 	}
 
-	private static Map<Class<? extends MetaFeature>, FeatureBuilder<?>> builders = new HashMap<>();
-
-	static {
-		builders.put(MetaRectangleRoom.class, (FeatureBuilder<?>) RectangleRoomBuilder.INSTANCE);
-		builders.put(MetaCorridor.class, (FeatureBuilder<?>) AxisAlignedCorridorBuilder.INSTANCE);
-		builders.put(MetaOctaRoom.class, (FeatureBuilder<?>) OctaRoomBuilder.INSTANCE);
-	}
+	
+	
 
 	private void buildFeatures( Region region, Array<Feature> features )
 	{
@@ -129,7 +128,7 @@ public class WorldGen implements WorldGenInterface
 				{
 					float[] positions = getMonsterPositions(feat, j);
 
-					SlurgMonster monster = new SlurgMonster(positions[0], positions[1]);
+					SlurgMonster monster = new SlurgMonster(positions[0], positions[1], bodyBuilder);
 
 					world.addMonster( monster );	
 				}
@@ -137,7 +136,7 @@ public class WorldGen implements WorldGenInterface
 				if( GenSeed.random.nextInt(100 ) < 12 )
 				{
 					float[] positions = getMonsterPositions(feat, 3);
-					ShellMonster monster = new ShellMonster(positions[0], positions[1]);
+					ShellMonster monster = new ShellMonster(positions[0], positions[1], bodyBuilder);
 					world.addMonster( monster );	
 				}
 			}
@@ -177,13 +176,13 @@ public class WorldGen implements WorldGenInterface
 						tempYPos = ypos + height * 0.5f;
 					}
 					
-					world.addMonster( new ShootStickMonster(tempXPos, tempYPos, faceDir ) );	
+					world.addMonster( new ShootStickMonster(tempXPos, tempYPos, faceDir, bodyBuilder ) );	
 
 					if(height > 3) {
 						tempYPos = ypos + height * 0.5f - 1;
-						world.addMonster( new ShootStickMonster(tempXPos, tempYPos, faceDir ) );	
+						world.addMonster( new ShootStickMonster(tempXPos, tempYPos, faceDir, bodyBuilder ) );	
 						tempYPos = ypos + height * 0.5f + 1;
-						world.addMonster( new ShootStickMonster(tempXPos, tempYPos, faceDir ) );	
+						world.addMonster( new ShootStickMonster(tempXPos, tempYPos, faceDir, bodyBuilder ) );	
 					}
 					
 				}

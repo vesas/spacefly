@@ -1,6 +1,7 @@
 package com.vesas.spacefly.world.procedural.corridor;
 
 import com.badlogic.gdx.utils.Array;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor.Dir;
@@ -16,18 +17,15 @@ public final class AxisAlignedCorridorBuilder implements FeatureBuilder<MetaCorr
 
 	private float xpos, ypos;
 	private float xsize, ysize;
-
-	public static AxisAlignedCorridorBuilder INSTANCE = new AxisAlignedCorridorBuilder();
 	
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
 	
 	private Visibility visib;
+	private BodyBuilder bodyBuilder;
 	
-	private AxisAlignedCorridorBuilder() { }
-	
-	public void setVisib( Visibility visib )
-	{
+	public AxisAlignedCorridorBuilder(Visibility visib, BodyBuilder bodyBuilder) { 
 		this.visib = visib;
+		this.bodyBuilder = bodyBuilder;
 	}
 	
 	public AxisAlignedCorridor buildFrom( MetaCorridor metaCorr )
@@ -224,7 +222,7 @@ public final class AxisAlignedCorridorBuilder implements FeatureBuilder<MetaCorr
 	{
 		WallBlock block = new WallBlock((int)distance*2);
 		blocks.add(block);
-		block.initBottomLeft( xpos, ypos , 0);
+		block.initBottomLeft( xpos, ypos , 0, bodyBuilder);
 		
 	}
 	
@@ -232,7 +230,7 @@ public final class AxisAlignedCorridorBuilder implements FeatureBuilder<MetaCorr
 	{
 		WallBlock block = new WallBlock((int)distance*2);
 		blocks.add(block);
-		block.initTopLeft( xpos, ypos , 90);
+		block.initTopLeft( xpos, ypos , 90, bodyBuilder);
 
 	}
 }

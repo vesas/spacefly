@@ -1,12 +1,14 @@
 package com.vesas.spacefly.game;
 
+import com.vesas.spacefly.box2d.BodyBuilder;
+
 public class PlayerBullets extends BaseBullets
 {
 	public static PlayerBullets INSTANCE = new PlayerBullets();
 	
 	private PlayerBullets() { }
 	
-	public void fireBullet( float posx, float posy, float dirx, float diry )
+	public void fireBullet( float posx, float posy, float dirx, float diry, BodyBuilder bodyBuilder )
 	{
 		// See if the pool contains anything
 		if( deadPool.size > 0 )
@@ -24,7 +26,7 @@ public class PlayerBullets extends BaseBullets
 		}
 
 		// Nothing in the pool, got to create a new one
-		Bullet b = new Bullet( posx, posy, dirx, diry );
+		Bullet b = new Bullet( posx, posy, dirx, diry, bodyBuilder);
 
 		bullets.add( b );
 	}
