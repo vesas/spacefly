@@ -31,6 +31,10 @@ public final class Player
 	private static float MAX_VELOCITY = 5.39f;
 	
 	public static Player INSTANCE = new Player();
+
+	public static void setInstance(Player instance) {
+		INSTANCE = instance;
+	}
 	
 	private static Vector2 tempVector = new Vector2();
 	private static Vector2 tempVector2 = new Vector2();

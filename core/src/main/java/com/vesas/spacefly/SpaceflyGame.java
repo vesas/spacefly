@@ -2,7 +2,10 @@ package com.vesas.spacefly;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.vesas.spacefly.box2d.Box2DWorld;
+import com.vesas.spacefly.box2d.WorldWrapper;
 import com.vesas.spacefly.game.CListener;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Player;
@@ -28,6 +31,7 @@ public class SpaceflyGame extends Game
 		
 		AbstractGameWorld.INSTANCE.init();
 		
+		Box2DWorld.init(new WorldWrapper(new Vector2(0, 0), true), new Box2DDebugRenderer());
 		Box2DWorld.world.setContactListener( new CListener() );
 		
 		this.setScreen(new MainMenuScreen(this));
