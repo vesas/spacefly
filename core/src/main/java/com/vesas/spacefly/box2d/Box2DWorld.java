@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Box2DWorld
 {
-	public static World world = new World(new Vector2(0, 0), true); 
+	public static WorldWrapper world;
 	
 	public final static int CATEGORY_PLAYER = 0x0001;  
 	public final static int CATEGORY_MONSTER = 0x0002; 
@@ -26,11 +26,16 @@ public class Box2DWorld
 	final static int GROUP_PLAYER = -1;
 	final static int GROUP_MONSTER = -2;
 	
-	private static Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+	private static Box2DDebugRenderer debugRenderer;
+
+	public static void init(WorldWrapper worldWrapper, Box2DDebugRenderer debugRenderer) {
+		world = worldWrapper;
+		Box2DWorld.debugRenderer = debugRenderer;
+	}
 
 	public static void renderDebug( Matrix4 combinedMatrix )
 	{
-		debugRenderer.render(Box2DWorld.world, combinedMatrix );
+		debugRenderer.render(world.world, combinedMatrix );
 	}
 	
 	public static void safeDestroyBody( Body body )
@@ -41,7 +46,7 @@ public class Box2DWorld
 		for( int i = 0, size = joints.size; i < size; i++ )
 		{
 			JointEdge edge = joints.get( i );
-			world.destroyJoint(edge.joint);
+			world.world.destroyJoint(edge.joint);
 		}
 	    
 		// then destroy body

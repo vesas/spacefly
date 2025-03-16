@@ -6,12 +6,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.box2d.Box2DWorld;
 import com.vesas.spacefly.game.Bullet;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.G.MonsterType;
-import com.vesas.spacefly.screen.GameScreen;
 import com.vesas.spacefly.game.Util;
+import com.vesas.spacefly.screen.GameScreen;
 
 public class ZipperMonster extends Monster
 {
@@ -48,50 +49,25 @@ public class ZipperMonster extends Monster
 		cloud.addMonster( this );
 	}
 	
-	public ZipperMonster(float posx, float posy, int amount )
+	public ZipperMonster(float posx, float posy, int amount, BodyBuilder bodyBuilder )
 	{
 		cooldown = 0 + random.nextFloat() * 0.01f;
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(posx, posy);
 
-		body = Box2DWorld.world.createBody(bodyDef);
-
-		CircleShape shape = new CircleShape();
-		shape.setRadius(0.12f);
-
-		// Create a fixture definition to apply our shape to
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = shape;
-		fixtureDef.density = 1.015f;
-		fixtureDef.friction = 0.000001f;
-		fixtureDef.restitution = 0.75f; // Make it bounce a little bit
-		// fixtureDef.filter.groupIndex = Physics.GROUP_MONSTER;
-
-		fixtureDef.filter.categoryBits = 16; // 1 wall, 2 player, 4
-											 // playerbullet, 8 monsterbullet,
-											 // 16 monster
-		fixtureDef.filter.maskBits = 23;
-
-		body.createFixture(fixtureDef);
-
-		body.setAwake(true);
-		body.setActive(true);
-
-		body.setLinearDamping(0.60f);
-		body.setAngularDamping(0.80f);
-
-		// body.setTransform(body.getPosition().x, body.getPosition().y, 90.0f *
-		// DEGREES_TO_RADIANS);
-
-		body.setUserData(this);
+		body = bodyBuilder.setBodyType(BodyType.DynamicBody)
+			.setPosition(posx, posy)
+			.circle(0.12f)
+			.setDensity(1.015f)
+			.setFriction(0.000001f)
+			.setRestitution(0.75f)
+			.setFilterCategoryBits((short)16)
+			.setFilterMaskBits((short)23)
+			.setLinearDamping(0.60f)
+			.setAngularDamping(0.80f)
+			.setUserdata(this)
+			.construct();
 
 		targetDir.setAngleRad(body.getAngle());
 		dir.setAngleRad(body.getAngle());
-
-		// Remember to dispose of any shapes after you're done with them!
-		// BodyDef and FixtureDef don't need disposing, but shapes do.
-		shape.dispose();
 
 		setHealth(1);
 
