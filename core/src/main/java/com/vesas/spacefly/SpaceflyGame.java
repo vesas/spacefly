@@ -23,16 +23,12 @@ public class SpaceflyGame extends Game
 		
 		G.loadTextures();
 
-		Player.INSTANCE.init(3,1);
-		
-		// Lwjgl3Window.getGraphics();
-		
-		
-		
-		AbstractGameWorld.INSTANCE.init();
-		
 		Box2DWorld.init(new WorldWrapper(new Vector2(0, 0), true), new Box2DDebugRenderer());
 		Box2DWorld.world.setContactListener( new CListener() );
+
+		Player.INSTANCE.init(3,1);
+		
+		AbstractGameWorld.INSTANCE.init();
 		
 		this.setScreen(new MainMenuScreen(this));
 		// currentScreen = new MainMenuScreen(this);
