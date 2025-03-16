@@ -29,10 +29,10 @@ public class TestGame extends Game
 		
 		G.loadTextures();
 
-		Player.INSTANCE.init(3,1);
-		
 		Box2DWorld.init(new WorldWrapper(new Vector2(0, 0), true), new Box2DDebugRenderer());
 		Box2DWorld.world.setContactListener( new CListener() );
+		
+		Player.INSTANCE.init(3,1);
 		
 		this.setScreen(new TestScreen(this, testNumber));
 		// currentScreen = new MainMenuScreen(this);
