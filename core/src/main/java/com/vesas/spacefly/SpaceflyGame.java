@@ -9,14 +9,25 @@ import com.vesas.spacefly.box2d.WorldWrapper;
 import com.vesas.spacefly.game.CListener;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Player;
+import com.vesas.spacefly.game.PlayerBullets;
+import com.vesas.spacefly.monster.MonsterBullets;
 import com.vesas.spacefly.screen.GameScreen;
 import com.vesas.spacefly.screen.MainMenuScreen;
 import com.vesas.spacefly.util.DebugShow;
 import com.vesas.spacefly.world.AbstractGameWorld;
+import com.vesas.spacefly.world.procedural.ProceduralGameWorld;
+import com.vesas.spacefly.world.procedural.generator.IDGenerator;
 
-public class SpaceflyGame extends Game 
+public class SpaceflyGame extends Game
 {
 	private GameScreen gameScreen;
+
+	private int currentFloor = 1;
+	private long floorSeed = 256;
+
+	public static int displayFloor = 1;
+
+	public int getCurrentFloor() { return currentFloor; }
 	
 	@Override
 	public void create() {		
@@ -43,6 +54,39 @@ public class SpaceflyGame extends Game
 	public void restoreGameScreen() {
 		this.setScreen(gameScreen);
 		gameScreen.setPaused(false);
+	}
+
+	public void showDeathScreen() {
+		this.setScreen(new com.vesas.spacefly.screen.DeathScreen(this, currentFloor));
+	}
+
+	public void restartGame() {
+		currentFloor = 1;
+		floorSeed = 256;
+		displayFloor = 1;
+
+		AbstractGameWorld.INSTANCE.destroyWorld();
+
+		PlayerBullets.INSTANCE.destroyAll();
+		MonsterBullets.INSTANCE.destroyAll();
+
+		Box2DWorld.world.dispose();
+		Box2DWorld.init(new WorldWrapper(new Vector2(0, 0), true), new Box2DDebugRenderer());
+		Box2DWorld.world.setContactListener(new CListener());
+
+		IDGenerator.reset();
+
+		Player.INSTANCE.resetFull();
+		Player.INSTANCE.init(3, 1);
+
+		ProceduralGameWorld.worldSeed = floorSeed;
+		AbstractGameWorld.INSTANCE = new ProceduralGameWorld();
+		AbstractGameWorld.INSTANCE.init();
+
+		gameScreen = new GameScreen(this);
+		gameScreen.init();
+		gameScreen.updatePosition(Player.INSTANCE.getWorldCenter(), 0.5f, 0.0f);
+		this.setScreen(gameScreen);
 	}
 
 	public void setGameScreen() {
@@ -131,6 +175,32 @@ public class SpaceflyGame extends Game
 	 */
 
 	
+	public void startNewFloor() {
+		currentFloor++;
+		floorSeed = floorSeed * 31 + currentFloor;
+		displayFloor = currentFloor;
+
+		AbstractGameWorld.INSTANCE.destroyWorld();
+
+		PlayerBullets.INSTANCE.destroyAll();
+		MonsterBullets.INSTANCE.destroyAll();
+
+		Box2DWorld.world.dispose();
+		Box2DWorld.init(new WorldWrapper(new Vector2(0, 0), true), new Box2DDebugRenderer());
+		Box2DWorld.world.setContactListener(new CListener());
+
+		IDGenerator.reset();
+
+		Player.INSTANCE.init(3, 1);
+		Player.INSTANCE.resetForNewFloor();
+
+		ProceduralGameWorld.worldSeed = floorSeed;
+		AbstractGameWorld.INSTANCE = new ProceduralGameWorld();
+		AbstractGameWorld.INSTANCE.init();
+
+		gameScreen.updatePosition(Player.INSTANCE.getWorldCenter(), 0.5f, 0.0f);
+	}
+
 	public void renderFrame()
 	{
 

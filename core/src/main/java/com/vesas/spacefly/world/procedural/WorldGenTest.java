@@ -14,7 +14,7 @@ public class WorldGenTest implements WorldGenInterface {
     }
 
     @Override
-    public Array<Feature> generate() {
+    public Array<Feature> generate(long seed) {
         
         TestAreaBuilder areaBuilder = new TestAreaBuilder();
         areaBuilder.build(visib);

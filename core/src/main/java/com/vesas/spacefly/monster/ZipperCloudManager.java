@@ -15,4 +15,9 @@ public class ZipperCloudManager
 	{
 		clouds.removeValue( cloud, true);
 	}
+
+	static public void reset()
+	{
+		clouds.clear();
+	}
 }

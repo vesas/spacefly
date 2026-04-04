@@ -9,6 +9,9 @@ import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.monster.ShellMonster;
 import com.vesas.spacefly.monster.ShootStickMonster;
 import com.vesas.spacefly.monster.SlurgMonster;
+import com.vesas.spacefly.monster.ZipperCloud;
+import com.vesas.spacefly.monster.ZipperCloudManager;
+import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.AddMonsterCallback;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor;
@@ -26,14 +29,20 @@ import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoomBuilder;
 
 public class WorldGen implements WorldGenInterface
-{	
+{
 	private AddMonsterCallback world;
 
 	MetaRegionBuilder metaRegionBuilder = new MetaRegionBuilder();
 
+	private Vector2 exitPosition = new Vector2();
+
 	private BodyBuilder bodyBuilder = new BodyBuilder();
 
 	private Map<Class<? extends MetaFeature>, FeatureBuilder<?>> builders = new HashMap<>();
+
+	public Vector2 getExitPosition() {
+		return exitPosition;
+	}
 
 	public Vector2 getFirstRoomCenter() {
 		return metaRegionBuilder.getFirstRoomCenter();
@@ -51,19 +60,37 @@ public class WorldGen implements WorldGenInterface
 		builders.put(MetaOctaRoom.class, (FeatureBuilder<?>) new OctaRoomBuilder(visib, bodyBuilder));
 	}
 
-	public Array<Feature> generate()
+	public Array<Feature> generate(long seed)
 	{
-		GenSeed.random.setSeed(256);
+		GenSeed.random.setSeed(seed);
 		metaRegionBuilder.setSize(44);
 		Region metaRegion = metaRegionBuilder.generateMetaRegion();
-		
+
 		Array<Feature> feats = new Array<Feature>();
-		
+
 		buildFeatures(metaRegion, feats);
-		
+
 		addMonstersPass( metaRegion, feats );
-		
+
+		findExitPosition(feats);
+
 		return feats;
+	}
+
+	private void findExitPosition(Array<Feature> feats) {
+		Vector2 start = metaRegionBuilder.getFirstRoomCenter();
+		float maxDist2 = 0;
+		for (int i = 0; i < feats.size; i++) {
+			Feature feat = feats.get(i);
+			if (feat instanceof AxisAlignedCorridor) continue;
+			float cx = feat.getXpos() + feat.getWidth() * 0.5f;
+			float cy = feat.getYpos() + feat.getHeight() * 0.5f;
+			float dist2 = (cx - start.x) * (cx - start.x) + (cy - start.y) * (cy - start.y);
+			if (dist2 > maxDist2) {
+				maxDist2 = dist2;
+				exitPosition.set(cx, cy);
+			}
+		}
 	}
 
 	
@@ -137,7 +164,26 @@ public class WorldGen implements WorldGenInterface
 				{
 					float[] positions = getMonsterPositions(feat, 3);
 					ShellMonster monster = new ShellMonster(positions[0], positions[1], bodyBuilder);
-					world.addMonster( monster );	
+					world.addMonster( monster );
+				}
+
+				if( !(feat instanceof AxisAlignedCorridor) && GenSeed.random.nextInt(100) < 15 )
+				{
+					float cx = xpos + width * 0.5f;
+					float cy = ypos + height * 0.5f;
+
+					ZipperCloud cloud = new ZipperCloud();
+					ZipperCloudManager.add(cloud);
+
+					int count = 6 + GenSeed.random.nextInt(5);
+					for( int z = 0; z < count; z++ )
+					{
+						float zx = cx + (GenSeed.random.nextFloat() - 0.5f) * 1.5f;
+						float zy = cy + (GenSeed.random.nextFloat() - 0.5f) * 1.5f;
+						ZipperMonster zipper = new ZipperMonster(zx, zy, count, bodyBuilder);
+						zipper.addCloud(cloud);
+						world.addMonster(zipper);
+					}
 				}
 			}
 			

@@ -3,15 +3,14 @@ package com.vesas.spacefly.visibility;
 import com.badlogic.gdx.math.Vector2;
 import com.vesas.spacefly.util.PolyUtils;
 
-public class Edge
-{
+public class Edge {
 	public int procRank = 0;
 	
 	private Triangle t1;
 	private Triangle t2;
 	
-	private EndPoint p1;
-	private EndPoint p2;
+	private final EndPoint p1;
+	private final EndPoint p2;
 	
 	private boolean boundary = false;
 	
@@ -29,32 +28,29 @@ public class Edge
 	{
 		return boundary;
 	}
+
+    public Edge( final EndPoint p1, final EndPoint p2 ) {
+        this.p1 = p1;
+        this.p2 = p2;
+    }
 	
-	public void addTriangle( final Triangle tri )
-	{
-		if( t1 == null )
-		{
+	public void addTriangle( final Triangle tri ) {
+        if(tri == null) {
+            return;
+        }
+
+		if( t1 == null ) {
 			t1 = tri;
-		}
-		else
-		{
+		} else {
 			t2 = tri;
 		}
 	}
 	
-	public void setBoundary( final boolean value )
-	{
+	public void setBoundary( final boolean value ) {
 		boundary = value;
 	}
-	
-	public Edge( final EndPoint p1, final EndPoint p2 )
-	{
-		this.p1 = p1;
-		this.p2 = p2;
-	}
-	
-	public EndPoint getOtherEnd( final EndPoint e )
-	{
+
+	public EndPoint getOtherEnd( final EndPoint e ) {
 		if( e == p1 )
 		{
 			return p2;
@@ -65,16 +61,11 @@ public class Edge
 		}	
 	}
 	
-	public Triangle getOtherTriangle( Triangle t )
-	{
-		if( t == t1 )
-			return t2;
-		else
-			return t1;
+	public Triangle getOtherTriangle( Triangle t ) {
+        return t == t1 ? t2 : t1;
 	}
 	
-	public boolean canSeeFromGate( Vector2 start, Vector2 lGate, Vector2 rGate )
-	{
+	public boolean canSeeFromGate( Vector2 start, Vector2 lGate, Vector2 rGate ) {
 		Vector2 v1 = p1.point;
 		Vector2 v2 = p2.point;
 		
@@ -85,8 +76,7 @@ public class Edge
 		float ry = v1.y;
 		float lx = v2.x;
 		float ly = v2.y;
-		if( v2Right )
-		{
+		if( v2Right ) {
 			float tx = lx;
 			float ty = ly;
 			ly = ry;
@@ -95,14 +85,13 @@ public class Edge
 			ry = ty;
 		}
 		
-		boolean leftIn = PolyUtils.isCounterClockwise( rx-start.x, ry-start.y, lGate.x-start.x, lGate.y-start.y);
-		boolean rightIn = PolyUtils.isClockwise( lx-start.x, ly-start.y, rGate.x-start.x, rGate.y-start.y);
+		final boolean leftIn = PolyUtils.isCounterClockwise( rx-start.x, ry-start.y, lGate.x-start.x, lGate.y-start.y);
+        final boolean rightIn = PolyUtils.isClockwise( lx-start.x, ly-start.y, rGate.x-start.x, rGate.y-start.y);
 		
 		return leftIn && rightIn;
 	}
 	
-	public String toString()
-	{
+	public String toString() {
 		return "(p1: " + p1 + " p2: " + p2 + " bound: " + boundary + ")";
 	}
 }

@@ -20,7 +20,7 @@ block64a
   index: -1
 bullet
   rotate: false
-  xy: 966, 443
+  xy: 431, 247
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
@@ -34,14 +34,14 @@ bullet.1
   index: -1
 bullet.2
   rotate: false
-  xy: 973, 443
+  xy: 438, 247
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
   index: -1
 bullet.3
   rotate: false
-  xy: 1000, 483
+  xy: 966, 449
   size: 10, 24
   orig: 10, 24
   offset: 0, 0
@@ -104,7 +104,7 @@ exploring1
   index: -1
 health1
   rotate: false
-  xy: 300, 159
+  xy: 482, 302
   size: 8, 9
   orig: 8, 9
   offset: 0, 0
@@ -118,14 +118,14 @@ healthBubble1
   index: -1
 health_off
   rotate: false
-  xy: 264, 46
+  xy: 1000, 491
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 health_on
   rotate: false
-  xy: 264, 28
+  xy: 667, 259
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -167,7 +167,7 @@ monster1_halo
   index: -1
 monsterbullet
   rotate: false
-  xy: 431, 247
+  xy: 966, 443
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
@@ -228,44 +228,51 @@ powerup_heal.1
   orig: 64, 64
   offset: 0, 0
   index: -1
-puolikasoko
-  rotate: false
-  xy: 966, 457
-  size: 30, 16
-  orig: 30, 16
-  offset: 0, 0
-  index: -1
-shellmonster
+powerup_shoot1
   rotate: false
   xy: 865, 311
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-shellmonster.1
+puolikasoko
+  rotate: false
+  xy: 431, 261
+  size: 30, 16
+  orig: 30, 16
+  offset: 0, 0
+  index: -1
+shellmonster
   rotate: false
   xy: 132, 2
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+shellmonster.1
+  rotate: false
+  xy: 200, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 ship
   rotate: false
-  xy: 266, 132
+  xy: 667, 277
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ship.1
   rotate: false
-  xy: 264, 98
+  xy: 701, 277
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ship2
   rotate: false
-  xy: 200, 134
+  xy: 198, 68
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -279,49 +286,49 @@ shipgun
   index: -1
 shoot_stick
   rotate: false
-  xy: 198, 68
+  xy: 198, 2
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 smallpuff
   rotate: false
-  xy: 482, 302
+  xy: 769, 300
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
   index: -1
 smallpuff.1
   rotate: false
-  xy: 264, 64
+  xy: 735, 277
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 spice
   rotate: false
-  xy: 431, 253
+  xy: 266, 140
   size: 24, 24
   orig: 24, 24
   offset: 0, 0
   index: -1
 star
   rotate: false
-  xy: 198, 2
+  xy: 311, 181
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 tile64
   rotate: false
-  xy: 311, 181
+  xy: 377, 181
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 tile642
   rotate: false
-  xy: 377, 181
+  xy: 931, 377
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -335,14 +342,14 @@ whitedisc
   index: -1
 zippermonster
   rotate: false
-  xy: 931, 377
+  xy: 931, 311
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 zippermonster.1
   rotate: false
-  xy: 931, 311
+  xy: 601, 245
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

@@ -8,42 +8,51 @@ public class XDimComparatorTest
 {
 
 	@Test
-	public void test()
-	{
-		XDimComparator comp = new XDimComparator();
-		
-		EndPoint a = new EndPoint(1,2); 
-		EndPoint b = new EndPoint(2,3);
-		
-		int res = comp.compare(a, b);
+	public void returnsNegativeWhenFirstXLessThanSecond() {
+		final XDimComparator comp = new XDimComparator();
+
+		final EndPoint a = new EndPoint(1,2);
+		final EndPoint b = new EndPoint(2,3);
+
+		final int res = comp.compare(a, b);
 
 		assertEquals(-1, res);
 	}
 
 	@Test
-	public void test2()
-	{
-		XDimComparator comp = new XDimComparator();
-		
-		EndPoint a = new EndPoint(3,3); 
-		EndPoint b = new EndPoint(1,1);
-		
-		int res = comp.compare(a, b);
+	public void returnsPositiveWhenFirstXGreaterThanSecond() {
+		final XDimComparator comp = new XDimComparator();
+
+		final EndPoint a = new EndPoint(3,3);
+		final EndPoint b = new EndPoint(1,1);
+
+		final int res = comp.compare(a, b);
 
 		assertEquals(1, res);
 	}
 
 	@Test
-	public void test3()
-	{
-		XDimComparator comp = new XDimComparator();
-		
-		EndPoint a = new EndPoint(5,3); 
-		EndPoint b = new EndPoint(5,1);
-		
-		int res = comp.compare(a, b);
+	public void returnsPositiveWhenXsEqualButFirstYGreater() {
+		final XDimComparator comp = new XDimComparator();
+
+		final EndPoint a = new EndPoint(5,3);
+		final EndPoint b = new EndPoint(5,1);
+
+		final int res = comp.compare(a, b);
 
 		assertEquals(1, res);
+	}
+
+	@Test
+	public void returnsNegativeWhenXsEqualButFirstYLessThanSecond() {
+		final XDimComparator comp = new XDimComparator();
+
+		final EndPoint a = new EndPoint(5,1);
+		final EndPoint b = new EndPoint(5,3);
+
+		final int res = comp.compare(a, b);
+
+		assertEquals(-1, res);
 	}
 
 }

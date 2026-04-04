@@ -10,6 +10,7 @@ public abstract class AbstractBullet
 {
 	public Body body;
 	public long creationTime;
+	public int damage = 1;
 
 	public AbstractBullet() {
 		// Default constructor for testing

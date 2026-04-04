@@ -5,6 +5,8 @@ import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.G.PowerUpType;
 import com.vesas.spacefly.game.Powerup;
+import com.vesas.spacefly.game.Weapon;
+import com.vesas.spacefly.game.WeaponDrop;
 import com.vesas.spacefly.game.floater.Floater;
 import com.vesas.spacefly.monster.Monster;
 import com.vesas.spacefly.monster.ZipperMonster;
@@ -124,24 +126,44 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 	{
 		if( GenSeed.random.nextFloat() > 0.4 )
 			return;
-//		
+
 		float worldX = boxPos.x;
 		float worldY = boxPos.y;
-		
+
+		if( GenSeed.random.nextFloat() < 0.35f )
+		{
+			resources.add(new WeaponDrop(worldX, worldY, Weapon.randomDrop(GenSeed.random)));
+			return;
+		}
+
 		PowerUpType type = PowerUpType.AMMO;
 
 		if( GenSeed.random.nextFloat() > 0.7 )
 		{
 			type = PowerUpType.HEAL;
 		}
-			
-		
+
 		Powerup pwr = new Powerup(worldX, worldY, type );
 		resources.add(pwr);
-		
-		
 	}
 	
+	public WeaponDrop getNearestWeaponDrop(Vector2 pos, float maxRange) {
+		WeaponDrop nearest = null;
+		float nearestDist2 = maxRange * maxRange;
+		for (int i = 0; i < resources.size; i++) {
+			AnimateEntity e = resources.get(i);
+			if (e instanceof WeaponDrop) {
+				WeaponDrop wd = (WeaponDrop) e;
+				float dist2 = wd.getBody().getPosition().dst2(pos);
+				if (dist2 < nearestDist2) {
+					nearestDist2 = dist2;
+					nearest = wd;
+				}
+			}
+		}
+		return nearest;
+	}
+
 	public void addResource( AnimateEntity e )
 	{
 		resources.add( e );
@@ -226,11 +248,15 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 	}
 	
 	public abstract void init();
-	
+
 	public abstract void draw( GameScreen screen );
-	
+
 	public abstract void drawMiniMap( GameScreen screen );
-	
+
 	public abstract void tick( GameScreen screen, float delta );
+
+	public abstract boolean isExitReached();
+
+	public abstract void destroyWorld();
 	
 }

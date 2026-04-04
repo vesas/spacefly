@@ -155,7 +155,7 @@ abstract public class Monster implements AnimateEntity
 	}
 
 	public void getHit(Bullet b) {
-		health--;
+		health -= b.damage;
 		healthString = "" + health;
 	}
 
