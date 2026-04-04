@@ -70,8 +70,8 @@ public class DebugHelper
 			counter = 60;
 		}
 		
-		G.wFont.getData().setScale(0.45f, 0.45f);
-		G.wFont.draw( screen.screenBatch, FPS, 20 ,Gdx.graphics.getHeight() - 40 );
+		G.wFont.getData().setScale(0.35f, 0.35f);
+		G.wFont.draw( screen.screenBatch, FPS, 20, G.wFont.getCapHeight() + 10 );
 	}
 	
 

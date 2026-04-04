@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array;
 
 public interface WorldGenInterface {
 
-    public Array<Feature> generate();
+    public Array<Feature> generate(long seed);
 
     public void setFirstRoomCenter(Vector2 firstRoomCenter);
 }

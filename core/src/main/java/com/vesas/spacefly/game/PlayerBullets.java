@@ -8,7 +8,8 @@ public class PlayerBullets extends BaseBullets
 	
 	private PlayerBullets() { }
 	
-	public void fireBullet( float posx, float posy, float dirx, float diry, BodyBuilder bodyBuilder )
+	public void fireBullet( float posx, float posy, float dirx, float diry,
+	                        int damage, Weapon.Archetype archetype, BodyBuilder bodyBuilder )
 	{
 		// See if the pool contains anything
 		if( deadPool.size > 0 )
@@ -20,6 +21,8 @@ public class PlayerBullets extends BaseBullets
 				bul.body.setAwake( true );
 				bul.body.setActive( true );
 				bul.resetCreationTime();
+				bul.damage = damage;
+				((Bullet) bul).archetype = archetype;
 				bullets.add( bul );
 				return;
 			}
@@ -27,7 +30,14 @@ public class PlayerBullets extends BaseBullets
 
 		// Nothing in the pool, got to create a new one
 		Bullet b = new Bullet( posx, posy, dirx, diry, bodyBuilder);
+		b.damage = damage;
+		b.archetype = archetype;
 
 		bullets.add( b );
+	}
+
+	public void fireBullet( float posx, float posy, float dirx, float diry, BodyBuilder bodyBuilder )
+	{
+		fireBullet(posx, posy, dirx, diry, 1, Weapon.Archetype.BLASTER, bodyBuilder);
 	}
 }

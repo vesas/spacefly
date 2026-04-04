@@ -17,10 +17,17 @@ import com.vesas.spacefly.monster.MonsterBullets;
 import com.vesas.spacefly.monster.SlurgMonster;
 import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.world.AbstractGameWorld;
+import com.vesas.spacefly.game.WeaponDrop;
 
 public class CListener implements ContactListener
 {
 	
+	private void pickupWeapon(WeaponDrop wd)
+	{
+		Player.INSTANCE.pickupWeapon(wd.getWeapon());
+		AbstractGameWorld.INSTANCE.removeSpice(wd);
+	}
+
 	private void playerBulletHit( Bullet bullet, Monster monster )
 	{
 		monster.getHit( bullet );

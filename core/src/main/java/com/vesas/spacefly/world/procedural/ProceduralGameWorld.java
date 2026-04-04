@@ -16,8 +16,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.game.AnimateEntity;
 import com.vesas.spacefly.game.G;
+import com.vesas.spacefly.game.LevelExit;
 import com.vesas.spacefly.game.Player;
 import com.vesas.spacefly.monster.Monster;
+import com.vesas.spacefly.monster.ZipperCloudManager;
 import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.particles.ExplosionInterface;
 import com.vesas.spacefly.screen.GameScreen;
@@ -31,12 +33,17 @@ import com.vesas.spacefly.world.AbstractGameWorld;
 
 public class ProceduralGameWorld extends AbstractGameWorld
 {
+	public static long worldSeed = 256;
+
 	private Array<Feature> feats;
-	
+
+	private LevelExit levelExit;
+	private boolean exitReached = false;
+
 	private Visibility visib;
 
 	private ShaderProgram visibShader;
-	
+
 	private FrameBuffer fbo;
 
 	@Override
@@ -50,7 +57,8 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		// feats = gen.generate();
 		WorldGen gen = new WorldGen( this,visib );
 		gen.setFirstRoomCenter(Player.INSTANCE.getWorldCenter());
-		feats = gen.generate(); 
+		feats = gen.generate(worldSeed);
+		levelExit = new LevelExit(gen.getExitPosition().x, gen.getExitPosition().y);
 		
 		visib.finishLoad();
 
@@ -165,7 +173,9 @@ public class ProceduralGameWorld extends AbstractGameWorld
 			explo.draw( screen );
 		}
 		screen.worldBatch.end();
-		
+
+		levelExit.draw(screen);
+
 		if( DebugHelper.VISIB_DEBUG ) {
 			renderVisibilityDebug2(screen);
 		}
@@ -256,9 +266,11 @@ public class ProceduralGameWorld extends AbstractGameWorld
 				
 		}
 
+		levelExit.drawMiniMap();
+
 		G.shapeRenderer.end();
 	}
-	
+
 	private Texture textureSolid;
 	
 	private void drawVisibility( GameScreen screen, FrameBuffer fb, Vector2 playerCenter )
@@ -293,13 +305,13 @@ public class ProceduralGameWorld extends AbstractGameWorld
 			Feature feat = feats.get( i );
 			feat.tick(screen, delta);
 		}
-		
+
 		for( int i = 0, size = resources.size; i < size ; i++ )
 		{
 			AnimateEntity p = resources.get( i );
 			p.tick(screen, delta );
 		}
-		
+
 		for( int i = 0, size = systems.size; i < size ; i++ )
 		{
 			ExplosionInterface p = systems.get( i );
@@ -307,8 +319,46 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		}
 
 		super.monsterTick(screen, delta );
-		
+
+		levelExit.tick(delta);
+		if (!exitReached && levelExit.isPlayerInRange(Player.INSTANCE.getWorldCenter())) {
+			exitReached = true;
+		}
+
 		cleanup();
+	}
+
+	@Override
+	public boolean isExitReached() {
+		return exitReached;
+	}
+
+	@Override
+	public void destroyWorld() {
+		monsters.clear();
+		monstersToBeRemoved.clear();
+		resources.clear();
+		resourcesToBeRemoved.clear();
+		systems.clear();
+		removeSystems.clear();
+		floaters.clear();
+		removeFloaters.clear();
+		feats.clear();
+		levelExit = null;
+		exitReached = false;
+		if (fbo != null) {
+			fbo.dispose();
+			fbo = null;
+		}
+		if (visibShader != null) {
+			visibShader.dispose();
+			visibShader = null;
+		}
+		if (textureSolid != null) {
+			textureSolid.dispose();
+			textureSolid = null;
+		}
+		ZipperCloudManager.reset();
 	}
 
 }

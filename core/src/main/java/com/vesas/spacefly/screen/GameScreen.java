@@ -356,16 +356,25 @@ public class GameScreen implements Screen
 			return;
 			
 		AbstractGameWorld.INSTANCE.tick( this, floatDelta );
-		
+
 		Player.INSTANCE.tick( this, floatDelta );
-		
+
+		if (Player.INSTANCE.isDead()) {
+			game.showDeathScreen();
+			return;
+		}
+
 		PlayerBullets.INSTANCE.tick( floatDelta );
 		MonsterBullets.INSTANCE.tick( floatDelta );
 		
 		Box2DWorld.world.step(floatDelta, 8, 3);
-		
+
 		PlayerBullets.INSTANCE.removeBullets();
 		MonsterBullets.INSTANCE.removeBullets();
+
+		if (AbstractGameWorld.INSTANCE.isExitReached()) {
+			game.startNewFloor();
+		}
 	}
 
 	@Override

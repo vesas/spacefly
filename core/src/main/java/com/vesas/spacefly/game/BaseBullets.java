@@ -72,6 +72,12 @@ public class BaseBullets
 		bullets.clear();
 	}
 
+	public void destroyAll() {
+		bullets.clear();
+		bulletsToBeRemoved.clear();
+		deadPool.clear();
+	}
+
 	public Array<AbstractBullet> getBullets() {
 		return bullets;
 	}

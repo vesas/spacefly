@@ -34,8 +34,11 @@ public class VisibilityTest {
         visib.finishLoad();
 
         // Test different light positions
+        // In center (5,5) visible area should be 100 (10x10)
         assertVisibleArea(visib, 5,5, 100f);  // Center
+        // Near the corner (0.1,0.1) visible area should still be 100 (10x10)
         assertVisibleArea(visib, 0.1f,0.1f, 100f);  // Corner
+        // Outside (-1,-1) the visible area should be 0
         assertVisibleArea(visib, -1,-1, 0f);  // Outside
     }
 
