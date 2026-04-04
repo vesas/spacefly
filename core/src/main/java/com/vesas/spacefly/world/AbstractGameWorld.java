@@ -130,7 +130,7 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 		float worldX = boxPos.x;
 		float worldY = boxPos.y;
 
-		if( GenSeed.random.nextFloat() < 0.35f )
+		if( GenSeed.random.nextFloat() < 0.15f )
 		{
 			resources.add(new WeaponDrop(worldX, worldY, Weapon.randomDrop(GenSeed.random)));
 			return;

@@ -39,16 +39,16 @@ public class LevelExit {
         screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 
         // Outer corona — huge, very faint, slow counter-rotation
-        drawPortalLayer(screen, portal, size * 2.8f, 0.0f, 0.88f, 0.68f, 0.07f * pulse,    -rot * 0.35f);
+        drawPortalLayer(screen, portal, size * 2.2f, 0.0f, 0.88f, 0.68f, 0.07f * pulse,    -rot * 0.35f);
 
         // Mid glow ring
-        drawPortalLayer(screen, portal, size * 1.75f, 0.0f, 0.75f, 1.0f,  0.22f * fastPulse, rot * 0.55f);
+        drawPortalLayer(screen, portal, size * 1.55f, 0.0f, 0.75f, 1.0f,  0.22f * fastPulse, rot * 0.55f);
 
         // Core bright ring — main rotation
         drawPortalLayer(screen, portal, size,          0.1f, 1.0f,  0.82f, 0.80f * pulse,    rot);
 
         // Hot inner centre — fastest counter-spin
-        drawPortalLayer(screen, portal, size * 0.48f,  0.65f, 1.0f, 1.0f, 0.95f,            -rot * 1.9f);
+        drawPortalLayer(screen, portal, size * 0.58f,  0.65f, 1.0f, 1.0f, 0.95f,            -rot * 1.9f);
 
         screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         screen.worldBatch.end();

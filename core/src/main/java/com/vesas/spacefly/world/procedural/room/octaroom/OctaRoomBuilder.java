@@ -1,10 +1,13 @@
 package com.vesas.spacefly.world.procedural.room.octaroom;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.box2d.BodyBuilder;
+import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
+import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.world.procedural.generator.MetaOctaRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.room.WallBlock;
@@ -37,11 +40,15 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 
 	private Visibility visib;
 	private BodyBuilder bodyBuilder;
+	private final FloorTheme theme;
+	private final TextureRegion wallTexRegion;
 
-	public OctaRoomBuilder(Visibility visib, BodyBuilder bodyBuilder)
-	{
+	public OctaRoomBuilder(Visibility visib, BodyBuilder bodyBuilder, FloorTheme theme) {
 		this.visib = visib;
 		this.bodyBuilder = bodyBuilder;
+		this.theme = theme;
+		TextureRegion tex = G.getAtlas().findRegion(theme.wallTex);
+		this.wallTexRegion = (tex != null) ? tex : G.walls[1];
 	}
 	
 	public void setPos( float xpos, float ypos )
@@ -220,7 +227,8 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 		exits[ExitDir.W.ordinal()] = wPortal != null;
 		exits[ExitDir.E.ordinal()] = ePortal != null;
 
-		OctaRoom room = new OctaRoom(); 
+		OctaRoom room = new OctaRoom();
+		room.setTheme(theme);
 
 		visib.startConvexArea();
 		buildSouthEastWall();
@@ -261,49 +269,49 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 	// BUILDING
 	//
 	private void addBlocksToNorthEast(float xpos, float ypos, float distance ) {
-		WallBlock block = new WallBlock((int)(distance*2.0f));
+		WallBlock block = new WallBlock((int)(distance*2.0f), wallTexRegion);
 		blocks.add(block);
 		block.initBottomLeft( xpos, ypos , -45, bodyBuilder);	
 	}
 
 	private void addBlocksToSouthEast(float xpos, float ypos, float distance ) {
-		WallBlock block = new WallBlock((int)(distance*2.0f));
+		WallBlock block = new WallBlock((int)(distance*2.0f), wallTexRegion);
 		blocks.add(block);
 		block.initTopLeft( xpos, ypos , 45, bodyBuilder);
 	}
 
 	private void addBlocksToNorthWest(float xpos, float ypos, float distance ) {
-		WallBlock block = new WallBlock((int)(distance*2.0f));
+		WallBlock block = new WallBlock((int)(distance*2.0f), wallTexRegion);
 		blocks.add(block);
 		block.initBottomLeft( xpos, ypos , 45, bodyBuilder);
 	}
 
 	private void addBlocksToSouthWest(float xpos, float ypos, float distance ) {
-		WallBlock block = new WallBlock((int)(distance*2.0f));
+		WallBlock block = new WallBlock((int)(distance*2.0f), wallTexRegion);
 		blocks.add(block);
 		block.initTopRight( xpos, ypos , -45, bodyBuilder);
 	}
 
 	private void addBlocksToLeftUp(float xpos, float ypos, float distance ) {
-		WallBlock block = new WallBlock((int)(distance*2.0f));
+		WallBlock block = new WallBlock((int)(distance*2.0f), wallTexRegion);
 		blocks.add(block);
 		block.initBottomLeft( xpos, ypos , 90, bodyBuilder);
 	}
 
 	private void addBlocksToRightUp( float xpos, float ypos, float distance ) {
-		WallBlock block = new WallBlock((int)(distance*2.0f));
+		WallBlock block = new WallBlock((int)(distance*2.0f), wallTexRegion);
 		blocks.add(block);
 		block.initTopLeft( xpos, ypos , 90, bodyBuilder);
 	}
 
 	private void addBlocksToSouth( float xpos, float ypos, float distance ) {
-		WallBlock block = new WallBlock((int)(sidelen*2.0f));
+		WallBlock block = new WallBlock((int)(sidelen*2.0f), wallTexRegion);
 		blocks.add(block);
 		block.initTopLeft( xpos, ypos , 0, bodyBuilder);
 	}
 	
 	private void addBlocksToNorth( float xpos, float ypos, float distance ) {
-		WallBlock block = new WallBlock((int)(distance*2.0f));
+		WallBlock block = new WallBlock((int)(distance*2.0f), wallTexRegion);
 		blocks.add(block);
 		block.initBottomLeft( xpos, ypos , 0, bodyBuilder);
 	}

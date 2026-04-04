@@ -13,6 +13,7 @@ import com.vesas.spacefly.util.DebugHelper;
 import com.vesas.spacefly.util.FrameTime;
 import com.vesas.spacefly.world.procedural.Feature;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
+import com.vesas.spacefly.world.procedural.FloorTheme;
 
 public class AxisAlignedCorridor implements Feature
 {
@@ -121,8 +122,10 @@ public class AxisAlignedCorridor implements Feature
 		this.len = len;
 	}
 	
-	private static Color col1 = new Color(0.24f, 0.25f, 0.33f, 1.0f);
-	
+	private FloorTheme theme = FloorTheme.STATION;
+
+	public void setTheme(FloorTheme theme) { this.theme = theme; }
+
 	public void init()
 	{
 		int width = 1;
@@ -130,7 +133,7 @@ public class AxisAlignedCorridor implements Feature
 		
 		Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888 );
 		pixmap.setFilter(Filter.BiLinear);
-		pixmap.setColor( col1 );
+		pixmap.setColor(theme.floorColor);
 		pixmap.fill();
 		
 		tex = new Texture(pixmap);

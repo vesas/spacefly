@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.vesas.spacefly.box2d.BodyBuilder;
-import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.screen.GameScreen;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 
@@ -26,18 +25,21 @@ public class WallBlock implements FeatureBlock
 	}
 
 	private Body body;
-	
+
 	private float xpos;
 	private float ypos;
 	private int blocks;
 	private float rotation;
-	
+	private TextureRegion wallTex;
+
 	/**
-	 * Blocks have 0.5 world unit thickness. 
-	 * @param blocks defines how many 0.5 units the block is.
+	 * Blocks have 0.5 world unit thickness.
+	 * @param blox   how many 0.5-unit segments the block spans
+	 * @param wallTex wall texture region to draw
 	 */
-	public WallBlock( int blox ) {
-		this.blocks = blox;
+	public WallBlock(int blox, TextureRegion wallTex) {
+		this.blocks  = blox;
+		this.wallTex = wallTex;
 	}
 
 	/**
@@ -137,8 +139,7 @@ public class WallBlock implements FeatureBlock
 
 	public void draw(Batch batch) {
 
-		TextureRegion wallTex = G.walls[1];
-		batch.draw(wallTex, xpos, ypos, 0f,0f,blocks * 0.5f, 0.5f,1.0f,1.0f,rotation);
+		batch.draw(wallTex, xpos, ypos, 0f, 0f, blocks * 0.5f, 0.5f, 1.0f, 1.0f, rotation);
 
 		/** Draws a rectangle with the bottom left corner at x,y and stretching the region to cover the given width and height. */
 		// public void draw (TextureRegion region, float x, float y, float width, float height);
