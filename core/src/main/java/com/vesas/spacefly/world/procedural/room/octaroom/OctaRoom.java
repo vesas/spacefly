@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.screen.GameScreen;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
+import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.world.procedural.room.RoomFeature;
 
 /*
@@ -69,7 +70,9 @@ public class OctaRoom extends RoomFeature
 	{
 	}
 	
-	private static Color col1 = new Color(0.24f, 0.25f, 0.33f, 1.0f);
+	private FloorTheme theme = FloorTheme.STATION;
+
+	public void setTheme(FloorTheme theme) { this.theme = theme; }
 
 	private static float PIXELS_PER_UNIT = 64f;
 
@@ -112,9 +115,9 @@ public class OctaRoom extends RoomFeature
 
 		Pixmap pixmap = new Pixmap(mapwidth, mapheight, Pixmap.Format.RGBA8888 );
 
-		pixmap.setColor( Color.CLEAR );
+		pixmap.setColor(Color.CLEAR);
 		pixmap.fill();
-		pixmap.setColor( col1 );
+		pixmap.setColor(theme.floorColor);
 
 		// first, stripe from bottom to top, portal width
 		pixmap.fillRectangle((int)((apersqrttwo)*PIXELS_PER_UNIT), (int)((0)*PIXELS_PER_UNIT), (int)((sidelen)*PIXELS_PER_UNIT),(int)((this.height)*PIXELS_PER_UNIT));

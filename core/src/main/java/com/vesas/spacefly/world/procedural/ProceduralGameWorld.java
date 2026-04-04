@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.game.AnimateEntity;
+import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.LevelExit;
 import com.vesas.spacefly.game.Player;
@@ -46,16 +47,18 @@ public class ProceduralGameWorld extends AbstractGameWorld
 
 	private FrameBuffer fbo;
 
+	private FloorTheme theme;
+
 	@Override
 	public void init()
 	{
 		
+		theme = FloorTheme.values()[(int)(Math.abs(worldSeed) % FloorTheme.values().length)];
+
 		visib = new Visibility();
 		visib.startLoad();
-		
-		// WorldGenTest gen = new WorldGenTest(this, visib);
-		// feats = gen.generate();
-		WorldGen gen = new WorldGen( this,visib );
+
+		WorldGen gen = new WorldGen(this, visib, theme);
 		gen.setFirstRoomCenter(Player.INSTANCE.getWorldCenter());
 		feats = gen.generate(worldSeed);
 		levelExit = new LevelExit(gen.getExitPosition().x, gen.getExitPosition().y);
@@ -92,7 +95,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		float screenWidth = screen.viewport.getScreenWidth();
 		
 		visibShader.bind();
-		visibShader.setUniformf("ambientColor", 0.5f, 0.5f, 0.7f, 0.519f);
+		visibShader.setUniformf("ambientColor", theme.ambR, theme.ambG, theme.ambB, 0.519f);
 		visibShader.setUniformi("u_lightmap", 1);
 		visibShader.setUniformf("resolution", screenWidth, screenHeight);
 		

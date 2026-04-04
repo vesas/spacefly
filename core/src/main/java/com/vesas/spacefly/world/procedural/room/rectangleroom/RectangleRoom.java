@@ -14,6 +14,7 @@ import com.vesas.spacefly.util.DebugHelper;
 import com.vesas.spacefly.util.FrameTime;
 import com.vesas.spacefly.util.GfxUtil;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
+import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.world.procedural.GenSeed;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleLSystem;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleWineSystem;
@@ -30,6 +31,8 @@ public class RectangleRoom extends RoomFeature
 
 	// wall width in WORLD units
 	public static float WALL_WIDTH = 0.5f;
+
+	private FloorTheme theme = FloorTheme.STATION;
 
 	private boolean hasColumns = false;
 	private float halfColumnWidth = 42.0f;
@@ -49,6 +52,8 @@ public class RectangleRoom extends RoomFeature
 	public void setHasColumns(boolean hasColumns) {
 		this.hasColumns = hasColumns;
 	}
+
+	public void setTheme(FloorTheme theme) { this.theme = theme; }
 
 	public void addRoomEntrance(RoomEntrance entrance) {
 		roomEntrances.add(entrance);
@@ -112,31 +117,29 @@ public class RectangleRoom extends RoomFeature
 	{
 	}
 	
-	private static Color col1 = new Color(0.24f, 0.25f, 0.33f, 1.0f);
-	
 	@Override
 	public void init()
 	{
-		
-
 		// this width is in "units". (eg 5-13)
 		float ratio = this.width / this.height;
-		
-		int mapwidth = (int) (this.width*64f);
-		int mapheight = (int) (this.height*64f);
 
-		Array<AtlasRegion> regions = G.getAtlas().findRegions("tile64");
+		int mapwidth  = (int) (this.width  * 64f);
+		int mapheight = (int) (this.height * 64f);
+
+		// Floor stamp tiles — fall back to defaults until theme-specific art exists
+		Array<AtlasRegion> regions = G.getAtlas().findRegions(theme.floorTile1);
+		if (regions.size == 0) regions = G.getAtlas().findRegions("tile64");
 		Pixmap testPixmap = GfxUtil.extractPixmapFromTextureRegion(regions.get(0));
 
-		Array<AtlasRegion> regions2 = G.getAtlas().findRegions("tile642");
+		Array<AtlasRegion> regions2 = G.getAtlas().findRegions(theme.floorTile2);
+		if (regions2.size == 0) regions2 = G.getAtlas().findRegions("tile642");
 		Pixmap testPixmap2 = GfxUtil.extractPixmapFromTextureRegion(regions2.get(0));
-				
-		Pixmap pixmap = new Pixmap(mapwidth, mapheight, Pixmap.Format.RGBA8888 );
-//		pixmap.setFilter(Filter.BiLinear);
-		pixmap.setColor( Color.CLEAR );
+
+		Pixmap pixmap = new Pixmap(mapwidth, mapheight, Pixmap.Format.RGBA8888);
+		pixmap.setColor(Color.CLEAR);
 		pixmap.fill();
 
-		pixmap.setColor( col1 );
+		pixmap.setColor(theme.floorColor);
 
 		// draw the floor texture
 		// in column room we need to leave the column area empty
@@ -181,7 +184,7 @@ public class RectangleRoom extends RoomFeature
 		// G.props[2]
 
 		for(RoomEntrance entrance : this.roomEntrances) {
-			pixmap.setColor( col1 );
+			pixmap.setColor(theme.floorColor);
 			pixmap.fillRectangle((int)(entrance.rect.x*64f), (int)((entrance.rect.y)*64f), (int)(entrance.rect.width*64f),(int)(entrance.rect.height*64f));
 		}
 		roomEntrances.clear();

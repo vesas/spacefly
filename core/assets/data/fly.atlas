@@ -6,350 +6,413 @@ filter: Nearest, Nearest
 repeat: none
 block64
   rotate: false
-  xy: 132, 68
+  xy: 454, 182
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 block64a
   rotate: false
-  xy: 601, 377
+  xy: 2, 50
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 bullet
   rotate: false
-  xy: 431, 247
+  xy: 78, 2
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
   index: -1
 bullet.1
   rotate: false
-  xy: 465, 280
+  xy: 832, 130
   size: 12, 5
   orig: 12, 5
   offset: 0, 0
   index: -1
 bullet.2
   rotate: false
-  xy: 438, 247
+  xy: 85, 2
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
   index: -1
 bullet.3
   rotate: false
-  xy: 966, 449
+  xy: 180, 24
   size: 10, 24
   orig: 10, 24
   offset: 0, 0
   index: -1
 dollar
   rotate: false
-  xy: 495, 305
+  xy: 330, 44
   size: 104, 136
   orig: 104, 136
   offset: 0, 0
   index: -1
 edge64a
   rotate: false
-  xy: 2, 134
+  xy: 2, 116
   size: 196, 64
   orig: 196, 64
   offset: 0, 0
   index: -1
 edgeA1
   rotate: false
-  xy: 365, 247
+  xy: 436, 116
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 edgeA10
   rotate: false
-  xy: 2, 443
+  xy: 2, 446
+  size: 640, 64
+  orig: 640, 64
+  offset: 0, 0
+  index: -1
+edgeA10_biolab
+  rotate: false
+  xy: 2, 380
+  size: 640, 64
+  orig: 640, 64
+  offset: 0, 0
+  index: -1
+edgeA10_cryo
+  rotate: false
+  xy: 2, 314
+  size: 640, 64
+  orig: 640, 64
+  offset: 0, 0
+  index: -1
+edgeA10_reactor
+  rotate: false
+  xy: 2, 248
   size: 640, 64
   orig: 640, 64
   offset: 0, 0
   index: -1
 edgeA2
   rotate: false
-  xy: 235, 247
+  xy: 324, 182
   size: 128, 64
   orig: 128, 64
   offset: 0, 0
   index: -1
 edgeA5
   rotate: false
-  xy: 644, 443
+  xy: 2, 182
   size: 320, 64
   orig: 320, 64
   offset: 0, 0
   index: -1
 edge_tri
   rotate: false
-  xy: 601, 311
+  xy: 520, 182
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 exploring1
   rotate: false
-  xy: 235, 313
+  xy: 877, 382
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 health1
   rotate: false
-  xy: 482, 302
+  xy: 1007, 475
   size: 8, 9
   orig: 8, 9
   offset: 0, 0
   index: -1
 healthBubble1
   rotate: false
-  xy: 235, 200
+  xy: 2, 3
   size: 74, 45
   orig: 74, 45
   offset: 0, 0
   index: -1
 health_off
   rotate: false
-  xy: 1000, 491
+  xy: 634, 164
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 health_on
   rotate: false
-  xy: 667, 259
+  xy: 634, 146
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 heart
   rotate: false
-  xy: 2, 200
+  xy: 644, 269
   size: 231, 241
   orig: 231, 241
   offset: 0, 0
   index: -1
 monster1
   rotate: false
-  xy: 667, 377
+  xy: 68, 50
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 monster1.1
   rotate: false
-  xy: 667, 311
+  xy: 134, 50
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 monster1.2
   rotate: false
-  xy: 733, 377
+  xy: 436, 50
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 monster1_halo
   rotate: false
-  xy: 733, 311
+  xy: 502, 116
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 monsterbullet
   rotate: false
-  xy: 966, 443
+  xy: 850, 252
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
 monsterbullet2
   rotate: false
-  xy: 300, 170
+  xy: 964, 90
   size: 8, 28
   orig: 8, 28
   offset: 0, 0
   index: -1
 monter1
   rotate: false
-  xy: 799, 377
+  xy: 502, 50
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 pipe_bend_nw
   rotate: false
-  xy: 266, 166
+  xy: 78, 16
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 pipe_ew
   rotate: false
-  xy: 431, 279
+  xy: 112, 16
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 portal1
   rotate: false
-  xy: 2, 4
+  xy: 877, 252
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 powerup_ammo1
   rotate: false
-  xy: 799, 311
+  xy: 586, 182
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 powerup_heal
   rotate: false
-  xy: 966, 475
+  xy: 146, 16
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 powerup_heal.1
   rotate: false
-  xy: 865, 377
+  xy: 568, 116
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 powerup_shoot1
   rotate: false
-  xy: 865, 311
+  xy: 568, 50
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 puolikasoko
   rotate: false
-  xy: 431, 261
+  xy: 634, 53
   size: 30, 16
   orig: 30, 16
   offset: 0, 0
   index: -1
 shellmonster
   rotate: false
-  xy: 132, 2
+  xy: 652, 203
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 shellmonster.1
   rotate: false
-  xy: 200, 134
+  xy: 718, 203
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 ship
   rotate: false
-  xy: 667, 277
+  xy: 982, 218
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ship.1
   rotate: false
-  xy: 701, 277
+  xy: 982, 184
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ship2
   rotate: false
-  xy: 198, 68
+  xy: 784, 203
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 shipgun
   rotate: false
-  xy: 465, 287
+  xy: 1007, 486
   size: 15, 24
   orig: 15, 24
   offset: 0, 0
   index: -1
 shoot_stick
   rotate: false
-  xy: 198, 2
+  xy: 850, 186
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 smallpuff
   rotate: false
-  xy: 769, 300
+  xy: 850, 258
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
   index: -1
 smallpuff.1
   rotate: false
-  xy: 735, 277
+  xy: 982, 150
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 spice
   rotate: false
-  xy: 266, 140
+  xy: 982, 124
   size: 24, 24
   orig: 24, 24
   offset: 0, 0
   index: -1
 star
   rotate: false
-  xy: 311, 181
+  xy: 916, 186
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 tile64
   rotate: false
-  xy: 377, 181
+  xy: 652, 137
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 tile642
   rotate: false
-  xy: 931, 377
+  xy: 718, 137
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+tile642_biolab
+  rotate: false
+  xy: 784, 137
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+tile642_cryo
+  rotate: false
+  xy: 850, 120
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+tile642_reactor
+  rotate: false
+  xy: 916, 120
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+tile64_biolab
+  rotate: false
+  xy: 634, 71
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+tile64_cryo
+  rotate: false
+  xy: 700, 71
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+tile64_reactor
+  rotate: false
+  xy: 766, 71
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 whitedisc
   rotate: false
-  xy: 365, 313
+  xy: 200, 52
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 zippermonster
   rotate: false
-  xy: 931, 311
+  xy: 832, 54
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 zippermonster.1
   rotate: false
-  xy: 601, 245
+  xy: 898, 54
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

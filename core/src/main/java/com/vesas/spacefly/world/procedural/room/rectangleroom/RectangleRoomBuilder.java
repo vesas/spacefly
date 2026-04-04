@@ -1,10 +1,13 @@
 package com.vesas.spacefly.world.procedural.room.rectangleroom;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.box2d.BodyBuilder;
+import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
+import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.room.WallBlock;
@@ -23,10 +26,15 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 	
 	private Visibility visib;
 	private BodyBuilder bodyBuilder;
-	
-	public RectangleRoomBuilder(Visibility visib, BodyBuilder bodyBuilder) { 
+	private final FloorTheme theme;
+	private final TextureRegion wallTexRegion;
+
+	public RectangleRoomBuilder(Visibility visib, BodyBuilder bodyBuilder, FloorTheme theme) {
 		this.visib = visib;
 		this.bodyBuilder = bodyBuilder;
+		this.theme = theme;
+		TextureRegion tex = G.getAtlas().findRegion(theme.wallTex);
+		this.wallTexRegion = (tex != null) ? tex : G.walls[1];
 	}
 	
 	public void setPos( float xpos, float ypos )
@@ -405,7 +413,9 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 	 * For testing purposes, we can override this to return a mock room
 	 */
 	protected RectangleRoom createRoom() {
-		return new RectangleRoom();
+		RectangleRoom room = new RectangleRoom();
+		room.setTheme(theme);
+		return room;
 	}
 	
 	@Override
@@ -542,24 +552,16 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 	}
 	
 
-	//
-	// BUILDING
-	//
-	private void addBlocksToRight(float xpos, float ypos, float distance ) {
-		WallBlock block = new WallBlock((int)(distance*2.0f));
+	private void addBlocksToRight(float xpos, float ypos, float distance) {
+		WallBlock block = new WallBlock((int)(distance * 2.0f), wallTexRegion);
 		blocks.add(block);
-		block.initBottomLeft( xpos, ypos , 0, bodyBuilder);
-
+		block.initBottomLeft(xpos, ypos, 0, bodyBuilder);
 	}
-	
-	//
-	// BUILDING
-	//
-	private void addBlocksToUp(float xpos, float ypos, float distance ) {
-		WallBlock block = new WallBlock((int)(distance*2.0f));
+
+	private void addBlocksToUp(float xpos, float ypos, float distance) {
+		WallBlock block = new WallBlock((int)(distance * 2.0f), wallTexRegion);
 		blocks.add(block);
-		block.initTopLeft( xpos, ypos , 90, bodyBuilder);
-		
+		block.initTopLeft(xpos, ypos, 90, bodyBuilder);
 	}
 	
 }

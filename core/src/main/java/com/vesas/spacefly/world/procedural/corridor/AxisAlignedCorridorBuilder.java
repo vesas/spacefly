@@ -1,9 +1,12 @@
 package com.vesas.spacefly.world.procedural.corridor;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.box2d.BodyBuilder;
+import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
+import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor.Dir;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
@@ -22,10 +25,15 @@ public final class AxisAlignedCorridorBuilder implements FeatureBuilder<MetaCorr
 	
 	private Visibility visib;
 	private BodyBuilder bodyBuilder;
-	
-	public AxisAlignedCorridorBuilder(Visibility visib, BodyBuilder bodyBuilder) { 
+	private final FloorTheme theme;
+	private final TextureRegion wallTexRegion;
+
+	public AxisAlignedCorridorBuilder(Visibility visib, BodyBuilder bodyBuilder, FloorTheme theme) {
 		this.visib = visib;
 		this.bodyBuilder = bodyBuilder;
+		this.theme = theme;
+		TextureRegion tex = G.getAtlas().findRegion(theme.wallTex);
+		this.wallTexRegion = (tex != null) ? tex : G.walls[1];
 	}
 	
 	public AxisAlignedCorridor buildFrom( MetaCorridor metaCorr )
@@ -49,6 +57,7 @@ public final class AxisAlignedCorridorBuilder implements FeatureBuilder<MetaCorr
 		MetaPortal endPortal = metaCorr.getEndPortal();
 		
 		AxisAlignedCorridor corr = new AxisAlignedCorridor();
+		corr.setTheme(theme);
 
 		visib.startConvexArea();
 
@@ -218,19 +227,15 @@ public final class AxisAlignedCorridorBuilder implements FeatureBuilder<MetaCorr
 	{
 	}
 
-	private void addBlocksToRight(float xpos, float ypos, float distance )
-	{
-		WallBlock block = new WallBlock((int)distance*2);
+	private void addBlocksToRight(float xpos, float ypos, float distance) {
+		WallBlock block = new WallBlock((int)distance * 2, wallTexRegion);
 		blocks.add(block);
-		block.initBottomLeft( xpos, ypos , 0, bodyBuilder);
-		
+		block.initBottomLeft(xpos, ypos, 0, bodyBuilder);
 	}
-	
-	private void addBlocksToUp(float xpos, float ypos, float distance )
-	{
-		WallBlock block = new WallBlock((int)distance*2);
-		blocks.add(block);
-		block.initTopLeft( xpos, ypos , 90, bodyBuilder);
 
+	private void addBlocksToUp(float xpos, float ypos, float distance) {
+		WallBlock block = new WallBlock((int)distance * 2, wallTexRegion);
+		blocks.add(block);
+		block.initTopLeft(xpos, ypos, 90, bodyBuilder);
 	}
 }

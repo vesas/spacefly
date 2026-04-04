@@ -14,6 +14,7 @@ import com.vesas.spacefly.monster.ZipperCloudManager;
 import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.AddMonsterCallback;
+import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor.Dir;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridorBuilder;
@@ -51,13 +52,13 @@ public class WorldGen implements WorldGenInterface
 		this.metaRegionBuilder.setFirstRoomCenter(firstRoomCenter);
 	}
 
-	public WorldGen( AddMonsterCallback world, Visibility visib )
+	public WorldGen(AddMonsterCallback world, Visibility visib, FloorTheme theme)
 	{
 		this.world = world;
-		
-		builders.put(MetaRectangleRoom.class, (FeatureBuilder<?>) new RectangleRoomBuilder(visib, bodyBuilder));
-		builders.put(MetaCorridor.class, (FeatureBuilder<?>) new AxisAlignedCorridorBuilder(visib, bodyBuilder));
-		builders.put(MetaOctaRoom.class, (FeatureBuilder<?>) new OctaRoomBuilder(visib, bodyBuilder));
+
+		builders.put(MetaRectangleRoom.class, (FeatureBuilder<?>) new RectangleRoomBuilder(visib, bodyBuilder, theme));
+		builders.put(MetaCorridor.class,      (FeatureBuilder<?>) new AxisAlignedCorridorBuilder(visib, bodyBuilder, theme));
+		builders.put(MetaOctaRoom.class,      (FeatureBuilder<?>) new OctaRoomBuilder(visib, bodyBuilder, theme));
 	}
 
 	public Array<Feature> generate(long seed)

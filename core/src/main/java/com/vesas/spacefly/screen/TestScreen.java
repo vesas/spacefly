@@ -31,6 +31,7 @@ import com.vesas.spacefly.visibility.Edge;
 import com.vesas.spacefly.visibility.EndPoint;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.visibility.VisibilityPoly;
+import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridorBuilder;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
@@ -245,8 +246,8 @@ public class TestScreen implements Screen {
 
         BodyBuilder bodyBuilder = new BodyBuilder();
 
-        AxisAlignedCorridorBuilder axisAlignedCorridorBuilder = new AxisAlignedCorridorBuilder(visib, bodyBuilder);
-        RectangleRoomBuilder rectangleRoomBuilder = new RectangleRoomBuilder(visib, bodyBuilder);
+        AxisAlignedCorridorBuilder axisAlignedCorridorBuilder = new AxisAlignedCorridorBuilder(visib, bodyBuilder, FloorTheme.STATION);
+        RectangleRoomBuilder rectangleRoomBuilder = new RectangleRoomBuilder(visib, bodyBuilder, FloorTheme.STATION);
         rectangleRoomBuilder.setPos(0,0);
 
         MetaRectangleRoom metaRoom = new MetaRectangleRoom();
