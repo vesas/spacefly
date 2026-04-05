@@ -191,7 +191,7 @@ public class MetaRegionBuilder {
 			howManyAdditionalExits = GenSeed.random.nextInt(4);
 
 			// In the beginning add more exits
-			if( IDGenerator.getCurrentId() < 16 && howManyAdditionalExits == 0 )
+			if( this.itemCount < 8 && howManyAdditionalExits == 0 )
 			{
 				howManyAdditionalExits = 2;
 			}
@@ -279,7 +279,7 @@ public class MetaRegionBuilder {
 			howManyAdditionalExits = GenSeed.random.nextInt(4);
 
 			// In the beginning add more exits
-			if( IDGenerator.getCurrentId() < 16 && howManyAdditionalExits == 0 )
+			if( this.itemCount < 8 && howManyAdditionalExits == 0 )
 			{
 				howManyAdditionalExits = 2;
 			}
@@ -301,14 +301,7 @@ public class MetaRegionBuilder {
 				
 			existingExits[ex.ordinal()] = true;
 			
-			if( ex.equals(ExitDir.N ) || ex.equals(ExitDir.S ) )
-			{
-				roomBuilder.addPortal( ex, portalsize );
-			}
-			else 
-			{
-				roomBuilder.addPortal( ex, portalsize );
-			}
+			roomBuilder.addPortal( ex, portalsize );
 		}
 		
 		MetaFeature room = roomBuilder.build();

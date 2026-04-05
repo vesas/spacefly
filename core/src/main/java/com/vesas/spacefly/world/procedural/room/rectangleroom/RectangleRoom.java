@@ -15,6 +15,7 @@ import com.vesas.spacefly.util.FrameTime;
 import com.vesas.spacefly.util.GfxUtil;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.FloorTheme;
+import com.vesas.spacefly.world.procedural.PipeSegment;
 import com.vesas.spacefly.world.procedural.GenSeed;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleLSystem;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleWineSystem;
@@ -23,6 +24,7 @@ import com.vesas.spacefly.world.procedural.room.RoomFeature;
 public class RectangleRoom extends RoomFeature
 {
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
+	private Array<PipeSegment> pipeSegments = new Array<PipeSegment>();
 
 	// TODO: used only in the init method. remove it from here after init
 	private Array<RoomEntrance> roomEntrances = new Array<RoomEntrance>();
@@ -64,8 +66,15 @@ public class RectangleRoom extends RoomFeature
 		this.blocks.addAll( blocks );
 	}
 
+	public void addPipeSegments(Array<PipeSegment> pipes) {
+		this.pipeSegments.addAll(pipes);
+	}
+
 	public void drawWithVisibility(GameScreen screen) {
 		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
+		for (int i = 0; i < pipeSegments.size; i++) {
+			pipeSegments.get(i).draw(screen.worldBatch);
+		}
 	}
 
 	public void draw(SpriteBatch batch)	

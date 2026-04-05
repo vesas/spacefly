@@ -8,6 +8,8 @@ import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.FloorTheme;
+import com.vesas.spacefly.world.procedural.GenSeed;
+import com.vesas.spacefly.world.procedural.PipeSegment;
 import com.vesas.spacefly.world.procedural.generator.MetaOctaRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.room.WallBlock;
@@ -66,10 +68,10 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 		{
 			addBlocksToNorth( xpos + apersqrttwo, ypos + ysize, sidelen);
 
-			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos + apersqrttwo, ypos + ysize, 90+22.5f);
+			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos + apersqrttwo, ypos + ysize, 90+22.5f, theme);
 			room.addWedge(wedge);
 
-			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos + xsize - apersqrttwo, ypos + ysize, 90-22.5f);
+			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos + xsize - apersqrttwo, ypos + ysize, 90-22.5f, theme);
 			room.addWedge(wedge2);
 		}
 
@@ -88,10 +90,10 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 		if( portal == null ) {
 			addBlocksToSouth( xpos + apersqrttwo, ypos, sidelen);
 
-			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos + apersqrttwo, ypos, -90-22.5f);
+			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos + apersqrttwo, ypos, -90-22.5f, theme);
 			room.addWedge(wedge);
 
-			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos + xsize - apersqrttwo, ypos, -90+22.5f);
+			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos + xsize - apersqrttwo, ypos, -90+22.5f, theme);
 			room.addWedge(wedge2);
 		}
 
@@ -112,10 +114,10 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 
 			addBlocksToLeftUp( xpos, ypos + apersqrttwo, sidelen);
 
-			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos, ypos + apersqrttwo, 180+22.5f);
+			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos, ypos + apersqrttwo, 180+22.5f, theme);
 			room.addWedge(wedge);
 
-			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos, ypos + ysize - apersqrttwo, 180-22.5f);
+			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos, ypos + ysize - apersqrttwo, 180-22.5f, theme);
 			room.addWedge(wedge2);
 		}
 
@@ -134,10 +136,10 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 		if( portal == null ) {
 			addBlocksToRightUp( xpos + xsize, ypos + apersqrttwo, sidelen);
 
-			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos + xsize, ypos + apersqrttwo, 0-22.5f);
+			OctaRoom.WallWedge wedge = new OctaRoom.WallWedge( xpos + xsize, ypos + apersqrttwo, 0-22.5f, theme);
 			room.addWedge(wedge);
 
-			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos + xsize, ypos + ysize - apersqrttwo, 0+22.5f);
+			OctaRoom.WallWedge wedge2 = new OctaRoom.WallWedge( xpos + xsize, ypos + ysize - apersqrttwo, 0+22.5f, theme);
 			room.addWedge(wedge2);
 		}
 
@@ -250,11 +252,13 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 		room.setPosition( metaRoom.getBounds().x, metaRoom.getBounds().y);
 		room.setDimensions( metaRoom.getBounds().width, metaRoom.getBounds().height );
 		room.addBlocks( blocks );
-		
+
 		buildExits( room, metaRoom );
-		
+
+		buildPipes( room, nPortal, ePortal, sPortal, wPortal );
+
 		room.init();
-		
+
 		return room;
 	}
 
@@ -314,5 +318,57 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 		WallBlock block = new WallBlock((int)(distance*2.0f), wallTexRegion);
 		blocks.add(block);
 		block.initBottomLeft( xpos, ypos , 0, bodyBuilder);
+	}
+
+	private Array<PipeSegment> makePipeRunH(float startX, float endX, float y) {
+		Array<PipeSegment> run = new Array<PipeSegment>();
+		if (endX - startX > 0.01f)
+			run.add(PipeSegment.makeHorizontal(startX, y, endX - startX));
+		return run;
+	}
+
+	private Array<PipeSegment> makePipeRunV(float x, float startY, float endY) {
+		Array<PipeSegment> run = new Array<PipeSegment>();
+		if (endY - startY > 0.01f)
+			run.add(PipeSegment.makeVertical(x, startY, endY - startY));
+		return run;
+	}
+
+	private void buildPipes(OctaRoom room, MetaPortal nPortal, MetaPortal ePortal,
+			MetaPortal sPortal, MetaPortal wPortal) {
+		// Pipes only on solid (portal-less) cardinal walls; skip diagonals
+		float pipeInset = PipeSegment.PIPE_DIAMETER;
+
+		// North wall — inner face at ypos+ysize, pipe strip just inside
+		if (nPortal == null && GenSeed.random.nextFloat() < 0.65f) {
+			room.addPipeSegments(makePipeRunH(
+				xpos + apersqrttwo,
+				xpos + xsize - apersqrttwo,
+				ypos + ysize - pipeInset));
+		}
+
+		// South wall
+		if (sPortal == null && GenSeed.random.nextFloat() < 0.65f) {
+			room.addPipeSegments(makePipeRunH(
+				xpos + apersqrttwo,
+				xpos + xsize - apersqrttwo,
+				ypos));
+		}
+
+		// West wall
+		if (wPortal == null && GenSeed.random.nextFloat() < 0.65f) {
+			room.addPipeSegments(makePipeRunV(
+				xpos,
+				ypos + apersqrttwo,
+				ypos + ysize - apersqrttwo));
+		}
+
+		// East wall — pipe strip just inside the east face
+		if (ePortal == null && GenSeed.random.nextFloat() < 0.65f) {
+			room.addPipeSegments(makePipeRunV(
+				xpos + xsize - pipeInset,
+				ypos + apersqrttwo,
+				ypos + ysize - apersqrttwo));
+		}
 	}
 }

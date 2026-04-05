@@ -12,6 +12,7 @@ import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.screen.GameScreen;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.FloorTheme;
+import com.vesas.spacefly.world.procedural.PipeSegment;
 import com.vesas.spacefly.world.procedural.room.RoomFeature;
 
 /*
@@ -25,6 +26,8 @@ public class OctaRoom extends RoomFeature
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
 
 	private Array<WallWedge> wedges = new Array<WallWedge>();
+
+	private Array<PipeSegment> pipeSegments = new Array<PipeSegment>();
 	
 	Texture tex;
 	
@@ -34,6 +37,10 @@ public class OctaRoom extends RoomFeature
 
 	public void addWedge(WallWedge wallWedge) {
 		wedges.add(wallWedge);
+	}
+
+	public void addPipeSegments(Array<PipeSegment> pipes) {
+		this.pipeSegments.addAll(pipes);
 	}
 
 	private float [] verts = new float[16];
@@ -156,6 +163,9 @@ public class OctaRoom extends RoomFeature
 	@Override
 	public void drawWithVisibility(GameScreen screen) {
 		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
+		for (int i = 0; i < pipeSegments.size; i++) {
+			pipeSegments.get(i).draw(screen.worldBatch);
+		}
 	}
 	
 
@@ -165,17 +175,18 @@ public class OctaRoom extends RoomFeature
 		private final float xpos;
 		private final float ypos;
 		private final float rotation;
-		
-		public WallWedge( float xpos, float ypos, float rotation )
+
+		public WallWedge( float xpos, float ypos, float rotation, FloorTheme theme )
 		{
 			this.xpos = xpos;
 			this.ypos = ypos;
 			this.rotation = rotation;
-			this.sprite = initSprite();
+			this.sprite = initSprite(theme);
 		}
 
-		private Sprite initSprite() {
-			Sprite sprite = G.getAtlas().createSprite("edge_tri");
+		private Sprite initSprite(FloorTheme theme) {
+			Sprite sprite = G.getAtlas().createSprite(theme.cornerTex);
+			if (sprite == null) sprite = G.getAtlas().createSprite("edge_tri");
 			sprite.setSize(0.477f, 0.40f);
 			sprite.setOrigin(0.0f, 0.2f);
 			return sprite;
