@@ -39,7 +39,7 @@ public class LevelExit {
         screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 
         // Outer corona — huge, very faint, slow counter-rotation
-        drawPortalLayer(screen, portal, size * 2.2f, 0.0f, 0.88f, 0.68f, 0.07f * pulse,    -rot * 0.35f);
+        drawPortalLayer(screen, portal, size * 2.5f, 0.0f, 0.88f, 0.68f, 0.07f * pulse,    -rot * 0.35f);
 
         // Mid glow ring
         drawPortalLayer(screen, portal, size * 1.55f, 0.0f, 0.75f, 1.0f,  0.22f * fastPulse, rot * 0.55f);

@@ -8,6 +8,8 @@ import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.FloorTheme;
+import com.vesas.spacefly.world.procedural.GenSeed;
+import com.vesas.spacefly.world.procedural.PipeSegment;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.room.WallBlock;
@@ -537,11 +539,13 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		room.setPosition( metaRoom.getBounds().x, metaRoom.getBounds().y);
 		room.setDimensions( metaRoom.getBounds().width, metaRoom.getBounds().height );
 		room.addBlocks( blocks );
-		
+
 		buildExits( room, metaRoom );
-		
+
+		buildPipes( room, metaRoom );
+
 		room.init();
-		
+
 		return room;
 	}
 	
@@ -563,5 +567,84 @@ public class RectangleRoomBuilder implements FeatureBuilder<MetaRectangleRoom>
 		blocks.add(block);
 		block.initTopLeft(xpos, ypos, 90, bodyBuilder);
 	}
-	
+
+	private Array<PipeSegment> makePipeRunH(float startX, float endX, float y) {
+		Array<PipeSegment> run = new Array<PipeSegment>();
+		if (endX - startX > 0.01f)
+			run.add(PipeSegment.makeHorizontal(startX, y, endX - startX));
+		return run;
+	}
+
+	private Array<PipeSegment> makePipeRunV(float x, float startY, float endY) {
+		Array<PipeSegment> run = new Array<PipeSegment>();
+		if (endY - startY > 0.01f)
+			run.add(PipeSegment.makeVertical(x, startY, endY - startY));
+		return run;
+	}
+
+	protected void buildPipes(RectangleRoom room, MetaRectangleRoom metaRoom) {
+		final MetaPortal nPortal = metaRoom.getPortal(ExitDir.N);
+		final MetaPortal sPortal = metaRoom.getPortal(ExitDir.S);
+		final MetaPortal wPortal = metaRoom.getPortal(ExitDir.W);
+		final MetaPortal ePortal = metaRoom.getPortal(ExitDir.E);
+
+		float innerLeft  = xpos + RectangleRoom.WALL_WIDTH;
+		float innerRight = xpos + xsize - RectangleRoom.WALL_WIDTH;
+		float innerBottom = ypos + RectangleRoom.WALL_WIDTH;
+		float innerTop    = ypos + ysize - RectangleRoom.WALL_WIDTH;
+
+		// North wall — pipe strip just inside the north wall
+		if (GenSeed.random.nextFloat() < 0.65f) {
+			float pipeY = innerTop - PipeSegment.PIPE_DIAMETER;
+			if (nPortal == null) {
+				room.addPipeSegments(makePipeRunH(innerLeft, innerRight, pipeY));
+			} else {
+				float sideSize = (xsize - nPortal.getWidth()) / 2f;
+				float beginSize = Math.max(1, sideSize);
+				float endSize = xsize - (beginSize + nPortal.getWidth());
+				room.addPipeSegments(makePipeRunH(innerLeft, xpos + beginSize, pipeY));
+				room.addPipeSegments(makePipeRunH(xpos + beginSize + nPortal.getWidth(), innerRight, pipeY));
+			}
+		}
+
+		// South wall
+		if (GenSeed.random.nextFloat() < 0.65f) {
+			float pipeY = innerBottom;
+			if (sPortal == null) {
+				room.addPipeSegments(makePipeRunH(innerLeft, innerRight, pipeY));
+			} else {
+				float sideSize = (xsize - sPortal.getWidth()) / 2f;
+				float beginSize = Math.max(1, sideSize);
+				room.addPipeSegments(makePipeRunH(innerLeft, xpos + beginSize, pipeY));
+				room.addPipeSegments(makePipeRunH(xpos + beginSize + sPortal.getWidth(), innerRight, pipeY));
+			}
+		}
+
+		// West wall
+		if (GenSeed.random.nextFloat() < 0.65f) {
+			float pipeX = innerLeft;
+			if (wPortal == null) {
+				room.addPipeSegments(makePipeRunV(pipeX, innerBottom, innerTop));
+			} else {
+				float sideSize = (ysize - wPortal.getWidth()) / 2f;
+				float beginSize = Math.max(1, sideSize);
+				room.addPipeSegments(makePipeRunV(pipeX, innerBottom, ypos + beginSize));
+				room.addPipeSegments(makePipeRunV(pipeX, ypos + beginSize + wPortal.getWidth(), innerTop));
+			}
+		}
+
+		// East wall — pipe strip just inside the east wall
+		if (GenSeed.random.nextFloat() < 0.65f) {
+			float pipeX = innerRight - PipeSegment.PIPE_DIAMETER;
+			if (ePortal == null) {
+				room.addPipeSegments(makePipeRunV(pipeX, innerBottom, innerTop));
+			} else {
+				float sideSize = (ysize - ePortal.getWidth()) / 2f;
+				float beginSize = Math.max(1, sideSize);
+				room.addPipeSegments(makePipeRunV(pipeX, innerBottom, ypos + beginSize));
+				room.addPipeSegments(makePipeRunV(pipeX, ypos + beginSize + ePortal.getWidth(), innerTop));
+			}
+		}
+	}
+
 }

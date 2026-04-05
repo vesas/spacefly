@@ -14,10 +14,12 @@ import com.vesas.spacefly.util.FrameTime;
 import com.vesas.spacefly.world.procedural.Feature;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.FloorTheme;
+import com.vesas.spacefly.world.procedural.PipeSegment;
 
 public class AxisAlignedCorridor implements Feature
 {
 	private Array<FeatureBlock> blocks = new Array<FeatureBlock>();
+	private Array<PipeSegment> pipeSegments = new Array<PipeSegment>();
 
 	public enum Dir {
 		WE, SN; // west-east or south-north
@@ -48,6 +50,10 @@ public class AxisAlignedCorridor implements Feature
 		this.blocks.addAll( blocks );
 	}
 
+	public void addPipeSegments(Array<PipeSegment> pipes) {
+		this.pipeSegments.addAll(pipes);
+	}
+
 	@Override
     public void drawMiniMap() {
 		float xpos = getXpos();
@@ -62,10 +68,10 @@ public class AxisAlignedCorridor implements Feature
 
 	@Override
 	public void drawWithVisibility(GameScreen screen) {
-		
-		// draw floor texture
 		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
-
+		for (int i = 0; i < pipeSegments.size; i++) {
+			pipeSegments.get(i).draw(screen.worldBatch);
+		}
 	}
 	
 	public void draw(SpriteBatch batch)

@@ -7,6 +7,7 @@ import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.FloorTheme;
+import com.vesas.spacefly.world.procedural.PipeSegment;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor.Dir;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
@@ -216,9 +217,11 @@ public final class AxisAlignedCorridorBuilder implements FeatureBuilder<MetaCorr
 		
 		corr.setPosition( floorxpos, floorypos);
 		corr.setDimensions( floorwidth, floorheight );
-		
+
 		corr.addBlocks( blocks );
-		
+
+		buildPipes( corr, startPortal );
+
 		corr.init();
 		return corr;
 	}
@@ -237,5 +240,31 @@ public final class AxisAlignedCorridorBuilder implements FeatureBuilder<MetaCorr
 		WallBlock block = new WallBlock((int)distance * 2, wallTexRegion);
 		blocks.add(block);
 		block.initTopLeft(xpos, ypos, 90, bodyBuilder);
+	}
+
+	private Array<PipeSegment> makePipeRunH(float startX, float endX, float y) {
+		Array<PipeSegment> run = new Array<PipeSegment>();
+		if (endX - startX > 0.01f)
+			run.add(PipeSegment.makeHorizontal(startX, y, endX - startX));
+		return run;
+	}
+
+	private Array<PipeSegment> makePipeRunV(float x, float startY, float endY) {
+		Array<PipeSegment> run = new Array<PipeSegment>();
+		if (endY - startY > 0.01f)
+			run.add(PipeSegment.makeVertical(x, startY, endY - startY));
+		return run;
+	}
+
+	private void buildPipes(AxisAlignedCorridor corr, MetaPortal startPortal) {
+		if (startPortal.getExit().equals(ExitDir.N) || startPortal.getExit().equals(ExitDir.S)) {
+			// SN corridor: pipes along west and east walls
+			corr.addPipeSegments(makePipeRunV(xpos + WALL_WIDTH,            ypos, ypos + ysize));
+			corr.addPipeSegments(makePipeRunV(xpos + xsize - WALL_WIDTH - PipeSegment.PIPE_DIAMETER, ypos, ypos + ysize));
+		} else {
+			// WE corridor: pipes along south and north walls
+			corr.addPipeSegments(makePipeRunH(xpos, xpos + xsize, ypos + WALL_WIDTH));
+			corr.addPipeSegments(makePipeRunH(xpos, xpos + xsize, ypos + ysize - WALL_WIDTH - PipeSegment.PIPE_DIAMETER));
+		}
 	}
 }

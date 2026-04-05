@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.visibility.Visibility;
+import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.world.procedural.generator.MetaPortal;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 
@@ -49,10 +50,14 @@ class RectangleRoomBuilderTest {
         BodyBuilder bodyBuilderMock = getBodyBuilderMock();
         Visibility visibilityMock = getVisibilityMock();
 
-        RectangleRoomBuilder builder = new RectangleRoomBuilder(visibilityMock, bodyBuilderMock) {
+        RectangleRoomBuilder builder = new RectangleRoomBuilder(visibilityMock, bodyBuilderMock, FloorTheme.STATION) {
             @Override
             protected RectangleRoom createRoom() {
                 return new TestRectangleRoom();
+            }
+            @Override
+            protected void buildPipes(RectangleRoom room, MetaRectangleRoom metaRoom) {
+                // skip LibGDX atlas calls in tests
             }
         };
 
@@ -71,10 +76,14 @@ class RectangleRoomBuilderTest {
         BodyBuilder bodyBuilderMock = getBodyBuilderMock();
         Visibility visibilityMock = getVisibilityMock();
 
-        RectangleRoomBuilder builder = new RectangleRoomBuilder(visibilityMock, bodyBuilderMock) {
+        RectangleRoomBuilder builder = new RectangleRoomBuilder(visibilityMock, bodyBuilderMock, FloorTheme.STATION) {
             @Override
             protected RectangleRoom createRoom() {
                 return new TestRectangleRoom();
+            }
+            @Override
+            protected void buildPipes(RectangleRoom room, MetaRectangleRoom metaRoom) {
+                // skip LibGDX atlas calls in tests
             }
         };
 

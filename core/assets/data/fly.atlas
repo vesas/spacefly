@@ -125,7 +125,7 @@ exploring1
   index: -1
 health1
   rotate: false
-  xy: 1007, 475
+  xy: 1007, 409
   size: 8, 9
   orig: 8, 9
   offset: 0, 0
@@ -221,6 +221,13 @@ pipe_ew
   orig: 32, 32
   offset: 0, 0
   index: -1
+pipe_h
+  rotate: false
+  xy: 1007, 446
+  size: 12, 64
+  orig: 12, 64
+  offset: 0, 0
+  index: -1
 portal1
   rotate: false
   xy: 877, 252
@@ -300,7 +307,7 @@ ship2
   index: -1
 shipgun
   rotate: false
-  xy: 1007, 486
+  xy: 1007, 420
   size: 15, 24
   orig: 15, 24
   offset: 0, 0
