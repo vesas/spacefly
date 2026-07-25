@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.game.AnimateEntity;
@@ -19,6 +20,8 @@ import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.LevelExit;
 import com.vesas.spacefly.game.Player;
+import com.vesas.spacefly.game.Weapon;
+import com.vesas.spacefly.game.WeaponDrop;
 import com.vesas.spacefly.monster.Monster;
 import com.vesas.spacefly.monster.ZipperCloudManager;
 import com.vesas.spacefly.monster.ZipperMonster;
@@ -31,10 +34,14 @@ import com.vesas.spacefly.visibility.EndPoint;
 import com.vesas.spacefly.visibility.Visibility;
 import com.vesas.spacefly.visibility.VisibilityPoly;
 import com.vesas.spacefly.world.AbstractGameWorld;
+import com.vesas.spacefly.world.procedural.generator.RoomRole;
+import com.vesas.spacefly.world.procedural.room.RoomFeature;
 
 public class ProceduralGameWorld extends AbstractGameWorld
 {
 	public static long worldSeed = 256;
+	// Current floor number, threaded into generation the same way worldSeed is. 1 = baseline.
+	public static int floorNumber = 1;
 
 	private Array<Feature> feats;
 
@@ -49,19 +56,34 @@ public class ProceduralGameWorld extends AbstractGameWorld
 
 	private FloorTheme theme;
 
+	// Live ambient light, lerped toward the mood of whichever room the player stands in. This is
+	// how room roles read: a temporal light shift with no baked floor seam at the doorway.
+	private float curAmbR, curAmbG, curAmbB;
+
+	// Depth of the room the player last stood in (0 at entrance .. 1 at far exit). Held across
+	// corridors so the floor-wide mood drift never snaps back when between rooms.
+	private float lastDepth01 = 0f;
+
 	@Override
 	public void init()
 	{
 		
 		theme = FloorTheme.values()[(int)(Math.abs(worldSeed) % FloorTheme.values().length)];
 
+		// Start the live ambient at the theme base so there is no flash on floor entry.
+		curAmbR = theme.ambR;
+		curAmbG = theme.ambG;
+		curAmbB = theme.ambB;
+
 		visib = new Visibility();
 		visib.startLoad();
 
 		WorldGen gen = new WorldGen(this, visib, theme);
 		gen.setFirstRoomCenter(Player.INSTANCE.getWorldCenter());
-		feats = gen.generate(worldSeed);
+		feats = gen.generate(worldSeed, floorNumber);
 		levelExit = new LevelExit(gen.getExitPosition().x, gen.getExitPosition().y);
+
+		initVaults(gen.getVaults());
 		
 		visib.finishLoad();
 
@@ -95,7 +117,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		float screenWidth = screen.viewport.getScreenWidth();
 		
 		visibShader.bind();
-		visibShader.setUniformf("ambientColor", theme.ambR, theme.ambG, theme.ambB, 0.519f);
+		visibShader.setUniformf("ambientColor", curAmbR, curAmbG, curAmbB, 0.519f);
 		visibShader.setUniformi("u_lightmap", 1);
 		visibShader.setUniformf("resolution", screenWidth, screenHeight);
 		
@@ -175,6 +197,18 @@ public class ProceduralGameWorld extends AbstractGameWorld
 			ExplosionInterface explo = systems.get( i );
 			explo.draw( screen );
 		}
+
+		// Damage numbers draw without the visibility shader so they stay bright and readable
+		// even in fogged / dim areas, and with normal alpha blending (explosions leave the
+		// batch in additive mode, which would erase the dark shadow and blow out the text).
+		screen.worldBatch.setShader(null);
+		screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		for( int i = 0, size = monsters.size; i < size; i++ )
+		{
+			monsters.get( i ).drawHealthBar( screen.worldBatch );
+		}
+		drawFloaters( screen );
+
 		screen.worldBatch.end();
 
 		levelExit.draw(screen);
@@ -321,7 +355,13 @@ public class ProceduralGameWorld extends AbstractGameWorld
 			p.tick(delta);
 		}
 
+		floaterTick( delta );
+
 		super.monsterTick(screen, delta );
+
+		tickVaults();
+
+		updateAmbient(delta);
 
 		levelExit.tick(delta);
 		if (!exitReached && levelExit.isPlayerInRange(Player.INSTANCE.getWorldCenter())) {
@@ -329,6 +369,142 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		}
 
 		cleanup();
+	}
+
+	// --- Vault gated loot ---------------------------------------------------------------
+	// A vault's reward is not on the floor when you enter; it appears once the room's
+	// guardians are cleared. No HUD, no announcement — the player simply finds the drop.
+	// All state is instance-level, rebuilt per floor, so there is nothing static to reset.
+
+	private static class VaultState
+	{
+		final Rectangle bounds;
+		final Vector2 loot;
+		boolean armed;    // player has stepped inside
+		boolean revealed; // loot has been dropped
+
+		VaultState( Rectangle bounds, Vector2 loot )
+		{
+			this.bounds = bounds;
+			this.loot = loot;
+		}
+	}
+
+	private final Array<VaultState> vaults = new Array<VaultState>();
+
+	private void initVaults( Array<WorldGen.VaultInfo> infos )
+	{
+		vaults.clear();
+		for( int i = 0; i < infos.size; i++ )
+		{
+			WorldGen.VaultInfo vi = infos.get( i );
+			vaults.add( new VaultState( vi.bounds, vi.loot ) );
+		}
+	}
+
+	private void tickVaults()
+	{
+		if( vaults.size == 0 )
+			return;
+
+		Vector2 pc = Player.INSTANCE.getWorldCenter();
+
+		for( int i = 0; i < vaults.size; i++ )
+		{
+			VaultState v = vaults.get( i );
+			if( v.revealed )
+				continue;
+
+			// Arm only once the player has actually entered, so a vault the player never
+			// engages does not dump its loot from across the map.
+			if( !v.armed )
+			{
+				if( v.bounds.contains( pc.x, pc.y ) )
+					v.armed = true;
+				else
+					continue;
+			}
+
+			// Reveal once no guardian remains inside the vault.
+			if( !anyMonsterInside( v.bounds ) )
+			{
+				// Vault reward is gated behind a fight, so bias it toward the better tiers.
+				addResource( new WeaponDrop( v.loot.x, v.loot.y, Weapon.randomDrop( GenSeed.random, floorNumber + 3 ) ) );
+				v.revealed = true;
+			}
+		}
+	}
+
+	private boolean anyMonsterInside( Rectangle bounds )
+	{
+		for( int i = 0; i < monsters.size; i++ )
+		{
+			Vector2 c = monsters.get( i ).getBody().getWorldCenter();
+			if( bounds.contains( c.x, c.y ) )
+				return true;
+		}
+		return false;
+	}
+
+	// --- Per-room ambient mood -----------------------------------------------------------
+	// The role of the room the player currently occupies picks a target ambient colour; the
+	// live ambient eases toward it. Because ambient is a single global uniform, the corridor
+	// and room are always lit the same at any instant, so the mood fades in as you cross the
+	// threshold — no hard colour border at the doorway.
+
+	private RoomFeature roomAtPlayer()
+	{
+		Vector2 pc = Player.INSTANCE.getWorldCenter();
+		for( int i = 0; i < feats.size; i++ )
+		{
+			Feature f = feats.get( i );
+			if( f instanceof RoomFeature )
+			{
+				float x = f.getXpos(), y = f.getYpos();
+				if( pc.x >= x && pc.x <= x + f.getWidth() && pc.y >= y && pc.y <= y + f.getHeight() )
+					return (RoomFeature) f;
+			}
+		}
+		return null; // corridors and thresholds stay neutral
+	}
+
+	private void updateAmbient( float delta )
+	{
+		RoomFeature room = roomAtPlayer();
+		RoomRole role = room != null ? room.getRole() : RoomRole.STANDARD;
+		if( room != null )
+			lastDepth01 = room.getDepth01();
+
+		// Base ambient drifts from the theme's entrance mood toward its "deep" mood by how far into
+		// the floor the player is — a smooth, non-obvious transition across the whole level. Kept
+		// moderate: a whole-floor light shift reads as atmosphere long before it reads as "coloured".
+		float d = lastDepth01;
+		float tr = theme.ambR + (theme.deepAmbR - theme.ambR) * d;
+		float tg = theme.ambG + (theme.deepAmbG - theme.ambG) * d;
+		float tb = theme.ambB + (theme.deepAmbB - theme.ambB) * d;
+
+		// Then nudge by the current room's role.
+		switch( role )
+		{
+			case VAULT:     tr *= 0.80f; tg *= 0.87f; tb *= 1.05f; break; // cool, dim, secure
+			case SANCTUARY: tr *= 1.14f; tg *= 1.07f; tb *= 0.95f; break; // warm, calm, brighter
+			case BOSS:      tr *= 1.08f; tg *= 0.80f; tb *= 0.78f; break; // dim, tense, red
+			case ARENA:     tr *= 1.06f; tg *= 1.06f; tb *= 1.10f; break; // open, a touch brighter
+			case STANDARD:
+			default:        break;
+		}
+		tr = clamp01( tr ); tg = clamp01( tg ); tb = clamp01( tb );
+
+		// Ease over roughly half a second so crossing a threshold is a smooth fade, not a snap.
+		float k = Math.min( 1f, delta * 3.5f );
+		curAmbR += (tr - curAmbR) * k;
+		curAmbG += (tg - curAmbG) * k;
+		curAmbB += (tb - curAmbB) * k;
+	}
+
+	private static float clamp01( float v )
+	{
+		return v < 0f ? 0f : (v > 1f ? 1f : v);
 	}
 
 	@Override
@@ -347,6 +523,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 		floaters.clear();
 		removeFloaters.clear();
 		feats.clear();
+		vaults.clear();
 		levelExit = null;
 		exitReached = false;
 		if (fbo != null) {
@@ -361,6 +538,7 @@ public class ProceduralGameWorld extends AbstractGameWorld
 			textureSolid.dispose();
 			textureSolid = null;
 		}
+		FloorPatina.dispose();
 		ZipperCloudManager.reset();
 	}
 

@@ -3,6 +3,7 @@ package com.vesas.spacefly.world.procedural;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.box2d.BodyBuilder;
@@ -20,10 +21,15 @@ import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridor.Dir;
 import com.vesas.spacefly.world.procedural.corridor.AxisAlignedCorridorBuilder;
 import com.vesas.spacefly.world.procedural.generator.MetaCorridor;
 import com.vesas.spacefly.world.procedural.generator.MetaFeature;
+import com.vesas.spacefly.world.procedural.generator.MetaLoopCloser;
 import com.vesas.spacefly.world.procedural.generator.MetaOctaRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaRectangleRoom;
 import com.vesas.spacefly.world.procedural.generator.MetaRegionBuilder;
+import com.vesas.spacefly.world.procedural.generator.MetaRoleAssigner;
+import com.vesas.spacefly.world.procedural.generator.MetaRoom;
 import com.vesas.spacefly.world.procedural.generator.Region;
+import com.vesas.spacefly.world.procedural.generator.RoomRole;
+import com.vesas.spacefly.world.procedural.room.RoomFeature;
 import com.vesas.spacefly.world.procedural.room.octaroom.OctaRoomBuilder;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.FeatureBuilder;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.RectangleRoom;
@@ -39,7 +45,32 @@ public class WorldGen implements WorldGenInterface
 
 	private BodyBuilder bodyBuilder = new BodyBuilder();
 
+	private FloorTheme theme;
+
 	private Map<Class<? extends MetaFeature>, FeatureBuilder<?>> builders = new HashMap<>();
+
+	// Current floor number; drives depth scaling. 1 = today's baseline (no scaling).
+	private int floor = 1;
+
+	// Vaults recorded during generation so the live world can gate their loot on clearing.
+	private Array<VaultInfo> vaults = new Array<VaultInfo>();
+
+	/** Bounds + loot spawn point of a VAULT room, read by the live world for gated reveal. */
+	public static class VaultInfo
+	{
+		public final Rectangle bounds;
+		public final Vector2 loot;
+
+		public VaultInfo( Rectangle bounds, Vector2 loot )
+		{
+			this.bounds = bounds;
+			this.loot = loot;
+		}
+	}
+
+	public Array<VaultInfo> getVaults() {
+		return vaults;
+	}
 
 	public Vector2 getExitPosition() {
 		return exitPosition;
@@ -55,27 +86,112 @@ public class WorldGen implements WorldGenInterface
 	public WorldGen(AddMonsterCallback world, Visibility visib, FloorTheme theme)
 	{
 		this.world = world;
+		this.theme = theme;
 
 		builders.put(MetaRectangleRoom.class, (FeatureBuilder<?>) new RectangleRoomBuilder(visib, bodyBuilder, theme));
 		builders.put(MetaCorridor.class,      (FeatureBuilder<?>) new AxisAlignedCorridorBuilder(visib, bodyBuilder, theme));
 		builders.put(MetaOctaRoom.class,      (FeatureBuilder<?>) new OctaRoomBuilder(visib, bodyBuilder, theme));
 	}
 
+	@Override
 	public Array<Feature> generate(long seed)
 	{
+		return generate(seed, 1);
+	}
+
+	public Array<Feature> generate(long seed, int floor)
+	{
+		this.floor = floor;
+
 		GenSeed.random.setSeed(seed);
+		metaRegionBuilder.setFloor(floor);
 		metaRegionBuilder.setSize(44);
 		Region metaRegion = metaRegionBuilder.generateMetaRegion();
+
+		// Turn the generated tree into a graph: add a few corridors that bridge nearby
+		// rooms, so the player has loops/shortcuts instead of only dead-end branches.
+		new MetaLoopCloser(seed, floor).addLoops(metaRegion);
+
+		// Tag a few rooms with a role (vault / arena / sanctuary / boss). Runs after loops so
+		// connectivity is final; uses its own RNG so selection doesn't disturb GenSeed.random.
+		new MetaRoleAssigner(seed).assign(metaRegion, floor, metaRegionBuilder.getFirstRoomCenter());
 
 		Array<Feature> feats = new Array<Feature>();
 
 		buildFeatures(metaRegion, feats);
+
+		assignFloorPatina(feats);
+
+		recordVaults(metaRegion);
 
 		addMonstersPass( metaRegion, feats );
 
 		findExitPosition(feats);
 
 		return feats;
+	}
+
+	private void recordVaults( Region region )
+	{
+		vaults.clear();
+		Array<MetaFeature> list = region.getMetaList();
+		for( int i = 0; i < list.size; i++ )
+		{
+			MetaFeature f = list.get( i );
+			if( !(f instanceof MetaRoom) )
+				continue;
+			if( ((MetaRoom) f).getRole() != RoomRole.VAULT )
+				continue;
+
+			Rectangle b = f.getBounds();
+			float cx = b.x + b.width * 0.5f;
+			float cy = b.y + b.height * 0.5f;
+			float lootX = cx, lootY = cy;
+
+			// If the vault has a central column the centre is blocked; drop the loot into the
+			// walkable ring just below the column.
+			if( f instanceof MetaRectangleRoom && ((MetaRectangleRoom) f).hasColumns() )
+				lootY = cy - (((MetaRectangleRoom) f).getHalfColumnWidth() + 0.9f);
+
+			vaults.add( new VaultInfo( new Rectangle( b ), new Vector2( lootX, lootY ) ) );
+		}
+	}
+
+	// Give every room an organic floor patina. Uses its OWN per-room seed (never GenSeed.random) so
+	// the generation stream — and thus monster/layout determinism — is untouched. depth01 is the
+	// room's normalized distance from the start, so the material (and, via the room, the ambient)
+	// can drift gradually from entrance to exit.
+	private void assignFloorPatina(Array<Feature> feats) {
+		Vector2 start = metaRegionBuilder.getFirstRoomCenter();
+
+		float maxDist = 1f;
+		for (int i = 0; i < feats.size; i++) {
+			Feature f = feats.get(i);
+			if (!(f instanceof RoomFeature)) continue;
+			float cx = f.getXpos() + f.getWidth() * 0.5f;
+			float cy = f.getYpos() + f.getHeight() * 0.5f;
+			float dist = (float) Math.sqrt((cx - start.x) * (cx - start.x) + (cy - start.y) * (cy - start.y));
+			if (dist > maxDist) maxDist = dist;
+		}
+
+		long worldSeed = ProceduralGameWorld.worldSeed;
+		int floorNumber = ProceduralGameWorld.floorNumber;
+
+		for (int i = 0; i < feats.size; i++) {
+			Feature f = feats.get(i);
+			if (!(f instanceof RoomFeature)) continue;
+			RoomFeature room = (RoomFeature) f;
+
+			float cx = f.getXpos() + f.getWidth() * 0.5f;
+			float cy = f.getYpos() + f.getHeight() * 0.5f;
+			float dist = (float) Math.sqrt((cx - start.x) * (cx - start.x) + (cy - start.y) * (cy - start.y));
+			float depth01 = dist / maxDist;
+
+			long seed = FloorPatina.featureSeed(worldSeed, floorNumber, cx, cy);
+
+			room.setDepth01(depth01);
+			room.setPatina(FloorPatina.pick(seed, depth01, theme));
+		}
 	}
 
 	private void findExitPosition(Array<Feature> feats) {
@@ -136,7 +252,8 @@ public class WorldGen implements WorldGenInterface
 
 	private void addMonstersPass( Region region, Array<Feature> feats )
 	{
-		
+		// Depth term: 0 on floor 1, so floor 1 is byte-identical to the pre-scaling behaviour.
+		final int d = Math.max( 0, floor - 1 );
 
 		for( int i = 0; i < feats.size; i++) {
 
@@ -152,38 +269,62 @@ public class WorldGen implements WorldGenInterface
 			if(i >= 2) {
 
 
-				for( int j = 0, size = GenSeed.random.nextInt(2); j < size; j++)
+				for( int j = 0, size = GenSeed.random.nextInt(2 + Math.min(d, 3)); j < size; j++)
 				{
 					float[] positions = getMonsterPositions(feat, j);
 
 					SlurgMonster monster = new SlurgMonster(positions[0], positions[1], bodyBuilder);
 
-					world.addMonster( monster );	
+					world.addMonster( monster );
 				}
-				
-				if( GenSeed.random.nextInt(100 ) < 12 )
+
+				if( GenSeed.random.nextInt(100 ) < Math.min(24, 12 + 3 * d) )
 				{
 					float[] positions = getMonsterPositions(feat, 3);
 					ShellMonster monster = new ShellMonster(positions[0], positions[1], bodyBuilder);
 					world.addMonster( monster );
 				}
 
-				if( !(feat instanceof AxisAlignedCorridor) && GenSeed.random.nextInt(100) < 15 )
+				if( !(feat instanceof AxisAlignedCorridor) )
 				{
-					float cx = xpos + width * 0.5f;
-					float cy = ypos + height * 0.5f;
+					// A room with a vent lets a Zipper swarm pour out of it; otherwise the
+					// swarm (rarer) forms in the middle of the room as before.
+					float[] vent = (feat instanceof RoomFeature) ? ((RoomFeature)feat).randomVentSpawn() : null;
+					int chance = Math.min(40, (vent != null ? 24 : 15) + 2 * d);
 
-					ZipperCloud cloud = new ZipperCloud();
-					ZipperCloudManager.add(cloud);
-
-					int count = 6 + GenSeed.random.nextInt(5);
-					for( int z = 0; z < count; z++ )
+					if( GenSeed.random.nextInt(100) < chance )
 					{
-						float zx = cx + (GenSeed.random.nextFloat() - 0.5f) * 1.5f;
-						float zy = cy + (GenSeed.random.nextFloat() - 0.5f) * 1.5f;
-						ZipperMonster zipper = new ZipperMonster(zx, zy, count, bodyBuilder);
-						zipper.addCloud(cloud);
-						world.addMonster(zipper);
+						float cx, cy, jitter;
+						if( vent != null )
+						{
+							// emerge from the vent, nudged off the wall into the room
+							float rcx = xpos + width * 0.5f, rcy = ypos + height * 0.5f;
+							float dx = rcx - vent[0], dy = rcy - vent[1];
+							float len = (float)Math.sqrt(dx * dx + dy * dy);
+							if( len < 0.001f ) len = 1f;
+							cx = vent[0] + dx / len * 0.45f;
+							cy = vent[1] + dy / len * 0.45f;
+							jitter = 0.7f;
+						}
+						else
+						{
+							cx = xpos + width * 0.5f;
+							cy = ypos + height * 0.5f;
+							jitter = 1.5f;
+						}
+
+						ZipperCloud cloud = new ZipperCloud();
+						ZipperCloudManager.add(cloud);
+
+						int count = 6 + GenSeed.random.nextInt(5 + Math.min(4, d));
+						for( int z = 0; z < count; z++ )
+						{
+							float zx = cx + (GenSeed.random.nextFloat() - 0.5f) * jitter;
+							float zy = cy + (GenSeed.random.nextFloat() - 0.5f) * jitter;
+							ZipperMonster zipper = new ZipperMonster(zx, zy, count, bodyBuilder);
+							zipper.addCloud(cloud);
+							world.addMonster(zipper);
+						}
 					}
 				}
 			}

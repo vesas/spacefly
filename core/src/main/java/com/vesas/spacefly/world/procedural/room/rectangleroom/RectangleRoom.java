@@ -14,8 +14,10 @@ import com.vesas.spacefly.util.DebugHelper;
 import com.vesas.spacefly.util.FrameTime;
 import com.vesas.spacefly.util.GfxUtil;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
+import com.vesas.spacefly.world.procedural.FloorPatina;
 import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.world.procedural.PipeSegment;
+import com.vesas.spacefly.world.procedural.ProceduralGameWorld;
 import com.vesas.spacefly.world.procedural.GenSeed;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleLSystem;
 import com.vesas.spacefly.world.procedural.lsystem.SimpleWineSystem;
@@ -72,9 +74,41 @@ public class RectangleRoom extends RoomFeature
 
 	public void drawWithVisibility(GameScreen screen) {
 		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
+		drawFloor( screen.worldBatch );
 		for (int i = 0; i < pipeSegments.size; i++) {
 			pipeSegments.get(i).draw(screen.worldBatch);
 		}
+		drawDecals(screen.worldBatch);
+	}
+
+	// Lay the floor overlays over the actual floor area. For a column room that means the four floor
+	// strips around the central column (matching the fills in init), so nothing sits on the column.
+	private void drawFloor( com.badlogic.gdx.graphics.g2d.Batch batch )
+	{
+		if( !hasColumns() )
+		{
+			drawFloorOverlays( batch, xpos + WALL_WIDTH, ypos + WALL_WIDTH,
+					width - WALL_WIDTH * 2f, height - WALL_WIDTH * 2f );
+			return;
+		}
+
+		float cx = xpos + width * 0.5f;
+		float cy = ypos + height * 0.5f;
+		float half = getHalfColumnWidth();
+
+		float leftX = xpos + WALL_WIDTH;
+		float rightX = xpos + width - WALL_WIDTH;
+		float botY = ypos + WALL_WIDTH;
+		float topY = ypos + height - WALL_WIDTH;
+
+		// left strip
+		drawFloorOverlays( batch, leftX, botY, (cx - half) - leftX, topY - botY );
+		// right strip
+		drawFloorOverlays( batch, cx + half, botY, rightX - (cx + half), topY - botY );
+		// bottom strip (between the side strips, below the column)
+		drawFloorOverlays( batch, cx - half, botY, half * 2f, (cy - half) - botY );
+		// top strip (between the side strips, above the column)
+		drawFloorOverlays( batch, cx - half, cy + half, half * 2f, topY - (cy + half) );
 	}
 
 	public void draw(SpriteBatch batch)	
@@ -177,12 +211,12 @@ public class RectangleRoom extends RoomFeature
 		for(int h = 0; h < this.height -1; h++) {
 			for(int w = 0; w < this.width -1; w++) {
 				if(GenSeed.random.nextFloat() < 0.1f) {
-					pixmap.drawPixmap(testPixmap, (int)(WALL_WIDTH*64f + w * 64f ), (int)(WALL_WIDTH*64f + h * 64f));	
+					pixmap.drawPixmap(testPixmap, (int)(WALL_WIDTH*64f + w * 64f ), (int)(WALL_WIDTH*64f + h * 64f));
 				}
 				else if(GenSeed.random.nextFloat() < 0.1f) {
-					pixmap.drawPixmap(testPixmap2, (int)(WALL_WIDTH*64f + w * 64f ), (int)(WALL_WIDTH*64f + h * 64f));	
+					pixmap.drawPixmap(testPixmap2, (int)(WALL_WIDTH*64f + w * 64f ), (int)(WALL_WIDTH*64f + h * 64f));
 				}
-				
+
 			}
 		}
 
@@ -198,11 +232,14 @@ public class RectangleRoom extends RoomFeature
 		}
 		roomEntrances.clear();
 		roomEntrances = null;
-		// pixmap.setColor( col1 );
-		
-		int halfW = (int) (pixmap.getWidth() * 0.5f);
-		int halfH = (int) (pixmap.getHeight() * 0.5f);
-		
+
+		// Bake the surface material into the floor pixmap: continuous world-space noise (no stretch,
+		// any aspect ratio), fading to the neutral floor colour at the edges so doorways stay seamless.
+		float cx = xpos + width * 0.5f, cy = ypos + height * 0.5f;
+		long seed = FloorPatina.featureSeed( ProceduralGameWorld.worldSeed, ProceduralGameWorld.floorNumber, cx, cy );
+		FloorPatina.bakeMaterial( pixmap, 64f, xpos, ypos, width, height,
+				FloorPatina.pickMaterial( seed, theme ), true, true, 0.7f );
+
 		tex = new Texture(pixmap);
 		pixmap.dispose();
 	}

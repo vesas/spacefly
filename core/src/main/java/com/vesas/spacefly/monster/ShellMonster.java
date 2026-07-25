@@ -345,7 +345,7 @@ public class ShellMonster extends Monster
 
 		this.brain = new Brain2();
 
-		setHealth( 8 );
+		setHealth( 80 );
 
 	}
 	
@@ -439,6 +439,7 @@ public class ShellMonster extends Monster
 		sprite.setRotation(bodyAngleInDegrees);
 
 		sprite.draw(screen.worldBatch);
+		drawHitFlash(screen.worldBatch, sprite);
 
 	}
 

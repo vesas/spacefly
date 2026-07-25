@@ -28,16 +28,20 @@ public class WallBlock implements FeatureBlock
 
 	private float xpos;
 	private float ypos;
-	private int blocks;
+	private float blocks;
 	private float rotation;
 	private TextureRegion wallTex;
 
 	/**
 	 * Blocks have 0.5 world unit thickness.
-	 * @param blox   how many 0.5-unit segments the block spans
+	 * @param blox   how many 0.5-unit segments the block spans. Fractional values are
+	 *               allowed so a wall can cover an exact length that is not a multiple of
+	 *               0.5 (loop corridors and off-centre doorways derive lengths from room
+	 *               positions, which are not grid-aligned). The wall texture stretches to
+	 *               fit, so for whole-0.5 walls this behaves exactly as before.
 	 * @param wallTex wall texture region to draw
 	 */
-	public WallBlock(int blox, TextureRegion wallTex) {
+	public WallBlock(float blox, TextureRegion wallTex) {
 		this.blocks  = blox;
 		this.wallTex = wallTex;
 	}

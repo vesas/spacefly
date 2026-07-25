@@ -12,9 +12,17 @@ public class MetaRegionBuilder {
 	private int itemCount = 0;
 	private int size;
 
+	// Current floor number; deeper floors bias rooms a little larger. 1 = baseline (no bias).
+	private int floor = 1;
+
 	public void setSize(int size)
 	{
 		this.size = size;
+	}
+
+	public void setFloor(int floor)
+	{
+		this.floor = floor;
 	}
 
     private Vector2 firstRoomCenter;
@@ -178,9 +186,12 @@ public class MetaRegionBuilder {
 				minheight = (int) (fromPortal.getWidth() + 2);
 			}
 
-			// have to be at least minx/miny long/wide to accommodate the possible corridor
-			w = Math.max(minwidth, GenSeed.random.nextInt( 26 ) );
-			h = Math.max(minheight, GenSeed.random.nextInt( 26 ) );
+			// have to be at least minx/miny long/wide to accommodate the possible corridor.
+			// Deeper floors bias rooms a little larger (bound grows with depth, capped). At
+			// floor 1 the depth term is 0, so this is the original nextInt(26).
+			int dimBound = Math.min( 40, 26 + 2 * Math.max( 0, floor - 1 ) );
+			w = Math.max(minwidth, GenSeed.random.nextInt( dimBound ) );
+			h = Math.max(minheight, GenSeed.random.nextInt( dimBound ) );
 
 			roomBuilder.setSize( w, h );
 

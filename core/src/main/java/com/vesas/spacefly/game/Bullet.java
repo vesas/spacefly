@@ -10,6 +10,7 @@ import com.vesas.spacefly.game.G.BulletType;
 public class Bullet extends AbstractBullet
 {
 	public Weapon.Archetype archetype = Weapon.Archetype.BLASTER;
+	public boolean crit = false;
 
 	public Bullet( float posx, float posy, float dirx, float diry, BodyBuilder bodyBuilder )
 	{

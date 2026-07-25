@@ -6,14 +6,25 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
-public class MetaRectangleRoom implements MetaFeature
+public class MetaRectangleRoom implements MetaRoom
 {
 	private Rectangle rect = new Rectangle();
-	
+
 	private ObjectMap<ExitDir, MetaPortal> portals = new ObjectMap<ExitDir, MetaPortal>();
 
 	private int id;
 	private boolean hasColumns = false;
+	private RoomRole role = RoomRole.STANDARD;
+
+	@Override
+	public RoomRole getRole() {
+		return role;
+	}
+
+	@Override
+	public void setRole(RoomRole role) {
+		this.role = role;
+	}
 
 	// only used for column room 
 	private float halfColumnWidth = 2; // fixed value for now

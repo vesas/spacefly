@@ -69,7 +69,7 @@ public class ZipperMonster extends Monster
 		targetDir.setAngleRad(body.getAngle());
 		dir.setAngleRad(body.getAngle());
 
-		setHealth(1);
+		setHealth(10);
 
 	}
 	
@@ -276,6 +276,7 @@ public class ZipperMonster extends Monster
 		sprite.setRotation(angle * Util.RADTODEG - 90.0f);
 
 		sprite.draw(screen.worldBatch);
+		drawHitFlash(screen.worldBatch, sprite);
 
 	}
 

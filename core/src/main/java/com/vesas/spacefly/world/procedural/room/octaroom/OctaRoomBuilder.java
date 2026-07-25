@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.box2d.BodyBuilder;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.visibility.Visibility;
+import com.vesas.spacefly.world.procedural.Decal;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
 import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.world.procedural.GenSeed;
@@ -231,6 +232,7 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 
 		OctaRoom room = new OctaRoom();
 		room.setTheme(theme);
+		room.setRole(metaRoom.getRole());
 
 		visib.startConvexArea();
 		buildSouthEastWall();
@@ -256,6 +258,8 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 		buildExits( room, metaRoom );
 
 		buildPipes( room, nPortal, ePortal, sPortal, wPortal );
+
+		buildDecor( room, nPortal, ePortal, sPortal, wPortal );
 
 		room.init();
 
@@ -320,17 +324,54 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 		block.initBottomLeft( xpos, ypos , 0, bodyBuilder);
 	}
 
-	private Array<PipeSegment> makePipeRunH(float startX, float endX, float y) {
+	// Short gapped pieces — pipes rarely span a whole wall. Ends at the wall span
+	// boundary meet the diagonal wedge wall (tuck); interior ends turn 90° toward the
+	// cardinal wall (elbow) or cap.
+	private static final float SEG_MIN = 0.8f;
+	private static final float SEG_MAX = 2.6f;
+	private static final float GAP_MIN = 0.7f;
+	private static final float GAP_MAX = 2.4f;
+	private static final float ELBOW_CHANCE = 0.7f;
+	private static final int MAX_PIECES = 3;
+
+	private PipeSegment.End freeEnd() {
+		return GenSeed.random.nextFloat() < ELBOW_CHANCE ? PipeSegment.End.ELBOW : PipeSegment.End.CAP;
+	}
+
+	private void addWallRun(OctaRoom room, boolean horizontal, float fixed, float a, float b, int wallSide) {
+		float span = b - a;
+		if (span < 0.5f) return;
+		float pos = a;
+		if (span > 3.5f && GenSeed.random.nextFloat() < 0.55f)
+			pos += GenSeed.random.nextFloat() * (GAP_MIN + span * 0.12f);
+		int placed = 0;
+		while (pos < b - 0.3f && placed < MAX_PIECES) {
+			float segLen = SEG_MIN + GenSeed.random.nextFloat() * (SEG_MAX - SEG_MIN);
+			float segEnd = Math.min(pos + segLen, b);
+			PipeSegment.End lo = pos    > a + 0.01f ? freeEnd() : PipeSegment.End.TUCK;
+			PipeSegment.End hi = segEnd < b - 0.01f ? freeEnd() : PipeSegment.End.TUCK;
+			if (horizontal)
+				room.addPipeSegments(makePipeRunH(pos, segEnd, fixed, lo, hi, wallSide));
+			else
+				room.addPipeSegments(makePipeRunV(fixed, pos, segEnd, lo, hi, wallSide));
+			placed++;
+			pos = segEnd + GAP_MIN + GenSeed.random.nextFloat() * (GAP_MAX - GAP_MIN) + span * 0.15f;
+		}
+	}
+
+	private Array<PipeSegment> makePipeRunH(float startX, float endX, float y,
+			PipeSegment.End lo, PipeSegment.End hi, int wallSide) {
 		Array<PipeSegment> run = new Array<PipeSegment>();
 		if (endX - startX > 0.01f)
-			run.add(PipeSegment.makeHorizontal(startX, y, endX - startX));
+			run.add(PipeSegment.makeHorizontal(startX, y, endX - startX).ends(lo, hi, wallSide));
 		return run;
 	}
 
-	private Array<PipeSegment> makePipeRunV(float x, float startY, float endY) {
+	private Array<PipeSegment> makePipeRunV(float x, float startY, float endY,
+			PipeSegment.End lo, PipeSegment.End hi, int wallSide) {
 		Array<PipeSegment> run = new Array<PipeSegment>();
 		if (endY - startY > 0.01f)
-			run.add(PipeSegment.makeVertical(x, startY, endY - startY));
+			run.add(PipeSegment.makeVertical(x, startY, endY - startY).ends(lo, hi, wallSide));
 		return run;
 	}
 
@@ -339,36 +380,77 @@ public class OctaRoomBuilder implements FeatureBuilder<MetaOctaRoom>
 		// Pipes only on solid (portal-less) cardinal walls; skip diagonals
 		float pipeInset = PipeSegment.PIPE_DIAMETER;
 
-		// North wall — inner face at ypos+ysize, pipe strip just inside
-		if (nPortal == null && GenSeed.random.nextFloat() < 0.65f) {
-			room.addPipeSegments(makePipeRunH(
-				xpos + apersqrttwo,
-				xpos + xsize - apersqrttwo,
-				ypos + ysize - pipeInset));
+		// North wall — inner face at ypos+ysize, pipe strip just inside (wall above: +1)
+		if (nPortal == null && GenSeed.random.nextFloat() < 0.21f) {
+			addWallRun(room, true, ypos + ysize - pipeInset, xpos + apersqrttwo, xpos + xsize - apersqrttwo, +1);
 		}
 
-		// South wall
-		if (sPortal == null && GenSeed.random.nextFloat() < 0.65f) {
-			room.addPipeSegments(makePipeRunH(
-				xpos + apersqrttwo,
-				xpos + xsize - apersqrttwo,
-				ypos));
+		// South wall (wall below: -1)
+		if (sPortal == null && GenSeed.random.nextFloat() < 0.21f) {
+			addWallRun(room, true, ypos, xpos + apersqrttwo, xpos + xsize - apersqrttwo, -1);
 		}
 
-		// West wall
-		if (wPortal == null && GenSeed.random.nextFloat() < 0.65f) {
-			room.addPipeSegments(makePipeRunV(
-				xpos,
-				ypos + apersqrttwo,
-				ypos + ysize - apersqrttwo));
+		// West wall (wall to the left: -1)
+		if (wPortal == null && GenSeed.random.nextFloat() < 0.21f) {
+			addWallRun(room, false, xpos, ypos + apersqrttwo, ypos + ysize - apersqrttwo, -1);
 		}
 
-		// East wall — pipe strip just inside the east face
-		if (ePortal == null && GenSeed.random.nextFloat() < 0.65f) {
-			room.addPipeSegments(makePipeRunV(
-				xpos + xsize - pipeInset,
-				ypos + apersqrttwo,
-				ypos + ysize - apersqrttwo));
+		// East wall — pipe strip just inside the east face (wall to the right: +1)
+		if (ePortal == null && GenSeed.random.nextFloat() < 0.21f) {
+			addWallRun(room, false, xpos + xsize - pipeInset, ypos + apersqrttwo, ypos + ysize - apersqrttwo, +1);
 		}
+	}
+
+	// ---- Background flair: a vent/junction on a solid cardinal wall + a centre grate ----
+	private void buildDecor(OctaRoom room, MetaPortal nPortal, MetaPortal ePortal,
+			MetaPortal sPortal, MetaPortal wPortal) {
+		float iL = xpos, iR = xpos + xsize, iB = ypos, iT = ypos + ysize;
+
+		Array<Integer> solid = new Array<Integer>();
+		if (nPortal == null) solid.add(0);
+		if (sPortal == null) solid.add(1);
+		if (wPortal == null) solid.add(2);
+		if (ePortal == null) solid.add(3);
+
+		Array<Decal> out = new Array<Decal>();
+
+		if (solid.size > 0 && GenSeed.random.nextFloat() < 0.4f) {
+			int side = solid.get(GenSeed.random.nextInt(solid.size));
+			float lo, hi;
+			if (side <= 1) { lo = xpos + apersqrttwo + 0.5f; hi = xpos + xsize - apersqrttwo - 0.5f; }
+			else           { lo = ypos + apersqrttwo + 0.5f; hi = ypos + ysize - apersqrttwo - 0.5f; }
+			float along = lo >= hi ? (lo + hi) / 2f : lo + GenSeed.random.nextFloat() * (hi - lo);
+			if (GenSeed.random.nextBoolean()) {
+				out.add(Decal.onWall("vent", side, along, iL, iR, iB, iT, 0.5f, 0.30f, 0.82f, 0.86f, 0.90f, 1f));
+				room.addVentSpawn(Decal.wallCenterX(side, along, iL, iR), Decal.wallCenterY(side, along, iB, iT));
+			} else {
+				float lx = Decal.wallCenterX(side, along, iL, iR);
+				float ly = Decal.wallCenterY(side, along, iB, iT);
+				float speed = theme == FloorTheme.REACTOR ? 4.4f : 2.2f;
+				out.add(Decal.onWall("junction_box", side, along, iL, iR, iB, iT, 0.28f, 0.34f, 0.82f, 0.86f, 0.90f, 1f)
+						.led(lx, ly, 0.09f, theme.accent, GenSeed.random.nextFloat() * 6.28f, speed));
+			}
+		}
+		// floor grate near the centre
+		if (GenSeed.random.nextFloat() < 0.4f) {
+			out.add(new Decal("floor_grate", xpos + xsize / 2f - 0.3f, ypos + ysize / 2f - 0.3f,
+					0.6f, 0.6f, 0f, 0.70f, 0.75f, 0.82f, 1f));
+		}
+		// hazard strips matching each doorway width, just inside the threshold
+		float cx = xpos + xsize / 2f, cy = ypos + ysize / 2f;
+		if (nPortal != null && GenSeed.random.nextFloat() < 0.5f)
+			out.add(hazard(cx - nPortal.getWidth() / 2f, (iT - 0.30f) - 0.095f, nPortal.getWidth(), 0f));
+		if (sPortal != null && GenSeed.random.nextFloat() < 0.5f)
+			out.add(hazard(cx - sPortal.getWidth() / 2f, (iB + 0.30f) - 0.095f, sPortal.getWidth(), 0f));
+		if (wPortal != null && GenSeed.random.nextFloat() < 0.5f)
+			out.add(hazard((iL + 0.30f) - wPortal.getWidth() / 2f, cy - 0.095f, wPortal.getWidth(), 90f));
+		if (ePortal != null && GenSeed.random.nextFloat() < 0.5f)
+			out.add(hazard((iR - 0.30f) - ePortal.getWidth() / 2f, cy - 0.095f, ePortal.getWidth(), 90f));
+
+		room.addDecals(out);
+	}
+
+	private Decal hazard(float x, float y, float doorWidth, float rot) {
+		return new Decal("hazard_strip", x, y, doorWidth, 0.19f, rot, 1f, 1f, 1f, 0.9f);
 	}
 }

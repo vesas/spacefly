@@ -8,6 +8,7 @@ import com.vesas.spacefly.game.Powerup;
 import com.vesas.spacefly.game.Weapon;
 import com.vesas.spacefly.game.WeaponDrop;
 import com.vesas.spacefly.game.floater.Floater;
+import com.vesas.spacefly.game.floater.FloaterFactory;
 import com.vesas.spacefly.monster.Monster;
 import com.vesas.spacefly.monster.ZipperMonster;
 import com.vesas.spacefly.particles.BigExplosion;
@@ -33,6 +34,10 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 	
 	protected Array<Floater> floaters = new Array<Floater>(false, 8);
 	protected Array<Floater> removeFloaters = new Array<Floater>(false, 8);
+
+	/** Cosmetic-only RNG for floater jitter — kept off GenSeed.random so it never perturbs
+	 *  the loot/level RNG stream. */
+	private static final java.util.Random floaterRng = new java.util.Random();
 	
 	public void cleanup()
 	{
@@ -78,6 +83,51 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 		Goo goo = new Goo();
 		goo.startAt( pos.x, pos.y, vel.x * velocityScale, vel.y * velocityScale );
 		systems.add( goo );
+	}
+
+	/** Spawn a rising damage number at a world position, with a small jitter so simultaneous
+	 *  multi-pellet hits don't stack into one blob. */
+	public void addDamageFloater( Vector2 pos, int amount, float r, float g, float b, float sizeMult )
+	{
+		Floater f = FloaterFactory.getFloater();
+		f.setString( "" + amount );
+		f.setColor( r, g, b );
+		f.setScaleMult( sizeMult );
+		float jx = (floaterRng.nextFloat() - 0.5f) * 0.5f;
+		float jy = (floaterRng.nextFloat() - 0.5f) * 0.3f;
+		f.setPos( pos.x + jx, pos.y + 0.3f + jy );
+		floaters.add( f );
+	}
+
+	public void floaterTick( float delta )
+	{
+		for( int i = 0, size = floaters.size; i < size; i++ )
+		{
+			Floater f = floaters.get( i );
+			f.tick( delta );
+			if( !f.isActive() )
+				removeFloaters.add( f );
+		}
+
+		if( removeFloaters.size > 0 )
+		{
+			for( int i = 0, size = removeFloaters.size; i < size; i++ )
+			{
+				Floater f = removeFloaters.get( i );
+				if( floaters.contains( f, true ) )
+					floaters.removeValue( f, true );
+				FloaterFactory.returnFloater( f );
+			}
+			removeFloaters.clear();
+		}
+	}
+
+	public void drawFloaters( GameScreen screen )
+	{
+		for( int i = 0, size = floaters.size; i < size; i++ )
+		{
+			floaters.get( i ).render( screen );
+		}
 	}
 
 	public void removeMonster(Monster m)
@@ -132,7 +182,7 @@ public abstract class AbstractGameWorld implements AddMonsterCallback
 
 		if( GenSeed.random.nextFloat() < 0.15f )
 		{
-			resources.add(new WeaponDrop(worldX, worldY, Weapon.randomDrop(GenSeed.random)));
+			resources.add(new WeaponDrop(worldX, worldY, Weapon.randomDrop(GenSeed.random, ProceduralGameWorld.floorNumber)));
 			return;
 		}
 

@@ -9,6 +9,7 @@ import com.vesas.spacefly.box2d.WorldWrapper;
 import com.vesas.spacefly.game.CListener;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.game.Player;
+import com.vesas.spacefly.game.Settings;
 import com.vesas.spacefly.game.PlayerBullets;
 import com.vesas.spacefly.monster.MonsterBullets;
 import com.vesas.spacefly.screen.GameScreen;
@@ -34,13 +35,15 @@ public class SpaceflyGame extends Game
 		
 		G.loadTextures();
 
+		Settings.load();
+
 		Box2DWorld.init(new WorldWrapper(new Vector2(0, 0), true), new Box2DDebugRenderer());
 		Box2DWorld.world.setContactListener( new CListener() );
 
 		Player.INSTANCE.init(3,1);
 		
 		AbstractGameWorld.INSTANCE.init();
-		
+
 		this.setScreen(new MainMenuScreen(this));
 		// currentScreen = new MainMenuScreen(this);
 		
@@ -80,6 +83,7 @@ public class SpaceflyGame extends Game
 		Player.INSTANCE.init(3, 1);
 
 		ProceduralGameWorld.worldSeed = floorSeed;
+		ProceduralGameWorld.floorNumber = currentFloor;
 		AbstractGameWorld.INSTANCE = new ProceduralGameWorld();
 		AbstractGameWorld.INSTANCE.init();
 
@@ -195,6 +199,7 @@ public class SpaceflyGame extends Game
 		Player.INSTANCE.resetForNewFloor();
 
 		ProceduralGameWorld.worldSeed = floorSeed;
+		ProceduralGameWorld.floorNumber = currentFloor;
 		AbstractGameWorld.INSTANCE = new ProceduralGameWorld();
 		AbstractGameWorld.INSTANCE.init();
 

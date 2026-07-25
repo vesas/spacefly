@@ -9,7 +9,7 @@ public class PlayerBullets extends BaseBullets
 	private PlayerBullets() { }
 	
 	public void fireBullet( float posx, float posy, float dirx, float diry,
-	                        int damage, Weapon.Archetype archetype, BodyBuilder bodyBuilder )
+	                        int damage, Weapon.Archetype archetype, boolean crit, BodyBuilder bodyBuilder )
 	{
 		// See if the pool contains anything
 		if( deadPool.size > 0 )
@@ -23,6 +23,7 @@ public class PlayerBullets extends BaseBullets
 				bul.resetCreationTime();
 				bul.damage = damage;
 				((Bullet) bul).archetype = archetype;
+				((Bullet) bul).crit = crit;
 				bullets.add( bul );
 				return;
 			}
@@ -32,12 +33,14 @@ public class PlayerBullets extends BaseBullets
 		Bullet b = new Bullet( posx, posy, dirx, diry, bodyBuilder);
 		b.damage = damage;
 		b.archetype = archetype;
+		b.crit = crit;
 
 		bullets.add( b );
 	}
 
 	public void fireBullet( float posx, float posy, float dirx, float diry, BodyBuilder bodyBuilder )
 	{
-		fireBullet(posx, posy, dirx, diry, 1, Weapon.Archetype.BLASTER, bodyBuilder);
+		fireBullet(posx, posy, dirx, diry, Weapon.forArchetype(Weapon.Archetype.BLASTER).damage,
+			Weapon.Archetype.BLASTER, false, bodyBuilder);
 	}
 }

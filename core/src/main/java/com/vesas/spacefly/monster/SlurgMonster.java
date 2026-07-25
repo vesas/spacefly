@@ -51,7 +51,7 @@ public class SlurgMonster extends Monster
 		targetDir.setAngleDeg(body.getAngle() * Util.RADTODEG);
 		dir.setAngleDeg(body.getAngle() * Util.RADTODEG);
 
-		setHealth(4);
+		setHealth(40);
 	}
 
 	private void initializeBody(float posx, float posy, BodyBuilder bodyBuilder) {
@@ -375,7 +375,8 @@ public class SlurgMonster extends Monster
 		sprite.setRotation(angle * Util.RADTODEG - 90.0f);
 
 		sprite.draw(screen.worldBatch);
-		
+		drawHitFlash(screen.worldBatch, sprite);
+
 		haloSprite.draw(screen.worldBatch);
 
 		//G.font.draw(screen.batch, healthString, sprite.getX() + 26, sprite.getY() + 32);

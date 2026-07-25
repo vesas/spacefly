@@ -11,8 +11,10 @@ import com.badlogic.gdx.utils.Array;
 import com.vesas.spacefly.game.G;
 import com.vesas.spacefly.screen.GameScreen;
 import com.vesas.spacefly.world.procedural.FeatureBlock;
+import com.vesas.spacefly.world.procedural.FloorPatina;
 import com.vesas.spacefly.world.procedural.FloorTheme;
 import com.vesas.spacefly.world.procedural.PipeSegment;
+import com.vesas.spacefly.world.procedural.ProceduralGameWorld;
 import com.vesas.spacefly.world.procedural.room.RoomFeature;
 
 /*
@@ -156,6 +158,13 @@ public class OctaRoom extends RoomFeature
 							(int)((apersqrttwo + sidelen)*PIXELS_PER_UNIT), (int)((apersqrttwo+sidelen+apersqrttwo)*PIXELS_PER_UNIT),
 							(int)((apersqrttwo + sidelen + apersqrttwo)*PIXELS_PER_UNIT), (int)((apersqrttwo+sidelen)*PIXELS_PER_UNIT));
 
+		// Bake the surface material into the octagon floor (only touches the filled octagon pixels;
+		// CLEAR corners stay clear). Fades to neutral at the edges so doorways stay seamless.
+		float cx = xpos + getWidth() * 0.5f, cy = ypos + getHeight() * 0.5f;
+		long seed = FloorPatina.featureSeed( ProceduralGameWorld.worldSeed, ProceduralGameWorld.floorNumber, cx, cy );
+		FloorPatina.bakeMaterial( pixmap, PIXELS_PER_UNIT, xpos, ypos, getWidth(), getHeight(),
+				FloorPatina.pickMaterial( seed, theme ), true, true, 0.7f );
+
 		tex = new Texture(pixmap);
 		pixmap.dispose();
 	}
@@ -163,9 +172,14 @@ public class OctaRoom extends RoomFeature
 	@Override
 	public void drawWithVisibility(GameScreen screen) {
 		screen.worldBatch.draw( tex, this.xpos, this.ypos, this.width, this.height);
+		// The masks fade to zero at the quad edges, so drawing over the inset room rect keeps the
+		// overlays inside the octagon (cut corners stay clean).
+		drawFloorOverlays( screen.worldBatch, xpos + WALL_WIDTH, ypos + WALL_WIDTH,
+				width - WALL_WIDTH * 2f, height - WALL_WIDTH * 2f );
 		for (int i = 0; i < pipeSegments.size; i++) {
 			pipeSegments.get(i).draw(screen.worldBatch);
 		}
+		drawDecals(screen.worldBatch);
 	}
 	
 

@@ -90,7 +90,9 @@ public class Hud {
 		G.wFont.getData().setScale(NAME_SCALE, NAME_SCALE);
 		nameLayout.setText(G.wFont, currentWeapon.name);
 		float nameX = width - MARGIN_EDGE - nameLayout.width;
+		G.wFont.setColor(currentWeapon.rarity.r, currentWeapon.rarity.g, currentWeapon.rarity.b, 1f);
 		G.wFont.draw(screen.screenBatch, currentWeapon.name, nameX, nameY);
+		G.wFont.setColor(1f, 1f, 1f, 1f);
 
 		// Stat row labels
 		G.wFont.getData().setScale(LABEL_SCALE, LABEL_SCALE);
@@ -145,8 +147,11 @@ public class Hud {
 
 		G.wFont.getData().setScale(0.38f, 0.38f);
 		float nameCapH = G.wFont.getCapHeight();
+		G.wFont.setColor(current.rarity.r, current.rarity.g, current.rarity.b, 1f);
 		G.wFont.draw(screen.screenBatch, current.name, cx - 165f, namesY);
+		G.wFont.setColor(drop.rarity.r, drop.rarity.g, drop.rarity.b, 1f);
 		G.wFont.draw(screen.screenBatch, drop.name,    cx +  15f, namesY);
+		G.wFont.setColor(1f, 1f, 1f, 1f);
 
 		G.wFont.getData().setScale(LABEL_SCALE, LABEL_SCALE);
 		float lx = cx - 200f;

@@ -23,7 +23,7 @@ public class ShootStickMonster extends Monster
 		this.faceDir = faceDir;
 		cooldown = 0 + random.nextFloat() * 0.1f;
 		initializeBody(posx, posy, bodyBuilder);
-		setHealth( 4 );
+		setHealth( 40 );
 	}
 
 	private void initializeBody(float posx, float posy, BodyBuilder bodyBuilder) {
@@ -81,6 +81,7 @@ public class ShootStickMonster extends Monster
 		sprite.setRotation(body.getAngle() * Util.RADTODEG - 90f);
 
 		sprite.draw(screen.worldBatch);
+		drawHitFlash(screen.worldBatch, sprite);
 	}
 
 }

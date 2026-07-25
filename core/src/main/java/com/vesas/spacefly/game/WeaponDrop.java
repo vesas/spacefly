@@ -1,5 +1,6 @@
 package com.vesas.spacefly.game;
 
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -72,13 +73,35 @@ public class WeaponDrop implements AnimateEntity
 
 		Sprite sprite = G.powerUps.get(PowerUpType.SHOOT);
 
-		sprite.setOriginCenter();
-		sprite.setSize(0.55f, 0.55f);
+		final Weapon.Rarity rar = weapon.rarity;
+		final float bodyAngleInDegrees = body.getAngle() * Util.RADTODEG - 90.0f;
+		final float size = 0.55f + rar.ordinal() * 0.03f;
 
-		float bodyAngleInDegrees = body.getAngle() * Util.RADTODEG - 90.0f;
+		// Rarity glow: an additive, tinted halo behind higher-tier drops so an orange
+		// legendary reads across the room. Commons stay plain.
+		if (rar != Weapon.Rarity.COMMON)
+		{
+			final float glow = size * 1.9f;
+			screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+			sprite.setColor(rar.r, rar.g, rar.b, 0.5f);
+			sprite.setOriginCenter();
+			sprite.setSize(glow, glow);
+			sprite.setRotation(bodyAngleInDegrees);
+			sprite.setPosition(pos.x - glow * 0.5f, pos.y - glow * 0.5f);
+			sprite.draw(screen.worldBatch);
+			screen.worldBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		}
+
+		// Main sprite, tinted to the rarity colour.
+		sprite.setColor(rar.r, rar.g, rar.b, 1.0f);
+		sprite.setOriginCenter();
+		sprite.setSize(size, size);
 		sprite.setRotation(bodyAngleInDegrees);
 		sprite.setPosition(pos.x - sprite.getWidth() * 0.5f, pos.y - sprite.getHeight() * 0.5f);
 		sprite.draw(screen.worldBatch);
+
+		// Restore the shared sprite so other power-up draws aren't left tinted.
+		sprite.setColor(1f, 1f, 1f, 1f);
 	}
 
 	@Override

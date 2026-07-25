@@ -44,7 +44,7 @@ public class EscScreen implements Screen {
                         game.restoreGameScreen();
                     }
                     else if(currentSelectedMenu == 1) {
-                        // game.setScreen(new SettingsScreen(game));
+                        game.setScreen(new SettingsScreen(game, SettingsScreen.Origin.PAUSE));
                     }
                     else if(currentSelectedMenu == 2) {
                         Gdx.app.exit();
@@ -97,7 +97,7 @@ public class EscScreen implements Screen {
                     return true;
                 }
                 if(hitActor == menu1) {
-                    // game.setScreen(new SettingsScreen(game));
+                    game.setScreen(new SettingsScreen(game, SettingsScreen.Origin.PAUSE));
                     return true;
                 }
                 if(hitActor == menu2) {

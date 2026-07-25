@@ -5,18 +5,29 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.vesas.spacefly.world.procedural.room.rectangleroom.ExitDir;
 
-public class MetaOctaRoom implements MetaFeature {
+public class MetaOctaRoom implements MetaRoom {
 
     private Rectangle rect = new Rectangle();
 
     private ObjectMap<ExitDir, MetaPortal> portals = new ObjectMap<ExitDir, MetaPortal>();
 
     private int id;
+    private RoomRole role = RoomRole.STANDARD;
 
-	public MetaOctaRoom() 
-	{ 
+	public MetaOctaRoom()
+	{
 		this.id = IDGenerator.getNextId();
 	}
+
+    @Override
+    public RoomRole getRole() {
+        return role;
+    }
+
+    @Override
+    public void setRole(RoomRole role) {
+        this.role = role;
+    }
 
     public void setSize( float posx, float posy, float w, float h )
 	{

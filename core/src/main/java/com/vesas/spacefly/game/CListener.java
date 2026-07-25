@@ -31,7 +31,17 @@ public class CListener implements ContactListener
 	private void playerBulletHit( Bullet bullet, Monster monster )
 	{
 		monster.getHit( bullet );
-		
+
+		// Borderlands-style damage pop at the point of impact. Crits pop bigger and yellow;
+		// normal hits are white. The dark shadow (in Floater) keeps both legible over the
+		// yellow-orange explosion.
+		if( bullet.crit )
+			AbstractGameWorld.INSTANCE.addDamageFloater(
+					monster.getBody().getWorldCenter(), bullet.damage, 1.0f, 0.86f, 0.15f, 1.7f );
+		else
+			AbstractGameWorld.INSTANCE.addDamageFloater(
+					monster.getBody().getWorldCenter(), bullet.damage, 1.0f, 1.0f, 1.0f, 1.0f );
+
 		if( monster.isDead() )
 		{
 			AbstractGameWorld.INSTANCE.removeMonster( monster );
@@ -39,12 +49,12 @@ public class CListener implements ContactListener
 			float explosionStrength = 0.70f;
 			if( monster instanceof SlurgMonster ) {
 				explosionStrength = 0.75f;
-				G.explo1.play( 0.05f );
+				G.playSound( G.explo1, 0.05f );
 				
 			}
 			else if( monster instanceof ZipperMonster ) {
 				explosionStrength = 0.31f;
-				G.explo1.play( 0.03f );
+				G.playSound( G.explo1, 0.03f );
 			}
 				
 			ShakeExplo shake = new ShakeExplo();
@@ -59,7 +69,7 @@ public class CListener implements ContactListener
 			// not dead yet
 			AbstractGameWorld.INSTANCE.addLittleExplosion( bullet.body.getPosition(), bullet.body.getLinearVelocity(), 0.5f, 1.0f);
 			
-			G.explo1.play( 0.02f );
+			G.playSound( G.explo1, 0.02f );
 			
 			ShakeExplo shake = new ShakeExplo();
 			shake.setTimeScale( 20.0f );
@@ -151,7 +161,7 @@ public class CListener implements ContactListener
 			AbstractGameWorld.INSTANCE.addLittleExplosion( b.body.getPosition(), b.body.getLinearVelocity(), 0.5f, 2.2f);
 			PlayerBullets.INSTANCE.preRemove( b );
 			
-			G.explo1.play( 0.02f );
+			G.playSound( G.explo1, 0.02f );
 			
 			ShakeExplo shake = new ShakeExplo();
 			shake.setTimeScale( 25f );

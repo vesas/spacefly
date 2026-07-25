@@ -5,6 +5,9 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -30,6 +33,9 @@ public class G
 	public static Viewport mainViewport;
 	
 	static public TextureAtlas atlas;
+
+	/** 1×1 white texture for drawing solid quads (health bars, etc.) in the world batch. */
+	static public Texture whitePixel;
 	
 	// Monster types
 	public enum MonsterType {
@@ -90,11 +96,29 @@ public class G
 	{
 		return atlas;
 	}
+
+	/** Play a sound with the master volume from {@link Settings} applied. */
+	static public long playSound(Sound sound, float volume)
+	{
+		return sound.play(volume * Settings.getMasterVolume());
+	}
+
+	/** Play a sound with the master volume from {@link Settings} applied. */
+	static public long playSound(Sound sound, float volume, float pitch, float pan)
+	{
+		return sound.play(volume * Settings.getMasterVolume(), pitch, pan);
+	}
 	
 	static public void loadTextures()
 	{
 		atlas = new TextureAtlas(Gdx.files.local("data/fly.atlas"));
-		
+
+		Pixmap wp = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+		wp.setColor(Color.WHITE);
+		wp.fill();
+		whitePixel = new Texture(wp);
+		wp.dispose();
+
 		for (MonsterType type : MonsterType.values()) {
 			monsters.put(type, atlas.createSprite(type.textureName));
 		}
@@ -146,6 +170,10 @@ public class G
 	static public void disposeTextures()
 	{
 		atlas.dispose();
+		if (whitePixel != null) {
+			whitePixel.dispose();
+			whitePixel = null;
+		}
 	}
 	
 	

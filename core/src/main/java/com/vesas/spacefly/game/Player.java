@@ -243,19 +243,22 @@ public final class Player
 				spreadX = (GenSeed.random.nextFloat() - 0.5f) * 2f * currentWeapon.spread;
 				spreadY = (GenSeed.random.nextFloat() - 0.5f) * 2f * currentWeapon.spread;
 			}
+			// Roll a crit per projectile: crits deal CRIT_MULT damage and pop a yellow number.
+			boolean crit = GenSeed.random.nextFloat() < currentWeapon.critChance;
+			int shotDamage = crit ? Math.round(currentWeapon.damage * Weapon.CRIT_MULT) : currentWeapon.damage;
 			bullets.fireBullet(
 				bodyPos.x + bulletDirectionVector.x * 0.4f,
 				bodyPos.y + bulletDirectionVector.y * 0.4f,
 				bulletDirectionVector.x * currentWeapon.bulletSpeed + spreadX,
 				bulletDirectionVector.y * currentWeapon.bulletSpeed + spreadY,
-				currentWeapon.damage, currentWeapon.archetype, bodyBuilder);
+				shotDamage, currentWeapon.archetype, crit, bodyBuilder);
 		}
 
 		switch (currentWeapon.archetype) {
-			case SCATTER_GUN:   G.shot.play(0.10f, 0.62f, 0f); break;
-			case BEAM_REPEATER: G.shot.play(0.04f, 1.70f, 0f); break;
-			case RAIL_LAUNCHER: G.shot.play(0.18f, 0.38f, 0f); break;
-			default:            G.shot.play(0.06f, 1.00f, 0f); break;
+			case SCATTER_GUN:   G.playSound(G.shot, 0.10f, 0.62f, 0f); break;
+			case BEAM_REPEATER: G.playSound(G.shot, 0.04f, 1.70f, 0f); break;
+			case RAIL_LAUNCHER: G.playSound(G.shot, 0.18f, 0.38f, 0f); break;
+			default:            G.playSound(G.shot, 0.06f, 1.00f, 0f); break;
 		}
 	}
 

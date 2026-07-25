@@ -124,7 +124,7 @@ public class MainMenuScreen implements Screen {
     private void handleMenuSelection() {
         switch(currentSelectedMenu) {
             case 0: game.setGameScreen(); break;
-            case 1: /* game.setScreen(new SettingsScreen(game)); */ break;
+            case 1: game.setScreen(new SettingsScreen(game, SettingsScreen.Origin.MAIN_MENU)); break;
             case 2: Gdx.app.exit(); break;
         }
     }
